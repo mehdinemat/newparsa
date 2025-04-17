@@ -11,16 +11,15 @@ import {
   Grid,
   GridItem,
   HStack,
-  IconButton,
   Text,
   VStack
 } from "@chakra-ui/react";
 import { Geist, Geist_Mono } from "next/font/google";
-import { TbArrowsSort } from "react-icons/tb";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 
 import LeftSidebar from "@/components/home/leftsidebar";
+import QuestionMCard from "@/components/home/mobile/questionMCard";
 import QuestionCard from "@/components/questionCars";
 
 const geistSans = Geist({
@@ -73,14 +72,20 @@ const Index = ({ children }) => {
         maxW="container.xl"
         mx="auto"
         p={"20px"}
-        mt={'100px'}
+        mt={{ base: '60px', md: '100px' }}
       >
-        <Grid templateColumns="repeat(4, 1fr)" gap={"20px"} w={"100%"}>
+        <Grid templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(4, 1fr)" }}
+          templateAreas={{
+            base: `"main" "right" "left" "slider"`,
+          }} gap={"20px"} w={"100%"} >
+
           {/* Right Sidebar */}
-          <Box
+          <Box w="100%"
+            maxW={{ base: "calc( 100vw - 50px )", md: '100vw' }}
+            overflow="hidden"
+            wordBreak="break-word"
+            order={{ base: 2, md: 1 }}
             zIndex={100}
-            as={GridItem}
-            colSpan={'1'}
             border={"1px"}
             borderColor={"#EBEBEB"}
             borderRadius={"15px"}
@@ -161,15 +166,22 @@ const Index = ({ children }) => {
           </Box>
 
           {/* Main Content */}
-          <Box p="6" as={GridItem} colSpan={'2'}>
-            <HStack
-              w={"100%"}
+          <Box p={{ base: 0, md: "6" }} order={{ base: 1, md: 2 }} as={GridItem}
+            colSpan={{ md: 2 }} w="100%" overflowWrap="break-word"
+            wordBreak="break-word"
+            maxW="100vw"
+            whiteSpace="normal"
+            pr={{ base: 0, md: '21px' }}
+          >
+
+            <HStack w="100%" whiteSpace="normal"
               justifyContent={"space-between"}
-              mb={"10px"}
-              alignItems={"start"}
+              mb={{ base: '20px', md: "10px" }}
+
+              alignItems={{ base: 'center', md: "start" }}
             >
               <Text fontWeight={"bold"} fontSize={"16px"}>
-                سؤال‌ها
+                سؤال‌ها پیشنهادی
               </Text>
               <Button
                 width={"189px"}
@@ -177,35 +189,37 @@ const Index = ({ children }) => {
                 bgColor={"#F9C96D"}
                 color={"black"}
                 fontWeight={"normal"}
+                borderRadius={'10px'}
+                onClick={e => handleNewQuestionButton()}
               >
                 سوال خود را بپرسید
               </Button>
             </HStack>
-            <HStack w={"100%"}
-              justifyContent={"space-between"}
-              mb={"10px"}
-              alignItems={"start"}>
-              <Text fontSize={"14px"}>
-                ۲۵۸ سؤال
-              </Text>
-              <HStack>
-                <IconButton icon={<TbArrowsSort />} colorScheme="gray" variant={'ghost'} _hover={{ bgColor: 'none' }} />
-                <Text>مرتب سازی بر اساس:</Text>
-                <Button colorScheme="gray" variant={'ghost'} _hover={{ bgColor: 'none' }} fontWeight={'normal'}>جدیدترین‌ها</Button>
-                <Button colorScheme="gray" variant={'ghost'} _hover={{ bgColor: 'none' }} fontWeight={'normal'}>پربازدیدترین‌ها</Button>
-                <Button colorScheme="gray" variant={'ghost'} _hover={{ bgColor: 'none' }} fontWeight={'normal'}>محبوبترین‌ها</Button>
-              </HStack>
-            </HStack>
 
-            <Divider my={"20px"} />
-            <QuestionCard />
-            <Divider my={"20px"} />
-            <QuestionCard />
-            <Divider my={"20px"} />
+            <VStack display={{ base: 'none', md: 'flex' }}>
+              <Divider my={"20px"} />
+              <QuestionCard />
+              <Divider my={"20px"} />
+              <QuestionCard />
+              <Divider my={"20px"} />
+            </VStack>
+
+            <VStack display={{ base: 'flex', md: 'none' }}>
+              <QuestionMCard />
+              <Divider my={"20px"} />
+              <QuestionMCard />
+              <Divider my={"20px"} />
+            </VStack>
+
           </Box>
 
           {/* Left Sidebar */}
-          <Box as={GridItem} colSpan={'1'} >
+          <Box order={3} as={GridItem}
+            colSpan={'1'} w="100%"
+            maxW={{ base: "calc( 100vw - 50px )", md: '100vw' }}
+
+            whiteSpace="normal"
+            overflowWrap="break-word">
             <Box
               w={'100%'}
               p="4"
@@ -235,7 +249,6 @@ const Index = ({ children }) => {
               border={"1px"}
               borderColor={"#EBEBEB"}
               borderRadius={"15px"}
-              height={"500px"}
               bgColor={"#CFF186"}
             >
               <Text fontWeight={"bold"} fontSize={"16px"}>
