@@ -190,19 +190,29 @@ export default function Home({ children }) {
 
               alignItems={{ base: 'center', md: "start" }}
             >
-              <Text fontWeight={"bold"} fontSize={"16px"}>
+
+              <Text fontWeight={"700"} fontSize={"22px"} letterSpacing={0} letterSpacing={0}>
                 سؤال‌ها پیشنهادی
-              </Text>
+              </Text>font-family: Yekan Bakh;
+              font-weight: 400;
+              font-size: 16px;
+              line-height: 100%;
+              letter-spacing: 0%;
+              text-align: center;
+
               <Button
-                width={"189px"}
+                width={{ base: '152px', md: "189px" }}
                 height={"50px"}
                 bgColor={"#F9C96D"}
                 color={"black"}
-                fontWeight={"normal"}
+                fontWeight={"400"}
+                fontSize={'16px'}
+                lineHeight={'100%'}
+                letterSpacing={0}
                 borderRadius={'10px'}
                 onClick={e => handleNewQuestionButton()}
               >
-                سوال خود را بپرسید
+                سؤال خود را بپرسید
               </Button>
             </HStack>
 
