@@ -23,6 +23,7 @@ import LeftSidebar from "@/components/home/leftsidebar";
 import QuestionMCard from "@/components/home/mobile/questionMCard";
 import QuestionCard from "@/components/questionCars";
 import SliderCom from "@/components/slider";
+import { useRouter } from "next/router";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -65,6 +66,12 @@ const items2 = [
 ];
 
 export default function Home({ children }) {
+
+  const router = useRouter()
+
+  const handleNewQuestionButton = () => {
+    router.replace('/new_question')
+  }
 
   return (
     <MainLayout>
@@ -169,7 +176,7 @@ export default function Home({ children }) {
           </Box>
 
           {/* Main Content */}
-          <Box p="6" order={{ base: 1, md: 2 }} as={GridItem}
+          <Box p={{ base: 0, md: "6" }} order={{ base: 1, md: 2 }} as={GridItem}
             colSpan={{ md: 2 }} w="100%" overflowWrap="break-word"
             wordBreak="break-word"
             maxW="100vw"
@@ -179,8 +186,9 @@ export default function Home({ children }) {
 
             <HStack w="100%" whiteSpace="normal"
               justifyContent={"space-between"}
-              mb={"10px"}
-              alignItems={"start"}
+              mb={{ base: '20px', md: "10px" }}
+
+              alignItems={{ base: 'center', md: "start" }}
             >
               <Text fontWeight={"bold"} fontSize={"16px"}>
                 سؤال‌ها پیشنهادی
@@ -191,6 +199,8 @@ export default function Home({ children }) {
                 bgColor={"#F9C96D"}
                 color={"black"}
                 fontWeight={"normal"}
+                borderRadius={'10px'}
+                onClick={e => handleNewQuestionButton()}
               >
                 سوال خود را بپرسید
               </Button>
@@ -203,8 +213,8 @@ export default function Home({ children }) {
               <QuestionCard />
               <Divider my={"20px"} />
             </VStack>
+
             <VStack display={{ base: 'flex', md: 'none' }}>
-              <Divider my={"20px"} />
               <QuestionMCard />
               <Divider my={"20px"} />
               <QuestionMCard />

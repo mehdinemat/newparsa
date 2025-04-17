@@ -1,10 +1,10 @@
-const { VStack, Avatar, HStack, Divider, Text, Button } = require("@chakra-ui/react")
+const { VStack, Avatar, HStack, Divider, Text, Button, Stack } = require("@chakra-ui/react")
 
 const ReferencesCard = () => {
   return (
-    <HStack>
+    <Stack direction={{ base: 'column', md: 'row' }} w={'100%'} justifyContent={'space-between'} alignItems={{ base: 'center' }}>
       <Avatar w={'128px'} h={'128px'} />
-      <VStack w={'100%'} alignItems={'start'}>
+      <VStack w={'100%'} alignItems={{ base: 'center', md: 'start' }}>
         <Text>حسن الماسی</Text>
         <HStack>
           <Text fontSize={'xs'}>۳۵۶ پرسش</Text>
@@ -13,7 +13,7 @@ const ReferencesCard = () => {
         </HStack>
         <Button bgColor={'#29CCCC'} fontWeight={'normal'}>پایگاه اطلاع‌رسانی</Button>
       </VStack>
-    </HStack>
+    </Stack>
   )
 }
 

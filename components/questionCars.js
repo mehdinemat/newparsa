@@ -21,7 +21,7 @@ const QuestionCard = () => {
         <HStack></HStack>
       </VStack>
       <VStack w={"100%"} alignItems={"start"} gap={"20px"}>
-        <Text fontSize={'15px'} w="100%" whiteSpace="normal">
+        <Text fontSize={'15px'} w="100%" whiteSpace="normal" lineHeight={'taller'}>
           آیا می‌توان نذر کرد که فطریه را به زلزله زده‌گان داد؟ اگر
           نتوانیم آن را انجام دهیم، آیا می‌توان فطریه را به یک بدهکار
           ورشکسته داد؟

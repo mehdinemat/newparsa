@@ -57,12 +57,12 @@ const HeaderId = ({ children }) => {
 
   return (
     <Box
-      marginTop={"100px"}
+      marginTop={{ base: '60px', md: "100px" }}
       as={Stack}
       justifyContent={"center"}
       alignItems={"center"}
       width="100%"
-      height={"500px"}
+      height={{ base: '400px', md: "500px" }}
       bg={"#3646B3"}
       p={2}
       px={4}
@@ -72,7 +72,7 @@ const HeaderId = ({ children }) => {
       bgPosition="center"
     >
       <HStack
-        height={"500px"}
+        height={{ base: '400px', md: "500px" }}
         w={"100%"}
         alignItems={"center"}
         justifyContent={"space-between"}
@@ -98,7 +98,7 @@ const HeaderId = ({ children }) => {
                 <IoCalendarOutline color="white" />
                 <Text color={'white'}>۱۶ دی ۱۴۰۲، دی ۱۴۰۲</Text>
               </HStack>
-              <HStack>
+              <HStack display={{ base: 'none', md: 'flex' }}>
                 <IoTime color="white" />
                 <Text color={'white'}>زمان مورد نیاز برای مطالعه: ۷ دقیقه</Text>
               </HStack>

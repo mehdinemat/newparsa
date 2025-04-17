@@ -36,7 +36,7 @@ const Index = () => {
                 </HStack>
               </HStack>
             </HStack>
-            <VStack w={'100%'} gap={'10px'}>
+            <VStack w={'100%'} gap={'20px'}>
               <NewsCard />
               <NewsCard />
               <NewsCard />

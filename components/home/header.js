@@ -14,10 +14,9 @@ import {
 } from "@chakra-ui/react";
 import { Geist, Geist_Mono } from "next/font/google";
 import { useRouter } from "next/router";
-import React from "react";
-import { FaHeadphonesAlt } from "react-icons/fa";
-import { IoDocuments, IoMicOff, IoOptions } from "react-icons/io5";
-import { MdKeyboardVoice } from "react-icons/md";
+import React, { useEffect } from "react";
+import CountUp from "react-countup";
+import { IoMicOff, IoOptions } from "react-icons/io5";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,19 +28,6 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const menuList = [
-  {
-    title: "صفحه اصلی",
-    icon: <MdKeyboardVoice fontSize={"18px"} />,
-    link: "audio",
-  },
-  { title: "تصویر به متن", icon: <IoDocuments fontSize={"18px"} /> },
-  { title: "صوت به متن", icon: <FaHeadphonesAlt fontSize={"18px"} /> },
-  // { title: 'ارتباط دادن نماز جمعه و حاکمیت', icon: <FaPrayingHands fontSize={'18px'} /> },
-  // { title: 'صفحه مسئولین', icon: <BsFillPersonFill fontSize={'18px'} /> },
-  // { title: 'بانک اطلاعات مسائل مربوط نماز جمعه', icon: <IoFileTrayStacked fontSize={'18px'} /> },
-  // { title: 'توصیف خطبه', icon: <FaFile fontSize={'18px'} /> },
-];
 
 const siteData = [
   {
@@ -127,10 +113,32 @@ const Header = ({ children }) => {
             {siteData?.map((item, index) => (
               <React.Fragment key={index}>
                 <VStack spacing={0} w={"100%"}>
-                  <Text color="white" fontWeight="thin">
-                    {item?.number}
-                  </Text>
                   <Text color="white">{item?.title}</Text>
+
+                  <CountUp
+                    start={0}
+                    end={item?.number}
+                    duration={2.75}
+                    decimals={0}
+                    onEnd={() => console.log("Ended! 👏")}
+                    onStart={() => console.log("Started! 💨")}
+                  >
+                    {({ countUpRef, start }) => {
+                      // Automatically start count on mount
+                      useEffect(() => {
+                        start();
+                      }, [start]);
+
+                      return (
+                        <Stack>
+                          <Text color="white" fontWeight="thin" ref={countUpRef}>
+                            {item?.number}
+                          </Text>
+                        </Stack>
+                      );
+                    }}
+                  </CountUp>
+
                 </VStack>
 
                 {/* Only add divider if it's not the last item */}
