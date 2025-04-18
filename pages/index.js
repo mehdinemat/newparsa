@@ -100,6 +100,8 @@ export default function Home({ children }) {
             borderColor={"#EBEBEB"}
             borderRadius={"15px"}
             padding={'10px'}
+            height={'min-content'}
+            
           >
             <Text fontWeight={"bold"} fontSize={"16px"}>
               موضوعات
@@ -161,7 +163,7 @@ export default function Home({ children }) {
                 </h2>
                 <AccordionPanel pb={4}>لورم ایپسوم متن ساختگی</AccordionPanel>
               </AccordionItem>
-              <AccordionItem>
+              <AccordionItem borderBottom={'none'}>
                 <h2>
                   <AccordionButton flexDirection="row-reverse">
                     <AccordionIcon ml={2} />
@@ -191,14 +193,9 @@ export default function Home({ children }) {
               alignItems={{ base: 'center', md: "start" }}
             >
 
-              <Text fontWeight={"700"} fontSize={"22px"} letterSpacing={0} letterSpacing={0}>
+              <Text fontWeight={"700"} fontSize={"22px"} letterSpacing={0} >
                 سؤال‌ها پیشنهادی
-              </Text>font-family: Yekan Bakh;
-              font-weight: 400;
-              font-size: 16px;
-              line-height: 100%;
-              letter-spacing: 0%;
-              text-align: center;
+              </Text>
 
               <Button
                 width={{ base: '152px', md: "189px" }}
@@ -222,6 +219,11 @@ export default function Home({ children }) {
               <Divider my={"20px"} />
               <QuestionCard />
               <Divider my={"20px"} />
+              <QuestionCard />
+              <Divider my={"20px"} />
+              <QuestionCard />
+              <Divider my={"20px"} />
+              <QuestionCard />
             </VStack>
 
             <VStack display={{ base: 'flex', md: 'none' }}>
@@ -229,6 +231,13 @@ export default function Home({ children }) {
               <Divider my={"20px"} />
               <QuestionMCard />
               <Divider my={"20px"} />
+              <QuestionMCard />
+              <Divider my={"20px"} />
+              <QuestionMCard />
+              <Divider my={"20px"} />
+              <QuestionMCard />
+              <Divider my={"20px"} />
+              <QuestionMCard />
             </VStack>
 
           </Box>
@@ -237,7 +246,6 @@ export default function Home({ children }) {
           <Box order={3} as={GridItem}
             colSpan={'1'} w="100%"
             maxW={{ base: "calc( 100vw - 50px )", md: '100vw' }}
-
             whiteSpace="normal"
             overflowWrap="break-word">
             <Box
@@ -246,7 +254,7 @@ export default function Home({ children }) {
               border={"1px"}
               borderColor={"#EBEBEB"}
               borderRadius={"15px"}
-              height={"500px"}
+              height={"min-content"}
               mb={"30px"}
             >
               <Text fontWeight={"bold"} fontSize={"16px"}>
@@ -260,7 +268,6 @@ export default function Home({ children }) {
                 <LeftSidebar />
                 <Divider />
                 <LeftSidebar />
-                <Divider />
               </VStack>
             </Box>
             <Box
@@ -270,6 +277,7 @@ export default function Home({ children }) {
               borderColor={"#EBEBEB"}
               borderRadius={"15px"}
               bgColor={"#CFF186"}
+              height={'min-content'}
             >
               <Text fontWeight={"bold"} fontSize={"16px"}>
                 حدیث روز
