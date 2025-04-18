@@ -1,6 +1,14 @@
-import { Avatar, AvatarGroup, Badge, Divider, HStack, Text, VStack } from "@chakra-ui/react";
+import {
+  Avatar,
+  AvatarGroup,
+  Badge,
+  Divider,
+  HStack,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 import { HiArrowTurnDownLeft } from "react-icons/hi2";
-import { IoCheckmark, IoEye } from "react-icons/io5";
+import { IoCheckmark, IoEye, IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 
 const QuestionCard = () => {
   return (
@@ -8,23 +16,27 @@ const QuestionCard = () => {
       <VStack w={"150px"} alignItems={"start"}>
         <HStack color={"gray.600"}>
           <HiArrowTurnDownLeft fontSize={"20px"} />
-          <Text fontSize={'md'}>2پسند</Text>
+          <Text fontSize={"16px"} w={'max-content'}>2پسند</Text>
         </HStack>
         <HStack color={"gray.600"}>
           <IoCheckmark fontSize={"20px"} />
-          <Text>3 جواب</Text>
+          <Text fontSize={"16px"} w={'max-content'}>3 جواب</Text>
         </HStack>
         <HStack color={"gray.600"}>
-          <IoEye fontSize={"20px"} />
-          <Text>87 بازدید</Text>
+          <IoEyeOutline fontSize={"20px"} />
+          <Text fontSize={"16px"} w={'max-content'}>87 بازدید</Text>
         </HStack>
         <HStack></HStack>
       </VStack>
       <VStack w={"100%"} alignItems={"start"} gap={"20px"}>
-        <Text fontSize={'15px'} w="100%" whiteSpace="normal" lineHeight={'taller'}>
-          آیا می‌توان نذر کرد که فطریه را به زلزله زده‌گان داد؟ اگر
-          نتوانیم آن را انجام دهیم، آیا می‌توان فطریه را به یک بدهکار
-          ورشکسته داد؟
+        <Text
+          fontSize={"15px"}
+          w="full"
+          whiteSpace="normal"
+          lineHeight={"taller"}
+        >
+          آیا می‌توان نذر کرد که فطریه را به زلزله زده‌گان داد؟ اگر نتوانیم آن
+          را انجام دهیم، آیا می‌توان فطریه را به یک بدهکار ورشکسته داد؟
         </Text>
         <HStack>
           <Badge
@@ -34,6 +46,8 @@ const QuestionCard = () => {
             display="flex"
             alignItems="center"
             justifyContent="center"
+            fontSize={"14px"}
+            fontWeight={"100"}
             px="8px" // optional: add some horizontal padding
           >
             خداشناسی
@@ -45,6 +59,8 @@ const QuestionCard = () => {
             display="flex"
             alignItems="center"
             justifyContent="center"
+            fontSize={"14px"}
+            fontWeight={"100"}
             px="8px"
           >
             توحید
@@ -56,6 +72,8 @@ const QuestionCard = () => {
             display="flex"
             alignItems="center"
             justifyContent="center"
+            fontSize={"14px"}
+            fontWeight={"100"}
             px="8px"
           >
             فقه سیاسی
@@ -67,6 +85,8 @@ const QuestionCard = () => {
             display="flex"
             alignItems="center"
             justifyContent="center"
+            fontSize={"14px"}
+            fontWeight={"100"}
             px="8px"
           >
             پزشکی
@@ -97,32 +117,20 @@ const QuestionCard = () => {
               پاسخ ۲۱ ساعت قبل
             </Text>
             <AvatarGroup size="sm" max={2}>
-              <Avatar
-                name="Ryan Florence"
-                src="https://bit.ly/ryan-florence"
-              />
-              <Avatar
-                name="Segun Adebayo"
-                src="https://bit.ly/sage-adebayo"
-              />
-              <Avatar
-                name="Kent Dodds"
-                src="https://bit.ly/kent-c-dodds"
-              />
+              <Avatar name="Ryan Florence" src="https://bit.ly/ryan-florence" />
+              <Avatar name="Segun Adebayo" src="https://bit.ly/sage-adebayo" />
+              <Avatar name="Kent Dodds" src="https://bit.ly/kent-c-dodds" />
               <Avatar
                 name="Prosper Otemuyiwa"
                 src="https://bit.ly/prosper-baba"
               />
-              <Avatar
-                name="Christian Nwamba"
-                src="https://bit.ly/code-beast"
-              />
+              <Avatar name="Christian Nwamba" src="https://bit.ly/code-beast" />
             </AvatarGroup>
           </HStack>
         </HStack>
       </VStack>
     </HStack>
-  )
-}
+  );
+};
 
-export default QuestionCard
+export default QuestionCard;

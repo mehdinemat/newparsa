@@ -19,7 +19,7 @@ const sliderSettings = {
 const SliderCom = ({ items, height, borderRadius, width = 'auto', title }) => {
   return (
     <VStack w={'100%'} border={'1px'} borderColor={'gray.200'} borderRadius={'16px'} p={'40px'} alignItems={'start'} height={height} my={'20px'}>
-      <Text fontWeight={'bold'}>{title}</Text>
+      <Text fontWeight={'700'} fontSize={'22px'}>{title}</Text>
       <Box w="100%" alignItems={'center'} justifyContent={'center'} mx="auto" >
         <Slider {...sliderSettings}>
           {items.map((item, index) => (
