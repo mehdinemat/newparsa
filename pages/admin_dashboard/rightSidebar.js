@@ -1,9 +1,7 @@
 import { Box, Divider, HStack, IconButton, Text, VStack } from "@chakra-ui/react"
 import { BsReply } from "react-icons/bs"
-import { CiFileOn } from "react-icons/ci"
 import { FaQuestion } from "react-icons/fa"
-import { GiGlobeRing } from "react-icons/gi"
-import { IoPeopleOutline, IoPersonOutline, IoSettingsOutline } from "react-icons/io5"
+import { IoPersonOutline } from "react-icons/io5"
 
 
 
@@ -11,10 +9,6 @@ const menuList = [
   { title: 'پروفایل', icon: <IoPersonOutline /> },
   { title: 'پرسش‌ها', icon: <FaQuestion /> },
   { title: 'پاسخ‌ها', icon: <BsReply /> },
-  { title: 'نوشته‌ها', icon: <CiFileOn /> },
-  { title: 'حسنات', icon: <GiGlobeRing /> },
-  { title: 'دوستان', icon: <IoPeopleOutline /> },
-  { title: 'حساب کاربری', icon: <IoSettingsOutline /> },
 ]
 
 const RightSidebar = () => {
