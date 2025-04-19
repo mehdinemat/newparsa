@@ -63,11 +63,9 @@ const Index = () => {
         justifyContent={"center"}
         maxW="container.xl"
         mx="auto"
-        p={"20px"}
-        my={"20px"}
-        mt={"120px"}
+        mt={{base:'80px' , md:"120px"}}
       >
-        <Text fontWeight={"bold"} fontSize={"20px"} mb={"40px"}>
+        <Text fontWeight={"bold"} fontSize={"20px"} mb={"20px"}>
           سوال خود را بپرسید...
         </Text>
         <Masonry
@@ -77,7 +75,7 @@ const Index = () => {
           columnClassName="masonry-grid_column"
         >
           <VStack
-            w={"100%"}
+            w={"calc( 100% - 20px )"}
             alignItems={"start"}
             border={"2px"}
             borderColor={"#23D9D7"}
@@ -172,7 +170,7 @@ const Index = () => {
             </HStack>
           </VStack>
           <VStack
-            w={"100%"}
+            w={"calc( 100% - 20px )"}
             alignItems={"start"}
             borderRadius={"15px"}
             padding={"20px"}
@@ -234,7 +232,7 @@ const Index = () => {
             </UnorderedList>
           </VStack>
           <VStack
-            w={"100%"}
+            w={"calc( 100% - 20px )"}
             alignItems={"start"}
             border={"1px"}
             borderColor={"gray.200"}
@@ -251,7 +249,7 @@ const Index = () => {
             <Textarea></Textarea>
           </VStack>
           <VStack
-            w={"100%"}
+            w={"calc( 100% - 20px )"}
             alignItems={"start"}
 
             borderRadius={"15px"}
@@ -345,7 +343,7 @@ const Index = () => {
           </VStack>
 
           <VStack
-            w={"100%"}
+            w={"calc( 100% - 20px )"}
             alignItems={"start"}
             border={"1px"}
             borderColor={"gray.200"}

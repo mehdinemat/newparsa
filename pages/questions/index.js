@@ -12,7 +12,7 @@ import {
   GridItem,
   HStack,
   Text,
-  VStack
+  VStack,
 } from "@chakra-ui/react";
 import { Geist, Geist_Mono } from "next/font/google";
 import "slick-carousel/slick/slick-theme.css";
@@ -62,7 +62,6 @@ const items2 = [
 ];
 
 const Index = ({ children }) => {
-
   return (
     <MainLayout>
       <Box
@@ -72,16 +71,20 @@ const Index = ({ children }) => {
         maxW="container.xl"
         mx="auto"
         p={"20px"}
-        mt={{ base: '60px', md: '100px' }}
+        mt={{ base: "60px", md: "100px" }}
       >
-        <Grid templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(4, 1fr)" }}
+        <Grid
+          templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(4, 1fr)" }}
           templateAreas={{
             base: `"main" "right" "left" "slider"`,
-          }} gap={"20px"} w={"100%"} >
-
+          }}
+          gap={"20px"}
+          w={"100%"}
+        >
           {/* Right Sidebar */}
-          <Box w="100%"
-            maxW={{ base: "calc( 100vw - 50px )", md: '100vw' }}
+          <Box
+            w="100%"
+            maxW={{ base: "calc( 100vw - 50px )", md: "100vw" }}
             overflow="hidden"
             wordBreak="break-word"
             order={{ base: 2, md: 1 }}
@@ -89,7 +92,8 @@ const Index = ({ children }) => {
             border={"1px"}
             borderColor={"#EBEBEB"}
             borderRadius={"15px"}
-            padding={'10px'}
+            padding={"10px"}
+            height={"min-content"}
           >
             <Text fontWeight={"bold"} fontSize={"16px"}>
               موضوعات
@@ -151,7 +155,7 @@ const Index = ({ children }) => {
                 </h2>
                 <AccordionPanel pb={4}>لورم ایپسوم متن ساختگی</AccordionPanel>
               </AccordionItem>
-              <AccordionItem>
+              <AccordionItem borderBottom={"none"}>
                 <h2>
                   <AccordionButton flexDirection="row-reverse">
                     <AccordionIcon ml={2} />
@@ -180,19 +184,24 @@ const Index = ({ children }) => {
 
               alignItems={{ base: 'center', md: "start" }}
             >
-              <Text fontWeight={"bold"} fontSize={"16px"}>
+
+              <Text fontWeight={"700"} fontSize={"22px"} letterSpacing={0} >
                 سؤال‌ها پیشنهادی
               </Text>
+
               <Button
-                width={"189px"}
+                width={{ base: '152px', md: "189px" }}
                 height={"50px"}
                 bgColor={"#F9C96D"}
                 color={"black"}
-                fontWeight={"normal"}
+                fontWeight={"400"}
+                fontSize={'16px'}
+                lineHeight={'100%'}
+                letterSpacing={0}
                 borderRadius={'10px'}
                 onClick={e => handleNewQuestionButton()}
               >
-                سوال خود را بپرسید
+                سؤال خود را بپرسید
               </Button>
             </HStack>
 
@@ -202,6 +211,11 @@ const Index = ({ children }) => {
               <Divider my={"20px"} />
               <QuestionCard />
               <Divider my={"20px"} />
+              <QuestionCard />
+              <Divider my={"20px"} />
+              <QuestionCard />
+              <Divider my={"20px"} />
+              <QuestionCard />
             </VStack>
 
             <VStack display={{ base: 'flex', md: 'none' }}>
@@ -209,24 +223,34 @@ const Index = ({ children }) => {
               <Divider my={"20px"} />
               <QuestionMCard />
               <Divider my={"20px"} />
+              <QuestionMCard />
+              <Divider my={"20px"} />
+              <QuestionMCard />
+              <Divider my={"20px"} />
+              <QuestionMCard />
+              <Divider my={"20px"} />
+              <QuestionMCard />
             </VStack>
 
           </Box>
 
           {/* Left Sidebar */}
-          <Box order={3} as={GridItem}
-            colSpan={'1'} w="100%"
-            maxW={{ base: "calc( 100vw - 50px )", md: '100vw' }}
-
+          <Box
+            order={3}
+            as={GridItem}
+            colSpan={"1"}
+            w="100%"
+            maxW={{ base: "calc( 100vw - 50px )", md: "100vw" }}
             whiteSpace="normal"
-            overflowWrap="break-word">
+            overflowWrap="break-word"
+          >
             <Box
-              w={'100%'}
+              w={"100%"}
               p="4"
               border={"1px"}
               borderColor={"#EBEBEB"}
               borderRadius={"15px"}
-              height={"500px"}
+              height={"min-content"}
               mb={"30px"}
             >
               <Text fontWeight={"bold"} fontSize={"16px"}>
@@ -240,36 +264,36 @@ const Index = ({ children }) => {
                 <LeftSidebar />
                 <Divider />
                 <LeftSidebar />
-                <Divider />
               </VStack>
             </Box>
             <Box
-              w={'100%'}
+              w={"100%"}
               p="4"
               border={"1px"}
               borderColor={"#EBEBEB"}
               borderRadius={"15px"}
               bgColor={"#CFF186"}
+              height={"min-content"}
             >
               <Text fontWeight={"bold"} fontSize={"16px"}>
                 حدیث روز
               </Text>
               <Text mt={"10px"}>
-                عن الامام الحسن علیه السلام: «رَأَیْتُ أُمِّی فَاطِمَةَ ع قَامَتْ
-                فِی مِحْرَابِهَا لَیْلَةَ جُمُعَتِهَا فَلَمْ تَزَلْ رَاکِعَةً
-                سَاجِدَةً حَتَّى اتَّضَحَ عَمُودُ الصُّبْحِ وَ سَمِعْتُهَا تَدْعُو
-                لِلْمُؤْمِنِینَ» در محرابش ایستاده بود و پیوسته در حال رکوع و سجده
-                بود تا اینکه روشنایی صبح نمایان شد و از او شنیدم که برای مردان و
-                زنان مومن دعا می‌کرد و با اسم آنان را نام می‌برد و برایشان زیاد
-                دعا می‌کرد. علل الشرائع، ج‏۱ ص ۱۸۱ بحارالانوار، ج ۴۳ ص ۸۲ (۱۶۶۷)
+                عن الامام الحسن علیه السلام: «رَأَیْتُ أُمِّی فَاطِمَةَ ع
+                قَامَتْ فِی مِحْرَابِهَا لَیْلَةَ جُمُعَتِهَا فَلَمْ تَزَلْ
+                رَاکِعَةً سَاجِدَةً حَتَّى اتَّضَحَ عَمُودُ الصُّبْحِ وَ
+                سَمِعْتُهَا تَدْعُو لِلْمُؤْمِنِینَ» در محرابش ایستاده بود و
+                پیوسته در حال رکوع و سجده بود تا اینکه روشنایی صبح نمایان شد و
+                از او شنیدم که برای مردان و زنان مومن دعا می‌کرد و با اسم آنان
+                را نام می‌برد و برایشان زیاد دعا می‌کرد. علل الشرائع، ج‏۱ ص ۱۸۱
+                بحارالانوار، ج ۴۳ ص ۸۲ (۱۶۶۷)
               </Text>
             </Box>
           </Box>
         </Grid>
       </Box>
-
-    </MainLayout >
+    </MainLayout>
   );
-}
+};
 
-export default Index
+export default Index;

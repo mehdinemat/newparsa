@@ -10,6 +10,7 @@ import {
   InputRightElement,
   Stack,
   Text,
+  useBreakpoint,
   VStack,
 } from "@chakra-ui/react";
 import { Geist, Geist_Mono } from "next/font/google";
@@ -17,17 +18,6 @@ import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import CountUp from "react-countup";
 import { IoMicOff, IoOptions } from "react-icons/io5";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 
 const siteData = [
   {
@@ -45,19 +35,23 @@ const siteData = [
   {
     title: "منبع",
     number: "2",
+    size: "base",
   },
   {
     title: "زبان",
     number: "3",
+    size: "base",
   },
 ];
 
 const Header = ({ children }) => {
   const router = useRouter();
 
+  const breakpoint = useBreakpoint();
+
   return (
     <Box
-      marginTop={{ base: '60px', md: "100px" }}
+      marginTop={{ base: "60px", md: "100px" }}
       as={Stack}
       justifyContent={"center"}
       alignItems={"center"}
@@ -87,13 +81,21 @@ const Header = ({ children }) => {
           justifyContent={"center"}
           height={"100%"}
         >
-          <Text fontSize={{ base: '35px', md: "50px" }} color={"white"} textAlign={{ base: 'center', md: 'right' }} >
+          <Text
+            fontSize={{ base: "35px", md: "50px" }}
+            color={"white"}
+            textAlign={{ base: "center", md: "right" }}
+          >
             پارسا شبکه اجتماعی پرسش و پاسخ دینی
           </Text>
-          <InputGroup height="60px" width={{ base: '381px', md: "890px" }} my={"20px"}>
+          <InputGroup
+            height="60px"
+            width={{ base: "381px", md: "890px" }}
+            my={"20px"}
+          >
             <Input
               borderRadius={"10px"}
-              width={{ base: '381px', md: "100%" }}
+              width={{ base: "381px", md: "100%" }}
               bgColor="#2A378C"
               height="60px"
               placeholder="در میان هزاران پرسش و پاسخ جستجو کنید..."
@@ -112,9 +114,11 @@ const Header = ({ children }) => {
           <HStack as={Center} justifyContent="center" w="50%">
             {siteData?.map((item, index) => (
               <React.Fragment key={index}>
-                <VStack spacing={0} w={"100%"}>
-                  <Text color="white">{item?.title}</Text>
-
+                <VStack
+                  spacing={0}
+                  w={"136px"}
+                  display={item?.size != breakpoint ? "flex" : "none"}
+                >
                   <CountUp
                     start={0}
                     end={item?.number}
@@ -131,21 +135,27 @@ const Header = ({ children }) => {
 
                       return (
                         <Stack>
-                          <Text color="white" fontWeight="thin" ref={countUpRef}>
+                          <Text
+                            color="white"
+                            fontWeight="thin"
+                            ref={countUpRef}
+                            fontSize={{ base: "20px", md: "22px" }}
+                          >
                             {item?.number}
                           </Text>
                         </Stack>
                       );
                     }}
                   </CountUp>
-
+                  <Text color="white" fontSize={{base:'20px' , md:'22px'}}>{item?.title}</Text>
                 </VStack>
 
                 {/* Only add divider if it's not the last item */}
                 {index !== siteData.length - 1 && (
                   <Divider
+                    display={item?.size != breakpoint ? "flex" : "none"}
                     orientation="vertical"
-                    h="30px"
+                    h="50px"
                     borderColor="gray.300"
                   />
                 )}

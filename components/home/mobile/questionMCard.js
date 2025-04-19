@@ -6,22 +6,22 @@ const QuestionMCard = () => {
   return (
     <VStack w={"calc( 100vw - 50px )"} alignItems={"start"}>
       <HStack alignItems={"start"} gap={'10px'}>
-        <HStack color={"gray.600"}>
+        <HStack color={"#999999"}>
           <HiArrowTurnDownLeft fontSize={"20px"} />
-          <Text fontSize={'md'}>2پسند</Text>
+          <Text fontSize={'16px'}>2پسند</Text>
         </HStack>
-        <HStack color={"gray.600"}>
+        <HStack color={"#999999"}>
           <IoCheckmark fontSize={"20px"} />
-          <Text>3 جواب</Text>
+          <Text fontSize={'16px'}>3 جواب</Text>
         </HStack>
-        <HStack color={"gray.600"}>
+        <HStack color={"#999999"}>
           <IoEyeOutline fontSize={"20px"} />
-          <Text>87 بازدید</Text>
+          <Text fontSize={'16px'}>87 بازدید</Text>
         </HStack>
         <HStack></HStack>
       </HStack>
       <VStack w={"100%"} alignItems={"start"} gap={"20px"}>
-        <Text fontSize={'15px'} w="100%" whiteSpace="normal">
+        <Text fontSize={'15px'} w="100%" whiteSpace="normal" lineHeight={'taller'}>
           آیا می‌توان نذر کرد که فطریه را به زلزله زده‌گان داد؟ اگر
           نتوانیم آن را انجام دهیم، آیا می‌توان فطریه را به یک بدهکار
           ورشکسته داد؟
@@ -34,6 +34,8 @@ const QuestionMCard = () => {
             display="flex"
             alignItems="center"
             justifyContent="center"
+            fontSize={'14px'}
+            fontWeight={'100'}
             px="8px" // optional: add some horizontal padding
           >
             خداشناسی
@@ -46,6 +48,8 @@ const QuestionMCard = () => {
             alignItems="center"
             justifyContent="center"
             px="8px"
+            fontSize={'14px'}
+            fontWeight={'100'}
           >
             توحید
           </Badge>
@@ -57,6 +61,8 @@ const QuestionMCard = () => {
             alignItems="center"
             justifyContent="center"
             px="8px"
+            fontSize={'14px'}
+            fontWeight={'100'}
           >
             فقه سیاسی
           </Badge>
@@ -68,14 +74,16 @@ const QuestionMCard = () => {
             alignItems="center"
             justifyContent="center"
             px="8px"
+            fontSize={'14px'}
+            fontWeight={'100'}
           >
             پزشکی
           </Badge>
         </HStack>
         <HStack w={"100%"}>
           <HStack>
-            <Avatar size={"sm"} />
-            <Text color={"gray.700"} w={"100px"}>
+            <Avatar size={"sm"} display={{base:'none' , md:'flex'}}/>
+            <Text color={"gray.700"} w={"100px"} fontSize={'16px'}>
               اسلام کوئست
             </Text>
           </HStack>
@@ -88,14 +96,11 @@ const QuestionMCard = () => {
           */}
 
           <HStack w={"100%"} justifyContent={"end"}>
-            <Text w={"120px"} color={"gray.400"}>
+            <Text w={"max-content"} color={"gray.400"} fontSize={'16px'}>
               پاسخ ۲۱ ساعت قبل
             </Text>
             <AvatarGroup size="sm" max={2}>
-              <Avatar
-                name="Ryan Florence"
-                src="https://bit.ly/ryan-florence"
-              />
+             
               <Avatar
                 name="Segun Adebayo"
                 src="https://bit.ly/sage-adebayo"
