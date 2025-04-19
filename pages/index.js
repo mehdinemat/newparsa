@@ -191,7 +191,7 @@ export default function Home({ children }) {
               alignItems={{ base: 'center', md: "start" }}
             >
 
-              <Text fontWeight={"700"} fontSize={"22px"} letterSpacing={0} letterSpacing={0}>
+              <Text fontWeight={"700"} fontSize={"22px"} letterSpacing={0} >
                 سؤال‌ها پیشنهادی
               </Text>font-family: Yekan Bakh;
               font-weight: 400;
