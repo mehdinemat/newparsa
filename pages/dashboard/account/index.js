@@ -17,11 +17,11 @@ const Index = () => {
         my={"20px"}
         mt={'60px'}
       >
-        <Grid templateColumns='repeat(4, 1fr)' gap={'32px'} w={'100%'}>
-          <GridItem colSpan={1}>
+        <Grid templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(4, 1fr)" }} gap={'32px'} w={'100%'}>
+          <GridItem colSpan={1} display={{ base: 'none', md: 'flex' }}>
             <RightSidebar />
           </GridItem>
-          <GridItem as={Stack} gap={'20px'} colStart={2} colEnd={5} colSpan={2} >
+          <GridItem as={Stack} gap={'20px'} colSpan={3} >
             <VStack padding={'20px'} >
               <Avatar width={'200px'} height={'200px'} />
               <HStack my={'20px'}>
