@@ -115,7 +115,7 @@ const MainLayout = ({ children }) => {
   }
 
   useEffect(() => {
-    setActivePath(_.includes(router.asPath.toLowerCase(), 'admin_dashboard') ? 1 : _.includes(router.asPath.toLowerCase(), 'dashboard') ? 2 : 0)
+    setActivePath(_.includes(router.asPath.toLowerCase(), 'admin_dashboard') ? 2 : _.includes(router.asPath.toLowerCase(), 'dashboard') ? 1 : 0)
   }, [router])
 
   return (
