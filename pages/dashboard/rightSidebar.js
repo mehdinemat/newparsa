@@ -8,8 +8,6 @@ import { FaQuestion } from "react-icons/fa"
 import { GiGlobeRing } from "react-icons/gi"
 import { IoPeopleOutline, IoPersonOutline, IoSettingsOutline } from "react-icons/io5"
 
-
-
 const menuList = [
   { title: 'پروفایل', icon: <IoPersonOutline />, link: 'profile' },
   { title: 'پرسش‌ها', icon: <FaQuestion />, link: 'questions' },
@@ -38,7 +36,6 @@ const RightSidebar = () => {
   const handleClickLink = (link) => {
     router.replace(link)
   }
-
 
   return (
     <VStack w={'100%'} alignItems={'center'} border={'1px'} borderRadius={'15px'} borderColor={'gray.200'} padding={'20px'} pt={'80px'}>

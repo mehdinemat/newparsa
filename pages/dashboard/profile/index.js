@@ -32,16 +32,16 @@ const Index = () => {
         mt={'60px'}
       >
 
-        <Grid templateColumns='repeat(3, 1fr)' gap={'32px'} w={'100%'}>
-          <GridItem colSpan={1}>
+        <Grid templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(4, 1fr)" }} gap={'32px'} w={'100%'}>
+          <GridItem colSpan={1} display={{ base: 'none', md: 'flex' }}>
             <RightSidebar />
           </GridItem>
-          <GridItem as={Stack} gap={'20px'} colSpan={2} >
+          <GridItem as={Stack} gap={'20px'} colSpan={3} >
             <VStack w={'100%'} alignItems={'start'} border={'1px'} borderRadius={'15px'} borderColor={'gray.200'} padding={'20px'}>
               <Text fontWeight={'bold'}>درباره کاربر</Text>
               <Text>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی</Text>
             </VStack>
-            <HStack w={'100%'}>
+            <Stack direction={{ base: 'column', md: 'row' }} gap={{ base: '20px' }} w={'100%'}>
               <Box as={VStack} gap={'20px'} w={'100%'} border={'1px'} borderRadius={'15px'} borderColor={'gray.200'} padding={'20px'} py={'10px'} pb={'40px'} bgColor={'#3646B3'} color={'white'}>
                 <HStack w={'100%'} justifyContent={'space-between'} color={'white'}>
                   <Text>آمار کاربر</Text>
@@ -92,51 +92,51 @@ const Index = () => {
                   </VStack>
                 </HStack>
               </Box>
-            </HStack>
+            </Stack>
             <VStack w={'100%'} alignItems={'start'} border={'1px'} borderRadius={'15px'} borderColor={'gray.200'} padding={'20px'}>
               <HStack w={'100%'} justifyContent={'space-between'}>
                 <Text fontWeight={'bold'} mb={'10px'}>آخرین پرسش‌ها</Text>
                 <Text fontSize={'xs'} color={'#29CCCC'}>مشاهده همه</Text>
               </HStack>
-              <HStack w={'100%'} justifyContent={'space-between'}>
+              <Stack direction={{ base: 'column', md: 'row' }} w={'100%'} justifyContent={'space-between'}>
                 <Text>اگر نتوانیم آن را انجام دهیم، آیا می‌توان فطریه را به یک بدهکار ورشکسته داد؟</Text>
                 <HStack>
                   <Text fontSize={'xs'} color={'gray'}> ۲۱ ساعت قبل</Text>
                   <Badge bgColor={'#29CCCC'} color={'white'} borderRadius={'5px'} p={'2px'}>۳ پاسخ</Badge>
                 </HStack>
-              </HStack>
+              </Stack>
               <Divider />
-              <HStack w={'100%'} justifyContent={'space-between'}>
+              <Stack direction={{ base: 'column', md: 'row' }} w={'100%'} justifyContent={'space-between'}>
                 <Text>اگر نتوانیم آن را انجام دهیم، آیا می‌توان فطریه را به یک بدهکار ورشکسته داد؟</Text>
                 <HStack>
                   <Text fontSize={'xs'} color={'gray'}> ۲۱ ساعت قبل</Text>
                   <Badge bgColor={'#29CCCC'} color={'white'} borderRadius={'5px'} p={'2px'}>۳ پاسخ</Badge>
                 </HStack>
-              </HStack>
+              </Stack>
               <Divider />
-              <HStack w={'100%'} justifyContent={'space-between'}>
+              <Stack direction={{ base: 'column', md: 'row' }} w={'100%'} justifyContent={'space-between'}>
                 <Text>اگر نتوانیم آن را انجام دهیم، آیا می‌توان فطریه را به یک بدهکار ورشکسته داد؟</Text>
                 <HStack>
                   <Text fontSize={'xs'} color={'gray'}> ۲۱ ساعت قبل</Text>
                   <Badge bgColor={'#29CCCC'} color={'white'} borderRadius={'5px'} p={'2px'}>۳ پاسخ</Badge>
                 </HStack>
-              </HStack>
+              </Stack>
               <Divider />
-              <HStack w={'100%'} justifyContent={'space-between'}>
+              <Stack direction={{ base: 'column', md: 'row' }} w={'100%'} justifyContent={'space-between'}>
                 <Text>اگر نتوانیم آن را انجام دهیم، آیا می‌توان فطریه را به یک بدهکار ورشکسته داد؟</Text>
                 <HStack>
                   <Text fontSize={'xs'} color={'gray'}> ۲۱ ساعت قبل</Text>
                   <Badge bgColor={'#29CCCC'} color={'white'} borderRadius={'5px'} p={'2px'}>۳ پاسخ</Badge>
                 </HStack>
-              </HStack>
+              </Stack>
               <Divider />
-              <HStack w={'100%'} justifyContent={'space-between'}>
+              <Stack direction={{ base: 'column', md: 'row' }} w={'100%'} justifyContent={'space-between'}>
                 <Text>اگر نتوانیم آن را انجام دهیم، آیا می‌توان فطریه را به یک بدهکار ورشکسته داد؟</Text>
-                <HStack>
+                <HStack w={'100%'} >
                   <Text fontSize={'xs'} color={'gray'}> ۲۱ ساعت قبل</Text>
                   <Badge bgColor={'#29CCCC'} color={'white'} borderRadius={'5px'} p={'2px'}>۳ پاسخ</Badge>
                 </HStack>
-              </HStack>
+              </Stack>
               <Divider />
             </VStack>
             <VStack w={'100%'} alignItems={'start'} border={'1px'} borderRadius={'15px'} borderColor={'gray.200'} padding={'20px'}>
@@ -144,45 +144,45 @@ const Index = () => {
                 <Text fontWeight={'bold'} mb={'10px'}>آخرین پاسخ ها</Text>
                 <Text fontSize={'xs'} color={'#29CCCC'}>مشاهده همه</Text>
               </HStack>
-              <HStack w={'100%'} justifyContent={'space-between'}>
+              <Stack direction={{ base: 'column', md: 'row' }} w={'100%'} justifyContent={'space-between'}>
                 <Text>اگر نتوانیم آن را انجام دهیم، آیا می‌توان فطریه را به یک بدهکار ورشکسته داد؟</Text>
                 <HStack>
                   <Text fontSize={'xs'} color={'gray'}> ۲۱ ساعت قبل</Text>
                   <Badge bgColor={'#29CCCC'} color={'white'} borderRadius={'5px'} p={'2px'}>۳ پاسخ</Badge>
                 </HStack>
-              </HStack>
+              </Stack>
               <Divider />
-              <HStack w={'100%'} justifyContent={'space-between'}>
+              <Stack direction={{ base: 'column', md: 'row' }} w={'100%'} justifyContent={'space-between'}>
                 <Text>اگر نتوانیم آن را انجام دهیم، آیا می‌توان فطریه را به یک بدهکار ورشکسته داد؟</Text>
                 <HStack>
                   <Text fontSize={'xs'} color={'gray'}> ۲۱ ساعت قبل</Text>
                   <Badge bgColor={'#29CCCC'} color={'white'} borderRadius={'5px'} p={'2px'}>۳ پاسخ</Badge>
                 </HStack>
-              </HStack>
+              </Stack>
               <Divider />
-              <HStack w={'100%'} justifyContent={'space-between'}>
+              <Stack direction={{ base: 'column', md: 'row' }} w={'100%'} justifyContent={'space-between'}>
                 <Text>اگر نتوانیم آن را انجام دهیم، آیا می‌توان فطریه را به یک بدهکار ورشکسته داد؟</Text>
                 <HStack>
                   <Text fontSize={'xs'} color={'gray'}> ۲۱ ساعت قبل</Text>
                   <Badge bgColor={'#29CCCC'} color={'white'} borderRadius={'5px'} p={'2px'}>۳ پاسخ</Badge>
                 </HStack>
-              </HStack>
+              </Stack>
               <Divider />
-              <HStack w={'100%'} justifyContent={'space-between'}>
+              <Stack direction={{ base: 'column', md: 'row' }} w={'100%'} justifyContent={'space-between'}>
                 <Text>اگر نتوانیم آن را انجام دهیم، آیا می‌توان فطریه را به یک بدهکار ورشکسته داد؟</Text>
                 <HStack>
                   <Text fontSize={'xs'} color={'gray'}> ۲۱ ساعت قبل</Text>
                   <Badge bgColor={'#29CCCC'} color={'white'} borderRadius={'5px'} p={'2px'}>۳ پاسخ</Badge>
                 </HStack>
-              </HStack>
+              </Stack>
               <Divider />
-              <HStack w={'100%'} justifyContent={'space-between'}>
+              <Stack direction={{ base: 'column', md: 'row' }} w={'100%'} justifyContent={'space-between'}>
                 <Text>اگر نتوانیم آن را انجام دهیم، آیا می‌توان فطریه را به یک بدهکار ورشکسته داد؟</Text>
                 <HStack>
                   <Text fontSize={'xs'} color={'gray'}> ۲۱ ساعت قبل</Text>
                   <Badge bgColor={'#29CCCC'} color={'white'} borderRadius={'5px'} p={'2px'}>۳ پاسخ</Badge>
                 </HStack>
-              </HStack>
+              </Stack>
               <Divider />
             </VStack>
           </GridItem>
