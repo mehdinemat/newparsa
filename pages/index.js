@@ -12,6 +12,7 @@ import {
   Grid,
   GridItem,
   HStack,
+  Stack,
   Text,
   VStack
 } from "@chakra-ui/react";
@@ -24,6 +25,7 @@ import QuestionMCard from "@/components/home/mobile/questionMCard";
 import QuestionCard from "@/components/questionCars";
 import SliderCom from "@/components/slider";
 import { useRouter } from "next/router";
+import Pagination from "@/components/pagination";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -302,6 +304,9 @@ export default function Home({ children }) {
             <SliderCom items={items2} height={'270px'} width="350px" borderRadius={'0px'} title={'حامیان پارسا'} />
           </GridItem>
         </Grid>
+        <Stack w={'100%'} justifyContent={'center'} alignItems={'center'}>
+        <Pagination totalPages={20} currentPage={5} />
+          </Stack>
       </Box>
 
     </MainLayout >

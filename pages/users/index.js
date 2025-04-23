@@ -1,6 +1,7 @@
 import MainLayout from "@/components/mainLayout";
+import Pagination from "@/components/pagination";
 import UsersCard from "@/components/users/usersCard";
-import { Box, Button, Grid, HStack, Input, InputGroup, InputRightElement, Text } from "@chakra-ui/react";
+import { Box, Button, Grid, HStack, Input, InputGroup, InputRightElement, Stack, Text } from "@chakra-ui/react";
 import { BiSortAlt2 } from "react-icons/bi";
 import { IoSearch } from "react-icons/io5";
 
@@ -60,6 +61,9 @@ const Index = () => {
           <UsersCard />
           <UsersCard />
         </Grid>
+        <Stack w={'100%'} justifyContent={'center'} alignItems={'center'}>
+        <Pagination totalPages={20} currentPage={5} />
+          </Stack>
       </Box>
     </MainLayout>
   )

@@ -2,7 +2,8 @@ import MainLayout from "@/components/mainLayout";
 import Header from "@/components/news/header";
 import NewsCard from "@/components/news/newsCard";
 import SuggestCard from "@/components/news/suggestCard";
-import { Box, Button, Grid, GridItem, HStack, Text, VStack } from "@chakra-ui/react";
+import Pagination from "@/components/pagination";
+import { Box, Button, Grid, GridItem, HStack, Stack, Text, VStack } from "@chakra-ui/react";
 import { BiSortAlt2 } from "react-icons/bi";
 
 const Index = () => {
@@ -56,6 +57,9 @@ const Index = () => {
             </VStack>
           </GridItem>
         </Grid>
+        <Stack w={'100%'} justifyContent={'center'} alignItems={'center'}>
+        <Pagination totalPages={20} currentPage={5} />
+          </Stack>
       </Box>
     </MainLayout>
   )

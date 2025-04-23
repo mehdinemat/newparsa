@@ -30,6 +30,7 @@ import {
   useDisclosure,
   VStack
 } from "@chakra-ui/react";
+import _ from "lodash";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { FaTelegram } from "react-icons/fa";
@@ -43,6 +44,8 @@ import {
   IoLogoYoutube
 } from "react-icons/io";
 import { IoCall, IoExitOutline, IoLocation, IoSearch } from "react-icons/io5";
+import AdminMenuBar from "./admin_dashboard/adminMenuBar";
+import UserMenuBar from "./mobile/dashboard/userMenuBar";
 import MenuBar from "./mobile/menuBar";
 
 const menuList = [
@@ -62,23 +65,21 @@ const menuList = [
 
 const MainLayout = ({ children }) => {
   const router = useRouter();
+  const [activePath, setActivePath] = useState(0)
   const [isSticky, setIsSticky] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [showInput, setShowInput] = useState(false);
   const inputRef = useRef(null);
 
   useEffect(() => {
-    console.log("Adding scroll event listener");
     window.addEventListener("scroll", handleScroll);
 
     return () => {
-      console.log("Removing scroll event listener");
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
   const handleScroll = () => {
-    console.log("this si scroll");
     const scrollTop = window.scrollY;
     const sidebar = document.getElementById("rightSidebar");
     const sidebarOffsetTop = sidebar?.offsetTop;
@@ -113,6 +114,10 @@ const MainLayout = ({ children }) => {
     router.replace('/')
   }
 
+  useEffect(() => {
+    setActivePath(_.includes(router.asPath.toLowerCase(), 'admin_dashboard') ? 2 : _.includes(router.asPath.toLowerCase(), 'dashboard') ? 1 : 0)
+  }, [router])
+
   return (
     <VStack minHeight="100vh" w={"100%"} alignItems={"start"} gap={0}>
       {/* header */}
@@ -142,7 +147,8 @@ const MainLayout = ({ children }) => {
         >
           <HStack w={"100%"} alignItems={"center"} height={"100%"} justifyContent={'space-between'}>
             <HStack ml={"20px"} w={'100%'}>
-              <MenuBar />
+              {activePath == 0 ? <MenuBar /> : activePath == 1 ?
+                < UserMenuBar /> : <AdminMenuBar />}
               <Image src="../../question.png" width={{ base: '25px', md: "40px" }} height={{ base: '35px', md: "56px" }} onClick={handleClickHome} cursor={'pointer'} />
               <Image src="../../parsaheader.png" width={{ base: '57px', md: "91px" }} height={{ base: '23px', md: "37px" }} onClick={handleClickHome} cursor={'pointer'} />
               <InputGroup width={"327px"} display={{ base: "none", md: "block" }}
