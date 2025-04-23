@@ -57,7 +57,7 @@ const Header = ({ children }) => {
 
   return (
     <Box
-      marginTop={"100px"}
+      marginTop={{base:'20px' , md:"100px"}}
       as={Stack}
       justifyContent={"center"}
       alignItems={"center"}

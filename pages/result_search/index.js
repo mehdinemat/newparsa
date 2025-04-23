@@ -1,0 +1,337 @@
+import MainLayout from "@/components/mainLayout";
+import {
+  Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  AccordionPanel,
+  Box,
+  Button,
+  Checkbox,
+  Divider,
+  Grid,
+  GridItem,
+  HStack,
+  IconButton,
+  Image,
+  Input,
+  InputGroup,
+  InputRightElement,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
+import { Geist, Geist_Mono } from "next/font/google";
+import "slick-carousel/slick/slick-theme.css";
+import "slick-carousel/slick/slick.css";
+
+import LeftSidebar from "@/components/home/leftsidebar";
+import QuestionMCard from "@/components/home/mobile/questionMCard";
+import QuestionCard from "@/components/questionCars";
+import { TbArrowsSort } from "react-icons/tb";
+import { IoSearch } from "react-icons/io5";
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+const items = [
+  {
+    image: "/img1.jpg",
+    title: "آیت الله محمدتقی بهجت فومنی",
+    button: "اطلاعات بیشتر",
+  },
+  {
+    image: "/img2.jpg",
+    title: "آیت الله جعفر سبحانی خیابانی تبریزی",
+    button: "اطلاعات بیشتر",
+  },
+  {
+    image: "/img3.jpg",
+    title: "آیت الله سید عبدالکریم موسوی اردبیلی",
+    button: "اطلاعات بیشتر",
+  },
+];
+const items2 = [
+  {
+    image: "/img1.jpg",
+  },
+  {
+    image: "/img2.jpg",
+  },
+  {
+    image: "/img3.jpg",
+  },
+];
+
+const Index = ({ children }) => {
+  return (
+    <MainLayout>
+      <Box
+        w="100%"
+        alignItems={"center"}
+        justifyContent={"center"}
+        maxW="container.xl"
+        mx="auto"
+        p={"20px"}
+        mt={{ base: "60px", md: "100px" }}
+      >
+        <Grid
+          templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(4, 1fr)" }}
+          templateAreas={{
+            base: `"main" "right" "left" "slider"`,
+          }}
+          gap={"20px"}
+          w={"100%"}
+        >
+          {/* Right Sidebar */}
+          <Box
+            w="100%"
+            maxW={{ base: "calc( 100vw - 50px )", md: "100vw" }}
+            overflow="hidden"
+            wordBreak="break-word"
+            order={{ base: 2, md: 1 }}
+            zIndex={100}
+            border={"1px"}
+            borderColor={"#EBEBEB"}
+            borderRadius={"15px"}
+            padding={"10px"}
+            height={"min-content"}
+          >
+            <Text fontWeight={"bold"} fontSize={"16px"}>
+              فیلترها
+            </Text>
+            <Accordion dir="rtl" mt={"20px"} w="100%">
+              <AccordionItem>
+                <h2>
+                  <AccordionButton flexDirection="row-reverse">
+                    <AccordionIcon ml={2} />
+                    <Box as="span" flex="1" textAlign="right">
+                      عبارات{" "}
+                    </Box>
+                  </AccordionButton>
+                </h2>
+                <AccordionPanel pb={4}>
+                  <VStack gap={'20px'}>
+                    <InputGroup>
+                      <Input placeholder="جستجوی عبارت" />
+                      <InputRightElement>
+                        <IoSearch />
+                      </InputRightElement>
+                    </InputGroup>
+                    <HStack w={'100%'} alignItems={'center'} justifyContent={'start'}>
+                      <Checkbox size={'lg'}></Checkbox>
+                      <Text>وحی</Text>
+                    </HStack>
+                    <HStack w={'100%'} alignItems={'center'} justifyContent={'start'}>
+                      <Checkbox size={'lg'}></Checkbox>
+                      <Text>ویژگی ها و اختصاصات قرآن</Text>
+                    </HStack>
+                    <HStack w={'100%'} alignItems={'center'} justifyContent={'start'}>
+                      <Checkbox size={'lg'}></Checkbox>
+                      <Text>نزول قرآن</Text>
+                    </HStack>
+                    <HStack w={'100%'} alignItems={'center'} justifyContent={'start'}>
+                      <Checkbox size={'lg'}></Checkbox>
+                      <Text>کتابت و جمع آوری قرآن</Text>
+                    </HStack>
+                  </VStack>
+                </AccordionPanel>
+              </AccordionItem>
+
+              <AccordionItem>
+                <h2>
+                  <AccordionButton flexDirection="row-reverse">
+                    <AccordionIcon ml={2} />
+                    <Box as="span" flex="1" textAlign="right">
+                      تب دوم
+                    </Box>
+                  </AccordionButton>
+                </h2>
+                <AccordionPanel pb={4}>لورم ایپسوم متن ساختگی</AccordionPanel>
+              </AccordionItem>
+              <AccordionItem>
+                <h2>
+                  <AccordionButton flexDirection="row-reverse">
+                    <AccordionIcon ml={2} />
+                    <Box as="span" flex="1" textAlign="right">
+                      تب دوم
+                    </Box>
+                  </AccordionButton>
+                </h2>
+                <AccordionPanel pb={4}>لورم ایپسوم متن ساختگی</AccordionPanel>
+              </AccordionItem>
+            </Accordion>
+          </Box>
+
+          {/* Main Content */}
+          <Box
+            p={{ base: 0, md: "6" }}
+            order={{ base: 1, md: 2 }}
+            as={GridItem}
+            colSpan={{ md: 2 }}
+            w="100%"
+            overflowWrap="break-word"
+            wordBreak="break-word"
+            maxW="100vw"
+            whiteSpace="normal"
+            pr={{ base: 0, md: "21px" }}
+          >
+            <HStack
+              w="100%"
+              whiteSpace="normal"
+              justifyContent={"space-between"}
+              mb={{ base: "30px", md: "20px" }}
+              alignItems={{ base: "center", md: "start" }}
+            >
+              <VStack alignItems={"start"}>
+                <HStack>
+                  <Text
+                    fontWeight={"700"}
+                    fontSize={"22px"}
+                    color={"gray"}
+                    letterSpacing={0}
+                  >
+                    نتایج جستجو برای:
+                  </Text>
+                  <Text fontWeight={"bold"} fontSize={"16px"}>
+                    مستحبات
+                  </Text>
+                </HStack>
+                <HStack>
+                  <Text fontSize={"16px"}>آیا منظور شما مستجاب بود؟</Text>
+                </HStack>
+              </VStack>
+              <Button
+                width={{ base: "152px", md: "189px" }}
+                height={"50px"}
+                bgColor={"#F9C96D"}
+                color={"black"}
+                fontWeight={"400"}
+                fontSize={"16px"}
+                lineHeight={"100%"}
+                letterSpacing={0}
+                borderRadius={"10px"}
+                onClick={(e) => handleNewQuestionButton()}
+              >
+                سؤال خود را بپرسید
+              </Button>
+            </HStack>
+
+            <HStack w={"100%"} justifyContent={"space-between"}>
+              <Text w={"full"}>۲۳۵ نتیجه (۲/۴۶ ثانیه)</Text>
+              <HStack>
+                <TbArrowsSort color="gray" fontSize={"16px"} />
+                <Text fontSize={"sm"} w={"max-content"}>
+                  مرتب سازی :
+                </Text>
+                <Button
+                  colorScheme="gray"
+                  variant={"ghost"}
+                  _hover={{ bgColor: "none" }}
+                  fontWeight={"normal"}
+                  fontSize={"sm"}
+                >
+                  جدیدترین‌ها
+                </Button>
+                <Button
+                  colorScheme="gray"
+                  variant={"ghost"}
+                  _hover={{ bgColor: "none" }}
+                  fontWeight={"normal"}
+                  fontSize={"sm"}
+                >
+                  پربازدیدترین‌ها
+                </Button>
+                <Button
+                  colorScheme="gray"
+                  variant={"ghost"}
+                  _hover={{ bgColor: "none" }}
+                  fontWeight={"normal"}
+                  fontSize={"sm"}
+                >
+                  محبوبترین‌ها
+                </Button>
+              </HStack>
+            </HStack>
+
+            <VStack display={{ base: "none", md: "flex" }}>
+              <Divider my={"20px"} />
+              <QuestionCard />
+              <Divider my={"20px"} />
+              <QuestionCard />
+              <Divider my={"20px"} />
+              <QuestionCard />
+              <Divider my={"20px"} />
+              <QuestionCard />
+              <Divider my={"20px"} />
+              <QuestionCard />
+            </VStack>
+
+            <VStack display={{ base: "flex", md: "none" }}>
+              <QuestionMCard />
+              <Divider my={"20px"} />
+              <QuestionMCard />
+              <Divider my={"20px"} />
+              <QuestionMCard />
+              <Divider my={"20px"} />
+              <QuestionMCard />
+              <Divider my={"20px"} />
+              <QuestionMCard />
+              <Divider my={"20px"} />
+              <QuestionMCard />
+            </VStack>
+          </Box>
+
+          {/* Left Sidebar */}
+          <Box
+            order={3}
+            as={GridItem}
+            colSpan={"1"}
+            w="100%"
+            maxW={{ base: "calc( 100vw - 50px )", md: "100vw" }}
+            whiteSpace="normal"
+            overflowWrap="break-word"
+          >
+            <Box
+              w={"100%"}
+              p="4"
+              border={"1px"}
+              borderColor={"#EBEBEB"}
+              borderRadius={"15px"}
+              height={"min-content"}
+              mb={"30px"}
+            >
+              <Text fontWeight={"bold"} fontSize={"16px"}>
+                مستحبات
+              </Text>
+              <VStack mt={"20px"} w={"100%"} alignItems={"start"}>
+                <Image src="./tasbihimage.png" />
+                <Text lineHeight={"tall"} fontSize={"16px"} color={"#666666"}>
+                  لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و
+                  با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و
+                  مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی
+                  تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای
+                  کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و
+                  آینده، شناخت فراوان جامعه و متخصصان را خلاقی
+                </Text>
+                <HStack w={"100%"} justifyContent={"end"}>
+                  <Button color={"#29CCCC"} fontWeight={"normal"}>
+                    اطلاعات بیشتر
+                  </Button>
+                </HStack>
+              </VStack>
+            </Box>
+          </Box>
+        </Grid>
+      </Box>
+    </MainLayout>
+  );
+};
+
+export default Index;

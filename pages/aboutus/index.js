@@ -39,15 +39,15 @@ const Index = () => {
         justifyContent={"center"}
         maxW="container.xl"
         mx="auto"
-        pt={"60px"}
+        pt={{base:'20px' , md:"60px"}}
         my={"20px"}
       >
         <HStack dir="rtl" w={"100%"} justifyContent={"space-between"}>
-          <Stack w={"100%"}>
+          <Stack w={"100%"} display={{base:'none' , md:'flex'}}>
             <Image src="../../aboutusicon.png" w={"519px"} h={"713px"} />
           </Stack>
-          <VStack w={"100%"} alignItems={"start"}>
-            <Image src="../../parsaxl.png" w={'350px'} h={'143px'} />
+          <VStack w={"100%"} alignItems={{base:'center' , md:"start"}}>
+            <Image src="../../parsaxl.png" w={{base:'250px',md:'350px'}} h={{base:'90px' ,md:'143px'}} />
 
             <Text w={"400px"} fontSize={"16px"} textAlign={"start"}>
               بسیاری از مردم جامعه، در زندگی روزمره خود با مسائل دینی مختلفی مواجه می‌شوند که دریافت پاسخ این پرسشها گاها برای آنها ناممکن و یا زمان بر است. از این رو در سالهای گذشته، سامانه‌های برخط متعددی آماده شده است که از طرفی روند پرسش سوال را بصورت الکترونیکی در اختیار مردم قرارداده و از طرف دیگر، امکان پاسخگویی متمرکز را برای دفاتر مراجع و مراکز پاسخ گویی، فراهم نموده است. اما این سامانه‌ها با مشکلات متعددی دست و پنجه نرم می‌کنند که تاثیر بسیار بدی در خدمات آنها گذاشته است. نبود موتور جستجوی معنایی پرسش و پاسخ سیستم هوشمند پاسخگویی به سوالات چالش سوالات تکراری چالش تگ‌گذاری انبوه سوالات چالش غلط های نگارشی و املایی کاربران و حتی افراد خبره پاسخ گو سوالات نامناسب و مناسب حال کاربران ...
@@ -59,7 +59,7 @@ const Index = () => {
           <Text fontWeight={'bold'} fontSize={'20px'}>ویژگی‌های پارسا</Text>
           <Text>گروه پارسا در اين زمينه تلاش هايی به عمل آورده است که از جمله آن به موارد زیر  می‌توان اشاره نمود.</Text>
         </VStack>
-        <Grid templateColumns="repeat(4, 1fr)" gap={"20px"} w={"100%"}>
+        <Grid templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(4, 1fr)" }} gap={"20px"} w={"100%"}>
           <VStack>
             <Box w={'100px'} h={'100px'}>
               <svg class="w-36 mx-auto" viewBox="0 0 159 149" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="88.6592" y="115.549" width="53.2068" height="53.2068" rx="12.0315" transform="rotate(-45 88.6592 115.549)" fill="#3646B3"></rect><rect y="0.697266" width="34.2705" height="34.2705" rx="17.1353" fill="#29CCCC"></rect><path d="M22.5 93.7362C22.5 89.4636 25.9672 86 30.2442 86H117.756C122.033 86 125.5 89.4636 125.5 93.7362V115.264C125.5 119.536 122.033 123 117.756 123H30.2442C25.9672 123 22.5 119.536 22.5 115.264V93.7362Z" stroke="#29CCCC" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path><path d="M88.6592 97.9922L34.2705 97.9922" stroke="#29CCCC" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path><path d="M88.6592 110.109L47.5602 110.109" stroke="#29CCCC" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path><ellipse cx="105.668" cy="115.13" rx="1.93901" ry="1.93701" fill="#29CCCC"></ellipse><path d="M98.8807 102.471V98.8609C98.8807 95.9552 101.239 93.5996 104.147 93.5996H110.078C113.442 93.5996 116.168 96.3232 116.168 99.6828C116.168 103.042 113.442 105.766 110.078 105.766H107.737C106.574 105.766 105.63 106.708 105.63 107.871V110.11" stroke="#29CCCC" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path><path d="M22.5 46.7362C22.5 42.4636 25.9672 39 30.2442 39H117.756C122.033 39 125.5 42.4636 125.5 46.7362V68.2638C125.5 72.5364 122.033 76 117.756 76H30.2442C25.9672 76 22.5 72.5364 22.5 68.2638V46.7362Z" stroke="#29CCCC" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path><path d="M88.6592 50.9922L34.2705 50.9922" stroke="#29CCCC" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path><path d="M88.6592 63.1094L47.5602 63.1094" stroke="#29CCCC" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path><ellipse cx="105.668" cy="68.1304" rx="1.93901" ry="1.93701" fill="#29CCCC"></ellipse><path d="M98.8807 55.4709V51.8609C98.8807 48.9552 101.239 46.5996 104.147 46.5996H110.078C113.442 46.5996 116.168 49.3232 116.168 52.6828C116.168 56.0425 113.442 58.766 110.078 58.766H107.737C106.574 58.766 105.63 59.7083 105.63 60.8706V63.1097" stroke="#29CCCC" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path></svg>
@@ -110,14 +110,14 @@ const Index = () => {
           </VStack>
         </Grid>
         <HStack w={'100%'} justifyContent={'center'} my={'40px'} position={'relative'}>
-          <Image src="../../parsaoutline.png" width={'750px'} height={'300px'} />
+          <Image src="../../parsaoutline.png" width={{base:'300px', md:'750px'}} height={{base:'150px' , md:'300px'}} />
           <VStack position={'absolute'}>
             <Text fontWeight={'bold'} fontSize={'20px'}>تیم پارسا</Text>
             <Text color={'gray'}>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ</Text>
           </VStack>
         </HStack>
 
-        <Grid templateColumns="repeat(4, 1fr)" gap={"20px"} w={"100%"}>
+        <Grid templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(4, 1fr)" }} gap={"20px"} w={"100%"}>
           <AboutUsCard />
           <AboutUsCard />
           <AboutUsCard />
