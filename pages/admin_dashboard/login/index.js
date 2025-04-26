@@ -1,21 +1,18 @@
 import {
   Box,
   Button,
-  Card,
-  Center,
   Checkbox,
   Divider,
   HStack,
   Image,
   Input,
   Text,
-  VStack,
+  VStack
 } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
 import { useForm } from "react-hook-form";
-import { IoArrowForward, IoLogoGoogle } from "react-icons/io5";
+import { IoLogoGoogle } from "react-icons/io5";
 import useSWRMutation from "swr/mutation";
-import animationData from "../../public/loginanimation.json";
 const Lottie = dynamic(() => import("lottie-react"), {
   ssr: false,
 });
@@ -54,7 +51,7 @@ const Index = () => {
             justifyContent={"center"}
             height={"100%"}
           >
-            <Image src="./loginlogo.png" width={"165px"} height={"68px"} />
+            <Image src="../../loginlogo.png" width={"165px"} height={"68px"} />
             <Text fontSize={"23px"} color={"#333333"} w={"327px"} mb={"20px"}>
               شبکه اجتماعی پرسش و پاسخ دینی
             </Text>
@@ -106,11 +103,11 @@ const Index = () => {
         </Box>
         <Box position="relative" w="60%" h="100%">
           {/* Base / background image */}
-          <Image src="./loginbg.png" objectFit="cover" w="100%" h="100%" />
+          <Image src="../../loginbg.png" objectFit="cover" w="100%" h="100%" />
 
           {/* Overlay / centered image */}
           <Image
-            src="./loginlogoqu.png"
+            src="../../loginlogoqu.png"
             alt="Centered Image"
             position="absolute"
             top="50%"
