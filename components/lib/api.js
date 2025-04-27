@@ -1,7 +1,93 @@
 import axios from "axios";
+import { useRouter } from "next/router";
 
 
-export const baseUrl = 'http://api.d.aiengines.ir/';
+export const baseUrl = 'https://example/api';
+
+
+// export const baseUrl = 'http://192.168.10.161:8000/api';
+
+axios.interceptors.request.use(function (config) {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+}, function (error) {
+  return Promise.reject(error);
+});
+
+import { useEffect } from 'react';
+
+export const useAxiosInterceptors = (showToast) => {
+  const router = useRouter()
+  useEffect(() => {
+    const responseInterceptor = axios.interceptors.response.use((response) => {
+      // Your response interceptor logic
+      if (response?.config?.method != 'get' && response?.status == 200) {
+        showToast({
+          title: "موفقیت",
+          description: response?.data?.detail,
+          status: "success",
+          duration: 500,
+          isClosable: true,
+        })
+      }
+      return response;
+    }, (error) => {
+      if (error?.response?.status === 401) {
+        showToast({
+          title: "خطا",
+          description: error?.response?.data?.detail,
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+        })
+        router.replace('/login')
+
+      }
+      if (error?.response?.status === 400) {
+        showToast({
+          title: "خطا",
+          description: error?.response?.data?.detail,
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+        })
+        // router.replace('/login')
+
+      }
+      if (error?.response?.status === 403) {
+        showToast({
+          title: "خطا",
+          description: 'شما دسترسی لازم را ندارید.',
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+        })
+        // router.replace('/login')
+
+      }
+      if (error?.response?.status === 500) {
+        showToast({
+          title: "خطا",
+          description: "خطا از سمت سرور",
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+        })
+      }
+
+      return Promise.reject(error);
+    });
+
+
+
+    return () => {
+      axios.interceptors.response.eject(responseInterceptor);
+    };
+  }, [showToast]); // Re-initialize interceptors if showToast changes
+};
 
 export const fetcher = async (url) => {
   try {
