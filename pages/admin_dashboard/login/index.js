@@ -39,7 +39,7 @@ const Index = () => {
     >
       <HStack height={"100%"}>
         <Box
-          w={"40%"}
+          w={{ base: '100%', md: "40%" }}
           alignItems={"center"}
           justifyContent={"center"}
           as={HStack}
@@ -51,12 +51,12 @@ const Index = () => {
             justifyContent={"center"}
             height={"100%"}
           >
-            <Image src="../../loginlogo.png" width={"165px"} height={"68px"} />
-            <Text fontSize={"23px"} color={"#333333"} w={"327px"} mb={"20px"}>
+            <Image src="../../loginlogo.png" width={{ base: '120px', md: "165px" }} height={{ base: '50px', md: "68px" }} />
+            <Text fontSize={{ base: '20px', md: "23px" }} color={"#333333"} w={"327px"} mb={"20px"}>
               شبکه اجتماعی پرسش و پاسخ دینی
             </Text>
             <Divider w={"350px"} h={"2px"} bgColor={"#29CCCC"} />
-            <Text fontSize={"25px"} mt={"20px"}>
+            <Text fontSize={{ base: '20px', md: "25px" }} mt={"20px"}>
               ورود به حساب کاربری ادمین
             </Text>
             <Input
@@ -82,9 +82,9 @@ const Index = () => {
             <HStack w={"100%"} justifyContent={"space-between"}>
               <HStack>
                 <Checkbox></Checkbox>
-                <Text fontSize={"18px"}>مرا به خاطر بسپار</Text>
+                <Text fontSize={{ base: '15px', md: "18px" }}>مرا به خاطر بسپار</Text>
               </HStack>
-              <Text color={"#29CCCC"} fontSize={"18px"}>
+              <Text color={"#29CCCC"} fontSize={{ base: '15px', md: "18px" }}>
                 فراموشی رمز عبور
               </Text>
             </HStack>
@@ -101,7 +101,7 @@ const Index = () => {
             </Button>
           </VStack>
         </Box>
-        <Box position="relative" w="60%" h="100%">
+        <Box position="relative" w="60%" h="100%" display={{ base: 'none', md: 'flex' }}>
           {/* Base / background image */}
           <Image src="../../loginbg.png" objectFit="cover" w="100%" h="100%" />
 
