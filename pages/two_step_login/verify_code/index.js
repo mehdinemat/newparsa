@@ -1,3 +1,4 @@
+import { baseUrl } from "@/components/lib/api";
 import {
   Box,
   Button,
@@ -8,7 +9,10 @@ import {
   Text,
   VStack
 } from "@chakra-ui/react";
+import axios from "axios";
 import dynamic from "next/dynamic";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { IoLogoGoogle } from "react-icons/io5";
 import useSWRMutation from "swr/mutation";
@@ -16,15 +20,54 @@ const Lottie = dynamic(() => import("lottie-react"), {
   ssr: false,
 });
 
+
+const postRequest = ( url , {arg} )=>{
+  return axios.post(baseUrl + url , arg)
+}
+
 const Index = () => {
+
+  const searchParams = useSearchParams()
+  const phone = searchParams.get('phone')
+
+  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
+  const inputsRef = useRef([]);
+  
   const { register, setValue, getValues, handleSubmit } = useForm();
 
   const { trigger, isLoading, isMutating } = useSWRMutation(
-    "llm_tree/users/login"
+    "user/auth/verify-code" , postRequest
   );
   const handleSendSubmit = (e) => {
     trigger();
   };
+
+
+  const handleChange = (element, index) => {
+    const value = element.value.replace(/\D/, ""); // Only digits
+    if (value.length > 1) return;
+    
+    const newOtp = [...otp];
+    newOtp[index] = value;
+    setOtp(newOtp);
+
+    // Move to next input if filled
+    if (value && index < 5) {
+      inputsRef.current[index + 1].focus();
+    }
+  };
+
+  
+  const handleKeyDown = (e, index) => {
+    if (e.key === "Backspace" && !otp[index] && index > 0) {
+      inputsRef.current[index - 1].focus();
+    }
+  };
+
+  const handleAddVerifyCode= (e) =>{
+    e.preventDefault()
+    trigger(otp?.join(''))
+  }
 
   return (
     <Box
@@ -46,7 +89,8 @@ const Index = () => {
           <VStack
             w={"350px"}
             mt={"20px"}
-            as={VStack}
+            as={'form'}
+            onSubmit={handleAddVerifyCode}
             justifyContent={"center"}
             height={"100%"}
           >
@@ -55,39 +99,29 @@ const Index = () => {
               شبکه اجتماعی پرسش و پاسخ دینی
             </Text>
             <Divider w={"350px"} h={"2px"} bgColor={"#29CCCC"} />
-            <Text fontSize={{ base: '20px', md: "25px" }} mt={"20px"}>
-              ورود دو مرحله ای به حساب کاربری
+            <Text fontSize={{ base: '20px', md: "22px" }} mt={"20px"} mb={'10px'}>
+              کد ورود
             </Text>
-            <Input
-              height={"46px"}
-              placeholder="کد عبور"
-              my={"10px"}
-              type="number"
-              sx={{
-                "::placeholder": {
-                  textAlign: "center", // this line is also needed to target the placeholder itself
-                },
-              }}
-            />
-            {/* <HStack w={"100%"} justifyContent={"space-between"}>
-                <HStack>
-                  <Checkbox></Checkbox>
-                  <Text fontSize={"18px"}>مرا به خاطر بسپار</Text>
-                </HStack>
-                <Text color={"#29CCCC"} fontSize={"18px"}>
-                  فراموشی رمز عبور
-                </Text>
-              </HStack> */}
-            <Button w={"100%"} bgColor={"#29CCCC"} height={"46px"} my={"20px"}>
+            <HStack spacing={3} dir="ltr">
+      {otp.map((digit, index) => (
+        <Input
+          key={index}
+          type="text"
+          maxLength={1}
+          textAlign="center"
+          height="46px"
+          width="46px"
+          fontSize="2xl"
+          value={digit}
+          onChange={(e) => handleChange(e.target, index)}
+          onKeyDown={(e) => handleKeyDown(e, index)}
+          ref={(el) => (inputsRef.current[index] = el)}
+          placeholder="-"
+        />
+      ))}
+    </HStack>
+            <Button w={"100%"} bgColor={"#29CCCC"} height={"46px"} my={"20px"} type="submit">
               ورود
-            </Button>
-            <Button
-              variant={"outline"}
-              w={"100%"}
-              rightIcon={<IoLogoGoogle />}
-              height={"46px"}
-            >
-              ورود با حساب گوگل
             </Button>
           </VStack>
         </Box>
