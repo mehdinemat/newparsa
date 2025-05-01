@@ -1,10 +1,5 @@
 import MainLayout from "@/components/mainLayout";
 import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
   Box,
   Button,
   Divider,
@@ -12,15 +7,20 @@ import {
   GridItem,
   HStack,
   Text,
-  VStack,
+  VStack
 } from "@chakra-ui/react";
 import { Geist, Geist_Mono } from "next/font/google";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 
+import SidebarTree from "@/components/base/sidebarTree";
 import LeftSidebar from "@/components/home/leftsidebar";
 import QuestionMCard from "@/components/home/mobile/questionMCard";
+import { baseUrl } from "@/components/lib/api";
 import QuestionCard from "@/components/questionCars";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import useSWR from "swr";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -62,6 +62,72 @@ const items2 = [
 ];
 
 const Index = ({ children }) => {
+
+  const router = useRouter();
+  const [treeData, setTreeData] = useState([]);
+
+  const { data: dataQuestion, error: errorQuestion } = useSWR('user/question');
+  const { data: dataSource, error: errorSource } = useSWR('user/source');
+
+  useSWR('user/category?type=question', {
+    onSuccess: (res) => {
+      if (res.status) {
+        setTreeData(
+          res.data.map((item) => ({
+            key: item.id.toString(),
+            title: item.name,
+            isLeaf: false, // assume all root nodes can have children
+          }))
+        );
+      }
+    },
+  });
+
+
+  const onLoadData = (treeNode) => {
+    const { key, children } = treeNode;
+
+    // If already loaded, skip
+    if (children) {
+      return Promise.resolve();
+    }
+
+    return fetch(baseUrl + `user/category?parent_id=${key}`)
+      .then((res) => res.json())
+      .then((res) => {
+        if (!res.status) return;
+
+        const newChildren = res.data.map((child) => ({
+          key: child.id.toString(),
+          title: child.name,
+          isLeaf: false, // or true if child has no further children
+        }));
+
+        // Add the new children to the correct parent in treeData
+        setTreeData((origin) =>
+          updateTreeData(origin, key, newChildren)
+        );
+      });
+  };
+
+  // Helper function to update treeData immutably
+  const updateTreeData = (list, key, children) =>
+    list.map((node) => {
+      if (node.key === key) {
+        return { ...node, children };
+      } else if (node.children) {
+        return {
+          ...node,
+          children: updateTreeData(node.children, key, children),
+        };
+      }
+      return node;
+    });
+
+  const handleNewQuestionButton = () => {
+    router.replace('/new_question')
+  }
+
   return (
     <MainLayout>
       <Box
@@ -82,92 +148,7 @@ const Index = ({ children }) => {
           w={"100%"}
         >
           {/* Right Sidebar */}
-          <Box
-            w="100%"
-            maxW={{ base: "calc( 100vw - 50px )", md: "100vw" }}
-            overflow="hidden"
-            wordBreak="break-word"
-            order={{ base: 2, md: 1 }}
-            zIndex={100}
-            border={"1px"}
-            borderColor={"#EBEBEB"}
-            borderRadius={"15px"}
-            padding={"10px"}
-            height={"min-content"}
-          >
-            <Text fontWeight={"bold"} fontSize={"16px"}>
-              موضوعات
-            </Text>
-            <Accordion dir="rtl" mt={"20px"} w="100%">
-              <AccordionItem>
-                <h2>
-                  <AccordionButton flexDirection="row-reverse">
-                    <AccordionIcon ml={2} />
-                    <Box as="span" flex="1" textAlign="right">
-                      تب اول
-                    </Box>
-                  </AccordionButton>
-                </h2>
-                <AccordionPanel pb={4}>لورم ایپسوم متن ساختگ</AccordionPanel>
-              </AccordionItem>
-
-              <AccordionItem>
-                <h2>
-                  <AccordionButton flexDirection="row-reverse">
-                    <AccordionIcon ml={2} />
-                    <Box as="span" flex="1" textAlign="right">
-                      تب دوم
-                    </Box>
-                  </AccordionButton>
-                </h2>
-                <AccordionPanel pb={4}>لورم ایپسوم متن ساختگی</AccordionPanel>
-              </AccordionItem>
-              <AccordionItem>
-                <h2>
-                  <AccordionButton flexDirection="row-reverse">
-                    <AccordionIcon ml={2} />
-                    <Box as="span" flex="1" textAlign="right">
-                      تب دوم
-                    </Box>
-                  </AccordionButton>
-                </h2>
-                <AccordionPanel pb={4}>لورم ایپسوم متن ساختگی</AccordionPanel>
-              </AccordionItem>
-              <AccordionItem>
-                <h2>
-                  <AccordionButton flexDirection="row-reverse">
-                    <AccordionIcon ml={2} />
-                    <Box as="span" flex="1" textAlign="right">
-                      تب دوم
-                    </Box>
-                  </AccordionButton>
-                </h2>
-                <AccordionPanel pb={4}>لورم ایپسوم متن ساختگی</AccordionPanel>
-              </AccordionItem>
-              <AccordionItem>
-                <h2>
-                  <AccordionButton flexDirection="row-reverse">
-                    <AccordionIcon ml={2} />
-                    <Box as="span" flex="1" textAlign="right">
-                      تب دوم
-                    </Box>
-                  </AccordionButton>
-                </h2>
-                <AccordionPanel pb={4}>لورم ایپسوم متن ساختگی</AccordionPanel>
-              </AccordionItem>
-              <AccordionItem borderBottom={"none"}>
-                <h2>
-                  <AccordionButton flexDirection="row-reverse">
-                    <AccordionIcon ml={2} />
-                    <Box as="span" flex="1" textAlign="right">
-                      تب دوم
-                    </Box>
-                  </AccordionButton>
-                </h2>
-                <AccordionPanel pb={4}>لورم ایپسوم متن ساختگی</AccordionPanel>
-              </AccordionItem>
-            </Accordion>
-          </Box>
+          <SidebarTree treeData={treeData} onLoadData={onLoadData} />
 
           {/* Main Content */}
           <Box p={{ base: 0, md: "6" }} order={{ base: 1, md: 2 }} as={GridItem}
@@ -206,7 +187,12 @@ const Index = ({ children }) => {
             </HStack>
 
             <VStack display={{ base: 'none', md: 'flex' }}>
-              <Divider my={"20px"} />
+              {
+                dataQuestion?.data?.map((item, index) => (
+                  <QuestionCard key={index} data={item} />
+                ))
+              }
+              {/* <Divider my={"20px"} />
               <QuestionCard />
               <Divider my={"20px"} />
               <QuestionCard />
@@ -215,7 +201,7 @@ const Index = ({ children }) => {
               <Divider my={"20px"} />
               <QuestionCard />
               <Divider my={"20px"} />
-              <QuestionCard />
+              <QuestionCard /> */}
             </VStack>
 
             <VStack display={{ base: 'flex', md: 'none' }}>
@@ -257,13 +243,11 @@ const Index = ({ children }) => {
                 منابع سوال ها
               </Text>
               <VStack mt={"20px"} w={"100%"} alignItems={"start"}>
-                <LeftSidebar />
-                <Divider />
-                <LeftSidebar />
-                <Divider />
-                <LeftSidebar />
-                <Divider />
-                <LeftSidebar />
+                {
+                  dataSource?.data?.map((item, index) => (
+                    <LeftSidebar key={index} data={item} />
+                  ))
+                }
               </VStack>
             </Box>
             <Box

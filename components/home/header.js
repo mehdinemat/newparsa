@@ -15,12 +15,11 @@ import {
   useBreakpoint,
   VStack,
 } from "@chakra-ui/react";
-import { Geist, Geist_Mono } from "next/font/google";
+import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import CountUp from "react-countup";
-import { IoClose, IoMic, IoMicOff, IoMicOutline, IoOptions } from "react-icons/io5";
-import { motion } from "framer-motion";
+import { IoClose, IoMic, IoMicOutline, IoOptions } from "react-icons/io5";
 
 const siteData = [
   {
@@ -47,10 +46,17 @@ const siteData = [
   },
 ];
 
+const dataTranslate = {
+  "سوال": "question_count",
+  "برچسب": "tag_count",
+  "منبع": "source_count",
+  "مرجع": "public_figure_count",
+}
+
 const MotionBox = motion(Box);
 
 
-const Header = ({ children }) => {
+const Header = ({ data }) => {
   const router = useRouter();
 
   const [isRecording, setIsRecording] = useState(false);
@@ -59,7 +65,7 @@ const Header = ({ children }) => {
 
   const breakpoint = useBreakpoint();
 
- 
+
   const handleMicClick = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -70,7 +76,6 @@ const Header = ({ children }) => {
       mediaRecorderRef.current.ondataavailable = (e) => {
         const audioBlob = new Blob([e.data], { type: 'audio/wav' });
         const audioUrl = URL.createObjectURL(audioBlob);
-        console.log("Audio URL:", audioUrl);
       };
 
     } catch (error) {
@@ -125,97 +130,97 @@ const Header = ({ children }) => {
             پارسا شبکه اجتماعی پرسش و پاسخ دینی
           </Text>
           <InputGroup
-      height="60px"
-      width={{ base: "381px", md: "890px" }}
-      my="20px"
-    >
-      {isRecording ? (
-        <InputLeftElement height="100%" mr="10px">
-           <Flex
-      position="relative"
-      align="center"
-      justify="center"
-      w="50px"
-      h="50px"
-    >
-      {/* First Wave */}
- 
-      
-      {/* Second Wave (delayed) */}
-      <MotionBox
-        position="absolute"
-        width="32px"
-        height="32px"
-        borderRadius="50%"
-        border="3px solid #7fe0e0"
-        animate={{
-          scale: [1, 1.5],
-          opacity: [1, 0],
-        }}
-        transition={{
-          duration: 1.7,
-          repeat: Infinity,
-          repeatType: "loop",
-          ease: "easeInOut",
-          delay: 1, // important! delay start
-        }}
-      />
+            height="60px"
+            width={{ base: "381px", md: "890px" }}
+            my="20px"
+          >
+            {isRecording ? (
+              <InputLeftElement height="100%" mr="10px">
+                <Flex
+                  position="relative"
+                  align="center"
+                  justify="center"
+                  w="50px"
+                  h="50px"
+                >
+                  {/* First Wave */}
 
-      {/* Mic Icon Button */}
-      <IconButton
-        aria-label="Record"
-        bgColor="white"
-        borderRadius="50px"
-        size="sm"
-        icon={
-          <IoMicOutline
-            fontSize="24px"
-            color="#29CCCC"
-            style={{ cursor: "pointer", zIndex: 1 }}
-          />
-        }
-      />
-    </Flex>
-        </InputLeftElement>
-      ) : null}
 
-      <Input
-        ref={inputRef}
-        borderRadius="10px"
-        width={{ base: "381px", md: "100%" }}
-        bgColor={isRecording ? "#29CCCC" : "#2A378C"}
-        height="60px"
-        textIndent={'20px'}
-        placeholder={isRecording ? 'درحال شنیدن...':"در میان هزاران پرسش و پاسخ جستجو کنید..."}
-        color="white"
-        border="none"
-        pl={isRecording ? "50px" : "12px"} // Padding when mic moves inside
-        _placeholder={{ color: "gray.300" }}
-      />
+                  {/* Second Wave (delayed) */}
+                  <MotionBox
+                    position="absolute"
+                    width="32px"
+                    height="32px"
+                    borderRadius="50%"
+                    border="3px solid #7fe0e0"
+                    animate={{
+                      scale: [1, 1.5],
+                      opacity: [1, 0],
+                    }}
+                    transition={{
+                      duration: 1.7,
+                      repeat: Infinity,
+                      repeatType: "loop",
+                      ease: "easeInOut",
+                      delay: 1, // important! delay start
+                    }}
+                  />
 
-      <InputRightElement height="100%" ml="20px">
-        <Flex align="center" gap="2">
-          {isRecording ? (
-            <IoClose
-              fontSize="16px"
+                  {/* Mic Icon Button */}
+                  <IconButton
+                    aria-label="Record"
+                    bgColor="white"
+                    borderRadius="50px"
+                    size="sm"
+                    icon={
+                      <IoMicOutline
+                        fontSize="24px"
+                        color="#29CCCC"
+                        style={{ cursor: "pointer", zIndex: 1 }}
+                      />
+                    }
+                  />
+                </Flex>
+              </InputLeftElement>
+            ) : null}
+
+            <Input
+              ref={inputRef}
+              borderRadius="10px"
+              width={{ base: "381px", md: "100%" }}
+              bgColor={isRecording ? "#29CCCC" : "#2A378C"}
+              height="60px"
+              textIndent={'20px'}
+              placeholder={isRecording ? 'درحال شنیدن...' : "در میان هزاران پرسش و پاسخ جستجو کنید..."}
               color="white"
-              style={{ cursor: "pointer" }}
-              onClick={handleCancelRecording}
+              border="none"
+              pl={isRecording ? "50px" : "12px"} // Padding when mic moves inside
+              _placeholder={{ color: "gray.300" }}
             />
-          ) : (
-            <>
-              <IoOptions fontSize="20px" color="#29CCCC" />
-              <IoMic
-                fontSize="20px"
-                color="#29CCCC"
-                style={{ cursor: "pointer" }}
-                onClick={handleMicClick}
-              />
-            </>
-          )}
-        </Flex>
-      </InputRightElement>
-    </InputGroup>
+
+            <InputRightElement height="100%" ml="20px">
+              <Flex align="center" gap="2">
+                {isRecording ? (
+                  <IoClose
+                    fontSize="16px"
+                    color="white"
+                    style={{ cursor: "pointer" }}
+                    onClick={handleCancelRecording}
+                  />
+                ) : (
+                  <>
+                    <IoOptions fontSize="20px" color="#29CCCC" />
+                    <IoMic
+                      fontSize="20px"
+                      color="#29CCCC"
+                      style={{ cursor: "pointer" }}
+                      onClick={handleMicClick}
+                    />
+                  </>
+                )}
+              </Flex>
+            </InputRightElement>
+          </InputGroup>
           <HStack as={Center} justifyContent="center" w="50%">
             {siteData?.map((item, index) => (
               <React.Fragment key={index}>
@@ -226,7 +231,7 @@ const Header = ({ children }) => {
                 >
                   <CountUp
                     start={0}
-                    end={item?.number}
+                    end={data?.[dataTranslate?.[item?.title]]}
                     duration={2.75}
                     decimals={0}
                     onEnd={() => console.log("Ended! 👏")}
@@ -252,7 +257,7 @@ const Header = ({ children }) => {
                       );
                     }}
                   </CountUp>
-                  <Text color="white" fontSize={{base:'20px' , md:'22px'}}>{item?.title}</Text>
+                  <Text color="white" fontSize={{ base: '20px', md: '22px' }}>{item?.title}</Text>
                 </VStack>
 
                 {/* Only add divider if it's not the last item */}

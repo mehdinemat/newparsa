@@ -4,8 +4,12 @@ import ReferencesCard from "@/components/references/referencesCard";
 import { Box, Button, Grid, HStack, Input, InputGroup, InputRightElement, Stack, Text } from "@chakra-ui/react";
 import { BiSortAlt2 } from "react-icons/bi";
 import { IoSearch } from "react-icons/io5";
+import useSWR from "swr";
 
 const Index = () => {
+
+  const { data: dataReferences, isLoading: isLoadingReferences } = useSWR(`user/public-figure`)
+
   return (
     <MainLayout>
       <Box
@@ -47,23 +51,15 @@ const Index = () => {
           </HStack>
         </HStack>
         <Grid templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(4, 1fr)" }} gap={"40px"} w={"100%"}>
-          <ReferencesCard />
-          <ReferencesCard />
-          <ReferencesCard />
-          <ReferencesCard />
-          <ReferencesCard />
-          <ReferencesCard />
-          <ReferencesCard />
-          <ReferencesCard />
-          <ReferencesCard />
-          <ReferencesCard />
-          <ReferencesCard />
-          <ReferencesCard />
-          <ReferencesCard />
+          {
+            dataReferences?.data?.map((item, index) => (
+              <ReferencesCard key={index} data={item} />
+            ))
+          }
         </Grid>
         <Stack w={'100%'} justifyContent={'center'} alignItems={'center'}>
-        <Pagination totalPages={20} currentPage={5} />
-          </Stack>
+          <Pagination totalPages={20} currentPage={5} />
+        </Stack>
       </Box>
     </MainLayout>
   )

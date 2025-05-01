@@ -1,8 +1,9 @@
 import { HStack, Image, Text, VStack } from "@chakra-ui/react"
 
-const LeftSidebar = () => {
+const LeftSidebar = ({ data }) => {
   return (
-    <HStack w={'100%'} alignItems={'start'}>
+    <HStack w={'100%'} alignItems={'start'} borderBottom={'1px solid'} borderColor={'#EBEBEB'} p={'10px 0'}>
+      {console.log(data)}
       <Image
         src="https://m.media-amazon.com/images/I/81xeEPe678L.jpg"
         w={"60px"}
@@ -11,8 +12,8 @@ const LeftSidebar = () => {
         borderRadius={"10px"}
       />
       <VStack w={'100%'} alignItems={'start'}>
-        <Text fontSize={"18px"}>اسلام کوئست</Text>
-        <Text color={"gray.500"}>۳۵۶ پرسش</Text>
+        <Text fontSize={"18px"}>{data?.fa_source_name}</Text>
+        <Text color={"gray.500"}>{data?.question_count} پرسش</Text>
       </VStack>
     </HStack>
   )

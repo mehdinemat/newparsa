@@ -12,23 +12,21 @@ import {
   Grid,
   GridItem,
   HStack,
-  IconButton,
   Image,
   Input,
   InputGroup,
   InputRightElement,
   Text,
-  VStack,
+  VStack
 } from "@chakra-ui/react";
 import { Geist, Geist_Mono } from "next/font/google";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 
-import LeftSidebar from "@/components/home/leftsidebar";
 import QuestionMCard from "@/components/home/mobile/questionMCard";
 import QuestionCard from "@/components/questionCars";
-import { TbArrowsSort } from "react-icons/tb";
 import { IoSearch } from "react-icons/io5";
+import { TbArrowsSort } from "react-icons/tb";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -70,6 +68,12 @@ const items2 = [
 ];
 
 const Index = ({ children }) => {
+
+
+  const handleNewQuestionButton = () => {
+    router.replace('/new_question')
+  }
+
   return (
     <MainLayout>
       <Box

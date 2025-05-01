@@ -2,29 +2,30 @@ import {
   Avatar,
   AvatarGroup,
   Badge,
-  Divider,
   HStack,
   Text,
-  VStack,
+  VStack
 } from "@chakra-ui/react";
+import moment from 'moment-jalaali';
 import { HiArrowTurnDownLeft } from "react-icons/hi2";
-import { IoCheckmark, IoEye, IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
+import { IoCheckmark, IoEyeOutline } from "react-icons/io5";
 
-const QuestionCard = () => {
+const QuestionCard = ({ data }) => {
   return (
-    <HStack w={"100%"} alignItems={"start"}>
+    <HStack w={"100%"} alignItems={"start"} borderBottom={'1px solid #E2E8F0'} mb={'10px'} pb={"20px"} gap={"20px"}>
+      {console.log("question card", data)}
       <VStack w={"150px"} alignItems={"start"}>
         <HStack color={"gray.600"}>
           <HiArrowTurnDownLeft fontSize={"20px"} />
-          <Text fontSize={"16px"} w={'max-content'}>2پسند</Text>
+          <Text fontSize={"16px"} w={'max-content'}>{data?.like_count}پسند</Text>
         </HStack>
         <HStack color={"gray.600"}>
           <IoCheckmark fontSize={"20px"} />
-          <Text fontSize={"16px"} w={'max-content'}>3 جواب</Text>
+          <Text fontSize={"16px"} w={'max-content'}>{data?.answer_count} جواب</Text>
         </HStack>
         <HStack color={"gray.600"}>
           <IoEyeOutline fontSize={"20px"} />
-          <Text fontSize={"16px"} w={'max-content'}>87 بازدید</Text>
+          <Text fontSize={"16px"} w={'max-content'}>{data?.view_count} بازدید</Text>
         </HStack>
         <HStack></HStack>
       </VStack>
@@ -35,86 +36,39 @@ const QuestionCard = () => {
           whiteSpace="normal"
           lineHeight={"taller"}
         >
-          آیا می‌توان نذر کرد که فطریه را به زلزله زده‌گان داد؟ اگر نتوانیم آن
-          را انجام دهیم، آیا می‌توان فطریه را به یک بدهکار ورشکسته داد؟
+          {data?.content}
         </Text>
         <HStack>
-          <Badge
-            color="#16A6A6"
-            bgColor="#29CCCC1A"
-            height="26px"
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            fontSize={"14px"}
-            fontWeight={"100"}
-            px="8px" // optional: add some horizontal padding
-          >
-            خداشناسی
-          </Badge>
-          <Badge
-            color="#16A6A6"
-            bgColor="#29CCCC1A"
-            height="26px"
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            fontSize={"14px"}
-            fontWeight={"100"}
-            px="8px"
-          >
-            توحید
-          </Badge>
-          <Badge
-            color="#16A6A6"
-            bgColor="#29CCCC1A"
-            height="26px"
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            fontSize={"14px"}
-            fontWeight={"100"}
-            px="8px"
-          >
-            فقه سیاسی
-          </Badge>
-          <Badge
-            color="#16A6A6"
-            bgColor="#29CCCC1A"
-            height="26px"
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            fontSize={"14px"}
-            fontWeight={"100"}
-            px="8px"
-          >
-            پزشکی
-          </Badge>
+          {
+            data?.tags?.map((item, index) => (
+              <Badge
+                key={index}
+                color="#16A6A6"
+                bgColor="#29CCCC1A"
+                height="26px"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                fontSize={"14px"}
+                fontWeight={"100"}
+                px="8px" // optional: add some horizontal padding
+              >
+                {item?.name}
+              </Badge>
+            ))
+
+          }
         </HStack>
         <HStack w={"100%"}>
           <HStack>
             <Avatar size={"sm"} />
-            <Text color={"gray.700"} w={"100px"}>
-              اسلام کوئست
+            <Text color={"gray.700"} w={"140px"}>
+              {data?.source}
             </Text>
           </HStack>
-          <Divider
-            orientation="vertical"
-            w={"5px"}
-            borderColor={"gray.400"}
-            height={"40px"}
-          />
-          <HStack>
-            <Avatar size={"sm"} />
-            <Text color={"gray.700"} w={"100px"}>
-              اسلام کوئست
-            </Text>
-          </HStack>
-
           <HStack w={"100%"} justifyContent={"end"}>
-            <Text w={"120px"} color={"gray.400"}>
-              پاسخ ۲۱ ساعت قبل
+            <Text w={"150px"} color={"gray.400"}>
+              {moment(data?.created_at).format('hh:mm:ss jYYYY/jMM/jDD')}
             </Text>
             <AvatarGroup size="sm" max={2}>
               <Avatar name="Ryan Florence" src="https://bit.ly/ryan-florence" />
