@@ -1,3 +1,4 @@
+import { baseUrl } from "@/components/lib/api";
 import {
   Box,
   Button,
@@ -8,7 +9,9 @@ import {
   Text,
   VStack
 } from "@chakra-ui/react";
+import axios from "axios";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { IoLogoGoogle } from "react-icons/io5";
 import useSWRMutation from "swr/mutation";
@@ -16,15 +19,25 @@ const Lottie = dynamic(() => import("lottie-react"), {
   ssr: false,
 });
 
+const postRequest = (url , {arg})=>{
+  return axios.post(baseUrl + url , arg)
+}
+
 const Index = () => {
-  const { register, setValue, getValues, handleSubmit } = useForm();
+
+  const router = useRouter()
+  
+  const { register:registerUser, setValue:setValueUser, getValues:getValuesUser, handleSubmit:handleSubmitUser } = useForm();
 
   const { trigger, isLoading, isMutating } = useSWRMutation(
-    "llm_tree/users/login"
+    "user/auth/send-code" , postRequest , {onSuccess:()=>{
+        router.replace(`/verify_code?phone=${getValues('phone')}`)
+    }}
   );
-  const handleSendSubmit = (e) => {
-    trigger();
-  };
+  
+  const handleLogin =(e)=>{
+    trigger(e)
+  }
 
   return (
     <Box
@@ -46,9 +59,10 @@ const Index = () => {
           <VStack
             w={"350px"}
             mt={"20px"}
-            as={VStack}
             justifyContent={"center"}
             height={"100%"}
+            as={'form'}
+            onSubmit={handleSubmitUser(handleLogin)}
           >
             <Image src="./loginlogo.png" width={{ base: '120px', md: "165px" }} height={"68px"} />
             <Text fontSize={{ base: '20px', md: "23px" }} color={"#333333"} textAlign={'center'} w={"327px"} mb={"20px"}>
@@ -62,32 +76,24 @@ const Index = () => {
               height={"46px"}
               placeholder="شماره همراه"
               my={"10px"}
+              {...registerUser('phone')}
               sx={{
                 "::placeholder": {
                   textAlign: "center", // this line is also needed to target the placeholder itself
                 },
               }}
             />
-            {/* <HStack w={"100%"} justifyContent={"space-between"}>
-                <HStack>
-                  <Checkbox></Checkbox>
-                  <Text fontSize={"18px"}>مرا به خاطر بسپار</Text>
-                </HStack>
-                <Text color={"#29CCCC"} fontSize={"18px"}>
-                  فراموشی رمز عبور
-                </Text>
-              </HStack> */}
-            <Button w={"100%"} bgColor={"#29CCCC"} height={"46px"} my={"20px"}>
+            <Button w={"100%"} bgColor={"#29CCCC"} height={"46px"} my={"20px"} type="submit">
               ورود
             </Button>
-            <Button
+            {/* <Button
               variant={"outline"}
               w={"100%"}
               rightIcon={<IoLogoGoogle />}
               height={"46px"}
             >
               ورود با حساب گوگل
-            </Button>
+            </Button> */}
           </VStack>
         </Box>
         <Box position="relative" w="60%" h="100%" display={{ base: "none", md: 'flex' }}>

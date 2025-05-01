@@ -2,7 +2,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 
 
-export const baseUrl = 'https://example/api';
+export const baseUrl = 'https://parsa.api.t.etratnet.ir/';
 
 
 // export const baseUrl = 'http://192.168.10.161:8000/api';
