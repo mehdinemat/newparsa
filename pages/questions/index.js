@@ -188,7 +188,7 @@ const Index = ({ children }) => {
 
             <VStack display={{ base: 'none', md: 'flex' }}>
               {
-                dataQuestion?.data?.map((item, index) => (
+                dataQuestion?.data?.result?.map((item, index) => (
                   <QuestionCard key={index} data={item} />
                 ))
               }

@@ -1,3 +1,5 @@
+import MultiSelectComboBox from "@/components/base/multiSelectComboBox";
+import { baseUrl } from "@/components/lib/api";
 import MainLayout from "@/components/mainLayout";
 import {
   Badge,
@@ -10,10 +12,14 @@ import {
   Text,
   Textarea,
   UnorderedList,
-  VStack,
-  useColorModeValue
+  VStack
 } from "@chakra-ui/react";
+import axios from "axios";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import Masonry from "react-masonry-css";
+import useSWR from "swr";
+import useSWRMutation from "swr/mutation";
 
 const data = [
   {
@@ -43,10 +49,32 @@ const data = [
   },
 ];
 
+const options = [
+  { value: "react", label: "React" },
+  { value: "nextjs", label: "Next.js" },
+  { value: "chakra", label: "Chakra UI" },
+  { value: "tailwind", label: "Tailwind" },
+];
+
+const postRequest = (url, { arg }) => {
+  return axios.post(`${baseUrl}${url}`, arg, {
+    headers: {
+      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwicGhvbmUiOiIrOTg5MDI3Mjg1NDI4IiwidHlwZSI6ImFjY2VzcyIsImV4cCI6MTc0NjM0MjY4OX0.R2nhGSTDXxJVg3Xd_y4-j7HZO7gl42Q8PWKlxj2B4g4`,
+    },
+  });
+}
+
 
 
 const Index = () => {
-  const cardBg = useColorModeValue("white", "gray.800");
+
+  const [selectedOptions, setSelectedOptions] = useState([]);
+  const [inputValue, setInputValue] = useState("");
+
+  const { data: dataTag, isLoading: isLoadingTag } = useSWR(`user/category/tag`)
+  const { trigger: triggerQuestion, isLoading: isLoadingQuestion } = useSWRMutation(`user/question`, postRequest)
+
+  const { register: registerQuestion, setValue: setValueQuestion, getValues: getValuesQuestion, handleSubmit: handleSubmitQuestion } = useForm()
 
   const breakpointColumnsObj = {
     default: 2,
@@ -54,16 +82,21 @@ const Index = () => {
     700: 1,
   };
 
+  const handleAddNewQuestion = (e) => {
+    triggerQuestion({ ...e, lang: 'fa', tags: selectedOptions.map(item => item.value) })
+  }
 
   return (
     <MainLayout>
       <Box
+        as={'form'}
         w="100%"
         alignItems={"center"}
         justifyContent={"center"}
         maxW="container.xl"
         mx="auto"
-        mt={{base:'80px' , md:"120px"}}
+        mt={{ base: '80px', md: "120px" }}
+        onSubmit={handleSubmitQuestion(handleAddNewQuestion)}
       >
         <Text fontWeight={"bold"} fontSize={"20px"} mb={"20px"}>
           سوال خود را بپرسید...
@@ -87,7 +120,7 @@ const Index = () => {
             <Text>
               لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ
             </Text>
-            <Input />
+            <Input {...registerQuestion('title')} />
             <Text fontWeight={"bold"} mt={"20px"}>
               سؤالات مرتبط
             </Text>
@@ -241,12 +274,12 @@ const Index = () => {
             color={'black'}
           >
             <Text fontWeight={"bold"} fontSize={"18px"}>
-              عنوان سوال
+              محتوا سوال
             </Text>
             <Text>
               لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ
             </Text>
-            <Textarea></Textarea>
+            <Textarea {...registerQuestion('content')}></Textarea>
           </VStack>
           <VStack
             w={"calc( 100% - 20px )"}
@@ -357,7 +390,10 @@ const Index = () => {
             <Text>
               لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ
             </Text>
-            <Input />
+            {dataTag && <MultiSelectComboBox selectedOptions={selectedOptions} setSelectedOptions={setSelectedOptions} optionsList={dataTag?.data?.result?.map((it) => ({ value: it?.id, label: it?.name }))} setInputValue={setInputValue} inputValue={inputValue} />}
+            <HStack w={'100%'} justifyContent={'end'} mt={'20px'}>
+              <Button bgColor={"#23D9D7"} type={'submit'}>ثبت سوال</Button>
+            </HStack>
           </VStack>
 
         </Masonry>

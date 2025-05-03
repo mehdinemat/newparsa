@@ -7,12 +7,20 @@ import {
   VStack
 } from "@chakra-ui/react";
 import moment from 'moment-jalaali';
+import { useRouter } from "next/router";
 import { HiArrowTurnDownLeft } from "react-icons/hi2";
 import { IoCheckmark, IoEyeOutline } from "react-icons/io5";
 
 const QuestionCard = ({ data }) => {
+
+  const router = useRouter()
+
+  const handleQuestionRouter = (id) => {
+    router.push(`/question_answer?id=${id}`)
+  }
+
   return (
-    <HStack w={"100%"} alignItems={"start"} borderBottom={'1px solid #E2E8F0'} mb={'10px'} pb={"20px"} gap={"20px"}>
+    <HStack w={"100%"} alignItems={"start"} borderBottom={'1px solid #E2E8F0'} mb={'10px'} pb={"20px"} gap={"20px"} onClick={e => handleQuestionRouter(data?.id)} cursor={'pointer'}>
       {console.log("question card", data)}
       <VStack w={"150px"} alignItems={"start"}>
         <HStack color={"gray.600"}>
