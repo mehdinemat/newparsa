@@ -1152,7 +1152,7 @@ rc-resize-observer@^1.0.0:
 
 rc-tree@^5.13.1:
   version "5.13.1"
-  resolved "https://registry.npmjs.org/rc-tree/-/rc-tree-5.13.1.tgz#f36a33a94a1282f4b09685216c01487089748910"
+  resolved "https://registry.yarnpkg.com/rc-tree/-/rc-tree-5.13.1.tgz#f36a33a94a1282f4b09685216c01487089748910"
   integrity sha512-FNhIefhftobCdUJshO7M8uZTA9F4OPGVXqGfZkkD/5soDeOhwO06T/aKTrg0WD8gRg/pyfq+ql3aMymLHCTC4A==
   dependencies:
     "@babel/runtime" "^7.10.1"

@@ -2,13 +2,15 @@ import MainLayout from "@/components/mainLayout";
 import Pagination from "@/components/pagination";
 import ReferencesCard from "@/components/references/referencesCard";
 import { Box, Button, Grid, HStack, Input, InputGroup, InputRightElement, Stack, Text } from "@chakra-ui/react";
+import { useState } from "react";
 import { BiSortAlt2 } from "react-icons/bi";
 import { IoSearch } from "react-icons/io5";
 import useSWR from "swr";
 
 const Index = () => {
 
-  const { data: dataReferences, isLoading: isLoadingReferences } = useSWR(`user/public-figure`)
+  const [page , setPage ] = useState(1)
+  const { data: dataReferences, isLoading: isLoadingReferences } = useSWR(`user/public-figure?page=${page}&size=20`)
 
   return (
     <MainLayout>
@@ -52,13 +54,13 @@ const Index = () => {
         </HStack>
         <Grid templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(4, 1fr)" }} gap={"40px"} w={"100%"}>
           {
-            dataReferences?.data?.map((item, index) => (
+            dataReferences?.data?.result?.map((item, index) => (
               <ReferencesCard key={index} data={item} />
             ))
           }
         </Grid>
         <Stack w={'100%'} justifyContent={'center'} alignItems={'center'}>
-          <Pagination totalPages={20} currentPage={5} />
+          <Pagination totalPages={dataReferences?.data?.total_count / 20} currentPage={page} onPageChange={setPage}/>
         </Stack>
       </Box>
     </MainLayout>
