@@ -78,7 +78,7 @@ const Index = () => {
     setValue: setValueQuestion,
     getValues: getValuesQuestion,
     handleSubmit: handleSubmitQuestion,
-    reset:resetQuestion
+    reset: resetQuestion
   } = useForm();
 
   const breakpointColumnsObj = {

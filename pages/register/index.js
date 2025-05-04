@@ -2,23 +2,21 @@ import { baseUrl } from "@/components/lib/api";
 import {
   Box,
   Button,
-  Checkbox,
   Divider,
   HStack,
   Image,
   Input,
   Text,
   useToast,
-  VStack,
+  VStack
 } from "@chakra-ui/react";
+import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
-import { IoLogoGoogle } from "react-icons/io5";
 import useSWRMutation from "swr/mutation";
 import * as Yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
 
 const Lottie = dynamic(() => import("lottie-react"), {
   ssr: false,
@@ -128,113 +126,8 @@ const Index = () => {
             </Text>
             <Input
               height={"46px"}
-              placeholder="شماره تلفن"
-              my={"10px"}
-              {...register("phone_number")}
-              sx={{
-                "::placeholder": {
-                  textAlign: "center", // this line is also needed to target the placeholder itself
-                },
-              }}
-            />
-            <p
-              style={{
-                fontSize: "10px",
-                color: "#e4002b",
-                width: "100%",
-                textAlign: "start",
-              }}
-            >
-              {errors.phone_number?.message}
-            </p>
-            <Input
-              height={"46px"}
-              placeholder="نام کاربری"
-              my={"10px"}
-              {...register("username")}
-              sx={{
-                "::placeholder": {
-                  textAlign: "center", // this line is also needed to target the placeholder itself
-                },
-              }}
-            />
-            <p
-              style={{
-                fontSize: "10px",
-                color: "#e4002b",
-                width: "100%",
-                textAlign: "start",
-              }}
-            >
-              {errors.username?.message}
-            </p>
-            <Input
-              height={"46px"}
-              placeholder="رمز عبور"
-              my={"10px"}
-              {...register("password")}
-              sx={{
-                "::placeholder": {
-                  textAlign: "center", // this line is also needed to target the placeholder itself
-                },
-              }}
-            />
-            <p
-              style={{
-                fontSize: "10px",
-                color: "#e4002b",
-                width: "100%",
-                textAlign: "start",
-              }}
-            >
-              {errors.password?.message}
-            </p>
-            <Input
-              height={"46px"}
-              placeholder="تکرار رمز عبور"
-              my={"10px"}
-              {...register("re_password")}
-              sx={{
-                "::placeholder": {
-                  textAlign: "center", // this line is also needed to target the placeholder itself
-                },
-              }}
-            />
-            <p
-              style={{
-                fontSize: "10px",
-                color: "#e4002b",
-                width: "100%",
-                textAlign: "start",
-              }}
-            >
-              {errors.re_password?.message}
-            </p>
-            <Input
-              height={"46px"}
-              placeholder="ایمیل"
-              my={"10px"}
-              {...register("email")}
-              sx={{
-                "::placeholder": {
-                  textAlign: "center", // this line is also needed to target the placeholder itself
-                },
-              }}
-            />
-            <p
-              style={{
-                fontSize: "10px",
-                color: "#e4002b",
-                width: "100%",
-                textAlign: "start",
-              }}
-            >
-              {errors.email?.message}
-            </p>
-            <Input
-              height={"46px"}
               placeholder="نام"
-              my={"10px"}
+              mt={"10px"}
               {...register("first_name")}
               sx={{
                 "::placeholder": {
@@ -255,7 +148,7 @@ const Index = () => {
             <Input
               height={"46px"}
               placeholder="نام خانوادگی"
-              my={"10px"}
+              my={"0px"}
               {...register("last_name")}
               sx={{
                 "::placeholder": {
@@ -273,6 +166,113 @@ const Index = () => {
             >
               {errors.last_name?.message}
             </p>
+            <Input
+              height={"46px"}
+              placeholder="نام کاربری"
+              my={"0px"}
+              {...register("username")}
+              sx={{
+                "::placeholder": {
+                  textAlign: "center", // this line is also needed to target the placeholder itself
+                },
+              }}
+            />
+            <p
+              style={{
+                fontSize: "10px",
+                color: "#e4002b",
+                width: "100%",
+                textAlign: "start",
+              }}
+            >
+              {errors.username?.message}
+            </p>
+            <Input
+              height={"46px"}
+              placeholder="شماره تلفن"
+              my={"0px"}
+              {...register("phone_number")}
+              sx={{
+                "::placeholder": {
+                  textAlign: "center", // this line is also needed to target the placeholder itself
+                },
+              }}
+            />
+            <p
+              style={{
+                fontSize: "10px",
+                color: "#e4002b",
+                width: "100%",
+                textAlign: "start",
+              }}
+            >
+              {errors.phone_number?.message}
+            </p>
+
+            <Input
+              height={"46px"}
+              placeholder="رمز عبور"
+              my={"0px"}
+              {...register("password")}
+              sx={{
+                "::placeholder": {
+                  textAlign: "center", // this line is also needed to target the placeholder itself
+                },
+              }}
+            />
+            <p
+              style={{
+                fontSize: "10px",
+                color: "#e4002b",
+                width: "100%",
+                textAlign: "start",
+              }}
+            >
+              {errors.password?.message}
+            </p>
+            <Input
+              height={"46px"}
+              placeholder="تکرار رمز عبور"
+              my={"0px"}
+              {...register("re_password")}
+              sx={{
+                "::placeholder": {
+                  textAlign: "center", // this line is also needed to target the placeholder itself
+                },
+              }}
+            />
+            <p
+              style={{
+                fontSize: "10px",
+                color: "#e4002b",
+                width: "100%",
+                textAlign: "start",
+              }}
+            >
+              {errors.re_password?.message}
+            </p>
+            <Input
+              height={"46px"}
+              placeholder="ایمیل"
+              my={"0px"}
+              {...register("email")}
+              sx={{
+                "::placeholder": {
+                  textAlign: "center", // this line is also needed to target the placeholder itself
+                },
+              }}
+            />
+            <p
+              style={{
+                fontSize: "10px",
+                color: "#e4002b",
+                width: "100%",
+                textAlign: "start",
+              }}
+            >
+              {errors.email?.message}
+            </p>
+
 
             <Button
               w={"100%"}
@@ -284,6 +284,15 @@ const Index = () => {
             >
               ثبت نام
             </Button>
+            {/* <Button
+              w={"100%"}
+              height={"46px"}
+              variant={'outline'}
+              colorScheme="teal"
+              onClick={e => router.push("/login")}
+            >
+              ثبت نام
+            </Button> */}
             {/* <Button
                 variant={"outline"}
                 w={"100%"}

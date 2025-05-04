@@ -14,7 +14,6 @@ import axios from "axios";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
-import { IoLogoGoogle } from "react-icons/io5";
 import useSWRMutation from "swr/mutation";
 const Lottie = dynamic(() => import("lottie-react"), {
   ssr: false,
@@ -32,15 +31,19 @@ const Index = () => {
 
   const { trigger, isLoading, isMutating } = useSWRMutation(
     "user/auth",
-    postRequest ,  {
-      onSuccess:(data)=>{
-        router.replace(`/two_step_login/verify_code?code=${data?.data?.data}&username=${getValues('username')}`)
-      }
+    postRequest, {
+    onSuccess: (data) => {
+      router.replace(`/two_step_login/verify_code?code=${data?.data?.data}&username=${getValues('username')}`)
     }
+  }
   );
   const handleLogin = (e) => {
     trigger(e);
   };
+
+  const handleClickRegister = () => {
+    router.replace('/register')
+  }
 
   return (
     <Box
@@ -114,13 +117,16 @@ const Index = () => {
                   مرا به خاطر بسپار
                 </Text>
               </HStack>
-              <Text color={"#29CCCC"} fontSize={{ base: "15px", md: "18px" }}>
-                فراموشی رمز عبور
-              </Text>
+
             </HStack>
-            <Button w={"100%"} bgColor={"#29CCCC"} height={"46px"} my={"20px"} type="submit" isLoading={isMutating}>
-              ورود
-            </Button>
+            <VStack w={'100%'} mt={"20px"} gap={"0px"}>
+              <Button w={"100%"} bgColor={"#29CCCC"} height={"46px"} my={"20px"} type="submit" isLoading={isMutating}>
+                ورود
+              </Button>
+              <Button w={"100%"} colorScheme="teal" height={"46px"} variant={'outline'} onClick={handleClickRegister}>
+                ثبت نام
+              </Button>
+            </VStack>
             {/* <Button
               variant={"outline"}
               w={"100%"}
