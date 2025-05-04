@@ -1,3 +1,4 @@
+import { baseUrl } from "@/components/lib/api";
 import {
   Box,
   Button,
@@ -7,9 +8,11 @@ import {
   Image,
   Input,
   Text,
-  VStack
+  VStack,
 } from "@chakra-ui/react";
+import axios from "axios";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { IoLogoGoogle } from "react-icons/io5";
 import useSWRMutation from "swr/mutation";
@@ -17,14 +20,26 @@ const Lottie = dynamic(() => import("lottie-react"), {
   ssr: false,
 });
 
+const postRequest = (url, { arg }) => {
+  return axios.post(baseUrl + url, arg);
+};
+
 const Index = () => {
+
+  const router = useRouter()
+
   const { register, setValue, getValues, handleSubmit } = useForm();
 
   const { trigger, isLoading, isMutating } = useSWRMutation(
-    "llm_tree/users/login"
+    "user/auth",
+    postRequest ,  {
+      onSuccess:(data)=>{
+        router.replace(`/two_step_login/verify_code?code=${data?.data?.data}&username=${getValues('username')}`)
+      }
+    }
   );
-  const handleSendSubmit = (e) => {
-    trigger();
+  const handleLogin = (e) => {
+    trigger(e);
   };
 
   return (
@@ -39,7 +54,7 @@ const Index = () => {
     >
       <HStack height={"100%"}>
         <Box
-          w={{ base: '100%', md: "40%" }}
+          w={{ base: "100%", md: "40%" }}
           alignItems={"center"}
           justifyContent={"center"}
           as={HStack}
@@ -47,22 +62,34 @@ const Index = () => {
           <VStack
             w={"350px"}
             mt={"20px"}
-            as={VStack}
+            as={"form"}
+            onSubmit={handleSubmit(handleLogin)}
             justifyContent={"center"}
             height={"100%"}
           >
-            <Image src="./loginlogo.png" width={{ base: '120px', md: "165px" }} height={{ base: '50px', md: "68px" }} />
-            <Text fontSize={{ base: '20px', md: "23px" }} color={"#333333"} textAlign={'center'} w={"327px"} mb={"20px"}>
+            <Image
+              src="./loginlogo.png"
+              width={{ base: "120px", md: "165px" }}
+              height={{ base: "50px", md: "68px" }}
+            />
+            <Text
+              fontSize={{ base: "20px", md: "23px" }}
+              color={"#333333"}
+              textAlign={"center"}
+              w={"327px"}
+              mb={"20px"}
+            >
               شبکه اجتماعی پرسش و پاسخ دینی
             </Text>
             <Divider w={"350px"} h={"2px"} bgColor={"#29CCCC"} />
-            <Text fontSize={{ base: '20px', md: "25px" }} mt={"20px"}>
+            <Text fontSize={{ base: "20px", md: "25px" }} mt={"20px"}>
               ورود به حساب کاربری
             </Text>
             <Input
               height={"46px"}
               placeholder="نام کاربری یا شماره همراه"
               my={"10px"}
+              {...register("username")}
               sx={{
                 "::placeholder": {
                   textAlign: "center", // this line is also needed to target the placeholder itself
@@ -73,6 +100,7 @@ const Index = () => {
               height={"46px"}
               placeholder="کلمه عبور"
               mb={"10px"}
+              {...register("password")}
               sx={{
                 "::placeholder": {
                   textAlign: "center", // this line is also needed to target the placeholder itself
@@ -82,26 +110,33 @@ const Index = () => {
             <HStack w={"100%"} justifyContent={"space-between"}>
               <HStack>
                 <Checkbox></Checkbox>
-                <Text fontSize={{ base: '15px', md: "18px" }}>مرا به خاطر بسپار</Text>
+                <Text fontSize={{ base: "15px", md: "18px" }}>
+                  مرا به خاطر بسپار
+                </Text>
               </HStack>
-              <Text color={"#29CCCC"} fontSize={{ base: '15px', md: "18px" }}>
+              <Text color={"#29CCCC"} fontSize={{ base: "15px", md: "18px" }}>
                 فراموشی رمز عبور
               </Text>
             </HStack>
-            <Button w={"100%"} bgColor={"#29CCCC"} height={"46px"} my={"20px"}>
+            <Button w={"100%"} bgColor={"#29CCCC"} height={"46px"} my={"20px"} type="submit" isLoading={isMutating}>
               ورود
             </Button>
-            <Button
+            {/* <Button
               variant={"outline"}
               w={"100%"}
               rightIcon={<IoLogoGoogle />}
               height={"46px"}
             >
               ورود با حساب گوگل
-            </Button>
+            </Button> */}
           </VStack>
         </Box>
-        <Box position="relative" w="60%" h="100%" display={{ base: 'none', md: 'flex' }} >
+        <Box
+          position="relative"
+          w="60%"
+          h="100%"
+          display={{ base: "none", md: "flex" }}
+        >
           {/* Base / background image */}
           <Image src="./loginbg.png" objectFit="cover" w="100%" h="100%" />
 

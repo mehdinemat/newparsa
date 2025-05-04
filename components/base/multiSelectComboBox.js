@@ -68,7 +68,7 @@ export default function MultiSelectComboBox({ selectedOptions, setSelectedOption
         options={options}
         value={selectedOptions} // controlled
         onChange={handleChange} // track selection
-        placeholder="Search and select..."
+        placeholder="جستجو یا انتخاب ..."
         styles={customStyles(bgColor, textColor)}
         onInputChange={handleInputChange}
         inputValue={inputValue}

@@ -13,6 +13,7 @@
     "@chakra-ui/react": "2",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "@hookform/resolvers": "^5.0.1",
     "axios": "^1.8.4",
     "framer-motion": "^12.4.7",
     "lodash": "^4.17.21",
@@ -33,6 +34,7 @@
     "react-table": "^7.8.0",
     "slick-carousel": "^1.8.1",
     "swr": "^2.3.3",
-    "wavesurfer.js": "^7.9.1"
+    "wavesurfer.js": "^7.9.1",
+    "yup": "^1.6.1"
   }
 }

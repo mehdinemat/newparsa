@@ -32,20 +32,29 @@ import {
 } from "react-icons/io5";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
-import moment from 'moment-jalaali';
+import moment from "moment-jalaali";
 
 const postRequest = (url, { arg: { id, ...data } }) => {
-  return axios.post(baseUrl + url + `?id=${id}`, data);
+  return axios.post(baseUrl + url + `?id=${id}`, data, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
 };
 const patchRequest = (
   url,
   { arg: { table_id, table_type, type_param, ...data } }
 ) => {
-  return axios.patch(
+  return axios.post(
     baseUrl +
       url +
       `?table_type=${table_type}&table_id=${table_id}&type_param=${type_param}`,
-    data
+    data,
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    }
   );
 };
 
@@ -62,7 +71,7 @@ const Index = () => {
     handleSubmit: handleSubmitAnswer,
   } = useForm();
 
-  const { data: dataQuestion, isLoading: isLoadingQuestion } = useSWR(
+  const { data: dataQuestion, isLoading: isLoadingQuestion , mutate:mutateQuestion } = useSWR(
     query?.id && `user/question?id=${query?.id}`
   );
   const { data: dataQuestionAnswer, isLoading: isLoadingQuestionAnswer } =
@@ -80,7 +89,11 @@ const Index = () => {
 
   const { trigger: triggerLike, isLoading: isLoadingLike } = useSWRMutation(
     `user/action`,
-    patchRequest
+    patchRequest , {
+      onSuccess:()=>{
+        mutateQuestion()
+      }
+    }
   );
 
   const handleAddAnswer = (e) => {
@@ -144,7 +157,9 @@ const Index = () => {
                   ) : (
                     <IoBookmarkOutline
                       color="gray"
-                      onClick={(e) => handleAddAction("question", "save_message")}
+                      onClick={(e) =>
+                        handleAddAction("question", "save_message")
+                      }
                     />
                   )
                 }
@@ -189,7 +204,9 @@ const Index = () => {
                         display={{ base: "none", md: "flex" }}
                       >
                         <Text fontSize={"sm"} color={"gray.400"}>
-                        {moment(dataQuestion?.data?.result?.[0]?.created_at).format('jYYYY/jMM/jDD')}
+                          {moment(
+                            dataQuestion?.data?.result?.[0]?.created_at
+                          ).format("jYYYY/jMM/jDD")}
                         </Text>
                         <AvatarGroup size="sm" max={2}>
                           <Avatar
@@ -449,7 +466,9 @@ const Index = () => {
                           </HStack>
                           <HStack order={{ base: 1 }}>
                             <Text fontSize={"sm"} color={"gray.500"}>
-                            {moment(dataQuestionAnswer?.data?.[0]?.created_at).format('jYYYY/jMM/jDD')}
+                              {moment(
+                                dataQuestionAnswer?.data?.[0]?.created_at
+                              ).format("jYYYY/jMM/jDD")}
                             </Text>
                             <Divider
                               height={"10px"}
