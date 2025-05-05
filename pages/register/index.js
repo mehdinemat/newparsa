@@ -15,10 +15,9 @@ import axios from "axios";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import useSWRMutation from "swr/mutation";
 import * as Yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useTranslation } from "react-i18next";
 
 const Lottie = dynamic(() => import("lottie-react"), {
   ssr: false,
