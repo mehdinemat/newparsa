@@ -25,10 +25,10 @@ import { useRouter } from "next/router";
 
 import SidebarTree from "@/components/base/sidebarTree";
 import { baseUrl } from "@/components/lib/api";
-import { useState } from "react";
-import useSWR from "swr";
-import { useTranslation } from "react-i18next";
 import Head from "next/head";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import useSWR from "swr";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -83,7 +83,7 @@ export default function Home({ children }) {
     data: dataQuestion,
     error: errorQuestion,
     isLoading: isLoadingQuestion,
-  } = useSWR(`user/question?lang=${locale}&page=${page}&categories__id=${categoryId}`);
+  } = useSWR(`user/question?lang=${locale}&page=${page}${categoryId && `&categories__id=${categoryId}`}`);
   const { data: dataGeneral, error: errorGeneral } = useSWR("user/general");
   const { data: dataSource, error: errorSource } = useSWR("user/source");
   const { data: dataReferences, error: errorReferences } =
