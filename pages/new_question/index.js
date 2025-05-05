@@ -99,7 +99,7 @@ const Index = () => {
       tags: selectedOptions.map((item) => item.value),
       categories: [],
     });
-    reset();
+    resetQuestion();
     selectedOptions([]);
   };
 
