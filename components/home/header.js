@@ -25,24 +25,23 @@ const siteData = [
   {
     title: "سوال",
     number: "234",
+    t_title:'question'
   },
   {
     title: "برچسب",
     number: "52353",
+    t_title:'tag'
   },
   {
     title: "مرجع",
     number: "43",
+    t_title:'reference'
   },
   {
     title: "منبع",
     number: "2",
     size: "base",
-  },
-  {
-    title: "زبان",
-    number: "3",
-    size: "base",
+    t_title:'source'
   },
 ];
 
@@ -56,7 +55,7 @@ const dataTranslate = {
 const MotionBox = motion(Box);
 
 
-const Header = ({ data }) => {
+const Header = ({ data ,t }) => {
   const router = useRouter();
 
   const [isRecording, setIsRecording] = useState(false);
@@ -125,9 +124,9 @@ const Header = ({ data }) => {
           <Text
             fontSize={{ base: "35px", md: "50px" }}
             color={"white"}
-            textAlign={{ base: "center", md: "right" }}
+            textAlign={{ base: "center", md: "center" }}
           >
-            پارسا شبکه اجتماعی پرسش و پاسخ دینی
+            {t('home_parsa_header_title')}
           </Text>
           <InputGroup
             height="60px"
@@ -191,7 +190,7 @@ const Header = ({ data }) => {
               bgColor={isRecording ? "#29CCCC" : "#2A378C"}
               height="60px"
               textIndent={'20px'}
-              placeholder={isRecording ? 'درحال شنیدن...' : "در میان هزاران پرسش و پاسخ جستجو کنید..."}
+              placeholder={isRecording ? t('listening') : t('search_among')}
               color="white"
               border="none"
               pl={isRecording ? "50px" : "12px"} // Padding when mic moves inside
@@ -257,7 +256,7 @@ const Header = ({ data }) => {
                       );
                     }}
                   </CountUp>
-                  <Text color="white" fontSize={{ base: '20px', md: '22px' }}>{item?.title}</Text>
+                  <Text color="white" fontSize={{ base: '20px', md: '22px' }}>{t(item?.t_title)}</Text>
                 </VStack>
 
                 {/* Only add divider if it's not the last item */}

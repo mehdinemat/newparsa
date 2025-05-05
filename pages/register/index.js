@@ -19,6 +19,7 @@ import { IoLogoGoogle } from "react-icons/io5";
 import useSWRMutation from "swr/mutation";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useTranslation } from "react-i18next";
 
 const Lottie = dynamic(() => import("lottie-react"), {
   ssr: false,
@@ -29,6 +30,9 @@ const postRequest = (url, { arg }) => {
 };
 
 const Index = () => {
+
+  const { t } = useTranslation();
+
   const router = useRouter();
   const toast = useToast();
 
@@ -109,7 +113,7 @@ const Index = () => {
             onSubmit={handleSubmit(handleRegisterUser)}
           >
             <Image
-              src="./loginlogo.png"
+              src="/loginlogo.png"
               width={{ base: "120px", md: "165px" }}
               height={{ base: "50px", md: "68px" }}
             />
@@ -120,15 +124,15 @@ const Index = () => {
               w={"327px"}
               mb={"20px"}
             >
-              شبکه اجتماعی پرسش و پاسخ دینی
+              {t('religious')}
             </Text>
             <Divider w={"350px"} h={"2px"} bgColor={"#29CCCC"} />
             <Text fontSize={{ base: "20px", md: "25px" }} mt={"20px"}>
-              ثبت نام
+              {t('register')}
             </Text>
             <Input
               height={"46px"}
-              placeholder="شماره تلفن"
+              placeholder={t('phone_number')}
               my={"10px"}
               {...register("phone_number")}
               sx={{
@@ -149,7 +153,7 @@ const Index = () => {
             </p>
             <Input
               height={"46px"}
-              placeholder="نام کاربری"
+              placeholder={t('username')}
               my={"10px"}
               {...register("username")}
               sx={{
@@ -170,7 +174,7 @@ const Index = () => {
             </p>
             <Input
               height={"46px"}
-              placeholder="رمز عبور"
+              placeholder={t('password')}
               my={"10px"}
               {...register("password")}
               sx={{
@@ -191,7 +195,7 @@ const Index = () => {
             </p>
             <Input
               height={"46px"}
-              placeholder="تکرار رمز عبور"
+              placeholder={t('confirm_password')}
               my={"10px"}
               {...register("re_password")}
               sx={{
@@ -212,7 +216,7 @@ const Index = () => {
             </p>
             <Input
               height={"46px"}
-              placeholder="ایمیل"
+              placeholder={t('email')}
               my={"10px"}
               {...register("email")}
               sx={{
@@ -233,7 +237,7 @@ const Index = () => {
             </p>
             <Input
               height={"46px"}
-              placeholder="نام"
+              placeholder={t('first_name')}
               my={"10px"}
               {...register("first_name")}
               sx={{
@@ -254,7 +258,7 @@ const Index = () => {
             </p>
             <Input
               height={"46px"}
-              placeholder="نام خانوادگی"
+              placeholder={t('last_name')}
               my={"10px"}
               {...register("last_name")}
               sx={{
@@ -282,7 +286,7 @@ const Index = () => {
               type="submit"
               isLoading={isMutating}
             >
-              ثبت نام
+              {t('register')}
             </Button>
             {/* <Button
                 variant={"outline"}
@@ -301,11 +305,11 @@ const Index = () => {
           display={{ base: "none", md: "flex" }}
         >
           {/* Base / background image */}
-          <Image src="./loginbg.png" objectFit="cover" w="100%" h="100%" />
+          <Image src="/loginbg.png" objectFit="cover" w="100%" h="100%" />
 
           {/* Overlay / centered image */}
           <Image
-            src="./loginlogoqu.png"
+            src="/loginlogoqu.png"
             alt="Centered Image"
             position="absolute"
             top="50%"

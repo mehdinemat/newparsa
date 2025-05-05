@@ -47,27 +47,36 @@ import { IoCall, IoExitOutline, IoLocation, IoSearch } from "react-icons/io5";
 import AdminMenuBar from "./admin_dashboard/adminMenuBar";
 import UserMenuBar from "./mobile/dashboard/userMenuBar";
 import MenuBar from "./mobile/menuBar";
+import { useTranslation } from "react-i18next";
 
 const menuList = [
   {
     title: "سوال ها",
     link: "questions",
+    t_title: "header_questions",
   },
   {
     title: "برچسب ها",
+    t_title: "header_tags",
   },
   {
     title: "کاربران",
     link: "users",
+    t_title: "header_users",
   },
   {
     title: "محصولات",
     link: "products",
+    t_title: "header_products",
   },
 ];
 
 const MainLayout = ({ children }) => {
+  const { t } = useTranslation();
+
   const router = useRouter();
+  const { locale } = router;
+
   const [activePath, setActivePath] = useState(0);
   const [isSticky, setIsSticky] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -100,7 +109,7 @@ const MainLayout = ({ children }) => {
   };
 
   const handleClickSearch = () => {
-    onOpen();
+    // onOpen();
   };
 
   const handleToggle = () => {
@@ -132,9 +141,9 @@ const MainLayout = ({ children }) => {
     setIsUserLogin(!!localStorage.getItem("token"));
   }, []);
 
-  const handleLoginButton =()=>{
-    router.replace('/login')
-  }
+  const handleLoginButton = () => {
+    router.replace("/login");
+  };
 
   return (
     <VStack minHeight="100vh" w={"100%"} alignItems={"start"} gap={0}>
@@ -197,7 +206,7 @@ const MainLayout = ({ children }) => {
               >
                 <Input
                   height={"46px"}
-                  placeholder="جستجو"
+                  placeholder={t("search")}
                   onClick={handleClickSearch}
                 />
                 <InputRightElement h="100%">
@@ -232,7 +241,7 @@ const MainLayout = ({ children }) => {
                 <InputGroup size="md" w="150px">
                   <Input
                     ref={inputRef}
-                    placeholder="جستجو..."
+                    placeholder={t("search")}
                     variant="filled"
                     bg="white"
                     borderRadius="md"
@@ -260,40 +269,71 @@ const MainLayout = ({ children }) => {
                 onClick={(e) => handleClickMenuLink(item?.link)}
                 cursor={"pointer"}
               >
-                {item?.title}
+                {t(item?.t_title)}
               </Text>
             ))}
             <Menu>
               <MenuButton px={4} py={2} transition="all 0.2s">
                 <HStack>
-                  <Text fontSize={"sm"}>فارسی</Text>
+                  <Text fontSize={"sm"}>
+                    {locale == "en"
+                      ? t("header_english")
+                      : locale == "fa"
+                      ? t("header_persian")
+                      : locale == "ar" && t("header_arabic")}
+                  </Text>
                   <IoIosArrowDown />
                 </HStack>
               </MenuButton>
               <MenuList>
-                <MenuItem>انگلیسی</MenuItem>
-                <MenuItem>عربی</MenuItem>
+                <MenuItem
+                  value={"en"}
+                  onClick={(e) => router.push("/", "/", { locale: "en" })}
+                >
+                  {t("header_english")}
+                </MenuItem>
+                <MenuItem
+                  value={"ar"}
+                  onClick={(e) => router.push("/", "/", { locale: "ar" })}
+                >
+                  {t("header_arabic")}
+                </MenuItem>
+                <MenuItem
+                  value={"fa"}
+                  onClick={(e) => router.push("/", "/", { locale: "fa" })}
+                >
+                  {t("header_persian")}
+                </MenuItem>
               </MenuList>
             </Menu>
-           {!isUserLogin && <Button w={"120px"} bgColor={"#29CCCC"} fontWeight={"normal"} onClick={handleLoginButton}>
-              ورود/ثبت نام
-            </Button>}
-            {isUserLogin &&<HStack>
-              <IoIosNotificationsOutline fontSize={"20px"} color="#29CCCC" />
-              <GiDiamondRing fontSize={"20px"} color="#29CCCC" />
+            {!isUserLogin && (
+              <Button
+                w={"180px"}
+                bgColor={"#29CCCC"}
+                fontWeight={"normal"}
+                onClick={handleLoginButton}
+              >
+            {t('log_sub')}
+              </Button>
+            )}
+            {isUserLogin && (
+              <HStack>
+                <IoIosNotificationsOutline fontSize={"20px"} color="#29CCCC" />
+                <GiDiamondRing fontSize={"20px"} color="#29CCCC" />
 
-              <Menu>
-                <MenuButton px={4} py={2} transition="all 0.2s">
-                  <HStack>
-                    <Avatar size={"sm"} />
-                  </HStack>
-                </MenuButton>
-                <MenuList>
-                  <MenuItem>انگلیسی</MenuItem>
-                  <MenuItem>عربی</MenuItem>
-                </MenuList>
-              </Menu>
-            </HStack>}
+                <Menu>
+                  <MenuButton px={4} py={2} transition="all 0.2s">
+                    <HStack>
+                      <Avatar size={"sm"} />
+                    </HStack>
+                  </MenuButton>
+                  <MenuList>
+                    <MenuItem>انگلیسی</MenuItem>
+                    <MenuItem>عربی</MenuItem>
+                  </MenuList>
+                </Menu>
+              </HStack>
+            )}
           </HStack>
         </HStack>
       </Box>
@@ -345,9 +385,7 @@ const MainLayout = ({ children }) => {
                     height={"48px"}
                   />
                   <Text w={"326px"} fontSize={"16px"}>
-                    پارسا موتور جستجوی پرسش و پاسخ‌های حوزه علوم اسلامی به
-                    زبان‌های مختلف از منابع معتبر است؛که هدف آن افزایش دانش و
-                    دسترسی ساخت یافته مخاطبین به پرسش و پاسخ‌های دینی است.
+                    {t("footer_parsa_info")}
                   </Text>
                 </VStack>
                 <VStack
@@ -357,7 +395,7 @@ const MainLayout = ({ children }) => {
                   w={"100%"}
                 >
                   <Text color={"#3646B3"} fontSize={"20px"} fontWeight={"bold"}>
-                    پارسا
+                    {t("parsa")}
                   </Text>
                   <UnorderedList
                     textAlign={"start"}
@@ -371,14 +409,14 @@ const MainLayout = ({ children }) => {
                       },
                     }}
                   >
-                    <ListItem>خانه</ListItem>
-                    <ListItem>سؤالات</ListItem>
-                    <ListItem>برچسب‌ها</ListItem>
-                    <ListItem>کاربران</ListItem>
-                    <ListItem>درباره‌ما</ListItem>
-                    <ListItem>ارتباط با ما</ListItem>
-                    <ListItem>قوانین استفاده</ListItem>
-                    <ListItem fontWeight={"thin"}>سیاست حریم خصوصی</ListItem>
+                    <ListItem>{t("home")}</ListItem>
+                    <ListItem>{t("questions")}</ListItem>
+                    <ListItem>{t("tags")}</ListItem>
+                    <ListItem>{t("users")}</ListItem>
+                    <ListItem>{t("about_us")}</ListItem>
+                    <ListItem>{t("about_us")}</ListItem>
+                    <ListItem>{t("terms_of_use")}</ListItem>
+                    <ListItem fontWeight={"thin"}>{t("terms_of_use")}</ListItem>
                   </UnorderedList>
                 </VStack>
                 <VStack
@@ -388,7 +426,7 @@ const MainLayout = ({ children }) => {
                   height={"100%"}
                 >
                   <Text color={"#3646B3"} fontSize={"20px"} fontWeight={"bold"}>
-                    محصولات
+                    {t("products")}
                   </Text>
                   <UnorderedList
                     textAlign={"start"}
@@ -402,14 +440,14 @@ const MainLayout = ({ children }) => {
                       },
                     }}
                   >
-                    <ListItem>موتور جستجو هوشمند سوالات</ListItem>
-                    <ListItem>سرویس جستجوی سوال مشابه</ListItem>
-                    <ListItem>سرویس اصلاح خطای نوشتاری</ListItem>
-                    <ListItem>سرویس توصیه گر سوال</ListItem>
-                    <ListItem>سرویس استخراج عبارات کلیدی</ListItem>
-                    <ListItem>سرویس خلاصه سازی متن سوال</ListItem>
-                    <ListItem>سرویس رده بندی متن سوالات</ListItem>
-                    <ListItem>سرویس پاسخ به سوالات دامنه باز</ListItem>
+                    <ListItem>{t("intelligent_question")}</ListItem>
+                    <ListItem>{t("similar_question")}</ListItem>
+                    <ListItem>{t("spelling_correction")}</ListItem>
+                    <ListItem>{t("question_recommendation")}</ListItem>
+                    <ListItem>{t("keyword_extraction")}</ListItem>
+                    <ListItem>{t("question_text_summarization")}</ListItem>
+                    <ListItem>{t("question_text_classification")}</ListItem>
+                    <ListItem>{t("open_domain_question")}</ListItem>
                   </UnorderedList>
                 </VStack>
                 <VStack
@@ -419,16 +457,13 @@ const MainLayout = ({ children }) => {
                   w={"100%"}
                 >
                   <Text color={"#3646B3"} fontSize={"20px"} fontWeight={"bold"}>
-                    ارتباط با ما
+                    {t("contact_us")}
                   </Text>
                   <HStack w={"100%"} alignItems={"start"} textAlign={"start"}>
                     <IconButton
                       icon={<IoLocation color="#29CCCC" fontSize={"20px"} />}
                     />
-                    <Text width={"auto"}>
-                      مازندران، بابل، یوسف پوری، خیابان آیت الله سعیدی، کوچه
-                      پرستو، پلاک ۷
-                    </Text>
+                    <Text width={"auto"}>{t("address")}</Text>
                   </HStack>
                   <HStack>
                     <IconButton
@@ -442,7 +477,7 @@ const MainLayout = ({ children }) => {
                       fontSize={"20px"}
                       fontWeight={"bold"}
                     >
-                      شبکه های اجتماعی
+                      {t("social_media")}
                     </Text>
                     <HStack>
                       <IconButton

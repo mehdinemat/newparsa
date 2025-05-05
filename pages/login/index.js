@@ -16,6 +16,8 @@ import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { IoLogoGoogle } from "react-icons/io5";
 import useSWRMutation from "swr/mutation";
+import { useTranslation } from "react-i18next";
+
 const Lottie = dynamic(() => import("lottie-react"), {
   ssr: false,
 });
@@ -25,6 +27,9 @@ const postRequest = (url, { arg }) => {
 };
 
 const Index = () => {
+
+  const { t } = useTranslation();
+
 
   const router = useRouter()
 
@@ -68,7 +73,7 @@ const Index = () => {
             height={"100%"}
           >
             <Image
-              src="./loginlogo.png"
+              src="/loginlogo.png"
               width={{ base: "120px", md: "165px" }}
               height={{ base: "50px", md: "68px" }}
             />
@@ -79,15 +84,15 @@ const Index = () => {
               w={"327px"}
               mb={"20px"}
             >
-              شبکه اجتماعی پرسش و پاسخ دینی
+              {t('religious')}
             </Text>
             <Divider w={"350px"} h={"2px"} bgColor={"#29CCCC"} />
             <Text fontSize={{ base: "20px", md: "25px" }} mt={"20px"}>
-              ورود به حساب کاربری
+              {t('log_in_to_your_account')}
             </Text>
             <Input
               height={"46px"}
-              placeholder="نام کاربری یا شماره همراه"
+              placeholder={t('username_or_mobile_number')}
               my={"10px"}
               {...register("username")}
               sx={{
@@ -98,7 +103,7 @@ const Index = () => {
             />
             <Input
               height={"46px"}
-              placeholder="کلمه عبور"
+              placeholder={t('password')}
               mb={"10px"}
               {...register("password")}
               sx={{
@@ -111,15 +116,15 @@ const Index = () => {
               <HStack>
                 <Checkbox></Checkbox>
                 <Text fontSize={{ base: "15px", md: "18px" }}>
-                  مرا به خاطر بسپار
+                  {t('remember_me')}
                 </Text>
               </HStack>
               <Text color={"#29CCCC"} fontSize={{ base: "15px", md: "18px" }}>
-                فراموشی رمز عبور
+                {t('forgot_password')}
               </Text>
             </HStack>
             <Button w={"100%"} bgColor={"#29CCCC"} height={"46px"} my={"20px"} type="submit" isLoading={isMutating}>
-              ورود
+              {t('log_in')}
             </Button>
             {/* <Button
               variant={"outline"}
@@ -138,11 +143,11 @@ const Index = () => {
           display={{ base: "none", md: "flex" }}
         >
           {/* Base / background image */}
-          <Image src="./loginbg.png" objectFit="cover" w="100%" h="100%" />
+          <Image src="/loginbg.png" objectFit="cover" w="100%" h="100%" />
 
           {/* Overlay / centered image */}
           <Image
-            src="./loginlogoqu.png"
+            src="/loginlogoqu.png"
             alt="Centered Image"
             position="absolute"
             top="50%"

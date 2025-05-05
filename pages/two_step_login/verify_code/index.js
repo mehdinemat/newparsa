@@ -17,6 +17,8 @@ import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { IoLogoGoogle } from "react-icons/io5";
 import useSWRMutation from "swr/mutation";
+import { useTranslation } from "react-i18next";
+
 const Lottie = dynamic(() => import("lottie-react"), {
   ssr: false,
 });
@@ -26,6 +28,9 @@ const postRequest = (url, { arg }) => {
 };
 
 const Index = () => {
+
+  const { t } = useTranslation();
+
   const searchParams = useSearchParams();
   const router = useRouter()
   const phone = searchParams.get("phone");
@@ -108,7 +113,7 @@ const Index = () => {
               w={"327px"}
               mb={"20px"}
             >
-              شبکه اجتماعی پرسش و پاسخ دینی
+              {t('religious')}
             </Text>
             <Divider w={"350px"} h={"2px"} bgColor={"#29CCCC"} />
             <Text
@@ -116,7 +121,7 @@ const Index = () => {
               mt={"20px"}
               mb={"10px"}
             >
-              کد ورود
+              {t('login_code')}
             </Text>
             <HStack spacing={3} dir="ltr">
               {otp.map((digit, index) => (
@@ -144,7 +149,7 @@ const Index = () => {
               type="submit"
               isLoading={isMutating}
             >
-              ورود
+             {t('login')}
             </Button>
           </VStack>
         </Box>

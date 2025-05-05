@@ -1,37 +1,41 @@
-import { defineStyleConfig, extendTheme, withDefaultColorScheme } from '@chakra-ui/react'
+// theme.ts or theme.js
+import { extendTheme, withDefaultColorScheme, defineStyleConfig } from "@chakra-ui/react";
 
-export const theme = extendTheme({
-  direction: 'rtl',
-  styles: {
-    global: {
-      html: {
-        fontSize: "14px"
+export const getTheme = (language) => {
+  const isFa = language === "fa";
+
+  return extendTheme(
+    {
+      direction: isFa ? "rtl" : "rtl",
+      styles: {
+        global: {
+          html: {
+            fontSize: "14px",
+          },
+          body: {
+            bg: "white",
+          },
+        },
       },
-      body: {
-        bg: 'white'
-      }
-    }
-  },
-  components: {
-    // Button: buttonTheme,
-    // Card: cardTheme,
-    FormLabel: defineStyleConfig({
-      baseStyle: {
-        fontWeight: 'bold',
-        fontSize: 'sm',
-      }
-    }),
-    FormErrorMessage: defineStyleConfig({
-      baseStyle: {
-        mt: 0,
-        fontSize: 'xs',
+      fonts: {
+        heading: isFa ? "Estedadfd" : "Estedad",
+        body: isFa ? "Estedadfd" : "Estedad",
       },
-    })
-  },
-  fonts: {
-    heading: "Estedad",
-    body: "Estedad",
-  },
-},
-  withDefaultColorScheme({ colorScheme: 'facebook' }),
-)
+      components: {
+        FormLabel: defineStyleConfig({
+          baseStyle: {
+            fontWeight: "bold",
+            fontSize: "sm",
+          },
+        }),
+        FormErrorMessage: defineStyleConfig({
+          baseStyle: {
+            mt: 0,
+            fontSize: "xs",
+          },
+        }),
+      },
+    },
+    withDefaultColorScheme({ colorScheme: "facebook" })
+  );
+};

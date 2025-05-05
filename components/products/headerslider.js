@@ -40,7 +40,7 @@ const items = [
 
 
 
-const HeaderSlider = () => {
+const HeaderSlider = ({t}) => {
   return (
     <Box
       w="100%"
@@ -66,15 +66,15 @@ const HeaderSlider = () => {
           >
             <Stack direction={{ base: 'column', md: 'row' }} dir="rtl">
               <VStack w={'100%'} alignItems={{ base: 'center', md: 'start' }} order={{ base: 2, md: 1 }}>
-                <Text fontSize={{ base: '20px', md: '24px' }} fontWeight={'bold'} color={'white'} w={{ base: 'auto', md: '180px' }} textAlign={'start'}>موتور جستجو هوشمند سؤالات</Text>
+                <Text fontSize={{ base: '20px', md: '24px' }} fontWeight={'bold'} color={'white'} w={{ base: 'auto', md: '180px' }} textAlign={'start'}> {t('smart_question_search_engine')}</Text>
                 <Text w={{ base: 'auto', md: '500px' }} fontSize={{ base: '14px', md: '16px' }} textAlign={{ base: 'center', md: 'start' }} color={'white'}>
                   لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و
                   با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و
                   مجله در ستون و سطرآنچنان که لازم است
                 </Text>
-                <Button bgColor={'#29CCCC'} fontWeight={'normal'} mt={'20px'}>اطلاعات بیشتر</Button>
+                <Button bgColor={'#29CCCC'} fontWeight={'normal'} mt={'20px'}>{t('learn_more')}</Button>
               </VStack>
-              <Image src="./headerslider.png" w={{ base: '357px', md: '509px' }} h={{ base: '350px', md: '500px' }} order={{ base: 1, md: 2 }} />
+              <Image src="/headerslider.png" w={{ base: '357px', md: '509px' }} h={{ base: '350px', md: '500px' }} order={{ base: 1, md: 2 }} />
             </Stack >
           </Flex>
         ))}

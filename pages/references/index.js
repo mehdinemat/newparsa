@@ -1,70 +1,124 @@
 import MainLayout from "@/components/mainLayout";
 import Pagination from "@/components/pagination";
 import ReferencesCard from "@/components/references/referencesCard";
-import { Box, Button, Grid, HStack, Input, InputGroup, InputRightElement, Stack, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Grid,
+  HStack,
+  Input,
+  InputGroup,
+  InputRightElement,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 import { useState } from "react";
 import { BiSortAlt2 } from "react-icons/bi";
 import { IoSearch } from "react-icons/io5";
 import useSWR from "swr";
+import { useTranslation } from "react-i18next";
+import Head from "next/head";
 
 const Index = () => {
+  const { t } = useTranslation();
 
-  const [page , setPage ] = useState(1)
-  const { data: dataReferences, isLoading: isLoadingReferences } = useSWR(`user/public-figure?page=${page}&size=20`)
+  const [page, setPage] = useState(1);
+  const { data: dataReferences, isLoading: isLoadingReferences } = useSWR(
+    `user/public-figure?page=${page}&size=20`
+  );
 
   return (
     <MainLayout>
+         <Head>
+        <title>{t('sources')}</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <Box
-        marginTop={{ base: '60px', md: "100px" }}
+        marginTop={{ base: "60px", md: "100px" }}
         w="100%"
         alignItems={"center"}
         justifyContent={"center"}
         maxW="container.xl"
         mx="auto"
-        p={{ base: '0px', md: "20px" }}
-        px={{ base: '20px' }}
-        mb={'20px'}
+        p={{ base: "0px", md: "20px" }}
+        px={{ base: "20px" }}
+        mb={"20px"}
       >
-        <HStack w={'100%'} justifyContent={'space-between'} display={{ base: 'none', md: 'flex' }}>
-          <Text fontWeight={'bold'}>مراجع</Text>
-          <InputGroup width={'290px'} height={'46px'} >
-            <Input width={'290px'} height={'46px'} placeholder="جستجو مراجع" />
+        <HStack
+          w={"100%"}
+          justifyContent={"space-between"}
+          display={{ base: "none", md: "flex" }}
+        >
+          <Text fontWeight={"bold"}>{t("sources")}</Text>
+          <InputGroup width={"290px"} height={"46px"}>
+            <Input
+              width={"290px"}
+              height={"46px"}
+              placeholder={t("search_sources")}
+            />
             <InputRightElement h="100%">
-              <IoSearch fontSize="20px"
+              <IoSearch
+                fontSize="20px"
                 style={{ marginTop: "2px" }}
-                color="gray" />
+                color="gray"
+              />
             </InputRightElement>
           </InputGroup>
         </HStack>
-        <HStack w={'100%'} justifyContent={'space-between'} my={'20px'}>
-          <Text fontWeight={'bold'} >مراجع</Text>
-          <HStack w={'100%'} alignItems={'end'} justifyContent={'end'}>
-            <HStack justifyContent={{ base: 'start', md: 'flex' }}>
+        <HStack w={"100%"} justifyContent={"space-between"} my={"20px"}>
+          <HStack w={"100%"} alignItems={"end"} justifyContent={"end"}>
+            <HStack justifyContent={{ base: "start", md: "flex" }}>
               <BiSortAlt2 color="gray" />
-              <Button variant={'ghost'} fontSize={'sm'} padding={{ base: '0px' }} display={{ base: 'none', md: 'flex' }}>مرتب سازی براساس:</Button>
-              <Button variant={'ghost'} fontSize={'sm'} padding={{ base: '0px' }} display={{ md: 'none', md: 'flex' }}>جدیدترین ها</Button>
-
+              <Button
+                variant={"ghost"}
+                fontSize={"sm"}
+                padding={{ base: "0px" }}
+                display={{ base: "none", md: "flex" }}
+              >
+                {t("sort_by")}
+              </Button>
+              {/* <Button
+                variant={"ghost"}
+                fontSize={"sm"}
+                padding={{ base: "0px" }}
+                display={{ md: "none", md: "flex" }}
+              >
+                {t("latest")}
+              </Button> */}
             </HStack>
-            <HStack display={{ base: 'none', md: 'flex' }}>
-              <Button variant={'ghost'} fontSize={'sm'}>جدیدترین‌ها</Button>
-              <Button variant={'ghost'} fontSize={'sm'}>پربازدیدترین‌ها</Button>
-              <Button variant={'ghost'} fontSize={'sm'}>محبوبترین‌ها</Button>
+            <HStack display={{ base: "none", md: "flex" }}>
+              <Button variant={"ghost"} fontSize={"sm"}>
+                {t("latest")}
+              </Button>
+              <Button variant={"ghost"} fontSize={"sm"}>
+                {t("most_viewed")}
+              </Button>
+              <Button variant={"ghost"} fontSize={"sm"}>
+                {t("most_popular")}
+              </Button>
             </HStack>
           </HStack>
         </HStack>
-        <Grid templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(4, 1fr)" }} gap={"40px"} w={"100%"}>
-          {
-            dataReferences?.data?.result?.map((item, index) => (
-              <ReferencesCard key={index} data={item} />
-            ))
-          }
+        <Grid
+          templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(4, 1fr)" }}
+          gap={"40px"}
+          w={"100%"}
+        >
+          {dataReferences?.data?.result?.map((item, index) => (
+            <ReferencesCard key={index} data={item} t={t}/>
+          ))}
         </Grid>
-        <Stack w={'100%'} justifyContent={'center'} alignItems={'center'}>
-          <Pagination totalPages={dataReferences?.data?.total_count / 20} currentPage={page} onPageChange={setPage}/>
+        <Stack w={"100%"} justifyContent={"center"} alignItems={"center"}>
+          <Pagination
+            totalPages={dataReferences?.data?.total_count / 20}
+            currentPage={page}
+            onPageChange={setPage}
+            t={t}
+          />
         </Stack>
       </Box>
     </MainLayout>
-  )
-}
+  );
+};
 
-export default Index
+export default Index;

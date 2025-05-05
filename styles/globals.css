@@ -78,3 +78,19 @@ a {
 .masonry-grid_column > div {
   margin-bottom: 16px;
 }
+
+.custom-tree .rc-tree-treenode {
+  display: flex;
+  align-items: center;
+}
+
+.custom-tree .rc-tree-node-content-wrapper {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.custom-tree .rc-tree-switcher {
+  order: 1; /* Move switcher to the left */
+  margin-right: 8px;
+}

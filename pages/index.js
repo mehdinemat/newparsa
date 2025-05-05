@@ -7,6 +7,7 @@ import {
   Grid,
   GridItem,
   HStack,
+  Spinner,
   Stack,
   Text,
   VStack,
@@ -26,6 +27,8 @@ import SidebarTree from "@/components/base/sidebarTree";
 import { baseUrl } from "@/components/lib/api";
 import { useState } from "react";
 import useSWR from "swr";
+import { useTranslation } from "react-i18next";
+import Head from "next/head";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -68,16 +71,25 @@ const items2 = [
 
 export default function Home({ children }) {
   const router = useRouter();
+  const { locale } = useRouter();
 
   const [treeData, setTreeData] = useState([]);
+  const [page, setPage] = useState(1);
+  const [categoryId, setCategoryId] = useState("");
 
-  const { data: dataQuestion, error: errorQuestion } = useSWR("user/question");
+  const { t } = useTranslation();
+
+  const {
+    data: dataQuestion,
+    error: errorQuestion,
+    isLoading: isLoadingQuestion,
+  } = useSWR(`user/question?lang=${locale}&page=${page}&categories__id=${categoryId}`);
   const { data: dataGeneral, error: errorGeneral } = useSWR("user/general");
   const { data: dataSource, error: errorSource } = useSWR("user/source");
   const { data: dataReferences, error: errorReferences } =
     useSWR("user/public-figure");
 
-  useSWR("user/category?type=question", {
+  useSWR(`user/category?type=question`, {
     onSuccess: (res) => {
       if (res.status) {
         setTreeData(
@@ -135,7 +147,11 @@ export default function Home({ children }) {
 
   return (
     <MainLayout>
-      <Header data={dataGeneral?.data} />
+      <Head>
+        <title>{t("question")}</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <Header data={dataGeneral?.data} t={t} />
       <Box
         w="100%"
         alignItems={"center"}
@@ -154,7 +170,12 @@ export default function Home({ children }) {
         >
           {/* Right Sidebar */}
 
-          <SidebarTree treeData={treeData} onLoadData={onLoadData} />
+          <SidebarTree
+            treeData={treeData}
+            onLoadData={onLoadData}
+            t={t}
+            setCategoryId={setCategoryId}
+          />
 
           {/* Main Content */}
           <Box
@@ -177,7 +198,7 @@ export default function Home({ children }) {
               alignItems={{ base: "center", md: "start" }}
             >
               <Text fontWeight={"700"} fontSize={"22px"} letterSpacing={0}>
-                سؤال‌ها پیشنهادی
+                {t("suggested_questions")}
               </Text>
 
               <Button
@@ -192,25 +213,37 @@ export default function Home({ children }) {
                 borderRadius={"10px"}
                 onClick={(e) => handleNewQuestionButton()}
               >
-                سؤال خود را بپرسید
+                {t("ask_your_question")}
               </Button>
             </HStack>
 
-            <VStack display={{ base: "none", md: "flex" }}>
-              {dataQuestion?.data?.result?.map((item, index) => (
-                <QuestionCard key={index} data={item} />
-              ))}
-              {/* <Divider my={"20px"} />
-              <QuestionCard />
-              <Divider my={"20px"} />
-              <QuestionCard />
-              <Divider my={"20px"} />
-              <QuestionCard />
-              <Divider my={"20px"} />
-              <QuestionCard />
-              <Divider my={"20px"} />
-              <QuestionCard /> */}
-            </VStack>
+            {isLoadingQuestion ? (
+              <HStack
+                w={"100%"}
+                alignItems={"center"}
+                justifyContent={"center"}
+              >
+                <Spinner />
+              </HStack>
+            ) : (
+              <VStack display={{ base: "none", md: "flex" }}>
+                {dataQuestion?.data?.result?.map((item, index) => (
+                  <QuestionCard key={index} data={item} t={t} />
+                ))}
+                <Stack
+                  w={"100%"}
+                  justifyContent={"center"}
+                  alignItems={"center"}
+                >
+                  <Pagination
+                    totalPages={dataQuestion?.data?.total_count}
+                    currentPage={page}
+                    onPageChange={setPage}
+                    t={t}
+                  />
+                </Stack>
+              </VStack>
+            )}
 
             <VStack display={{ base: "flex", md: "none" }}>
               <QuestionMCard />
@@ -247,11 +280,11 @@ export default function Home({ children }) {
               mb={"30px"}
             >
               <Text fontWeight={"bold"} fontSize={"16px"}>
-                منابع سوال ها
+                {t("question_sources")}
               </Text>
               <VStack mt={"20px"} w={"100%"} alignItems={"start"}>
                 {dataSource?.data?.map((item, index) => (
-                  <LeftSidebar key={index} data={item} />
+                  <LeftSidebar key={index} data={item} t={t} />
                 ))}
               </VStack>
             </Box>
@@ -265,7 +298,7 @@ export default function Home({ children }) {
               height={"min-content"}
             >
               <Text fontWeight={"bold"} fontSize={"16px"}>
-                حدیث روز
+                {t("hadith_of_the_day")}
               </Text>
               <Text mt={"10px"}>
                 عن الامام الحسن علیه السلام: «رَأَیْتُ أُمِّی فَاطِمَةَ ع
@@ -297,7 +330,7 @@ export default function Home({ children }) {
                 }))}
                 height={"380px"}
                 borderRadius={"100%"}
-                title={"مراجع"}
+                title={t("sources")}
               />
             )}
             <SliderCom
@@ -305,13 +338,10 @@ export default function Home({ children }) {
               height={"270px"}
               width="350px"
               borderRadius={"0px"}
-              title={"حامیان پارسا"}
+              title={t("parsa_supporters")}
             />
           </GridItem>
         </Grid>
-        <Stack w={"100%"} justifyContent={"center"} alignItems={"center"}>
-          <Pagination totalPages={20} currentPage={5} />
-        </Stack>
       </Box>
     </MainLayout>
   );

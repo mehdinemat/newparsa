@@ -1,9 +1,9 @@
 import { Box, Text } from '@chakra-ui/react';
 import Tree from 'rc-tree';
 import 'rc-tree/assets/index.css';
-import { FiChevronDown, FiChevronRight } from 'react-icons/fi';
+import { FiChevronDown, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 
-const SidebarTree = ({ treeData, onLoadData }) => {
+const SidebarTree = ({ treeData, onLoadData , t , setCategoryId }) => {
   return (
     <Box
       w="100%"
@@ -20,20 +20,25 @@ const SidebarTree = ({ treeData, onLoadData }) => {
       dir="rtl" // ✅ RTL direction
     >
       <Text fontWeight="bold" fontSize="16px" mb={4}>
-        موضوعات
+        {t('topics')}
       </Text>
       <Tree
+      className="custom-tree"
         treeData={treeData}
         loadData={onLoadData}
         defaultExpandAll={false}
         showIcon={false}
         height={400}
+        onSelect={(selectedKeys, e) => {
+          const node = e.node;
+          setCategoryId(node.key);
+        }}
         switcherIcon={({ expanded, isLeaf }) =>
           !isLeaf ? (
             expanded ? (
               <FiChevronDown style={{ marginInlineEnd: 8 }} />
             ) : (
-              <FiChevronRight style={{ marginInlineEnd: 8 }} />
+              <FiChevronLeft style={{ marginInlineEnd: 8 }} />
             )
           ) : null
         }

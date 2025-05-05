@@ -8,7 +8,7 @@ import {
   FaAngleDoubleRight,
 } from 'react-icons/fa';
 
-const Pagination = ({ currentPage, totalPages, onPageChange }) => {
+const Pagination = ({ currentPage, totalPages, onPageChange , t }) => {
   const maxButtons = 5;
   const getPageNumbers = () => {
     const pages = [];
@@ -77,7 +77,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       )}
 
         <Button colorScheme='gray' variant={'outline'} onClick={() => onPageChange(currentPage + 1)} isDisabled={currentPage === totalPages} size={'sm'}>
-          صفحه بعد
+          {t('next')}
         </Button>
 
    

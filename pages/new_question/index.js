@@ -20,6 +20,8 @@ import { useForm } from "react-hook-form";
 import Masonry from "react-masonry-css";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
+import { useTranslation } from "react-i18next";
+import Head from "next/head";
 
 const data = [
   {
@@ -68,8 +70,11 @@ const Index = () => {
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [inputValue, setInputValue] = useState("");
 
-  const { data: dataTag, isLoading: isLoadingTag } =
-    useSWR(`user/category/tag`);
+  const { t } = useTranslation();
+
+  const { data: dataTag, isLoading: isLoadingTag } = useSWR(
+    `user/category/tag?name__icontains=${inputValue}`
+  );
   const { trigger: triggerQuestion, isLoading: isLoadingQuestion } =
     useSWRMutation(`user/question`, postRequest);
 
@@ -78,7 +83,7 @@ const Index = () => {
     setValue: setValueQuestion,
     getValues: getValuesQuestion,
     handleSubmit: handleSubmitQuestion,
-    reset:resetQuestion
+    reset: resetQuestion,
   } = useForm();
 
   const breakpointColumnsObj = {
@@ -94,12 +99,16 @@ const Index = () => {
       tags: selectedOptions.map((item) => item.value),
       categories: [],
     });
-    reset()
-    selectedOptions([])
+    reset();
+    selectedOptions([]);
   };
 
   return (
     <MainLayout>
+      <Head>
+        <title>{t("submit_your_question")}</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <Box
         as={"form"}
         w="100%"
@@ -111,7 +120,7 @@ const Index = () => {
         onSubmit={handleSubmitQuestion(handleAddNewQuestion)}
       >
         <Text fontWeight={"bold"} fontSize={"20px"} mb={"20px"}>
-          سوال خود را بپرسید...
+          {t("ask_your_question")}...
         </Text>
         <Masonry
           width={"100%"}
@@ -128,26 +137,23 @@ const Index = () => {
             padding={"20px"}
             color={"black"}
           >
-            <Text fontWeight={"bold"}>عنوان سوال</Text>
+            <Text fontWeight={"bold"}>{t("question_title")}</Text>
             <Text>
               لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ
             </Text>
             <Input {...registerQuestion("title")} />
             <Text fontWeight={"bold"} mt={"20px"}>
-              سؤالات مرتبط
+              {t("related_questions")}
             </Text>
             <HStack>
-              <Text>
-                اگر نتوانیم آن را انجام دهیم، آیا می‌توان فطریه را به یک بدهکار
-                ورشکسته داد؟
-              </Text>
+              <Text>{t("question_title")}</Text>
               <Badge
                 bgColor={"#23D9D7"}
                 padding={"5px"}
                 borderRadius={"5px"}
                 color={"white"}
               >
-                3 پاسخ
+                3 {t("answer")}
               </Badge>
             </HStack>
             <Divider borderColor={"gray.200"} />
@@ -162,7 +168,7 @@ const Index = () => {
                 borderRadius={"5px"}
                 color={"white"}
               >
-                3 پاسخ
+                3 {t("answer")}
               </Badge>
             </HStack>
             <Divider borderColor={"gray.200"} />
@@ -177,7 +183,7 @@ const Index = () => {
                 borderRadius={"5px"}
                 color={"white"}
               >
-                3 پاسخ
+                3 {t("answer")}
               </Badge>
             </HStack>
             <Divider borderColor={"gray.200"} />
@@ -192,7 +198,7 @@ const Index = () => {
                 borderRadius={"5px"}
                 color={"white"}
               >
-                3 پاسخ
+                3 {t("answer")}
               </Badge>
             </HStack>
             <Divider borderColor={"gray.200"} />
@@ -207,11 +213,11 @@ const Index = () => {
                 borderRadius={"5px"}
                 color={"white"}
               >
-                3 پاسخ
+                3 {t("answer")}
               </Badge>
             </HStack>
             <HStack w={"100%"} justifyContent={"end"} mt={"20px"}>
-              <Button bgColor={"#23D9D7"}>مرحله بعد</Button>
+              <Button bgColor={"#23D9D7"}>{t("next_step")}</Button>
             </HStack>
           </VStack>
           <VStack
@@ -222,18 +228,14 @@ const Index = () => {
             bgColor={"#3646B3"}
           >
             <Text fontWeight={"bold"} color={"white"} fontSize={"18px"}>
-              چگونه سؤال مؤثرتری بپرسیم؟
+              {t("how_to_ask_a_better_question")}
             </Text>
-            <Text color={"white"}>
-              شما آماده هستید که یک سوال مرتبط با برنامه نویسی بپرسید و این فرم
-              به شما در این فرآیند کمک می کند.
-            </Text>
+            <Text color={"white"}>{t("youre_ready")}</Text>
             <Text color={"white"} my={"20px"}>
-              به دنبال پرسیدن یک سوال غیر برنامه نویسی هستید؟ برای یافتن یک سایت
-              مرتبط به موضوعات اینجا مراجعه کنید.
+              {t("looking_to_ask")}
             </Text>
             <Text fontWeight={"bold"} color={"white"}>
-              مراحل
+              {t("steps")}
             </Text>
             <UnorderedList
               textAlign={"start"}
@@ -248,31 +250,19 @@ const Index = () => {
               }}
             >
               <ListItem>
-                <Text color={"white"}>
-                  مشکل خود را در یک عنوان یک خطی خلاصه کنید.
-                </Text>
+                <Text color={"white"}>{t("summarize_your_problem")}</Text>
               </ListItem>
               <ListItem>
-                <Text color={"white"}>
-                  مشکل خود را با جزئیات بیشتر توضیح دهید.
-                </Text>
+                <Text color={"white"}>{t("explain_your_problem")}</Text>
               </ListItem>
               <ListItem>
-                <Text color={"white"}>
-                  آنچه را که تلاش کردید و انتظار داشتید چه اتفاقی بیفتد را توصیف
-                  کنید.
-                </Text>
+                <Text color={"white"}>{t("describe_what_you_tried")}</Text>
               </ListItem>
               <ListItem>
-                <Text color={"white"}>
-                  «برچسب‌هایی» را اضافه کنید که به نمایان شدن سؤال شما برای
-                  اعضای انجمن کمک می‌کند.
-                </Text>
+                <Text color={"white"}>{t("add_tags_to_help")}</Text>
               </ListItem>
               <ListItem>
-                <Text color={"white"}>
-                  سوال خود را بررسی کنید و آن را در سایت ارسال کنید.
-                </Text>
+                <Text color={"white"}>{t("review_your_question")}</Text>
               </ListItem>
             </UnorderedList>
           </VStack>
@@ -286,7 +276,7 @@ const Index = () => {
             color={"black"}
           >
             <Text fontWeight={"bold"} fontSize={"18px"}>
-              محتوا سوال
+              {t("question_content")}
             </Text>
             <Text>
               لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ
@@ -301,7 +291,7 @@ const Index = () => {
             bgColor={"#fef4e2"}
           >
             <Text fontWeight={"bold"} color={"black"}>
-              سؤالات مرتبط
+              {t("related_questions")}
             </Text>
             <Text color={"black"} my={"10px"}>
               لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ
@@ -384,12 +374,12 @@ const Index = () => {
                   borderRadius={"5px"}
                   color={"white"}
                 >
-                  3 پاسخ
+                  3 {t("answer")}
                 </Badge>
               </HStack>
             </VStack>
             <HStack w={"100%"} justifyContent={"end"} mt={"20px"}>
-              <Button bgColor={"#23D9D7"}>مرحله بعد</Button>
+              <Button bgColor={"#23D9D7"}>{t("next_step")}</Button>
             </HStack>
           </VStack>
 
@@ -403,26 +393,28 @@ const Index = () => {
             color={"black"}
           >
             <Text fontWeight={"bold"} fontSize={"18px"}>
-              برچسب‌های سؤال
+              {t("question_tags")}
             </Text>
             <Text>
               لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ
             </Text>
-            {dataTag && (
-              <MultiSelectComboBox
-                selectedOptions={selectedOptions}
-                setSelectedOptions={setSelectedOptions}
-                optionsList={dataTag?.data?.result?.map((it) => ({
+            
+            <MultiSelectComboBox
+              selectedOptions={selectedOptions}
+              setSelectedOptions={setSelectedOptions}
+              optionsList={
+                dataTag?.data?.result?.map((it) => ({
                   value: it?.id,
                   label: it?.name,
-                }))}
-                setInputValue={setInputValue}
-                inputValue={inputValue}
-              />
-            )}
+                })) || []
+              }
+              setInputValue={setInputValue}
+              inputValue={inputValue}
+            />
+            
             <HStack w={"100%"} justifyContent={"end"} mt={"20px"}>
               <Button bgColor={"#23D9D7"} type={"submit"}>
-                ثبت سوال
+                {t("submit_your_question")}
               </Button>
             </HStack>
           </VStack>

@@ -12,6 +12,7 @@ import {
   HStack,
   IconButton,
   Image,
+  Spinner,
   Stack,
   Text,
   Textarea,
@@ -33,6 +34,8 @@ import {
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 import moment from "moment-jalaali";
+import { useTranslation } from "react-i18next";
+import Head from "next/head";
 
 const postRequest = (url, { arg: { id, ...data } }) => {
   return axios.post(baseUrl + url + `?id=${id}`, data, {
@@ -59,6 +62,8 @@ const patchRequest = (
 };
 
 const Index = () => {
+  const { t } = useTranslation();
+
   const slidesToShow = useBreakpointValue({ base: 1, md: 2, lg: 4 }); // responsive value
 
   const router = useRouter();
@@ -71,9 +76,11 @@ const Index = () => {
     handleSubmit: handleSubmitAnswer,
   } = useForm();
 
-  const { data: dataQuestion, isLoading: isLoadingQuestion , mutate:mutateQuestion } = useSWR(
-    query?.id && `user/question?id=${query?.id}`
-  );
+  const {
+    data: dataQuestion,
+    isLoading: isLoadingQuestion,
+    mutate: mutateQuestion,
+  } = useSWR(query?.id && `user/question?id=${query?.id}`);
   const { data: dataQuestionAnswer, isLoading: isLoadingQuestionAnswer } =
     useSWR(query?.id && `user/question/answer?question_id=${query?.id}`);
 
@@ -89,10 +96,11 @@ const Index = () => {
 
   const { trigger: triggerLike, isLoading: isLoadingLike } = useSWRMutation(
     `user/action`,
-    patchRequest , {
-      onSuccess:()=>{
-        mutateQuestion()
-      }
+    patchRequest,
+    {
+      onSuccess: () => {
+        mutateQuestion();
+      },
     }
   );
 
@@ -110,6 +118,10 @@ const Index = () => {
 
   return (
     <MainLayout>
+      <Head>
+        <title>{dataQuestion?.data?.result?.[0]?.title}</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <Box
         marginTop={{ base: "60px", md: "100px" }}
         w="100%"
@@ -175,40 +187,43 @@ const Index = () => {
               w={"100%"}
             >
               <GridItem colSpan={{ base: "2", md: "3" }}>
-                <VStack
-                  w={"100%"}
-                  alignItems={"start"}
-                  justifyContent={"start"}
-                  h={"100%"}
-                >
-                  <Text>{dataQuestion?.data?.result?.[0]?.title}</Text>
-                  <HStack w={"100%"}>
-                    <HStack w={"100%"} justifyContent={"space-between"}>
-                      <HStack>
-                        <Avatar
-                          w={"28px"}
-                          h={"28px"}
+                {isLoadingQuestion ? (
+                  <Spinner />
+                ) : (
+                  <VStack
+                    w={"100%"}
+                    alignItems={"start"}
+                    justifyContent={"start"}
+                    h={"100%"}
+                  >
+                    <Text>{dataQuestion?.data?.result?.[0]?.title}</Text>
+                    <HStack w={"100%"}>
+                      <HStack w={"100%"} justifyContent={"space-between"}>
+                        <HStack>
+                          <Avatar
+                            w={"28px"}
+                            h={"28px"}
+                            display={{ base: "none", md: "flex" }}
+                          />
+                          <Text
+                            minW={"150px"}
+                            color={"gray.400"}
+                            fontSize={"16px"}
+                          >
+                            {dataQuestion?.data?.result?.[0]?.source}
+                          </Text>
+                        </HStack>
+                        <HStack
+                          w={"100%"}
+                          justifyContent={"end"}
                           display={{ base: "none", md: "flex" }}
-                        />
-                        <Text
-                          minW={"150px"}
-                          color={"gray.400"}
-                          fontSize={"16px"}
                         >
-                          {dataQuestion?.data?.result?.[0]?.source}
-                        </Text>
-                      </HStack>
-                      <HStack
-                        w={"100%"}
-                        justifyContent={"end"}
-                        display={{ base: "none", md: "flex" }}
-                      >
-                        <Text fontSize={"sm"} color={"gray.400"}>
-                          {moment(
-                            dataQuestion?.data?.result?.[0]?.created_at
-                          ).format("jYYYY/jMM/jDD")}
-                        </Text>
-                        <AvatarGroup size="sm" max={2}>
+                          <Text fontSize={"sm"} color={"gray.400"}>
+                            {moment(
+                              dataQuestion?.data?.result?.[0]?.created_at
+                            ).format("jYYYY/jMM/jDD")}
+                          </Text>
+                          {/* <AvatarGroup size="sm" max={2}>
                           <Avatar
                             name="Ryan Florence"
                             src="https://bit.ly/ryan-florence"
@@ -229,26 +244,27 @@ const Index = () => {
                             name="Christian Nwamba"
                             src="https://bit.ly/code-beast"
                           />
-                        </AvatarGroup>
+                        </AvatarGroup> */}
+                        </HStack>
                       </HStack>
+                      <Button
+                        width={{ base: "152px", md: "189px" }}
+                        height={"50px"}
+                        bgColor={"#F9C96D"}
+                        color={"black"}
+                        fontWeight={"400"}
+                        fontSize={"12px"}
+                        size={"sm"}
+                        lineHeight={"100%"}
+                        letterSpacing={0}
+                        borderRadius={"10px"}
+                        onClick={(e) => handleNewQuestionButton()}
+                      >
+                        {t("ask_your_question")}
+                      </Button>
                     </HStack>
-                    <Button
-                      width={{ base: "152px", md: "189px" }}
-                      height={"50px"}
-                      bgColor={"#F9C96D"}
-                      color={"black"}
-                      fontWeight={"400"}
-                      fontSize={"12px"}
-                      size={"sm"}
-                      lineHeight={"100%"}
-                      letterSpacing={0}
-                      borderRadius={"10px"}
-                      onClick={(e) => handleNewQuestionButton()}
-                    >
-                      سؤال خود را بپرسید
-                    </Button>
-                  </HStack>
-                </VStack>
+                  </VStack>
+                )}
               </GridItem>
               <GridItem
                 as={Stack}
@@ -256,7 +272,7 @@ const Index = () => {
                 display={{ base: "none" }}
               >
                 <Button bgColor={"#F9C96D"} fontWeight={"normal"}>
-                  سؤال خود را بپرسید
+                  {t("ask_your_question")}
                 </Button>
               </GridItem>
             </Grid>
@@ -296,12 +312,13 @@ const Index = () => {
                     />
                   </VStack>
                 )}
-                <VStack>
+
+              { isLoadingQuestion ? <Spinner />: <VStack>
                   <Text lineHeight={"taller"}>
                     {dataQuestion?.data?.result?.[0]?.content}
                   </Text>
                   <Image
-                    src="./imageskelete.png"
+                    src="/imageskelete.png"
                     w={"100%"}
                     height={"530px"}
                     my={"10px"}
@@ -326,7 +343,7 @@ const Index = () => {
                           w={{ base: "min-content" }}
                           textAlign={"center"}
                         >
-                          {tag}
+                          {tag?.name}
                         </Badge>
                       ))}
                     </HStack>
@@ -338,7 +355,7 @@ const Index = () => {
                         fontWeight={"normal"}
                         size={"sm"}
                       >
-                        گزارش محتوای نامناسب
+                        {t("report_inappropriate_content")}
                       </Button>
                       <IoWarningOutline color="gray" />
                     </HStack>
@@ -353,11 +370,11 @@ const Index = () => {
                   >
                     <HStack w={"100%"} justifyContent={"space-between"}>
                       <Text fontWeight={"bold"} fontSize={"16px"}>
-                        دیدگاه‌ها
+                        {t("comments")}
                       </Text>
                       <HStack>
                         <Text fontSize={"sm"} color={"gray"}>
-                          دیدگاه خود را بنویسید
+                          {t("write_your_comment")}
                         </Text>
                         <IconButton
                           icon={<IoPencil color="gray" />}
@@ -381,7 +398,7 @@ const Index = () => {
                         <HStack>
                           <Text color={"#3646B3"}>حسن الماسی</Text>
                           <Text color={"gray"} fontSize={"sm"}>
-                            ۴ روز پیش
+                            ۴ {t("days_ago")}
                           </Text>
                         </HStack>
                       </Stack>
@@ -404,7 +421,7 @@ const Index = () => {
                       my={"10px"}
                     >
                       <Text fontWeight={"bold"} fontSize={"18px"}>
-                        جواب ها
+                        {t("answers")}
                       </Text>
                     </HStack>
                     <HStack alignItems={"start"} gap={"10px"}>
@@ -484,7 +501,7 @@ const Index = () => {
                                   fontWeight={"normal"}
                                   size={"sm"}
                                 >
-                                  گزارش محتوای نامناسب
+                                  {t("report_inappropriate_content")}
                                 </Button>
                                 <IoWarningOutline color="gray" />
                               </HStack>
@@ -500,7 +517,7 @@ const Index = () => {
                               fontWeight={"normal"}
                               size={"sm"}
                             >
-                              گزارش محتوای نامناسب
+                              {t("report_inappropriate_content")}
                             </Button>
                             <IoWarningOutline color="gray" />
                           </HStack>
@@ -514,11 +531,11 @@ const Index = () => {
                         >
                           <HStack w={"100%"} justifyContent={"space-between"}>
                             <Text fontWeight={"bold"} fontSize={"16px"}>
-                              دیدگاه‌ها
+                              {t("comments")}
                             </Text>
                             <HStack>
                               <Text fontSize={"sm"} color={"gray"}>
-                                دیدگاه خود را بنویسید
+                                {t("Write Your Comment")}
                               </Text>
                               <IconButton
                                 icon={<IoPencil color="gray" />}
@@ -541,7 +558,7 @@ const Index = () => {
                             <HStack>
                               <Text color={"#3646B3"}>حسن الماسی</Text>
                               <Text color={"gray"} fontSize={"sm"}>
-                                ۴ روز پیش
+                                ۴ {t("days_ago")}
                               </Text>
                             </HStack>
                           </Stack>
@@ -561,7 +578,7 @@ const Index = () => {
                             <HStack>
                               <Text color={"#3646B3"}>حسن الماسی</Text>
                               <Text color={"gray"} fontSize={"sm"}>
-                                ۴ روز پیش
+                                ۴ {t("days_ago")}
                               </Text>
                             </HStack>
                           </Stack>
@@ -581,7 +598,7 @@ const Index = () => {
                             <HStack>
                               <Text color={"#3646B3"}>حسن الماسی</Text>
                               <Text color={"gray"} fontSize={"sm"}>
-                                ۴ روز پیش
+                                ۴ {t("days_ago")}
                               </Text>
                             </HStack>
                           </Stack>
@@ -704,10 +721,10 @@ const Index = () => {
                           fontSize={"16px"}
                           mb={"10px"}
                         >
-                          پاسخ شما
+                          {t("your_answer")}
                         </Text>
                         <Text fontSize={"xs"} color={"white"}>
-                          برای پاسخ به این سؤال، باید وارد حساب کاربری خود شوید.
+                          {t("you_must_log")}
                         </Text>
                       </VStack>
                       <Button
@@ -717,7 +734,7 @@ const Index = () => {
                         w={{ base: "200px", md: "150px" }}
                         size={"sm"}
                       >
-                        ورود به حساب کاربری
+                        {t("log_in_to_your_account")}
                       </Button>
                     </HStack>
                   </Box>
@@ -735,11 +752,9 @@ const Index = () => {
                   >
                     <VStack w={"100%"} alignItems={"start"}>
                       <Text fontWeight={"bold"} fontSize={"16px"} mb={"10px"}>
-                        پاسخ شما
+                        {t("your_answer")}
                       </Text>
-                      <Text fontSize={"xs"}>
-                        پاسخ‌های تولید شده توسط ابزارهای هوش مصنوعی مجاز نیستند.
-                      </Text>
+                      <Text fontSize={"xs"}>{t("AI-generated")}</Text>
                     </VStack>
                     <Textarea my={"20px"} {...registerAnswer("content")} />
                     <HStack w={"100%"} justifyContent={"end"}>
@@ -750,12 +765,13 @@ const Index = () => {
                         size={"sm"}
                         type="submit"
                       >
-                        ثبت پاسخ
+                        {t("submit_answer")}
                       </Button>
                     </HStack>
                   </Box>
-                </VStack>
+                </VStack>}
               </GridItem>
+
               <GridItem>
                 <Box
                   as={VStack}
@@ -768,7 +784,7 @@ const Index = () => {
                   w={{ base: "fit-content", md: "100%" }}
                 >
                   <Text fontWeight={"bold"} fontSize={"16px"} mb={"10px"}>
-                    سؤال‌‌های مرتبط
+                    {t("related_questions")}
                   </Text>
                   <HStack alignItems={"start"}>
                     <Badge
@@ -849,7 +865,7 @@ const Index = () => {
                   my={"20px"}
                 >
                   <Text fontWeight={"bold"} fontSize={"16px"} mb={"10px"}>
-                    سؤال‌‌های پربازدید
+                    {t("most_viewed_questions")}
                   </Text>
                   <VStack alignItems={"start"}>
                     <Text>

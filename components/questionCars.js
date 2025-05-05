@@ -11,7 +11,7 @@ import { useRouter } from "next/router";
 import { HiArrowTurnDownLeft } from "react-icons/hi2";
 import { IoCheckmark, IoEyeOutline } from "react-icons/io5";
 
-const QuestionCard = ({ data }) => {
+const QuestionCard = ({ data , t }) => {
 
   const router = useRouter()
 
@@ -21,19 +21,18 @@ const QuestionCard = ({ data }) => {
 
   return (
     <HStack w={"100%"} alignItems={"start"} borderBottom={'1px solid #E2E8F0'} mb={'10px'} pb={"20px"} gap={"20px"} onClick={e => handleQuestionRouter(data?.id)} cursor={'pointer'}>
-      {console.log("question card", data)}
       <VStack w={"150px"} alignItems={"start"}>
         <HStack color={"gray.600"}>
           <HiArrowTurnDownLeft fontSize={"20px"} />
-          <Text fontSize={"16px"} w={'max-content'}>{data?.like_count}پسند</Text>
+          <Text fontSize={"16px"} w={'max-content'}>{data?.like_count}{t('like')}</Text>
         </HStack>
         <HStack color={"gray.600"}>
           <IoCheckmark fontSize={"20px"} />
-          <Text fontSize={"16px"} w={'max-content'}>{data?.answer_count} جواب</Text>
+          <Text fontSize={"16px"} w={'max-content'}>{data?.answer_count} {t('answer')}</Text>
         </HStack>
         <HStack color={"gray.600"}>
           <IoEyeOutline fontSize={"20px"} />
-          <Text fontSize={"16px"} w={'max-content'}>{data?.view_count} بازدید</Text>
+          <Text fontSize={"16px"} w={'max-content'}>{data?.view_count} {t('view')}</Text>
         </HStack>
         <HStack></HStack>
       </VStack>
@@ -68,17 +67,17 @@ const QuestionCard = ({ data }) => {
           }
         </HStack>
         <HStack w={"100%"}>
-          <HStack>
+          {data?.source &&<HStack>
             <Avatar size={"sm"} />
             <Text color={"gray.700"} w={"140px"}>
               {data?.source}
             </Text>
-          </HStack>
+          </HStack>}
           <HStack w={"100%"} justifyContent={"end"}>
             <Text w={"150px"} color={"gray.400"}>
               {moment(data?.created_at).format('hh:mm:ss jYYYY/jMM/jDD')}
             </Text>
-            <AvatarGroup size="sm" max={2}>
+            {/* <AvatarGroup size="sm" max={2}>
               <Avatar name="Ryan Florence" src="https://bit.ly/ryan-florence" />
               <Avatar name="Segun Adebayo" src="https://bit.ly/sage-adebayo" />
               <Avatar name="Kent Dodds" src="https://bit.ly/kent-c-dodds" />
@@ -87,7 +86,7 @@ const QuestionCard = ({ data }) => {
                 src="https://bit.ly/prosper-baba"
               />
               <Avatar name="Christian Nwamba" src="https://bit.ly/code-beast" />
-            </AvatarGroup>
+            </AvatarGroup> */}
           </HStack>
         </HStack>
       </VStack>

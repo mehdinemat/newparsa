@@ -6,6 +6,7 @@ import {
   Grid,
   GridItem,
   HStack,
+  Stack,
   Text,
   VStack
 } from "@chakra-ui/react";
@@ -19,8 +20,11 @@ import QuestionMCard from "@/components/home/mobile/questionMCard";
 import { baseUrl } from "@/components/lib/api";
 import QuestionCard from "@/components/questionCars";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useSWR from "swr";
+import { useTranslation } from "react-i18next";
+import Pagination from "@/components/pagination";
+import Head from "next/head";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -62,11 +66,12 @@ const items2 = [
 ];
 
 const Index = ({ children }) => {
-
+  const { t } = useTranslation();
   const router = useRouter();
+  const {locale} = router
   const [treeData, setTreeData] = useState([]);
-
-  const { data: dataQuestion, error: errorQuestion } = useSWR('user/question');
+  const [page , setPage] = useState(1)
+  const { data: dataQuestion, error: errorQuestion } = useSWR(`user/question?lang=${locale}&page=${page}`);
   const { data: dataSource, error: errorSource } = useSWR('user/source');
 
   useSWR('user/category?type=question', {
@@ -130,6 +135,10 @@ const Index = ({ children }) => {
 
   return (
     <MainLayout>
+       <Head>
+        <title>{t('questions')}</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <Box
         w="100%"
         alignItems={"center"}
@@ -148,7 +157,7 @@ const Index = ({ children }) => {
           w={"100%"}
         >
           {/* Right Sidebar */}
-          <SidebarTree treeData={treeData} onLoadData={onLoadData} />
+          <SidebarTree treeData={treeData} onLoadData={onLoadData} t={t} />
 
           {/* Main Content */}
           <Box p={{ base: 0, md: "6" }} order={{ base: 1, md: 2 }} as={GridItem}
@@ -167,7 +176,7 @@ const Index = ({ children }) => {
             >
 
               <Text fontWeight={"700"} fontSize={"22px"} letterSpacing={0} >
-                سؤال‌ها پیشنهادی
+              {t('suggested_questions')}
               </Text>
 
               <Button
@@ -182,14 +191,14 @@ const Index = ({ children }) => {
                 borderRadius={'10px'}
                 onClick={e => handleNewQuestionButton()}
               >
-                سؤال خود را بپرسید
+               {t('ask_your_question')}
               </Button>
             </HStack>
 
             <VStack display={{ base: 'none', md: 'flex' }}>
               {
                 dataQuestion?.data?.result?.map((item, index) => (
-                  <QuestionCard key={index} data={item} />
+                  <QuestionCard key={index} data={item} t={t}/>
                 ))
               }
               {/* <Divider my={"20px"} />
@@ -202,6 +211,14 @@ const Index = ({ children }) => {
               <QuestionCard />
               <Divider my={"20px"} />
               <QuestionCard /> */}
+              <Stack w={"100%"} justifyContent={"center"} alignItems={"center"}>
+                <Pagination
+                  totalPages={dataQuestion?.data?.total_count}
+                  currentPage={page}
+                  onPageChange={setPage}
+                  t={t}
+                />
+              </Stack>
             </VStack>
 
             <VStack display={{ base: 'flex', md: 'none' }}>
@@ -240,12 +257,12 @@ const Index = ({ children }) => {
               mb={"30px"}
             >
               <Text fontWeight={"bold"} fontSize={"16px"}>
-                منابع سوال ها
+              {t('question_sources')}
               </Text>
               <VStack mt={"20px"} w={"100%"} alignItems={"start"}>
                 {
                   dataSource?.data?.map((item, index) => (
-                    <LeftSidebar key={index} data={item} />
+                    <LeftSidebar key={index} data={item} t={t}/>
                   ))
                 }
               </VStack>
@@ -260,7 +277,7 @@ const Index = ({ children }) => {
               height={"min-content"}
             >
               <Text fontWeight={"bold"} fontSize={"16px"}>
-                حدیث روز
+              {t('hadith_of_the_day')}
               </Text>
               <Text mt={"10px"}>
                 عن الامام الحسن علیه السلام: «رَأَیْتُ أُمِّی فَاطِمَةَ ع

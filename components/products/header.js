@@ -53,7 +53,7 @@ const siteData = [
   },
 ];
 
-const Header = ({ children }) => {
+const Header = ({ children  , t}) => {
   const router = useRouter();
 
   return (
@@ -67,7 +67,7 @@ const Header = ({ children }) => {
       bg={"#3646B3"}
       p={2}
       px={4}
-      bgImage={"./homeheader.png"}
+      bgImage={"/homeheader.png"}
       bgSize="cover" // 👈 this makes it cover the container
       bgRepeat="no-repeat"
       bgPosition="center"
@@ -91,7 +91,7 @@ const Header = ({ children }) => {
             top={'0px'}
           // position={"absolute"}
           >
-            <HeaderSlider />
+            <HeaderSlider t={t}/>
           </Stack>
         </VStack>
       </HStack>

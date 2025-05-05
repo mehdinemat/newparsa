@@ -11,11 +11,14 @@ import {
   Text,
   VStack
 } from "@chakra-ui/react";
+import { useTranslation } from "react-i18next";
 
 const Index = () => {
+    const { t } = useTranslation();
+  
   return (
     <MainLayout>
-      <Header />
+      <Header t={t}/>
       <Box
         w="100%"
         alignItems={"center"}
@@ -28,7 +31,7 @@ const Index = () => {
       >
         <Stack direction={{ base: 'column', md: 'row' }} dir="rtl" w={{ base: 'calc( 100% - 10px )', md: "100%" }} justifyContent={"space-between"}>
           <Stack w={"100%"} alignItems={{ base: 'center' }}>
-            <Image src="./questionlogo.png" w={{ base: '225px', md: "509px" }} h={{ base: '222px', md: "500px" }} />
+            <Image src="/questionlogo.png" w={{ base: '225px', md: "509px" }} h={{ base: '222px', md: "500px" }} />
           </Stack>
 
           <VStack w={'100%'} alignItems={{ base: 'center', md: "start" }}>
@@ -39,7 +42,7 @@ const Index = () => {
               textAlign={"start"}
               mb={"10px"}
             >
-              موتور جستجو هوشمند سؤالات
+             {t('smart_question_search_engine')}
             </Text>
             <Text w={"auto"} fontSize={"14px"} textAlign={"start"} whiteSpace="normal">
               لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با
@@ -47,7 +50,7 @@ const Index = () => {
               در ستون و سطرآنچنان که لازم است
             </Text>
             <Button bgColor={"#29CCCC"} fontWeight={"normal"} mt={"20px"}>
-              اطلاعات بیشتر
+            {t('learn_more')}
             </Button>
           </VStack>
         </Stack>
@@ -64,7 +67,7 @@ const Index = () => {
       >
         <Stack direction={{ base: 'column', md: 'row' }} dir="rtl" w={{ base: 'calc( 100% - 10px )', md: "100%" }} justifyContent={"space-between"}>
           <Stack w={"100%"} alignItems={{ base: 'center' }} order={{ base: 1, md: 2 }} >
-            <Image src="./questionlogo.png" w={{ base: '225px', md: "509px" }} h={{ base: '222px', md: "500px" }} />
+            <Image src="/questionlogo.png" w={{ base: '225px', md: "509px" }} h={{ base: '222px', md: "500px" }} />
           </Stack>
 
           <VStack w={'100%'} alignItems={{ base: 'center', md: "start" }} order={{ base: 2, md: 1 }}>
@@ -75,7 +78,7 @@ const Index = () => {
               textAlign={"start"}
               mb={"10px"}
             >
-              موتور جستجو هوشمند سؤالات
+               {t('smart_question_search_engine')}
             </Text>
             <Text w={"auto"} fontSize={"14px"} textAlign={"start"} whiteSpace="normal">
               لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با
@@ -83,7 +86,7 @@ const Index = () => {
               در ستون و سطرآنچنان که لازم است
             </Text>
             <Button bgColor={"#29CCCC"} fontWeight={"normal"} mt={"20px"}>
-              اطلاعات بیشتر
+            {t('learn_more')}
             </Button>
           </VStack>
         </Stack>
@@ -98,7 +101,7 @@ const Index = () => {
         my={"20px"}
       >
         <HStack mb={'20px'}>
-          <Text fontWeight={'bold'} fontSize={'20px'}>همه محصولات</Text>
+          <Text fontWeight={'bold'} fontSize={'20px'}>{t('all_products')}</Text>
           <Text></Text>
         </HStack>
         {
