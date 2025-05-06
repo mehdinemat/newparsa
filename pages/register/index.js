@@ -148,6 +148,37 @@ const Index = () => {
             >
               {errors.phone_number?.message}
             </p>
+            <p
+              style={{
+                fontSize: "10px",
+                color: "#e4002b",
+                width: "100%",
+                textAlign: "start",
+              }}
+            >
+              {errors.first_name?.message}
+            </p>
+            <Input
+              height={"46px"}
+              placeholder={t("last_name")}
+              my={"10px"}
+              {...register("last_name")}
+              sx={{
+                "::placeholder": {
+                  textAlign: "center", // this line is also needed to target the placeholder itself
+                },
+              }}
+            />
+            <p
+              style={{
+                fontSize: "10px",
+                color: "#e4002b",
+                width: "100%",
+                textAlign: "start",
+              }}
+            >
+              {errors.last_name?.message}
+            </p>
             <Input
               height={"46px"}
               placeholder={t("username")}
@@ -215,154 +246,6 @@ const Index = () => {
               height={"46px"}
               placeholder={t("email")}
               my={"10px"}
-              {...register("email")}
-              sx={{
-                "::placeholder": {
-                  textAlign: "center", // this line is also needed to target the placeholder itself
-                },
-              }}
-            />
-            <p
-              style={{
-                fontSize: "10px",
-                color: "#e4002b",
-                width: "100%",
-                textAlign: "start",
-              }}
-            >
-              {errors.email?.message}
-            </p>
-            <Input
-              height={"46px"}
-              placeholder={t("first_name")}
-              my={"10px"}
-              {...register("first_name")}
-              sx={{
-                "::placeholder": {
-                  textAlign: "center", // this line is also needed to target the placeholder itself
-                },
-              }}
-            />
-            <p
-              style={{
-                fontSize: "10px",
-                color: "#e4002b",
-                width: "100%",
-                textAlign: "start",
-              }}
-            >
-              {errors.first_name?.message}
-            </p>
-            <Input
-              height={"46px"}
-              placeholder={t("last_name")}
-              my={"10px"}
-              {...register("last_name")}
-              sx={{
-                "::placeholder": {
-                  textAlign: "center", // this line is also needed to target the placeholder itself
-                },
-              }}
-            />
-            <p
-              style={{
-                fontSize: "10px",
-                color: "#e4002b",
-                width: "100%",
-                textAlign: "start",
-              }}
-            >
-              {errors.last_name?.message}
-            </p>
-            <Input
-              height={"46px"}
-              placeholder="نام کاربری"
-              my={"0px"}
-              {...register("username")}
-              sx={{
-                "::placeholder": {
-                  textAlign: "center", // this line is also needed to target the placeholder itself
-                },
-              }}
-            />
-            <p
-              style={{
-                fontSize: "10px",
-                color: "#e4002b",
-                width: "100%",
-                textAlign: "start",
-              }}
-            >
-              {errors.username?.message}
-            </p>
-            <Input
-              height={"46px"}
-              placeholder="شماره تلفن"
-              my={"0px"}
-              {...register("phone_number")}
-              sx={{
-                "::placeholder": {
-                  textAlign: "center", // this line is also needed to target the placeholder itself
-                },
-              }}
-            />
-            <p
-              style={{
-                fontSize: "10px",
-                color: "#e4002b",
-                width: "100%",
-                textAlign: "start",
-              }}
-            >
-              {errors.phone_number?.message}
-            </p>
-
-            <Input
-              height={"46px"}
-              placeholder="رمز عبور"
-              my={"0px"}
-              {...register("password")}
-              sx={{
-                "::placeholder": {
-                  textAlign: "center", // this line is also needed to target the placeholder itself
-                },
-              }}
-            />
-            <p
-              style={{
-                fontSize: "10px",
-                color: "#e4002b",
-                width: "100%",
-                textAlign: "start",
-              }}
-            >
-              {errors.password?.message}
-            </p>
-            <Input
-              height={"46px"}
-              placeholder="تکرار رمز عبور"
-              my={"0px"}
-              {...register("re_password")}
-              sx={{
-                "::placeholder": {
-                  textAlign: "center", // this line is also needed to target the placeholder itself
-                },
-              }}
-            />
-            <p
-              style={{
-                fontSize: "10px",
-                color: "#e4002b",
-                width: "100%",
-                textAlign: "start",
-              }}
-            >
-              {errors.re_password?.message}
-            </p>
-            <Input
-              height={"46px"}
-              placeholder="ایمیل"
-              my={"0px"}
               {...register("email")}
               sx={{
                 "::placeholder": {
