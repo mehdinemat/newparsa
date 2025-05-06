@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Center,
   Container,
   Divider,
@@ -19,10 +20,11 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import CountUp from "react-countup";
-import { IoClose, IoMic, IoMicOutline, IoSearch } from "react-icons/io5";
+import { IoClose, IoMic, IoMicOutline, IoSearch, IoSendOutline } from "react-icons/io5";
 import { RiSearchEyeLine } from "react-icons/ri";
 import { PiDiamondThin } from "react-icons/pi";
-import useSWRMutation from 'swr/mutation';
+import useSWRMutation from "swr/mutation";
+import { baseUrl } from "../lib/api";
 
 const siteData = [
   {
@@ -59,14 +61,14 @@ const MotionBox = motion(Box);
 
 const sendAudio = async (url, { arg }) => {
   const formData = new FormData();
-  formData.append('file', arg, 'voice.wav');
+  formData.append("file", arg, "voice.wav");
 
-  const res = await fetch(url, {
-    method: 'POST',
+  const res = await fetch(baseUrl + url, {
+    method: "POST",
     body: formData,
   });
 
-  if (!res.ok) throw new Error('Failed to upload audio');
+  if (!res.ok) throw new Error("Failed to upload audio");
   return res.json();
 };
 
@@ -78,6 +80,7 @@ const Header = ({
   handleClickSemanticSearch,
   watchSearch,
   resetSearch,
+  handleVoiceSearch,
 }) => {
   const router = useRouter();
 
@@ -90,8 +93,16 @@ const Header = ({
   const [mediaRecorder, setMediaRecorder] = useState(null);
   const [audioChunks, setAudioChunks] = useState([]);
   const [recordedBlob, setRecordedBlob] = useState(null);
-  const { trigger: uploadAudio } = useSWRMutation('user/general/speech-to-text', sendAudio);
-
+  const [voiceText, setVoiceText] = useState("");
+  const { trigger: uploadAudio } = useSWRMutation(
+    "user/general/speech-to-text",
+    sendAudio,
+    {
+      onSuccess: (data) => {
+        handleVoiceSearch(data?.data);
+      },
+    }
+  );
 
   // const handleMicClick = async () => {
   //   try {
@@ -131,7 +142,7 @@ const Header = ({
     };
 
     recorder.onstop = () => {
-      const blob = new Blob(audioChunks, { type: 'audio/wav' });
+      const blob = new Blob(audioChunks, { type: "audio/wav" });
       setRecordedBlob(blob);
       setIsRecording(false);
     };
@@ -269,12 +280,24 @@ const Header = ({
             <InputRightElement height="100%" ml="30px">
               <Flex align="center" gap="2">
                 {isRecording ? (
-                  <IoClose
-                    fontSize="16px"
-                    color="white"
-                    style={{ cursor: "pointer" }}
-                    onClick={handleStopRecording}
-                  />
+                  <HStack>
+                    <IoClose
+                      fontSize="16px"
+                      color="white"
+                      style={{ cursor: "pointer" }}
+                      onClick={handleStopRecording}
+                    />
+                    <IoSendOutline
+                      style={{ transform: 'rotate(180deg)' }} 
+                      onClick={async () => {
+                        handleStopRecording();
+                        setTimeout(handleUpload, 500);
+                      }}
+                      fontSize={'25px'}
+                      color="white"
+                      cursor={'pointer'}
+                    />
+                  </HStack>
                 ) : (
                   <>
                     <IoSearch
@@ -288,7 +311,6 @@ const Header = ({
                       color="#29CCCC"
                       cursor="pointer"
                       onClick={(e) => handleClickSemanticSearch()}
-
                     />
                     <IoMic
                       fontSize="20px"

@@ -113,7 +113,9 @@ export default function Home({ children }) {
 
   const { data: dataGeneral, error: errorGeneral } = useSWR("user/general");
   const { data: dataHadith, error: errorHadith } = useSWR("user/general/hadis");
-  const { data: dataSource, error: errorSource } = useSWR("user/source?size=10");
+  const { data: dataSource, error: errorSource } = useSWR(
+    "user/source?size=10"
+  );
   const { data: dataReferences, error: errorReferences } =
     useSWR("user/public-figure");
 
@@ -185,6 +187,9 @@ export default function Home({ children }) {
       )}&search_type=semantic_search`
     );
   };
+  const handleVoiceSearch = (text) => {
+    router.replace(`/result_search?search=${text}&search_type=search`);
+  };
 
   return (
     <MainLayout>
@@ -200,6 +205,7 @@ export default function Home({ children }) {
         resetSearch={resetSearch}
         handleClickSearch={handleClickSearch}
         handleClickSemanticSearch={handleClickSemanticSearch}
+        handleVoiceSearch={handleVoiceSearch}
       />
       <Box
         w="100%"
@@ -283,7 +289,7 @@ export default function Home({ children }) {
             maxW="100vw"
             whiteSpace="normal"
             pr={{ base: 0, md: "21px" }}
-            area={{base:"main" , md:'auto'}}
+            area={{ base: "main", md: "auto" }}
           >
             <HStack
               w="100%"
