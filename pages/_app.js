@@ -10,16 +10,19 @@ import { useTranslation } from "react-i18next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { getTheme } from "@/components/theme";
+import { QueryParamProvider } from "use-query-params";
+import { NextAdapter } from "next-query-params";
 
 const AppWrapper = ({ Component, pageProps }) => {
   const toast = useToast();
   useAxiosInterceptors((options) => toast(options));
   return <Component {...pageProps} />;
 };
+const Adapter = (props) => <NextAdapter {...props} shallow={true} />;
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
-  const {locale} = router
+  const { locale } = router;
   const theme = getTheme(locale || "en");
 
   const [isLanguageSet, setIsLanguageSet] = useState(false);
@@ -42,10 +45,12 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <ChakraProvider theme={theme}>
-      <SWRConfig value={{ fetcher }}>
-        <AppWrapper Component={Component} pageProps={pageProps} />
-      </SWRConfig>
-      <Fonts lang={locale || "en"}/>
+      <QueryParamProvider adapter={Adapter} options={{ enableBatching: true }}>
+        <SWRConfig value={{ fetcher }}>
+          <AppWrapper Component={Component} pageProps={pageProps} />
+        </SWRConfig>
+        <Fonts lang={locale || "en"} />
+      </QueryParamProvider>
     </ChakraProvider>
   );
 }

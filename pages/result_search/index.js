@@ -16,8 +16,10 @@ import {
   Input,
   InputGroup,
   InputRightElement,
+  Spinner,
+  Stack,
   Text,
-  VStack
+  VStack,
 } from "@chakra-ui/react";
 import { Geist, Geist_Mono } from "next/font/google";
 import "slick-carousel/slick/slick-theme.css";
@@ -27,6 +29,12 @@ import QuestionMCard from "@/components/home/mobile/questionMCard";
 import QuestionCard from "@/components/questionCars";
 import { IoSearch } from "react-icons/io5";
 import { TbArrowsSort } from "react-icons/tb";
+import { useTranslation } from "react-i18next";
+import useSWR from "swr";
+import { useState } from "react";
+import { StringParam, useQueryParams, withDefault } from "use-query-params";
+import Head from "next/head";
+import Pagination from "@/components/pagination";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,44 +46,38 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const items = [
-  {
-    image: "/img1.jpg",
-    title: "آیت الله محمدتقی بهجت فومنی",
-    button: "اطلاعات بیشتر",
-  },
-  {
-    image: "/img2.jpg",
-    title: "آیت الله جعفر سبحانی خیابانی تبریزی",
-    button: "اطلاعات بیشتر",
-  },
-  {
-    image: "/img3.jpg",
-    title: "آیت الله سید عبدالکریم موسوی اردبیلی",
-    button: "اطلاعات بیشتر",
-  },
-];
-const items2 = [
-  {
-    image: "/img1.jpg",
-  },
-  {
-    image: "/img2.jpg",
-  },
-  {
-    image: "/img3.jpg",
-  },
-];
-
 const Index = ({ children }) => {
+  const { t } = useTranslation();
 
+  const [page, setPage] = useState(1);
+
+  const [filters, setFilters] = useQueryParams({
+    search: withDefault(StringParam, ""),
+  });
+
+  const {
+    data: dataQuestionSearch,
+    error: errorQuestionSearch,
+    isLoading: isLoadingQuestionSearch,
+  } = useSWR(
+    `user/question?page=${page}&search_type=search&content=${filters?.search}`
+  );
+  const {
+    data: dataCurrection,
+    error: errorCurrection,
+    isLoading: isLoadingCurrection,
+  } = useSWR(`user/question/spell-correction?content=${filters?.search}`);
 
   const handleNewQuestionButton = () => {
-    router.replace('/new_question')
-  }
+    router.replace("/new_question");
+  };
 
   return (
     <MainLayout>
+      <Head>
+        <title>{filters?.search}</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <Box
         w="100%"
         alignItems={"center"}
@@ -121,27 +123,43 @@ const Index = ({ children }) => {
                   </AccordionButton>
                 </h2>
                 <AccordionPanel pb={4}>
-                  <VStack gap={'20px'}>
+                  <VStack gap={"20px"}>
                     <InputGroup>
                       <Input placeholder="جستجوی عبارت" />
                       <InputRightElement>
                         <IoSearch />
                       </InputRightElement>
                     </InputGroup>
-                    <HStack w={'100%'} alignItems={'center'} justifyContent={'start'}>
-                      <Checkbox size={'lg'}></Checkbox>
+                    <HStack
+                      w={"100%"}
+                      alignItems={"center"}
+                      justifyContent={"start"}
+                    >
+                      <Checkbox size={"lg"}></Checkbox>
                       <Text>وحی</Text>
                     </HStack>
-                    <HStack w={'100%'} alignItems={'center'} justifyContent={'start'}>
-                      <Checkbox size={'lg'}></Checkbox>
+                    <HStack
+                      w={"100%"}
+                      alignItems={"center"}
+                      justifyContent={"start"}
+                    >
+                      <Checkbox size={"lg"}></Checkbox>
                       <Text>ویژگی ها و اختصاصات قرآن</Text>
                     </HStack>
-                    <HStack w={'100%'} alignItems={'center'} justifyContent={'start'}>
-                      <Checkbox size={'lg'}></Checkbox>
+                    <HStack
+                      w={"100%"}
+                      alignItems={"center"}
+                      justifyContent={"start"}
+                    >
+                      <Checkbox size={"lg"}></Checkbox>
                       <Text>نزول قرآن</Text>
                     </HStack>
-                    <HStack w={'100%'} alignItems={'center'} justifyContent={'start'}>
-                      <Checkbox size={'lg'}></Checkbox>
+                    <HStack
+                      w={"100%"}
+                      alignItems={"center"}
+                      justifyContent={"start"}
+                    >
+                      <Checkbox size={"lg"}></Checkbox>
                       <Text>کتابت و جمع آوری قرآن</Text>
                     </HStack>
                   </VStack>
@@ -204,11 +222,14 @@ const Index = ({ children }) => {
                     نتایج جستجو برای:
                   </Text>
                   <Text fontWeight={"bold"} fontSize={"16px"}>
-                    مستحبات
+                    {filters?.search}
                   </Text>
                 </HStack>
                 <HStack>
-                  <Text fontSize={"16px"}>آیا منظور شما مستجاب بود؟</Text>
+                  <Text fontSize={"16px"}>
+                    آیا منظور شما{" "}
+                    {dataCurrection?.data?.data?.spell_correction_text} بود؟
+                  </Text>
                 </HStack>
               </VStack>
               <Button
@@ -226,9 +247,10 @@ const Index = ({ children }) => {
                 سؤال خود را بپرسید
               </Button>
             </HStack>
-
-            <HStack w={"100%"} justifyContent={"space-between"}>
-              <Text w={"full"}>۲۳۵ نتیجه (۲/۴۶ ثانیه)</Text>
+            <HStack w={"100%"} justifyContent={"space-between"} mb={'20px'}>
+              <Text w={"full"}>
+                {dataQuestionSearch?.data?.total_count} نتیجه (۲/۴۶ ثانیه)
+              </Text>
               <HStack>
                 <TbArrowsSort color="gray" fontSize={"16px"} />
                 <Text fontSize={"sm"} w={"max-content"}>
@@ -263,32 +285,39 @@ const Index = ({ children }) => {
                 </Button>
               </HStack>
             </HStack>
-
-            <VStack display={{ base: "none", md: "flex" }}>
-              <Divider my={"20px"} />
-              <QuestionCard />
-              <Divider my={"20px"} />
-              <QuestionCard />
-              <Divider my={"20px"} />
-              <QuestionCard />
-              <Divider my={"20px"} />
-              <QuestionCard />
-              <Divider my={"20px"} />
-              <QuestionCard />
-            </VStack>
+            {isLoadingQuestionSearch ? (
+              <HStack
+                w={"100%"}
+                alignItems={"center"}
+                justifyContent={"center"}
+              >
+                <Spinner />
+              </HStack>
+            ) : (
+              <VStack display={{ base: "none", md: "flex" }}>
+                {dataQuestionSearch?.data?.result?.map((item, index) => (
+                  <QuestionCard key={index} data={item} t={t} />
+                ))}
+                <Stack
+                  w={"100%"}
+                  justifyContent={"center"}
+                  alignItems={"center"}
+                >
+                  <Pagination
+                    totalPages={dataQuestionSearch?.data?.total_count
+                    }
+                    currentPage={page}
+                    onPageChange={setPage}
+                    t={t}
+                  />
+                </Stack>
+              </VStack>
+            )}
 
             <VStack display={{ base: "flex", md: "none" }}>
-              <QuestionMCard />
-              <Divider my={"20px"} />
-              <QuestionMCard />
-              <Divider my={"20px"} />
-              <QuestionMCard />
-              <Divider my={"20px"} />
-              <QuestionMCard />
-              <Divider my={"20px"} />
-              <QuestionMCard />
-              <Divider my={"20px"} />
-              <QuestionMCard />
+              {dataQuestionSearch?.data?.result?.map((item, index) => (
+                <QuestionMCard key={index} data={item} t={t} />
+              ))}
             </VStack>
           </Box>
 

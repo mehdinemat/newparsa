@@ -21,47 +21,59 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { IoIosArrowDown, IoIosMenu } from "react-icons/io";
+import { useTranslation } from "react-i18next";
 
 const menuList = [
   {
     title: "سؤال‌ها",
-    icon: "./mobile/question.png",
+    icon: "/mobile/question.png",
     link: "/questions",
+    t_title: "questions",
   },
   {
     title: "موضوعات",
-    icon: "./mobile/folder.png",
+    icon: "/mobile/folder.png",
     link: "/",
+    t_title: "topics",
   },
   {
     title: "برچسب‌ها",
-    icon: "./mobile/tag.png",
+    icon: "/mobile/tag.png",
     link: "",
+    t_title: "tags",
   },
   {
     title: "منابع",
-    icon: "./mobile/inbox.png",
+    icon: "/mobile/inbox.png",
     link: "/",
+    t_title: "resources",
   },
   {
     title: "مراجع",
-    icon: "./mobile/user.png",
+    icon: "/mobile/user.png",
     link: "/references",
+    t_title: "sources",
   },
   {
     title: "کاربران",
-    icon: "./mobile/users.png",
+    icon: "/mobile/users.png",
     link: "references",
+    t_title: "users",
   },
   {
     title: "محصولات",
-    icon: "./mobile/box.png",
+    icon: "/mobile/box.png",
     link: "/products",
+    t_title: "products",
   },
 ];
 
 const MenuBar = () => {
+  const { t } = useTranslation();
+
   const router = useRouter();
+  const { locale } = router;
+
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleClickMenuLink = (link) => {
@@ -86,11 +98,11 @@ const MenuBar = () => {
             py={"50px"}
           >
             <HStack>
-              <Image src="../../questiongreen.png" w={"42px"} h={"56px"} />
-              <Image src="../../parsaw.png" w={"91px"} h={"37px"} />
+              <Image src="/questiongreen.png" w={"42px"} h={"56px"} />
+              <Image src="/parsaw.png" w={"91px"} h={"37px"} />
             </HStack>
             <Text fontSize={"md"} fontWeight={"normal"} color={"white"}>
-              شبکه اجتماعی پرسش و پاسخ دینی
+              {t("religious")}
             </Text>
           </DrawerHeader>
           <DrawerBody
@@ -114,13 +126,13 @@ const MenuBar = () => {
                     w={"32px"}
                     h={"32px"}
                   />
-                  <Text fontSize={"md"}>{item?.title}</Text>
+                  <Text fontSize={"md"}>{t(item?.t_title)}</Text>
                 </HStack>
               ))}
               <Menu w={"100%"}>
                 <HStack w={"100%"}>
                   <Image
-                    src={"../../mobile/globe.png"}
+                    src={"/mobile/globe.png"}
                     color={"white"}
                     w={"32px"}
                     h={"32px"}
@@ -133,14 +145,36 @@ const MenuBar = () => {
                     bgColor={"#3646B3"}
                   >
                     <HStack w={"100%"} justifyContent={"space-between"}>
-                      <Text>فارسی</Text>
+                      <Text fontSize={"sm"}>
+                        {locale == "en"
+                          ? t("header_english")
+                          : locale == "fa"
+                          ? t("header_persian")
+                          : locale == "ar" && t("header_arabic")}
+                      </Text>
                       <IoIosArrowDown />
                     </HStack>
                   </MenuButton>
                 </HStack>
                 <MenuList w={"100%"}>
-                  <MenuItem color={"black"}>انگلیسی</MenuItem>
-                  <MenuItem color={"black"}>عربی</MenuItem>
+                  <MenuItem
+                    color={"black"}
+                    onClick={(e) => router.push("/", "/", { locale: "en" })}
+                  >
+                    {t("header_english")}
+                  </MenuItem>
+                  <MenuItem
+                    color={"black"}
+                    onClick={(e) => router.push("/", "/", { locale: "ar" })}
+                  >
+                    {t("header_arabic")}
+                  </MenuItem>
+                  <MenuItem
+                    color={"black"}
+                    onClick={(e) => router.push("/", "/", { locale: "fa" })}
+                  >
+                    {t("header_persian")}
+                  </MenuItem>
                 </MenuList>
               </Menu>
               <Stack
@@ -158,13 +192,13 @@ const MenuBar = () => {
                   fontWeight={"normal"}
                   borderRadius={"10px"}
                 >
-                  سوال خود را بپرسید
+                  {t("ask_your_question")}
                 </Button>
               </Stack>
             </VStack>
           </DrawerBody>
           <DrawerFooter>
-            <Text fontSize={"sm"}>مؤسسه هوش مصنوعی و تمدن اسلامی (همتا)</Text>
+            <Text fontSize={"sm"}>{t("institute")}</Text>
           </DrawerFooter>
         </DrawerContent>
       </Drawer>

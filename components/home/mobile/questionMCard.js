@@ -1,92 +1,84 @@
-import { Avatar, AvatarGroup, Badge, HStack, Text, VStack } from "@chakra-ui/react";
+import {
+  Avatar,
+  AvatarGroup,
+  Badge,
+  HStack,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import { HiArrowTurnDownLeft } from "react-icons/hi2";
 import { IoCheckmark, IoEyeOutline } from "react-icons/io5";
+import moment from 'moment-jalaali';
 
-const QuestionMCard = () => {
+const QuestionMCard = ({ data, t }) => {
+  const router = useRouter();
+
+  const handleQuestionRouter = (id) => {
+    router.push(`/question_answer?id=${id}`);
+  };
+
   return (
-    <VStack w={"calc( 100vw - 50px )"} alignItems={"start"}>
-      <HStack alignItems={"start"} gap={'10px'}>
+    <VStack
+      w={"calc( 100vw - 50px )"}
+      alignItems={"start"}
+      borderBottom={"1px solid #E2E8F0"}
+      gap={"20px"}
+      mb={'10px'} pb={"20px"} 
+      onClick={(e) => handleQuestionRouter(data?.id)}
+      cursor={"pointer"}
+    >
+      <HStack alignItems={"start"} gap={"10px"}>
         <HStack color={"#999999"}>
           <HiArrowTurnDownLeft fontSize={"20px"} />
-          <Text fontSize={'16px'}>2پسند</Text>
+          <Text fontSize={"16px"}>2 {t("like")}</Text>
         </HStack>
         <HStack color={"#999999"}>
           <IoCheckmark fontSize={"20px"} />
-          <Text fontSize={'16px'}>3 جواب</Text>
+          <Text fontSize={"16px"}>3 {t("answer")}</Text>
         </HStack>
         <HStack color={"#999999"}>
           <IoEyeOutline fontSize={"20px"} />
-          <Text fontSize={'16px'}>87 بازدید</Text>
+          <Text fontSize={"16px"}>87 {t("view")}</Text>
         </HStack>
         <HStack></HStack>
       </HStack>
       <VStack w={"100%"} alignItems={"start"} gap={"20px"}>
-        <Text fontSize={'15px'} w="100%" whiteSpace="normal" lineHeight={'taller'}>
-          آیا می‌توان نذر کرد که فطریه را به زلزله زده‌گان داد؟ اگر
-          نتوانیم آن را انجام دهیم، آیا می‌توان فطریه را به یک بدهکار
-          ورشکسته داد؟
+        <Text
+          fontSize={"15px"}
+          w="100%"
+          whiteSpace="normal"
+          lineHeight={"taller"}
+        >
+          {data?.content}
         </Text>
         <HStack>
-          <Badge
-            color="#16A6A6"
-            bgColor="#29CCCC1A"
-            height="26px"
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            fontSize={'14px'}
-            fontWeight={'100'}
-            px="8px" // optional: add some horizontal padding
-          >
-            خداشناسی
-          </Badge>
-          <Badge
-            color="#16A6A6"
-            bgColor="#29CCCC1A"
-            height="26px"
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            px="8px"
-            fontSize={'14px'}
-            fontWeight={'100'}
-          >
-            توحید
-          </Badge>
-          <Badge
-            color="#16A6A6"
-            bgColor="#29CCCC1A"
-            height="26px"
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            px="8px"
-            fontSize={'14px'}
-            fontWeight={'100'}
-          >
-            فقه سیاسی
-          </Badge>
-          <Badge
-            color="#16A6A6"
-            bgColor="#29CCCC1A"
-            height="26px"
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            px="8px"
-            fontSize={'14px'}
-            fontWeight={'100'}
-          >
-            پزشکی
-          </Badge>
+          {data?.tags?.map((item, index) => (
+            <Badge
+              key={index}
+              color="#16A6A6"
+              bgColor="#29CCCC1A"
+              height="26px"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              fontSize={"14px"}
+              fontWeight={"100"}
+              px="8px" // optional: add some horizontal padding
+            >
+              {item?.name}
+            </Badge>
+          ))}
         </HStack>
         <HStack w={"100%"}>
-          <HStack>
-            <Avatar size={"sm"} display={{base:'none' , md:'flex'}}/>
-            <Text color={"gray.700"} w={"100px"} fontSize={'16px'}>
-              اسلام کوئست
-            </Text>
-          </HStack>
+          {data?.source && (
+            <HStack>
+              <Avatar size={"sm"} />
+              <Text color={"gray.700"} w={"140px"}>
+                {data?.source}
+              </Text>
+            </HStack>
+          )}
           {/* <Divider
             orientation="vertical"
             w={"5px"}
@@ -95,34 +87,25 @@ const QuestionMCard = () => {
           />
           */}
 
-          <HStack w={"100%"} justifyContent={"end"}>
-            <Text w={"max-content"} color={"gray.400"} fontSize={'16px'}>
-              پاسخ ۲۱ ساعت قبل
-            </Text>
-            <AvatarGroup size="sm" max={2}>
-             
-              <Avatar
-                name="Segun Adebayo"
-                src="https://bit.ly/sage-adebayo"
-              />
-              <Avatar
-                name="Kent Dodds"
-                src="https://bit.ly/kent-c-dodds"
-              />
-              <Avatar
-                name="Prosper Otemuyiwa"
-                src="https://bit.ly/prosper-baba"
-              />
-              <Avatar
-                name="Christian Nwamba"
-                src="https://bit.ly/code-beast"
-              />
-            </AvatarGroup>
-          </HStack>
+            <HStack w={"100%"} justifyContent={"end"}>
+                      <Text w={"150px"} color={"gray.400"}>
+                        {moment(data?.created_at).format('hh:mm:ss jYYYY/jMM/jDD')}
+                      </Text>
+                      {/* <AvatarGroup size="sm" max={2}>
+                        <Avatar name="Ryan Florence" src="https://bit.ly/ryan-florence" />
+                        <Avatar name="Segun Adebayo" src="https://bit.ly/sage-adebayo" />
+                        <Avatar name="Kent Dodds" src="https://bit.ly/kent-c-dodds" />
+                        <Avatar
+                          name="Prosper Otemuyiwa"
+                          src="https://bit.ly/prosper-baba"
+                        />
+                        <Avatar name="Christian Nwamba" src="https://bit.ly/code-beast" />
+                      </AvatarGroup> */}
+                    </HStack>
         </HStack>
       </VStack>
     </VStack>
-  )
-}
+  );
+};
 
-export default QuestionMCard
+export default QuestionMCard;

@@ -222,17 +222,11 @@ const Index = ({ children }) => {
             </VStack>
 
             <VStack display={{ base: 'flex', md: 'none' }}>
-              <QuestionMCard />
-              <Divider my={"20px"} />
-              <QuestionMCard />
-              <Divider my={"20px"} />
-              <QuestionMCard />
-              <Divider my={"20px"} />
-              <QuestionMCard />
-              <Divider my={"20px"} />
-              <QuestionMCard />
-              <Divider my={"20px"} />
-              <QuestionMCard />
+            {
+                dataQuestion?.data?.result?.map((item, index) => (
+                  <QuestionMCard key={index} data={item} t={t}/>
+                ))
+              }
             </VStack>
 
           </Box>

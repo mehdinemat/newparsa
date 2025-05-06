@@ -10,6 +10,7 @@ import {
   InputGroup,
   InputLeftElement,
   InputRightElement,
+  Spinner,
   Stack,
   Text,
   useBreakpoint,
@@ -19,43 +20,59 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import CountUp from "react-countup";
-import { IoClose, IoMic, IoMicOutline, IoOptions } from "react-icons/io5";
+import { useForm } from "react-hook-form";
+import {
+  IoClose,
+  IoMic,
+  IoMicOutline,
+  IoOptions,
+  IoSearch,
+} from "react-icons/io5";
+import { RiSearchEyeLine } from "react-icons/ri";
 
 const siteData = [
   {
     title: "سوال",
     number: "234",
-    t_title:'question'
+    t_title: "question",
   },
   {
     title: "برچسب",
     number: "52353",
-    t_title:'tag'
+    t_title: "tag",
   },
   {
     title: "مرجع",
     number: "43",
-    t_title:'reference'
+    t_title: "reference",
   },
   {
     title: "منبع",
     number: "2",
     size: "base",
-    t_title:'source'
+    t_title: "source",
   },
 ];
 
 const dataTranslate = {
-  "سوال": "question_count",
-  "برچسب": "tag_count",
-  "منبع": "source_count",
-  "مرجع": "public_figure_count",
-}
+  سوال: "question_count",
+  برچسب: "tag_count",
+  منبع: "source_count",
+  مرجع: "public_figure_count",
+};
 
 const MotionBox = motion(Box);
 
-
-const Header = ({ data ,t }) => {
+const Header = ({
+  data,
+  t,
+  register,
+  handleClickSearch,
+  isLoadingQuestionSearch,
+  handleClickSemanticSearch,
+  watchSearch,
+  resetSearch,
+}) => {
   const router = useRouter();
 
   const [isRecording, setIsRecording] = useState(false);
@@ -63,7 +80,6 @@ const Header = ({ data ,t }) => {
   const mediaRecorderRef = useRef(null);
 
   const breakpoint = useBreakpoint();
-
 
   const handleMicClick = async () => {
     try {
@@ -73,10 +89,9 @@ const Header = ({ data ,t }) => {
       setIsRecording(true);
 
       mediaRecorderRef.current.ondataavailable = (e) => {
-        const audioBlob = new Blob([e.data], { type: 'audio/wav' });
+        const audioBlob = new Blob([e.data], { type: "audio/wav" });
         const audioUrl = URL.createObjectURL(audioBlob);
       };
-
     } catch (error) {
       console.error("Microphone access denied:", error);
     }
@@ -96,7 +111,7 @@ const Header = ({ data ,t }) => {
       justifyContent={"center"}
       alignItems={"center"}
       width="100%"
-      height={"500px"}
+      height={"450px"}
       bg={"#3646B3"}
       p={2}
       px={4}
@@ -126,7 +141,7 @@ const Header = ({ data ,t }) => {
             color={"white"}
             textAlign={{ base: "center", md: "center" }}
           >
-            {t('home_parsa_header_title')}
+            {t("home_parsa_header_title")}
           </Text>
           <InputGroup
             height="60px"
@@ -143,7 +158,6 @@ const Header = ({ data ,t }) => {
                   h="50px"
                 >
                   {/* First Wave */}
-
 
                   {/* Second Wave (delayed) */}
                   <MotionBox
@@ -189,15 +203,16 @@ const Header = ({ data ,t }) => {
               width={{ base: "381px", md: "100%" }}
               bgColor={isRecording ? "#29CCCC" : "#2A378C"}
               height="60px"
-              textIndent={'20px'}
-              placeholder={isRecording ? t('listening') : t('search_among')}
+              textIndent={"20px"}
+              placeholder={isRecording ? t("listening") : t("search_among")}
               color="white"
               border="none"
               pl={isRecording ? "50px" : "12px"} // Padding when mic moves inside
               _placeholder={{ color: "gray.300" }}
+              {...register("search")}
             />
 
-            <InputRightElement height="100%" ml="20px">
+            <InputRightElement height="100%" ml="30px">
               <Flex align="center" gap="2">
                 {isRecording ? (
                   <IoClose
@@ -206,16 +221,38 @@ const Header = ({ data ,t }) => {
                     style={{ cursor: "pointer" }}
                     onClick={handleCancelRecording}
                   />
-                ) : (
+                ) : !isLoadingQuestionSearch ? (
                   <>
-                    <IoOptions fontSize="20px" color="#29CCCC" />
-                    <IoMic
+                    <IoSearch
                       fontSize="20px"
                       color="#29CCCC"
-                      style={{ cursor: "pointer" }}
-                      onClick={handleMicClick}
+                      cursor={"pointer"}
+                      onClick={(e) => handleClickSearch()}
                     />
+                    <RiSearchEyeLine
+                      fontSize="20px"
+                      color="#29CCCC"
+                      onClick={(e) => handleClickSemanticSearch()}
+                      cursor={"pointer"}
+                    />
+                    {watchSearch("search") ? (
+                      <IoClose
+                        fontSize="16px"
+                        color="white"
+                        style={{ cursor: "pointer" }}
+                        onClick={(e) => resetSearch()}
+                      />
+                    ) : (
+                      <IoMic
+                        fontSize="20px"
+                        color="#29CCCC"
+                        style={{ cursor: "pointer" }}
+                        onClick={handleMicClick}
+                      />
+                    )}
                   </>
+                ) : (
+                  <Spinner color="white" />
                 )}
               </Flex>
             </InputRightElement>
@@ -256,7 +293,9 @@ const Header = ({ data ,t }) => {
                       );
                     }}
                   </CountUp>
-                  <Text color="white" fontSize={{ base: '20px', md: '22px' }}>{t(item?.t_title)}</Text>
+                  <Text color="white" fontSize={{ base: "20px", md: "22px" }}>
+                    {t(item?.t_title)}
+                  </Text>
                 </VStack>
 
                 {/* Only add divider if it's not the last item */}

@@ -8,7 +8,7 @@ import {
   Input,
   Text,
   useToast,
-  VStack
+  VStack,
 } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
@@ -29,7 +29,6 @@ const postRequest = (url, { arg }) => {
 };
 
 const Index = () => {
-
   const { t } = useTranslation();
 
   const router = useRouter();
@@ -123,15 +122,15 @@ const Index = () => {
               w={"327px"}
               mb={"20px"}
             >
-              {t('religious')}
+              {t("religious")}
             </Text>
             <Divider w={"350px"} h={"2px"} bgColor={"#29CCCC"} />
             <Text fontSize={{ base: "20px", md: "25px" }} mt={"20px"}>
-              {t('register')}
+              {t("register")}
             </Text>
             <Input
               height={"46px"}
-              placeholder={t('phone_number')}
+              placeholder={t("phone_number")}
               my={"10px"}
               {...register("phone_number")}
               sx={{
@@ -152,7 +151,7 @@ const Index = () => {
             </p>
             <Input
               height={"46px"}
-              placeholder={t('username')}
+              placeholder={t("username")}
               my={"10px"}
               {...register("username")}
               sx={{
@@ -173,7 +172,7 @@ const Index = () => {
             </p>
             <Input
               height={"46px"}
-              placeholder={t('password')}
+              placeholder={t("password")}
               my={"10px"}
               {...register("password")}
               sx={{
@@ -194,7 +193,7 @@ const Index = () => {
             </p>
             <Input
               height={"46px"}
-              placeholder={t('confirm_password')}
+              placeholder={t("confirm_password")}
               my={"10px"}
               {...register("re_password")}
               sx={{
@@ -215,7 +214,7 @@ const Index = () => {
             </p>
             <Input
               height={"46px"}
-              placeholder={t('email')}
+              placeholder={t("email")}
               my={"10px"}
               {...register("email")}
               sx={{
@@ -236,7 +235,7 @@ const Index = () => {
             </p>
             <Input
               height={"46px"}
-              placeholder={t('first_name')}
+              placeholder={t("first_name")}
               my={"10px"}
               {...register("first_name")}
               sx={{
@@ -257,7 +256,7 @@ const Index = () => {
             </p>
             <Input
               height={"46px"}
-              placeholder={t('last_name')}
+              placeholder={t("last_name")}
               my={"10px"}
               {...register("last_name")}
               sx={{
@@ -383,7 +382,6 @@ const Index = () => {
               {errors.email?.message}
             </p>
 
-
             <Button
               w={"100%"}
               bgColor={"#29CCCC"}
@@ -392,7 +390,7 @@ const Index = () => {
               type="submit"
               isLoading={isMutating}
             >
-              {t('register')}
+              {t("register")}
             </Button>
             {/* <Button
               w={"100%"}

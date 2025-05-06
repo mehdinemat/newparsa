@@ -8,6 +8,7 @@ import {
   Image,
   Input,
   Text,
+  useToast,
   VStack,
 } from "@chakra-ui/react";
 import axios from "axios";
@@ -29,6 +30,7 @@ const Index = () => {
 
   const { t } = useTranslation();
 
+  const toast = useToast()
 
   const router = useRouter()
 
@@ -38,7 +40,17 @@ const Index = () => {
     "user/auth",
     postRequest, {
     onSuccess: (data) => {
-      router.replace(`/two_step_login/verify_code?code=${data?.data?.data}&username=${getValues('username')}`)
+      if(data?.data?.data){
+        router.replace(`/two_step_login/verify_code?code=${data?.data?.data}&username=${getValues('username')}`)
+      }else{
+        toast({
+          title: "خطا",
+          description: data?.data?.message,
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+        })
+      }
     }
   }
   );
@@ -106,6 +118,7 @@ const Index = () => {
             />
             <Input
               height={"46px"}
+              type="password"
               placeholder={t('password')}
               mb={"10px"}
               {...register("password")}

@@ -29,6 +29,8 @@ import Head from "next/head";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import useSWR from "swr";
+import { useForm } from "react-hook-form";
+import { StringParam, useQueryParams, withDefault } from "use-query-params";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -76,15 +78,41 @@ export default function Home({ children }) {
   const [treeData, setTreeData] = useState([]);
   const [page, setPage] = useState(1);
   const [categoryId, setCategoryId] = useState("");
+  const [searchType, setSearchType] = useState("search");
 
   const { t } = useTranslation();
+
+  const {
+    register: registerSearch,
+    getValues: getValuesSearch,
+    setValue: setValueSearch,
+    handleSubmit: handleSubmitSearch,
+    watch: watchSearch,
+    reset: resetSearch,
+  } = useForm();
 
   const {
     data: dataQuestion,
     error: errorQuestion,
     isLoading: isLoadingQuestion,
-  } = useSWR(`user/question?lang=${locale}&page=${page}${categoryId && `&categories__id=${categoryId}`}`);
+  } = useSWR(
+    `user/question?lang=${locale}&page=${page}${
+      categoryId && `&categories__id=${categoryId}`
+    }`
+  );
+  const {
+    data: dataQuestionSearch,
+    error: errorQuestionSearch,
+    isLoading: isLoadingQuestionSearch,
+  } = useSWR(
+    watchSearch("selected_search") &&
+      `user/question?page=${page}&search_type=${searchType}&content=${watchSearch(
+        "selected_search"
+      )}${categoryId && `&categories__id=${categoryId}`}`
+  );
+
   const { data: dataGeneral, error: errorGeneral } = useSWR("user/general");
+  const { data: dataHadith, error: errorHadith } = useSWR("user/general/hadis");
   const { data: dataSource, error: errorSource } = useSWR("user/source");
   const { data: dataReferences, error: errorReferences } =
     useSWR("user/public-figure");
@@ -145,13 +173,31 @@ export default function Home({ children }) {
     router.replace("/new_question");
   };
 
+  const handleClickSearch = () => {
+    setSearchType("search");
+    setValueSearch("selected_search", watchSearch("search"));
+  };
+  const handleClickSemanticSearch = () => {
+    setSearchType("semantic_search");
+    setValueSearch("selected_search", watchSearch("search"));
+  };
+
   return (
     <MainLayout>
       <Head>
         <title>{t("question")}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Header data={dataGeneral?.data} t={t} />
+      <Header
+        data={dataGeneral?.data}
+        t={t}
+        register={registerSearch}
+        watchSearch={watchSearch}
+        resetSearch={resetSearch}
+        handleClickSearch={handleClickSearch}
+        isLoadingQuestionSearch={isLoadingQuestionSearch}
+        handleClickSemanticSearch={handleClickSemanticSearch}
+      />
       <Box
         w="100%"
         alignItems={"center"}
@@ -227,7 +273,10 @@ export default function Home({ children }) {
               </HStack>
             ) : (
               <VStack display={{ base: "none", md: "flex" }}>
-                {dataQuestion?.data?.result?.map((item, index) => (
+                {(watchSearch("search")
+                  ? dataQuestionSearch
+                  : dataQuestion
+                )?.data?.result?.map((item, index) => (
                   <QuestionCard key={index} data={item} t={t} />
                 ))}
                 <Stack
@@ -236,7 +285,12 @@ export default function Home({ children }) {
                   alignItems={"center"}
                 >
                   <Pagination
-                    totalPages={dataQuestion?.data?.total_count}
+                    totalPages={
+                      (watchSearch("search")
+                        ? dataQuestionSearch
+                        : dataQuestion
+                      )?.data?.total_count
+                    }
                     currentPage={page}
                     onPageChange={setPage}
                     t={t}
@@ -246,17 +300,23 @@ export default function Home({ children }) {
             )}
 
             <VStack display={{ base: "flex", md: "none" }}>
-              <QuestionMCard />
-              <Divider my={"20px"} />
-              <QuestionMCard />
-              <Divider my={"20px"} />
-              <QuestionMCard />
-              <Divider my={"20px"} />
-              <QuestionMCard />
-              <Divider my={"20px"} />
-              <QuestionMCard />
-              <Divider my={"20px"} />
-              <QuestionMCard />
+              {(watchSearch("search")
+                ? dataQuestionSearch
+                : dataQuestion
+              )?.data?.result?.map((item, index) => (
+                <QuestionMCard key={index} data={item} t={t} />
+              ))}
+              <Stack w={"100%"} justifyContent={"center"} alignItems={"center"}>
+                <Pagination
+                  totalPages={
+                    (watchSearch("search") ? dataQuestionSearch : dataQuestion)
+                      ?.data?.total_count
+                  }
+                  currentPage={page}
+                  onPageChange={setPage}
+                  t={t}
+                />
+              </Stack>
             </VStack>
           </Box>
 
@@ -301,14 +361,7 @@ export default function Home({ children }) {
                 {t("hadith_of_the_day")}
               </Text>
               <Text mt={"10px"}>
-                عن الامام الحسن علیه السلام: «رَأَیْتُ أُمِّی فَاطِمَةَ ع
-                قَامَتْ فِی مِحْرَابِهَا لَیْلَةَ جُمُعَتِهَا فَلَمْ تَزَلْ
-                رَاکِعَةً سَاجِدَةً حَتَّى اتَّضَحَ عَمُودُ الصُّبْحِ وَ
-                سَمِعْتُهَا تَدْعُو لِلْمُؤْمِنِینَ» در محرابش ایستاده بود و
-                پیوسته در حال رکوع و سجده بود تا اینکه روشنایی صبح نمایان شد و
-                از او شنیدم که برای مردان و زنان مومن دعا می‌کرد و با اسم آنان
-                را نام می‌برد و برایشان زیاد دعا می‌کرد. علل الشرائع، ج‏۱ ص ۱۸۱
-                بحارالانوار، ج ۴۳ ص ۸۲ (۱۶۶۷)
+                {dataHadith?.data}
               </Text>
             </Box>
           </Box>

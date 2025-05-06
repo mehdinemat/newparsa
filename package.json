@@ -24,6 +24,7 @@
     "moment": "^2.30.1",
     "moment-jalaali": "^0.10.4",
     "next": "15.2.0",
+    "next-query-params": "^5.1.0",
     "rc-tree": "^5.13.1",
     "react": "^19.0.0",
     "react-countup": "^6.5.3",
@@ -38,6 +39,7 @@
     "react-table": "^7.8.0",
     "slick-carousel": "^1.8.1",
     "swr": "^2.3.3",
+    "use-query-params": "^2.2.1",
     "wavesurfer.js": "^7.9.1",
     "yup": "^1.6.1"
   }

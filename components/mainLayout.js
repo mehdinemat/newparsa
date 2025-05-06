@@ -48,6 +48,7 @@ import AdminMenuBar from "./admin_dashboard/adminMenuBar";
 import UserMenuBar from "./mobile/dashboard/userMenuBar";
 import MenuBar from "./mobile/menuBar";
 import { useTranslation } from "react-i18next";
+import { StringParam, useQueryParams, withDefault } from "use-query-params";
 
 const menuList = [
   {
@@ -76,6 +77,12 @@ const MainLayout = ({ children }) => {
 
   const router = useRouter();
   const { locale } = router;
+
+  const [filters, setFilters] = useQueryParams({
+    search: withDefault(StringParam, ""),
+  });
+
+  const [search, setSearch] = useState("");
 
   const [activePath, setActivePath] = useState(0);
   const [isSticky, setIsSticky] = useState(false);
@@ -109,7 +116,7 @@ const MainLayout = ({ children }) => {
   };
 
   const handleClickSearch = () => {
-    // onOpen();
+    router.replace(`/result_search?search=${search}`);
   };
 
   const handleToggle = () => {
@@ -207,13 +214,15 @@ const MainLayout = ({ children }) => {
                 <Input
                   height={"46px"}
                   placeholder={t("search")}
-                  onClick={handleClickSearch}
+                  onChange={(e) => setSearch(e.target.value)}
                 />
                 <InputRightElement h="100%">
                   <IoSearch
                     fontSize="20px"
                     style={{ marginTop: "2px" }}
                     color="#29CCCC"
+                    onClick={handleClickSearch}
+                    cursor={'pointer'}
                   />
                 </InputRightElement>
               </InputGroup>
@@ -313,7 +322,7 @@ const MainLayout = ({ children }) => {
                 fontWeight={"normal"}
                 onClick={handleLoginButton}
               >
-            {t('log_sub')}
+                {t("log_sub")}
               </Button>
             )}
             {isUserLogin && (

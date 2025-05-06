@@ -85,7 +85,8 @@
 "first_name":"First Name",
 "last_name":"Last Name",
 "register":"Confirm Register",
-"login_code":"Login Code", "sources": "References",
+"login_code":"Login Code",
+ "sources": "References",
 "search_sources": "Search References",
 "sort_by": "Sort by:",
 "latest": "Latest",
@@ -98,7 +99,11 @@
   "search_user": "Search User",
   "smart_question_search_engine": "Smart Question Search Engine",
   "learn_more": "Learn More",
-  "all_products": "All Products"
+  "all_products": "All Products",
+   "resources": "Resources",
+    "products": "Products",
+    "institute": "Institute for Artificial Intelligence and Islamic Civilization (Hamta)"
+
     
     
   }
