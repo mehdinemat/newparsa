@@ -3,14 +3,13 @@ import MainLayout from "@/components/mainLayout";
 import {
   Box,
   Button,
-  Divider,
   Grid,
   GridItem,
   HStack,
   Spinner,
   Stack,
   Text,
-  VStack,
+  VStack
 } from "@chakra-ui/react";
 import { Geist, Geist_Mono } from "next/font/google";
 import "slick-carousel/slick/slick-theme.css";
@@ -27,10 +26,9 @@ import SidebarTree from "@/components/base/sidebarTree";
 import { baseUrl } from "@/components/lib/api";
 import Head from "next/head";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import useSWR from "swr";
-import { useForm } from "react-hook-form";
-import { StringParam, useQueryParams, withDefault } from "use-query-params";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -96,8 +94,7 @@ export default function Home({ children }) {
     error: errorQuestion,
     isLoading: isLoadingQuestion,
   } = useSWR(
-    `user/question?lang=${locale}&page=${page}${
-      categoryId && `&categories__id=${categoryId}`
+    `user/question?lang=${locale}&page=${page}${categoryId && `&categories__id=${categoryId}`
     }`
   );
   const {
@@ -106,9 +103,9 @@ export default function Home({ children }) {
     isLoading: isLoadingQuestionSearch,
   } = useSWR(
     watchSearch("selected_search") &&
-      `user/question?page=${page}&search_type=${searchType}&content=${watchSearch(
-        "selected_search"
-      )}${categoryId && `&categories__id=${categoryId}`}`
+    `user/question/search?page=${page}&search_type=${searchType}&content=${watchSearch(
+      "selected_search"
+    )}${categoryId && `&categories__id=${categoryId}`}`
   );
 
   const { data: dataGeneral, error: errorGeneral } = useSWR("user/general");

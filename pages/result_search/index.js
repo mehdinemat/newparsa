@@ -8,7 +8,6 @@ import {
   Box,
   Button,
   Checkbox,
-  Divider,
   Grid,
   GridItem,
   HStack,
@@ -19,22 +18,22 @@ import {
   Spinner,
   Stack,
   Text,
-  VStack,
+  VStack
 } from "@chakra-ui/react";
 import { Geist, Geist_Mono } from "next/font/google";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 
 import QuestionMCard from "@/components/home/mobile/questionMCard";
+import Pagination from "@/components/pagination";
 import QuestionCard from "@/components/questionCars";
+import Head from "next/head";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { IoSearch } from "react-icons/io5";
 import { TbArrowsSort } from "react-icons/tb";
-import { useTranslation } from "react-i18next";
 import useSWR from "swr";
-import { useState } from "react";
 import { StringParam, useQueryParams, withDefault } from "use-query-params";
-import Head from "next/head";
-import Pagination from "@/components/pagination";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -60,7 +59,7 @@ const Index = ({ children }) => {
     error: errorQuestionSearch,
     isLoading: isLoadingQuestionSearch,
   } = useSWR(
-    `user/question?page=${page}&search_type=search&content=${filters?.search}`
+    `user/question/search?page=${page}&search_type=search&content=${filters?.search}`
   );
   const {
     data: dataCurrection,
