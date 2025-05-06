@@ -13,19 +13,16 @@ import {
   Stack,
   Text,
   useBreakpoint,
-  VStack
+  VStack,
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import CountUp from "react-countup";
-import {
-  IoClose,
-  IoMic,
-  IoMicOutline,
-  IoSearch
-} from "react-icons/io5";
+import { IoClose, IoMic, IoMicOutline, IoSearch } from "react-icons/io5";
 import { RiSearchEyeLine } from "react-icons/ri";
+import { PiDiamondThin } from "react-icons/pi";
+import useSWRMutation from 'swr/mutation';
 
 const siteData = [
   {
@@ -60,6 +57,19 @@ const dataTranslate = {
 
 const MotionBox = motion(Box);
 
+const sendAudio = async (url, { arg }) => {
+  const formData = new FormData();
+  formData.append('file', arg, 'voice.wav');
+
+  const res = await fetch(url, {
+    method: 'POST',
+    body: formData,
+  });
+
+  if (!res.ok) throw new Error('Failed to upload audio');
+  return res.json();
+};
+
 const Header = ({
   data,
   t,
@@ -71,33 +81,76 @@ const Header = ({
 }) => {
   const router = useRouter();
 
-  const [isRecording, setIsRecording] = useState(false);
   const inputRef = useRef(null);
   const mediaRecorderRef = useRef(null);
 
   const breakpoint = useBreakpoint();
 
-  const handleMicClick = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      mediaRecorderRef.current = new MediaRecorder(stream);
-      mediaRecorderRef.current.start();
-      setIsRecording(true);
+  const [isRecording, setIsRecording] = useState(false);
+  const [mediaRecorder, setMediaRecorder] = useState(null);
+  const [audioChunks, setAudioChunks] = useState([]);
+  const [recordedBlob, setRecordedBlob] = useState(null);
+  const { trigger: uploadAudio } = useSWRMutation('user/general/speech-to-text', sendAudio);
 
-      mediaRecorderRef.current.ondataavailable = (e) => {
-        const audioBlob = new Blob([e.data], { type: "audio/wav" });
-        const audioUrl = URL.createObjectURL(audioBlob);
-      };
-    } catch (error) {
-      console.error("Microphone access denied:", error);
-    }
-  };
+
+  // const handleMicClick = async () => {
+  //   try {
+  //     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  //     mediaRecorderRef.current = new MediaRecorder(stream);
+  //     mediaRecorderRef.current.start();
+  //     setIsRecording(true);
+
+  //     mediaRecorderRef.current.ondataavailable = (e) => {
+  //       const audioBlob = new Blob([e.data], { type: "audio/wav" });
+  //       const audioUrl = URL.createObjectURL(audioBlob);
+  //     };
+  //   } catch (error) {
+  //     console.error("Microphone access denied:", error);
+  //   }
+  // };
 
   const handleCancelRecording = () => {
     if (mediaRecorderRef.current) {
       mediaRecorderRef.current.stop();
     }
     setIsRecording(false);
+  };
+
+  const handleMicClick = async () => {
+    if (isRecording) return;
+
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const recorder = new MediaRecorder(stream);
+    setIsRecording(true);
+    setAudioChunks([]);
+
+    recorder.ondataavailable = (e) => {
+      if (e.data.size > 0) {
+        setAudioChunks((prev) => [...prev, e.data]);
+      }
+    };
+
+    recorder.onstop = () => {
+      const blob = new Blob(audioChunks, { type: 'audio/wav' });
+      setRecordedBlob(blob);
+      setIsRecording(false);
+    };
+
+    recorder.start();
+    setMediaRecorder(recorder);
+  };
+
+  const handleStopRecording = () => {
+    if (mediaRecorder && isRecording) {
+      mediaRecorder.stop();
+    }
+  };
+
+  const handleUpload = async () => {
+    if (recordedBlob) {
+      await uploadAudio(recordedBlob);
+      setRecordedBlob(null); // Reset
+    }
   };
 
   return (
@@ -203,9 +256,13 @@ const Header = ({
               placeholder={isRecording ? t("listening") : t("search_among")}
               color="white"
               border="none"
-              pl={isRecording ? "50px" : "12px"} // Padding when mic moves inside
+              pl={isRecording ? "50px" : "12px"}
               _placeholder={{ color: "gray.300" }}
-              {...register("search")}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleUpload();
+                }
+              }}
             />
 
             <InputRightElement height="100%" ml="30px">
@@ -215,32 +272,29 @@ const Header = ({
                     fontSize="16px"
                     color="white"
                     style={{ cursor: "pointer" }}
-                    onClick={handleCancelRecording}
+                    onClick={handleStopRecording}
                   />
-                ) :
+                ) : (
                   <>
                     <IoSearch
                       fontSize="20px"
                       color="#29CCCC"
-                      cursor={"pointer"}
-                      onClick={(e) => handleClickSearch()}
+                      cursor="pointer"
+                      onClick={handleUpload}
                     />
-                    <RiSearchEyeLine
+                    <PiDiamondThin
                       fontSize="20px"
                       color="#29CCCC"
-                      onClick={(e) => handleClickSemanticSearch()}
-                      cursor={"pointer"}
+                      cursor="pointer"
                     />
-
                     <IoMic
                       fontSize="20px"
                       color="#29CCCC"
                       style={{ cursor: "pointer" }}
                       onClick={handleMicClick}
                     />
-
-                  </>}
-
+                  </>
+                )}
               </Flex>
             </InputRightElement>
           </InputGroup>

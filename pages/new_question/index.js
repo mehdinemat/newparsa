@@ -138,14 +138,11 @@ const Index = () => {
             color={"black"}
           >
             <Text fontWeight={"bold"}>{t("question_title")}</Text>
-            <Text>
-              لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ
-            </Text>
             <Input {...registerQuestion("title")} />
-            <Text fontWeight={"bold"} mt={"20px"}>
+            {/* <Text fontWeight={"bold"} mt={"20px"}>
               {t("related_questions")}
-            </Text>
-            <HStack>
+            </Text> */}
+            {/* <HStack>
               <Text>{t("question_title")}</Text>
               <Badge
                 bgColor={"#23D9D7"}
@@ -155,67 +152,7 @@ const Index = () => {
               >
                 3 {t("answer")}
               </Badge>
-            </HStack>
-            <Divider borderColor={"gray.200"} />
-            <HStack>
-              <Text>
-                اگر نتوانیم آن را انجام دهیم، آیا می‌توان فطریه را به یک بدهکار
-                ورشکسته داد؟
-              </Text>
-              <Badge
-                bgColor={"#23D9D7"}
-                padding={"5px"}
-                borderRadius={"5px"}
-                color={"white"}
-              >
-                3 {t("answer")}
-              </Badge>
-            </HStack>
-            <Divider borderColor={"gray.200"} />
-            <HStack>
-              <Text>
-                اگر نتوانیم آن را انجام دهیم، آیا می‌توان فطریه را به یک بدهکار
-                ورشکسته داد؟
-              </Text>
-              <Badge
-                bgColor={"#23D9D7"}
-                padding={"5px"}
-                borderRadius={"5px"}
-                color={"white"}
-              >
-                3 {t("answer")}
-              </Badge>
-            </HStack>
-            <Divider borderColor={"gray.200"} />
-            <HStack>
-              <Text>
-                اگر نتوانیم آن را انجام دهیم، آیا می‌توان فطریه را به یک بدهکار
-                ورشکسته داد؟
-              </Text>
-              <Badge
-                bgColor={"#23D9D7"}
-                padding={"5px"}
-                borderRadius={"5px"}
-                color={"white"}
-              >
-                3 {t("answer")}
-              </Badge>
-            </HStack>
-            <Divider borderColor={"gray.200"} />
-            <HStack>
-              <Text>
-                اگر نتوانیم آن را انجام دهیم، آیا می‌توان فطریه را به یک بدهکار
-                ورشکسته داد؟
-              </Text>
-              <Badge
-                bgColor={"#23D9D7"}
-                padding={"5px"}
-                borderRadius={"5px"}
-                color={"white"}
-              >
-                3 {t("answer")}
-              </Badge>
-            </HStack>
+            </HStack> */}
             <HStack w={"100%"} justifyContent={"end"} mt={"20px"}>
               <Button bgColor={"#23D9D7"}>{t("next_step")}</Button>
             </HStack>

@@ -5,6 +5,7 @@ import {
   Collapse,
   Container,
   Fade,
+  Flex,
   Grid,
   GridItem,
   HStack,
@@ -49,6 +50,7 @@ import { StringParam, useQueryParams, withDefault } from "use-query-params";
 import AdminMenuBar from "./admin_dashboard/adminMenuBar";
 import UserMenuBar from "./mobile/dashboard/userMenuBar";
 import MenuBar from "./mobile/menuBar";
+import { PiDiamondThin } from "react-icons/pi";
 
 const menuList = [
   {
@@ -111,7 +113,12 @@ const MainLayout = ({ children }) => {
   };
 
   const handleClickSearch = () => {
-    router.replace(`/result_search?search=${search}`);
+    router.replace(`/result_search?search=${search}&search_type=search`);
+  };
+  const handleClickSemanticSearch = () => {
+    router.replace(
+      `/result_search?search=${search}search_type=semantic_search`
+    );
   };
 
   const handleToggle = () => {
@@ -134,8 +141,8 @@ const MainLayout = ({ children }) => {
       _.includes(router.asPath.toLowerCase(), "admin_dashboard")
         ? 2
         : _.includes(router.asPath.toLowerCase(), "dashboard")
-          ? 1
-          : 0
+        ? 1
+        : 0
     );
   }, [router]);
 
@@ -145,6 +152,10 @@ const MainLayout = ({ children }) => {
 
   const handleLoginButton = () => {
     router.replace("/login");
+  };
+
+  const handleFooterLink = (link) => {
+    router.replace(link);
   };
 
   return (
@@ -210,15 +221,29 @@ const MainLayout = ({ children }) => {
                   height={"46px"}
                   placeholder={t("search")}
                   onChange={(e) => setSearch(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      handleClickSearch();
+                    }
+                  }}
                 />
-                <InputRightElement h="100%">
-                  <IoSearch
-                    fontSize="20px"
-                    style={{ marginTop: "2px" }}
-                    color="#29CCCC"
-                    onClick={handleClickSearch}
-                    cursor={'pointer'}
-                  />
+                <InputRightElement h="100%" ml="20px">
+                  <Flex align="center" gap="2">
+                    <IoSearch
+                      fontSize="20px"
+                      style={{ marginTop: "2px" }}
+                      color="#29CCCC"
+                      onClick={handleClickSearch}
+                      cursor={"pointer"}
+                    />
+                    <PiDiamondThin
+                      fontSize="20px"
+                      style={{ marginTop: "2px" }}
+                      color="#29CCCC"
+                      onClick={handleClickSemanticSearch}
+                      cursor={"pointer"}
+                    />
+                  </Flex>
                 </InputRightElement>
               </InputGroup>
             </HStack>
@@ -283,8 +308,8 @@ const MainLayout = ({ children }) => {
                     {locale == "en"
                       ? t("header_english")
                       : locale == "fa"
-                        ? t("header_persian")
-                        : locale == "ar" && t("header_arabic")}
+                      ? t("header_persian")
+                      : locale == "ar" && t("header_arabic")}
                   </Text>
                   <IoIosArrowDown />
                 </HStack>
@@ -417,10 +442,13 @@ const MainLayout = ({ children }) => {
                     <ListItem>{t("questions")}</ListItem>
                     <ListItem>{t("tags")}</ListItem>
                     <ListItem>{t("users")}</ListItem>
-                    <ListItem>{t("about_us")}</ListItem>
-                    <ListItem>{t("about_us")}</ListItem>
+                    <ListItem
+                      cursor={"pointer"}
+                      onClick={(e) => handleFooterLink("/aboutus")}
+                    >
+                      {t("about_us")}
+                    </ListItem>
                     <ListItem>{t("terms_of_use")}</ListItem>
-                    <ListItem fontWeight={"thin"}>{t("terms_of_use")}</ListItem>
                   </UnorderedList>
                 </VStack>
                 <VStack

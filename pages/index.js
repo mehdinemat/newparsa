@@ -9,7 +9,8 @@ import {
   Spinner,
   Stack,
   Text,
-  VStack
+  useBreakpointValue,
+  VStack,
 } from "@chakra-ui/react";
 import { Geist, Geist_Mono } from "next/font/google";
 import "slick-carousel/slick/slick-theme.css";
@@ -72,6 +73,7 @@ const items2 = [
 export default function Home({ children }) {
   const router = useRouter();
   const { locale } = useRouter();
+  const slidesToShow = useBreakpointValue({ base: 1, md: 2, lg: 4 }); // responsive value
 
   const [treeData, setTreeData] = useState([]);
   const [page, setPage] = useState(1);
@@ -94,7 +96,8 @@ export default function Home({ children }) {
     error: errorQuestion,
     isLoading: isLoadingQuestion,
   } = useSWR(
-    `user/question?lang=${locale}&page=${page}${categoryId && `&categories__id=${categoryId}`
+    `user/question?lang=${locale}&page=${page}${
+      categoryId && `&categories__id=${categoryId}`
     }`
   );
   // const {
@@ -110,7 +113,7 @@ export default function Home({ children }) {
 
   const { data: dataGeneral, error: errorGeneral } = useSWR("user/general");
   const { data: dataHadith, error: errorHadith } = useSWR("user/general/hadis");
-  const { data: dataSource, error: errorSource } = useSWR("user/source");
+  const { data: dataSource, error: errorSource } = useSWR("user/source?size=10");
   const { data: dataReferences, error: errorReferences } =
     useSWR("user/public-figure");
 
@@ -171,12 +174,16 @@ export default function Home({ children }) {
   };
 
   const handleClickSearch = () => {
-    router.replace(`/result_search?search=${watchSearch("search")}&search_type=search`);
-
+    router.replace(
+      `/result_search?search=${watchSearch("search")}&search_type=search`
+    );
   };
   const handleClickSemanticSearch = () => {
-    router.replace(`/result_search?search=${watchSearch("search")}&search_type=semantic_search`);
-
+    router.replace(
+      `/result_search?search=${watchSearch(
+        "search"
+      )}&search_type=semantic_search`
+    );
   };
 
   return (
@@ -212,25 +219,71 @@ export default function Home({ children }) {
         >
           {/* Right Sidebar */}
 
-          <SidebarTree
-            treeData={treeData}
-            onLoadData={onLoadData}
-            t={t}
-            setCategoryId={setCategoryId}
-          />
+          <GridItem colSpan={1}>
+            <SidebarTree
+              treeData={treeData}
+              onLoadData={onLoadData}
+              t={t}
+              setCategoryId={setCategoryId}
+            />
+            <Box
+              my={"20px"}
+              order={3}
+              as={GridItem}
+              colSpan={"1"}
+              w="100%"
+              maxW={{ base: "calc( 100vw - 50px )", md: "100vw" }}
+              whiteSpace="normal"
+              overflowWrap="break-word"
+            >
+              <Box
+                w={"100%"}
+                p="4"
+                border={"1px"}
+                borderColor={"#EBEBEB"}
+                borderRadius={"15px"}
+                height={"min-content"}
+                mb={"30px"}
+              >
+                <Text fontWeight={"bold"} fontSize={"16px"}>
+                  {t("question_sources")}
+                </Text>
+                <VStack mt={"20px"} w={"100%"} alignItems={"start"}>
+                  {dataSource?.data?.slice(0, 14)?.map((item, index) => (
+                    <LeftSidebar key={index} data={item} t={t} />
+                  ))}
+                </VStack>
+              </Box>
+              <Box
+                w={"100%"}
+                p="4"
+                border={"1px"}
+                borderColor={"#EBEBEB"}
+                borderRadius={"15px"}
+                bgColor={"#CFF186"}
+                height={"min-content"}
+              >
+                <Text fontWeight={"bold"} fontSize={"16px"}>
+                  {t("hadith_of_the_day")}
+                </Text>
+                <Text mt={"10px"}>{dataHadith?.data}</Text>
+              </Box>
+            </Box>
+          </GridItem>
 
           {/* Main Content */}
           <Box
             p={{ base: 0, md: "6" }}
             order={{ base: 1, md: 2 }}
             as={GridItem}
-            colSpan={{ md: 2 }}
+            colSpan={{ md: 3 }}
             w="100%"
             overflowWrap="break-word"
             wordBreak="break-word"
             maxW="100vw"
             whiteSpace="normal"
             pr={{ base: 0, md: "21px" }}
+            area={{base:"main" , md:'auto'}}
           >
             <HStack
               w="100%"
@@ -278,8 +331,7 @@ export default function Home({ children }) {
                   alignItems={"center"}
                 >
                   <Pagination
-                    totalPages={dataQuestion?.data?.total_count
-                    }
+                    totalPages={dataQuestion?.data?.total_count}
                     currentPage={page}
                     onPageChange={setPage}
                     t={t}
@@ -294,8 +346,7 @@ export default function Home({ children }) {
               ))}
               <Stack w={"100%"} justifyContent={"center"} alignItems={"center"}>
                 <Pagination
-                  totalPages={dataQuestion?.data?.total_count
-                  }
+                  totalPages={dataQuestion?.data?.total_count}
                   currentPage={page}
                   onPageChange={setPage}
                   t={t}
@@ -305,54 +356,10 @@ export default function Home({ children }) {
           </Box>
 
           {/* Left Sidebar */}
-          <Box
-            order={3}
-            as={GridItem}
-            colSpan={"1"}
-            w="100%"
-            maxW={{ base: "calc( 100vw - 50px )", md: "100vw" }}
-            whiteSpace="normal"
-            overflowWrap="break-word"
-          >
-            <Box
-              w={"100%"}
-              p="4"
-              border={"1px"}
-              borderColor={"#EBEBEB"}
-              borderRadius={"15px"}
-              height={"min-content"}
-              mb={"30px"}
-            >
-              <Text fontWeight={"bold"} fontSize={"16px"}>
-                {t("question_sources")}
-              </Text>
-              <VStack mt={"20px"} w={"100%"} alignItems={"start"}>
-                {dataSource?.data?.map((item, index) => (
-                  <LeftSidebar key={index} data={item} t={t} />
-                ))}
-              </VStack>
-            </Box>
-            <Box
-              w={"100%"}
-              p="4"
-              border={"1px"}
-              borderColor={"#EBEBEB"}
-              borderRadius={"15px"}
-              bgColor={"#CFF186"}
-              height={"min-content"}
-            >
-              <Text fontWeight={"bold"} fontSize={"16px"}>
-                {t("hadith_of_the_day")}
-              </Text>
-              <Text mt={"10px"}>
-                {dataHadith?.data}
-              </Text>
-            </Box>
-          </Box>
 
           <GridItem
             order={4}
-            colSpan={{ md: 3 }}
+            colSpan={{ md: 4 }}
             w={"100%"}
             maxW={{ base: "calc( 100vw - 50px )", md: "100vw" }}
             whiteSpace="normal"
