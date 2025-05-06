@@ -130,7 +130,7 @@ const Index = () => {
             <Input
               height={"46px"}
               placeholder={t("phone_number")}
-              my={"10px"}
+              mt={"10px"}
               {...register("phone_number")}
               sx={{
                 "::placeholder": {
@@ -161,7 +161,6 @@ const Index = () => {
             <Input
               height={"46px"}
               placeholder={t("last_name")}
-              my={"10px"}
               {...register("last_name")}
               sx={{
                 "::placeholder": {
@@ -182,7 +181,6 @@ const Index = () => {
             <Input
               height={"46px"}
               placeholder={t("username")}
-              my={"10px"}
               {...register("username")}
               sx={{
                 "::placeholder": {
@@ -203,7 +201,6 @@ const Index = () => {
             <Input
               height={"46px"}
               placeholder={t("password")}
-              my={"10px"}
               {...register("password")}
               sx={{
                 "::placeholder": {
@@ -224,7 +221,6 @@ const Index = () => {
             <Input
               height={"46px"}
               placeholder={t("confirm_password")}
-              my={"10px"}
               {...register("re_password")}
               sx={{
                 "::placeholder": {
@@ -245,7 +241,6 @@ const Index = () => {
             <Input
               height={"46px"}
               placeholder={t("email")}
-              my={"10px"}
               {...register("email")}
               sx={{
                 "::placeholder": {
