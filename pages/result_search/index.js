@@ -52,6 +52,7 @@ const Index = ({ children }) => {
 
   const [filters, setFilters] = useQueryParams({
     search: withDefault(StringParam, ""),
+    search_type: withDefault(StringParam, ""),
   });
 
   const {
@@ -59,7 +60,7 @@ const Index = ({ children }) => {
     error: errorQuestionSearch,
     isLoading: isLoadingQuestionSearch,
   } = useSWR(
-    `user/question/search?page=${page}&search_type=search&content=${filters?.search}`
+    `user/question/search?page=${page}&search_type=${filters?.search_type}&content=${filters?.search}`
   );
   const {
     data: dataCurrection,
@@ -224,12 +225,12 @@ const Index = ({ children }) => {
                     {filters?.search}
                   </Text>
                 </HStack>
-                <HStack>
+                {filters?.search != dataCurrection?.data?.data?.spell_correction_text && <HStack>
                   <Text fontSize={"16px"}>
                     آیا منظور شما{" "}
                     {dataCurrection?.data?.data?.spell_correction_text} بود؟
                   </Text>
-                </HStack>
+                </HStack>}
               </VStack>
               <Button
                 width={{ base: "152px", md: "189px" }}

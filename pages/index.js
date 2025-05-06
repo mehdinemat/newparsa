@@ -97,16 +97,16 @@ export default function Home({ children }) {
     `user/question?lang=${locale}&page=${page}${categoryId && `&categories__id=${categoryId}`
     }`
   );
-  const {
-    data: dataQuestionSearch,
-    error: errorQuestionSearch,
-    isLoading: isLoadingQuestionSearch,
-  } = useSWR(
-    watchSearch("selected_search") &&
-    `user/question/search?page=${page}&search_type=${searchType}&content=${watchSearch(
-      "selected_search"
-    )}${categoryId && `&categories__id=${categoryId}`}`
-  );
+  // const {
+  //   data: dataQuestionSearch,
+  //   error: errorQuestionSearch,
+  //   isLoading: isLoadingQuestionSearch,
+  // } = useSWR(
+  //   watchSearch("selected_search") &&
+  //   `user/question/search?page=${page}&search_type=${searchType}&content=${watchSearch(
+  //     "selected_search"
+  //   )}${categoryId && `&categories__id=${categoryId}`}`
+  // );
 
   const { data: dataGeneral, error: errorGeneral } = useSWR("user/general");
   const { data: dataHadith, error: errorHadith } = useSWR("user/general/hadis");
@@ -171,12 +171,12 @@ export default function Home({ children }) {
   };
 
   const handleClickSearch = () => {
-    setSearchType("search");
-    setValueSearch("selected_search", watchSearch("search"));
+    router.replace(`/result_search?search=${watchSearch("search")}&search_type=search`);
+
   };
   const handleClickSemanticSearch = () => {
-    setSearchType("semantic_search");
-    setValueSearch("selected_search", watchSearch("search"));
+    router.replace(`/result_search?search=${watchSearch("search")}&search_type=semantic_search`);
+
   };
 
   return (
@@ -192,7 +192,6 @@ export default function Home({ children }) {
         watchSearch={watchSearch}
         resetSearch={resetSearch}
         handleClickSearch={handleClickSearch}
-        isLoadingQuestionSearch={isLoadingQuestionSearch}
         handleClickSemanticSearch={handleClickSemanticSearch}
       />
       <Box
@@ -270,10 +269,7 @@ export default function Home({ children }) {
               </HStack>
             ) : (
               <VStack display={{ base: "none", md: "flex" }}>
-                {(watchSearch("search")
-                  ? dataQuestionSearch
-                  : dataQuestion
-                )?.data?.result?.map((item, index) => (
+                {dataQuestion?.data?.result?.map((item, index) => (
                   <QuestionCard key={index} data={item} t={t} />
                 ))}
                 <Stack
@@ -282,11 +278,7 @@ export default function Home({ children }) {
                   alignItems={"center"}
                 >
                   <Pagination
-                    totalPages={
-                      (watchSearch("search")
-                        ? dataQuestionSearch
-                        : dataQuestion
-                      )?.data?.total_count
+                    totalPages={dataQuestion?.data?.total_count
                     }
                     currentPage={page}
                     onPageChange={setPage}
@@ -297,17 +289,12 @@ export default function Home({ children }) {
             )}
 
             <VStack display={{ base: "flex", md: "none" }}>
-              {(watchSearch("search")
-                ? dataQuestionSearch
-                : dataQuestion
-              )?.data?.result?.map((item, index) => (
+              {dataQuestion?.data?.result?.map((item, index) => (
                 <QuestionMCard key={index} data={item} t={t} />
               ))}
               <Stack w={"100%"} justifyContent={"center"} alignItems={"center"}>
                 <Pagination
-                  totalPages={
-                    (watchSearch("search") ? dataQuestionSearch : dataQuestion)
-                      ?.data?.total_count
+                  totalPages={dataQuestion?.data?.total_count
                   }
                   currentPage={page}
                   onPageChange={setPage}

@@ -10,23 +10,20 @@ import {
   InputGroup,
   InputLeftElement,
   InputRightElement,
-  Spinner,
   Stack,
   Text,
   useBreakpoint,
-  VStack,
+  VStack
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import CountUp from "react-countup";
-import { useForm } from "react-hook-form";
 import {
   IoClose,
   IoMic,
   IoMicOutline,
-  IoOptions,
-  IoSearch,
+  IoSearch
 } from "react-icons/io5";
 import { RiSearchEyeLine } from "react-icons/ri";
 
@@ -68,7 +65,6 @@ const Header = ({
   t,
   register,
   handleClickSearch,
-  isLoadingQuestionSearch,
   handleClickSemanticSearch,
   watchSearch,
   resetSearch,
@@ -111,7 +107,7 @@ const Header = ({
       justifyContent={"center"}
       alignItems={"center"}
       width="100%"
-      height={"450px"}
+      height={"350px"}
       bg={"#3646B3"}
       p={2}
       px={4}
@@ -221,7 +217,7 @@ const Header = ({
                     style={{ cursor: "pointer" }}
                     onClick={handleCancelRecording}
                   />
-                ) : !isLoadingQuestionSearch ? (
+                ) :
                   <>
                     <IoSearch
                       fontSize="20px"
@@ -235,25 +231,16 @@ const Header = ({
                       onClick={(e) => handleClickSemanticSearch()}
                       cursor={"pointer"}
                     />
-                    {watchSearch("search") ? (
-                      <IoClose
-                        fontSize="16px"
-                        color="white"
-                        style={{ cursor: "pointer" }}
-                        onClick={(e) => resetSearch()}
-                      />
-                    ) : (
-                      <IoMic
-                        fontSize="20px"
-                        color="#29CCCC"
-                        style={{ cursor: "pointer" }}
-                        onClick={handleMicClick}
-                      />
-                    )}
-                  </>
-                ) : (
-                  <Spinner color="white" />
-                )}
+
+                    <IoMic
+                      fontSize="20px"
+                      color="#29CCCC"
+                      style={{ cursor: "pointer" }}
+                      onClick={handleMicClick}
+                    />
+
+                  </>}
+
               </Flex>
             </InputRightElement>
           </InputGroup>

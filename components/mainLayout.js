@@ -33,6 +33,7 @@ import {
 import _ from "lodash";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { FaTelegram } from "react-icons/fa";
 import { GiDiamondRing } from "react-icons/gi";
 import {
@@ -44,18 +45,12 @@ import {
   IoLogoYoutube,
 } from "react-icons/io";
 import { IoCall, IoExitOutline, IoLocation, IoSearch } from "react-icons/io5";
+import { StringParam, useQueryParams, withDefault } from "use-query-params";
 import AdminMenuBar from "./admin_dashboard/adminMenuBar";
 import UserMenuBar from "./mobile/dashboard/userMenuBar";
 import MenuBar from "./mobile/menuBar";
-import { useTranslation } from "react-i18next";
-import { StringParam, useQueryParams, withDefault } from "use-query-params";
 
 const menuList = [
-  {
-    title: "سوال ها",
-    link: "questions",
-    t_title: "header_questions",
-  },
   {
     title: "برچسب ها",
     t_title: "header_tags",
@@ -139,8 +134,8 @@ const MainLayout = ({ children }) => {
       _.includes(router.asPath.toLowerCase(), "admin_dashboard")
         ? 2
         : _.includes(router.asPath.toLowerCase(), "dashboard")
-        ? 1
-        : 0
+          ? 1
+          : 0
     );
   }, [router]);
 
@@ -288,8 +283,8 @@ const MainLayout = ({ children }) => {
                     {locale == "en"
                       ? t("header_english")
                       : locale == "fa"
-                      ? t("header_persian")
-                      : locale == "ar" && t("header_arabic")}
+                        ? t("header_persian")
+                        : locale == "ar" && t("header_arabic")}
                   </Text>
                   <IoIosArrowDown />
                 </HStack>
