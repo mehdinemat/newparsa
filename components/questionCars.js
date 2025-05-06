@@ -10,6 +10,7 @@ import moment from 'moment-jalaali';
 import { useRouter } from "next/router";
 import { HiArrowTurnDownLeft } from "react-icons/hi2";
 import { IoCheckmark, IoEyeOutline } from "react-icons/io5";
+import { GiBigDiamondRing } from "react-icons/gi";
 
 const QuestionCard = ({ data , t }) => {
 
@@ -23,7 +24,7 @@ const QuestionCard = ({ data , t }) => {
     <HStack w={"100%"} alignItems={"start"} borderBottom={'1px solid #E2E8F0'} mb={'10px'} pb={"20px"} gap={"20px"} onClick={e => handleQuestionRouter(data?.id)} cursor={'pointer'}>
       <VStack w={"150px"} alignItems={"start"}>
         <HStack color={"gray.600"}>
-          <HiArrowTurnDownLeft fontSize={"20px"} />
+          <GiBigDiamondRing fontSize={"20px"} />
           <Text fontSize={"16px"} w={'max-content'}>{data?.like_count}{t('like')}</Text>
         </HStack>
         <HStack color={"gray.600"}>

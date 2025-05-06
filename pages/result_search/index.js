@@ -18,7 +18,7 @@ import {
   Spinner,
   Stack,
   Text,
-  VStack
+  VStack,
 } from "@chakra-ui/react";
 import { Geist, Geist_Mono } from "next/font/google";
 import "slick-carousel/slick/slick-theme.css";
@@ -34,6 +34,7 @@ import { IoSearch } from "react-icons/io5";
 import { TbArrowsSort } from "react-icons/tb";
 import useSWR from "swr";
 import { StringParam, useQueryParams, withDefault } from "use-query-params";
+import { useRouter } from "next/router";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -47,6 +48,8 @@ const geistMono = Geist_Mono({
 
 const Index = ({ children }) => {
   const { t } = useTranslation();
+
+  const router = useRouter();
 
   const [page, setPage] = useState(1);
 
@@ -70,6 +73,11 @@ const Index = ({ children }) => {
 
   const handleNewQuestionButton = () => {
     router.replace("/new_question");
+  };
+  const handleCurrectClick = (currect) => {
+    router.replace(
+      `/result_search?search=${currect}&search_type=${filters?.search_type}`
+    );
   };
 
   return (
@@ -225,12 +233,27 @@ const Index = ({ children }) => {
                     {filters?.search}
                   </Text>
                 </HStack>
-                {filters?.search != dataCurrection?.data?.data?.spell_correction_text && <HStack>
-                  <Text fontSize={"16px"}>
-                    آیا منظور شما{" "}
-                    {dataCurrection?.data?.data?.spell_correction_text} بود؟
-                  </Text>
-                </HStack>}
+                {filters?.search !=
+                  dataCurrection?.data?.data?.spell_correction_text && (
+                  <HStack>
+                    <Text fontSize={"16px"}>
+                      آیا منظور شما{" "}
+                      <Text
+                        as={"span"}
+                        color={"blue.500"}
+                        cursor={"pointer"}
+                        onClick={(e) =>
+                          handleCurrectClick(
+                            dataCurrection?.data?.data?.spell_correction_text
+                          )
+                        }
+                      >
+                        {dataCurrection?.data?.data?.spell_correction_text}
+                      </Text>{" "}
+                      بود؟
+                    </Text>
+                  </HStack>
+                )}
               </VStack>
               <Button
                 width={{ base: "152px", md: "189px" }}
@@ -247,7 +270,7 @@ const Index = ({ children }) => {
                 سؤال خود را بپرسید
               </Button>
             </HStack>
-            <HStack w={"100%"} justifyContent={"space-between"} mb={'20px'}>
+            <HStack w={"100%"} justifyContent={"space-between"} mb={"20px"}>
               <Text w={"full"}>
                 {dataQuestionSearch?.data?.total_count} نتیجه (۲/۴۶ ثانیه)
               </Text>
@@ -304,8 +327,7 @@ const Index = ({ children }) => {
                   alignItems={"center"}
                 >
                   <Pagination
-                    totalPages={dataQuestionSearch?.data?.total_count
-                    }
+                    totalPages={dataQuestionSearch?.data?.total_count}
                     currentPage={page}
                     onPageChange={setPage}
                     t={t}

@@ -258,9 +258,10 @@ const Header = ({
               border="none"
               pl={isRecording ? "50px" : "12px"}
               _placeholder={{ color: "gray.300" }}
+              {...register("search")}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
-                  handleUpload();
+                  handleClickSearch();
                 }
               }}
             />
@@ -280,12 +281,14 @@ const Header = ({
                       fontSize="20px"
                       color="#29CCCC"
                       cursor="pointer"
-                      onClick={handleUpload}
+                      onClick={(e) => handleClickSearch()}
                     />
                     <PiDiamondThin
                       fontSize="20px"
                       color="#29CCCC"
                       cursor="pointer"
+                      onClick={(e) => handleClickSemanticSearch()}
+
                     />
                     <IoMic
                       fontSize="20px"

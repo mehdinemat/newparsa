@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 import { HiArrowTurnDownLeft } from "react-icons/hi2";
 import { IoCheckmark, IoEyeOutline } from "react-icons/io5";
 import moment from 'moment-jalaali';
+import { GiBigDiamondRing } from "react-icons/gi";
 
 const QuestionMCard = ({ data, t }) => {
   const router = useRouter();
@@ -30,16 +31,16 @@ const QuestionMCard = ({ data, t }) => {
     >
       <HStack alignItems={"start"} gap={"10px"}>
         <HStack color={"#999999"}>
-          <HiArrowTurnDownLeft fontSize={"20px"} />
-          <Text fontSize={"16px"}>2 {t("like")}</Text>
+          <GiBigDiamondRing fontSize={"20px"} />
+          <Text fontSize={"16px"}>{data?.like_count} {t("like")}</Text>
         </HStack>
         <HStack color={"#999999"}>
           <IoCheckmark fontSize={"20px"} />
-          <Text fontSize={"16px"}>3 {t("answer")}</Text>
+          <Text fontSize={"16px"}>{data?.answer_count} {t("answer")}</Text>
         </HStack>
         <HStack color={"#999999"}>
           <IoEyeOutline fontSize={"20px"} />
-          <Text fontSize={"16px"}>87 {t("view")}</Text>
+          <Text fontSize={"16px"}>{data?.view_count} {t("view")}</Text>
         </HStack>
         <HStack></HStack>
       </HStack>
