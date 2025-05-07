@@ -13,29 +13,30 @@ import axios from "axios";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
-import { IoLogoGoogle } from "react-icons/io5";
 import useSWRMutation from "swr/mutation";
 const Lottie = dynamic(() => import("lottie-react"), {
   ssr: false,
 });
 
-const postRequest = (url , {arg})=>{
-  return axios.post(baseUrl + url , arg)
+const postRequest = (url, { arg }) => {
+  return axios.post(baseUrl + url, arg)
 }
 
 const Index = () => {
 
   const router = useRouter()
-  
-  const { register:registerUser, setValue:setValueUser, getValues:getValuesUser, handleSubmit:handleSubmitUser } = useForm();
+
+  const { register: registerUser, setValue: setValueUser, getValues: getValuesUser, handleSubmit: handleSubmitUser } = useForm();
 
   const { trigger, isLoading, isMutating } = useSWRMutation(
-    "user/auth/send-code" , postRequest , {onSuccess:()=>{
-        router.replace(`/verify_code?phone=${getValues('phone')}`)
-    }}
+    "user/auth/send-code", postRequest, {
+      onSuccess: () => {
+        router.push(`/verify_code?phone=${getValues('phone')}`)
+      }
+  }
   );
-  
-  const handleLogin =(e)=>{
+
+  const handleLogin = (e) => {
     trigger(e)
   }
 

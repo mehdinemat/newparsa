@@ -43,7 +43,7 @@ export const useAxiosInterceptors = (showToast) => {
           duration: 9000,
           isClosable: true,
         })
-        router.replace('/login')
+        router.push('/login')
 
       }
       if (error?.response?.status === 400) {

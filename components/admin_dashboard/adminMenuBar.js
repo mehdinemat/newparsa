@@ -72,7 +72,7 @@ const AdminMenuBar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleClickMenuLink = (link) => {
-    router.replace(link);
+    router.push(link);
   };
 
   return (

@@ -46,11 +46,11 @@ import {
   IoLogoYoutube,
 } from "react-icons/io";
 import { IoCall, IoExitOutline, IoLocation, IoSearch } from "react-icons/io5";
+import { PiDiamondThin } from "react-icons/pi";
 import { StringParam, useQueryParams, withDefault } from "use-query-params";
 import AdminMenuBar from "./admin_dashboard/adminMenuBar";
 import UserMenuBar from "./mobile/dashboard/userMenuBar";
 import MenuBar from "./mobile/menuBar";
-import { PiDiamondThin } from "react-icons/pi";
 
 const menuList = [
   {
@@ -113,10 +113,10 @@ const MainLayout = ({ children }) => {
   };
 
   const handleClickSearch = () => {
-    router.replace(`/result_search?search=${search}&search_type=search`);
+    router.push(`/result_search?search=${search}&search_type=search`);
   };
   const handleClickSemanticSearch = () => {
-    router.replace(
+    router.push(
       `/result_search?search=${search}search_type=semantic_search`
     );
   };
@@ -129,11 +129,11 @@ const MainLayout = ({ children }) => {
   };
 
   const handleClickMenuLink = (link) => {
-    router.replace(link);
+    router.push(link);
   };
 
   const handleClickHome = () => {
-    router.replace("/");
+    router.push("/");
   };
 
   useEffect(() => {
@@ -141,8 +141,8 @@ const MainLayout = ({ children }) => {
       _.includes(router.asPath.toLowerCase(), "admin_dashboard")
         ? 2
         : _.includes(router.asPath.toLowerCase(), "dashboard")
-        ? 1
-        : 0
+          ? 1
+          : 0
     );
   }, [router]);
 
@@ -151,11 +151,11 @@ const MainLayout = ({ children }) => {
   }, []);
 
   const handleLoginButton = () => {
-    router.replace("/login");
+    router.push("/login");
   };
 
   const handleFooterLink = (link) => {
-    router.replace(link);
+    router.push(link);
   };
 
   return (
@@ -308,8 +308,8 @@ const MainLayout = ({ children }) => {
                     {locale == "en"
                       ? t("header_english")
                       : locale == "fa"
-                      ? t("header_persian")
-                      : locale == "ar" && t("header_arabic")}
+                        ? t("header_persian")
+                        : locale == "ar" && t("header_arabic")}
                   </Text>
                   <IoIosArrowDown />
                 </HStack>

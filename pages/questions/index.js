@@ -2,7 +2,6 @@ import MainLayout from "@/components/mainLayout";
 import {
   Box,
   Button,
-  Divider,
   Grid,
   GridItem,
   HStack,
@@ -18,13 +17,13 @@ import SidebarTree from "@/components/base/sidebarTree";
 import LeftSidebar from "@/components/home/leftsidebar";
 import QuestionMCard from "@/components/home/mobile/questionMCard";
 import { baseUrl } from "@/components/lib/api";
-import QuestionCard from "@/components/questionCars";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import useSWR from "swr";
-import { useTranslation } from "react-i18next";
 import Pagination from "@/components/pagination";
+import QuestionCard from "@/components/questionCars";
 import Head from "next/head";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import useSWR from "swr";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -68,9 +67,9 @@ const items2 = [
 const Index = ({ children }) => {
   const { t } = useTranslation();
   const router = useRouter();
-  const {locale} = router
+  const { locale } = router
   const [treeData, setTreeData] = useState([]);
-  const [page , setPage] = useState(1)
+  const [page, setPage] = useState(1)
   const { data: dataQuestion, error: errorQuestion } = useSWR(`user/question?lang=${locale}&page=${page}`);
   const { data: dataSource, error: errorSource } = useSWR('user/source');
 
@@ -130,12 +129,12 @@ const Index = ({ children }) => {
     });
 
   const handleNewQuestionButton = () => {
-    router.replace('/new_question')
+    router.push('/new_question')
   }
 
   return (
     <MainLayout>
-       <Head>
+      <Head>
         <title>{t('questions')}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -176,7 +175,7 @@ const Index = ({ children }) => {
             >
 
               <Text fontWeight={"700"} fontSize={"22px"} letterSpacing={0} >
-              {t('suggested_questions')}
+                {t('suggested_questions')}
               </Text>
 
               <Button
@@ -191,14 +190,14 @@ const Index = ({ children }) => {
                 borderRadius={'10px'}
                 onClick={e => handleNewQuestionButton()}
               >
-               {t('ask_your_question')}
+                {t('ask_your_question')}
               </Button>
             </HStack>
 
             <VStack display={{ base: 'none', md: 'flex' }}>
               {
                 dataQuestion?.data?.result?.map((item, index) => (
-                  <QuestionCard key={index} data={item} t={t}/>
+                  <QuestionCard key={index} data={item} t={t} />
                 ))
               }
               {/* <Divider my={"20px"} />
@@ -222,9 +221,9 @@ const Index = ({ children }) => {
             </VStack>
 
             <VStack display={{ base: 'flex', md: 'none' }}>
-            {
+              {
                 dataQuestion?.data?.result?.map((item, index) => (
-                  <QuestionMCard key={index} data={item} t={t}/>
+                  <QuestionMCard key={index} data={item} t={t} />
                 ))
               }
             </VStack>
@@ -251,12 +250,12 @@ const Index = ({ children }) => {
               mb={"30px"}
             >
               <Text fontWeight={"bold"} fontSize={"16px"}>
-              {t('question_sources')}
+                {t('question_sources')}
               </Text>
               <VStack mt={"20px"} w={"100%"} alignItems={"start"}>
                 {
                   dataSource?.data?.map((item, index) => (
-                    <LeftSidebar key={index} data={item} t={t}/>
+                    <LeftSidebar key={index} data={item} t={t} />
                   ))
                 }
               </VStack>
@@ -271,7 +270,7 @@ const Index = ({ children }) => {
               height={"min-content"}
             >
               <Text fontWeight={"bold"} fontSize={"16px"}>
-              {t('hadith_of_the_day')}
+                {t('hadith_of_the_day')}
               </Text>
               <Text mt={"10px"}>
                 عن الامام الحسن علیه السلام: «رَأَیْتُ أُمِّی فَاطِمَةَ ع

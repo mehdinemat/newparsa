@@ -15,13 +15,13 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import axios from "axios";
+import Head from "next/head";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import Masonry from "react-masonry-css";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
-import { useTranslation } from "react-i18next";
-import Head from "next/head";
 
 const data = [
   {
@@ -228,7 +228,7 @@ const Index = () => {
             bgColor={"#fef4e2"}
           >
             <Text fontWeight={"bold"} color={"black"}>
-              {t("related_questions")}
+              {t("suggested_questions")}
             </Text>
             <Text color={"black"} my={"10px"}>
               لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ
@@ -335,7 +335,7 @@ const Index = () => {
             <Text>
               لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ
             </Text>
-            
+
             <MultiSelectComboBox
               selectedOptions={selectedOptions}
               setSelectedOptions={setSelectedOptions}
@@ -348,7 +348,7 @@ const Index = () => {
               setInputValue={setInputValue}
               inputValue={inputValue}
             />
-            
+
             <HStack w={"100%"} justifyContent={"end"} mt={"20px"}>
               <Button bgColor={"#23D9D7"} type={"submit"}>
                 {t("submit_your_question")}

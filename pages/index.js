@@ -96,8 +96,7 @@ export default function Home({ children }) {
     error: errorQuestion,
     isLoading: isLoadingQuestion,
   } = useSWR(
-    `user/question?lang=${locale}&page=${page}${
-      categoryId && `&categories__id=${categoryId}`
+    `user/question?lang=${locale}&page=${page}${categoryId && `&categories__id=${categoryId}`
     }`
   );
   // const {
@@ -172,23 +171,23 @@ export default function Home({ children }) {
     });
 
   const handleNewQuestionButton = () => {
-    router.replace("/new_question");
+    router.push("/new_question");
   };
 
   const handleClickSearch = () => {
-    router.replace(
+    router.push(
       `/result_search?search=${watchSearch("search")}&search_type=search`
     );
   };
   const handleClickSemanticSearch = () => {
-    router.replace(
+    router.push(
       `/result_search?search=${watchSearch(
         "search"
       )}&search_type=semantic_search`
     );
   };
   const handleVoiceSearch = (text) => {
-    router.replace(`/result_search?search=${text}&search_type=search`);
+    router.push(`/result_search?search=${text}&search_type=search`);
   };
 
   return (

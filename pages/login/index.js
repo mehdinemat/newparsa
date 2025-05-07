@@ -15,8 +15,8 @@ import axios from "axios";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
-import useSWRMutation from "swr/mutation";
 import { useTranslation } from "react-i18next";
+import useSWRMutation from "swr/mutation";
 
 const Lottie = dynamic(() => import("lottie-react"), {
   ssr: false,
@@ -40,9 +40,9 @@ const Index = () => {
     "user/auth",
     postRequest, {
     onSuccess: (data) => {
-      if(data?.data?.data){
-        router.replace(`/two_step_login/verify_code?code=${data?.data?.data}&username=${getValues('username')}`)
-      }else{
+      if (data?.data?.data) {
+        router.push(`/two_step_login/verify_code?code=${data?.data?.data}&username=${getValues('username')}`)
+      } else {
         toast({
           title: "خطا",
           description: data?.data?.message,

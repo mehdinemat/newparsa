@@ -76,7 +76,7 @@ const Index = () => {
     postRequest,
     {
       onSuccess: (data) => {
-        router.replace("/login");
+        router.push("/login");
       },
     }
   );

@@ -20,8 +20,8 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { IoIosArrowDown, IoIosMenu } from "react-icons/io";
 import { useTranslation } from "react-i18next";
+import { IoIosArrowDown, IoIosMenu } from "react-icons/io";
 
 const menuList = [
   {
@@ -77,7 +77,7 @@ const MenuBar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleClickMenuLink = (link) => {
-    router.replace(link);
+    router.push(link);
   };
 
   return (
@@ -149,8 +149,8 @@ const MenuBar = () => {
                         {locale == "en"
                           ? t("header_english")
                           : locale == "fa"
-                          ? t("header_persian")
-                          : locale == "ar" && t("header_arabic")}
+                            ? t("header_persian")
+                            : locale == "ar" && t("header_arabic")}
                       </Text>
                       <IoIosArrowDown />
                     </HStack>

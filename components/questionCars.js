@@ -1,6 +1,5 @@
 import {
   Avatar,
-  AvatarGroup,
   Badge,
   HStack,
   Text,
@@ -8,11 +7,10 @@ import {
 } from "@chakra-ui/react";
 import moment from 'moment-jalaali';
 import { useRouter } from "next/router";
-import { HiArrowTurnDownLeft } from "react-icons/hi2";
-import { IoCheckmark, IoEyeOutline } from "react-icons/io5";
 import { GiBigDiamondRing } from "react-icons/gi";
+import { IoCheckmark, IoEyeOutline } from "react-icons/io5";
 
-const QuestionCard = ({ data , t }) => {
+const QuestionCard = ({ data, t }) => {
 
   const router = useRouter()
 
@@ -39,10 +37,11 @@ const QuestionCard = ({ data , t }) => {
       </VStack>
       <VStack w={"100%"} alignItems={"start"} gap={"20px"}>
         <Text
-          fontSize={"15px"}
+          fontSize={"18px"}
           w="full"
           whiteSpace="normal"
           lineHeight={"taller"}
+          textAlign={'justify'}
         >
           {data?.content}
         </Text>
@@ -68,7 +67,7 @@ const QuestionCard = ({ data , t }) => {
           }
         </HStack>
         <HStack w={"100%"}>
-          {data?.source &&<HStack>
+          {data?.source && <HStack>
             <Avatar size={"sm"} />
             <Text color={"gray.700"} w={"140px"}>
               {data?.source}

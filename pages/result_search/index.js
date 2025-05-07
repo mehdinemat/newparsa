@@ -71,10 +71,10 @@ const Index = ({ children }) => {
   } = useSWR(`user/question/spell-correction?content=${filters?.search}`);
 
   const handleNewQuestionButton = () => {
-    router.replace("/new_question");
+    router.push("/new_question");
   };
   const handleCurrectClick = (currect) => {
-    router.replace(
+    router.push(
       `/result_search?search=${currect}&search_type=${filters?.search_type}`
     );
   };
@@ -232,8 +232,8 @@ const Index = ({ children }) => {
                     {filters?.search}
                   </Text>
                 </HStack>
-                {filters?.search !=
-                  dataCurrection?.data?.data?.spell_correction_text && (
+                {(filters?.search !=
+                  dataCurrection?.data?.data?.spell_correction_text && dataCurrection?.data?.data?.spell_correction_text) && (
                     <HStack>
                       <Text fontSize={"16px"}>
                         آیا منظور شما{" "}

@@ -6,7 +6,7 @@ const ProductCard = () => {
     const router = useRouter()
 
     const handleProductDetails = () => {
-        router.replace('/product/1324')
+        router.push('/product/1324')
     }
 
     return (

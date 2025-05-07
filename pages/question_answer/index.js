@@ -2,7 +2,6 @@ import { baseUrl } from "@/components/lib/api";
 import MainLayout from "@/components/mainLayout";
 import {
   Avatar,
-  AvatarGroup,
   Badge,
   Box,
   Button,
@@ -17,11 +16,14 @@ import {
   Text,
   Textarea,
   useBreakpointValue,
-  VStack,
+  VStack
 } from "@chakra-ui/react";
 import axios from "axios";
+import moment from "moment-jalaali";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import {
   IoArrowDown,
   IoArrowUp,
@@ -33,9 +35,6 @@ import {
 } from "react-icons/io5";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
-import moment from "moment-jalaali";
-import { useTranslation } from "react-i18next";
-import Head from "next/head";
 
 const postRequest = (url, { arg: { id, ...data } }) => {
   return axios.post(baseUrl + url + `?id=${id}`, data, {
@@ -50,8 +49,8 @@ const patchRequest = (
 ) => {
   return axios.post(
     baseUrl +
-      url +
-      `?table_type=${table_type}&table_id=${table_id}&type_param=${type_param}`,
+    url +
+    `?table_type=${table_type}&table_id=${table_id}&type_param=${type_param}`,
     data,
     {
       headers: {
@@ -86,12 +85,12 @@ const Index = () => {
 
   const { data: dataQuestionComment, isLoading: isLoadingComment } = useSWR(
     query?.id &&
-      `user/action?table_id=${query?.id}&table_type=question&type_param=comment`
+    `user/action?table_id=${query?.id}&table_type=question&type_param=comment`
   );
 
   const { data: dataQuestionSimilar, isLoading: isLoadingSimilar } = useSWR(
     dataQuestion?.data &&
-      `user/question/similar-questions?question_elastic_id=${dataQuestion?.data?.result?.[0]?.elastic_id}`
+    `user/question/similar-questions?question_elastic_id=${dataQuestion?.data?.result?.[0]?.elastic_id}`
   );
 
   const { trigger: triggerAnswer, isLoading: isLoadingAnswer } = useSWRMutation(
@@ -118,11 +117,11 @@ const Index = () => {
   };
 
   const handleNewQuestionButton = () => {
-    router.replace("/new_question");
+    router.push("/new_question");
   };
 
   const handleSimilarClick = (id) => {
-    router.replace(`question_answer?id=${id}`);
+    router.push(`question_answer?id=${id}`);
   };
 
   return (
@@ -163,7 +162,6 @@ const Index = () => {
                 size={"sm"}
                 onClick={(e) => handleAddAction("question", "like")}
               />
-              <Text>6</Text>
               <IconButton
                 icon={<IoArrowDown color="gray" />}
                 variant={"outline"}
@@ -288,7 +286,6 @@ const Index = () => {
                         handleAddAction("question", "save_message")
                       }
                     />
-                    <Text>6</Text>
                     <IconButton
                       icon={<IoArrowDown color="gray" />}
                       variant={"outline"}
@@ -310,7 +307,7 @@ const Index = () => {
                   <Spinner />
                 ) : (
                   <VStack w={'100%'} alignItems={'start'}>
-                    <Text lineHeight={"taller"}>
+                    <Text lineHeight={"taller"} textAlign={'justify'} fontSize={'18px'}>
                       {dataQuestion?.data?.result?.[0]?.content}
                     </Text>
                     <Image
@@ -429,7 +426,6 @@ const Index = () => {
                             borderRadius={"100%"}
                             size={"sm"}
                           />
-                          <Text>6</Text>
                           <IconButton
                             icon={<IoArrowDown color="gray" />}
                             variant={"outline"}
@@ -455,7 +451,7 @@ const Index = () => {
                           />
                         </VStack>
                         <VStack w={"100%"} alignItems={"start"}>
-                          <Text lineHeight={"taller"} w={"fit-content"}>
+                          <Text lineHeight={"taller"} w={"fit-content"} textAlign={'justify'} fontSize={'18px'}>
                             {dataQuestionAnswer?.data?.[0]?.content}
                           </Text>
                           <HStack
@@ -650,7 +646,7 @@ const Index = () => {
                   </Text>
                   {dataQuestionSimilar?.data?.slice(0, 5)?.map((similar) => (
                     <HStack
-                    w={'100%'}
+                      w={'100%'}
                       py={"5px"}
                       alignItems={"start"}
                       borderBottom={"1px"}
@@ -658,15 +654,7 @@ const Index = () => {
                       cursor={"pointer"}
                       onClick={(e) => handleSimilarClick(similar?.id)}
                     >
-                      <Badge
-                        bgColor={"#29CCCC"}
-                        color={"white"}
-                        paddingY={"2px"}
-                        px={"10px"}
-                        borderRadius={"5px"}
-                      >
-                        6
-                      </Badge>
+
                       <Text fontSize={"sm"}>{similar?.content}</Text>
                     </HStack>
                   ))}
@@ -686,7 +674,7 @@ const Index = () => {
                   </Text>
                   {dataQuestionSimilar?.data?.slice(5, 10)?.map((related) => (
                     <VStack
-                    w={'100%'}
+                      w={'100%'}
                       alignItems={"start"}
                       borderBottom={"1px"}
                       borderBottomColor={"gray.200"}

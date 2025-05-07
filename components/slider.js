@@ -8,11 +8,11 @@ import {
   useBreakpointValue,
   VStack,
 } from "@chakra-ui/react";
+import { useRouter } from "next/router";
+import { useTranslation } from "react-i18next";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
-import { useTranslation } from "react-i18next";
-import { useRouter } from "next/router";
 
 const SliderCom = ({ items, height, borderRadius, width = "auto", title }) => {
   const slidesToShow = useBreakpointValue({ base: 1, md: 2, lg: 4 }); // responsive value
@@ -49,7 +49,7 @@ const SliderCom = ({ items, height, borderRadius, width = "auto", title }) => {
           fontSize={"16px"}
           color="blue.400"
           cursor={"pointer"}
-          onClick={(e) => router.replace("/references")}
+          onClick={(e) => router.push("/references")}
         >
           {t("show_all")}
         </Text>

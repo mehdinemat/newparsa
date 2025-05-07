@@ -30,7 +30,7 @@ const RightSidebar = () => {
   };
 
   const handleClickLink = (link) => {
-    router.replace(link)
+    router.push(link)
   }
 
   return (

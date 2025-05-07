@@ -1,16 +1,14 @@
 import {
   Avatar,
-  AvatarGroup,
   Badge,
   HStack,
   Text,
-  VStack,
+  VStack
 } from "@chakra-ui/react";
-import { useRouter } from "next/router";
-import { HiArrowTurnDownLeft } from "react-icons/hi2";
-import { IoCheckmark, IoEyeOutline } from "react-icons/io5";
 import moment from 'moment-jalaali';
+import { useRouter } from "next/router";
 import { GiBigDiamondRing } from "react-icons/gi";
+import { IoCheckmark, IoEyeOutline } from "react-icons/io5";
 
 const QuestionMCard = ({ data, t }) => {
   const router = useRouter();
@@ -25,7 +23,7 @@ const QuestionMCard = ({ data, t }) => {
       alignItems={"start"}
       borderBottom={"1px solid #E2E8F0"}
       gap={"20px"}
-      mb={'10px'} pb={"20px"} 
+      mb={'10px'} pb={"20px"}
       onClick={(e) => handleQuestionRouter(data?.id)}
       cursor={"pointer"}
     >
@@ -50,6 +48,7 @@ const QuestionMCard = ({ data, t }) => {
           w="100%"
           whiteSpace="normal"
           lineHeight={"taller"}
+          textAlign={'justify'}
         >
           {data?.content}
         </Text>
@@ -88,11 +87,11 @@ const QuestionMCard = ({ data, t }) => {
           />
           */}
 
-            <HStack w={"100%"} justifyContent={"end"}>
-                      <Text w={"150px"} color={"gray.400"}>
-                        {moment(data?.created_at).format('hh:mm:ss jYYYY/jMM/jDD')}
-                      </Text>
-                      {/* <AvatarGroup size="sm" max={2}>
+          <HStack w={"100%"} justifyContent={"end"}>
+            <Text w={"150px"} color={"gray.400"}>
+              {moment(data?.created_at).format('hh:mm:ss jYYYY/jMM/jDD')}
+            </Text>
+            {/* <AvatarGroup size="sm" max={2}>
                         <Avatar name="Ryan Florence" src="https://bit.ly/ryan-florence" />
                         <Avatar name="Segun Adebayo" src="https://bit.ly/sage-adebayo" />
                         <Avatar name="Kent Dodds" src="https://bit.ly/kent-c-dodds" />
@@ -102,7 +101,7 @@ const QuestionMCard = ({ data, t }) => {
                         />
                         <Avatar name="Christian Nwamba" src="https://bit.ly/code-beast" />
                       </AvatarGroup> */}
-                    </HStack>
+          </HStack>
         </HStack>
       </VStack>
     </VStack>
