@@ -73,18 +73,16 @@ const MainLayout = ({ children }) => {
   const { t } = useTranslation();
 
   const router = useRouter();
-  const { locale } = router;
+  const { locale, asPath } = router;
 
   const [filters, setFilters] = useQueryParams({
     search: withDefault(StringParam, ""),
   });
 
-
   const [search, setSearch] = useState("");
 
   const [hideHeaderButton, setHideHeaderButton] = useState(false);
   const scrollContainerRef = useRef(null);
-
 
   const [activePath, setActivePath] = useState(0);
   const [isSticky, setIsSticky] = useState(false);
@@ -113,17 +111,11 @@ const MainLayout = ({ children }) => {
     }
   };
 
-  const handleBuy = () => {
-    onOpen();
-  };
-
   const handleClickSearch = () => {
     router.push(`/result_search?search=${search}&search_type=search`);
   };
   const handleClickSemanticSearch = () => {
-    router.push(
-      `/result_search?search=${search}search_type=semantic_search`
-    );
+    router.push(`/result_search?search=${search}search_type=semantic_search`);
   };
 
   const handleToggle = () => {
@@ -146,8 +138,8 @@ const MainLayout = ({ children }) => {
       _.includes(router.asPath.toLowerCase(), "admin_dashboard")
         ? 2
         : _.includes(router.asPath.toLowerCase(), "dashboard")
-          ? 1
-          : 0
+        ? 1
+        : 0
     );
   }, [router]);
 
@@ -163,19 +155,22 @@ const MainLayout = ({ children }) => {
     router.push(link);
   };
 
-
   useEffect(() => {
     const container = scrollContainerRef.current;
     if (!container) return;
 
     const handleScroll = () => {
       const scrollY = container.scrollTop;
-      setHideHeaderButton(scrollY >= 350);      // you can use scrollY >= 500 to toggle button
+      setHideHeaderButton(scrollY >= 350); // you can use scrollY >= 500 to toggle button
     };
 
-    container.addEventListener('scroll', handleScroll);
-    return () => container.removeEventListener('scroll', handleScroll);
+    container.addEventListener("scroll", handleScroll);
+    return () => container.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    console.log(asPath == "/");
+  }, [asPath]);
 
   return (
     <VStack minHeight="100vh" w={"100%"} alignItems={"start"} gap={0}>
@@ -232,7 +227,7 @@ const MainLayout = ({ children }) => {
                 onClick={handleClickHome}
                 cursor={"pointer"}
               />
-              {hideHeaderButton && (
+              {(hideHeaderButton || !(asPath == "/")) && (
                 <InputGroup
                   width={"327px"}
                   display={{ base: "none", md: "block" }}
@@ -329,8 +324,8 @@ const MainLayout = ({ children }) => {
                     {locale == "en"
                       ? t("header_english")
                       : locale == "fa"
-                        ? t("header_persian")
-                        : locale == "ar" && t("header_arabic")}
+                      ? t("header_persian")
+                      : locale == "ar" && t("header_arabic")}
                   </Text>
                   <IoIosArrowDown />
                 </HStack>
@@ -395,7 +390,6 @@ const MainLayout = ({ children }) => {
         alignItems={"start"}
         overflowY={"scroll"}
         ref={scrollContainerRef}
-
       >
         {/* Main content area */}
         <VStack height={"calc( 100vh - 76px )"} w={"100%"} gap={0}>
@@ -523,7 +517,7 @@ const MainLayout = ({ children }) => {
                     <IconButton
                       icon={<IoCall color="#29CCCC" fontSize={"20px"} />}
                     />
-                    <Text>۰۹۱۱۱۱۶۹۱۵۶</Text>
+                    <Text>09127468103</Text>
                   </HStack>
                   <VStack alignItems={"start"}>
                     <Text

@@ -16,7 +16,7 @@ import {
   Text,
   Textarea,
   useBreakpointValue,
-  VStack
+  VStack,
 } from "@chakra-ui/react";
 import axios from "axios";
 import moment from "moment-jalaali";
@@ -49,8 +49,8 @@ const patchRequest = (
 ) => {
   return axios.post(
     baseUrl +
-    url +
-    `?table_type=${table_type}&table_id=${table_id}&type_param=${type_param}`,
+      url +
+      `?table_type=${table_type}&table_id=${table_id}&type_param=${type_param}`,
     data,
     {
       headers: {
@@ -85,12 +85,12 @@ const Index = () => {
 
   const { data: dataQuestionComment, isLoading: isLoadingComment } = useSWR(
     query?.id &&
-    `user/action?table_id=${query?.id}&table_type=question&type_param=comment`
+      `user/action?table_id=${query?.id}&table_type=question&type_param=comment`
   );
 
   const { data: dataQuestionSimilar, isLoading: isLoadingSimilar } = useSWR(
     dataQuestion?.data &&
-    `user/question/similar-questions?question_elastic_id=${dataQuestion?.data?.result?.[0]?.elastic_id}`
+      `user/question/similar-questions?question_elastic_id=${dataQuestion?.data?.result?.[0]?.elastic_id}`
   );
 
   const { trigger: triggerAnswer, isLoading: isLoadingAnswer } = useSWRMutation(
@@ -306,8 +306,12 @@ const Index = () => {
                 {isLoadingQuestion ? (
                   <Spinner />
                 ) : (
-                  <VStack w={'100%'} alignItems={'start'}>
-                    <Text lineHeight={"taller"} textAlign={'justify'} fontSize={'18px'}>
+                  <VStack w={"100%"} alignItems={"start"}>
+                    <Text
+                      lineHeight={"taller"}
+                      textAlign={"justify"}
+                      fontSize={"18px"}
+                    >
                       {dataQuestion?.data?.result?.[0]?.content}
                     </Text>
                     <Image
@@ -451,7 +455,13 @@ const Index = () => {
                           />
                         </VStack>
                         <VStack w={"100%"} alignItems={"start"}>
-                          <Text lineHeight={"taller"} w={"fit-content"} textAlign={'justify'} fontSize={'18px'} whiteSpace="pre-wrap">
+                          <Text
+                            lineHeight={"taller"}
+                            w={"fit-content"}
+                            textAlign={"justify"}
+                            fontSize={"18px"}
+                            whiteSpace="pre-wrap"
+                          >
                             {dataQuestionAnswer?.data?.[0]?.content}
                           </Text>
                           <HStack
@@ -644,17 +654,16 @@ const Index = () => {
                   <Text fontWeight={"bold"} fontSize={"16px"} mb={"10px"}>
                     {t("related_questions")}
                   </Text>
-                  {dataQuestionSimilar?.data?.slice(0, 5)?.map((similar) => (
+                  {dataQuestionSimilar?.data?.slice(0, 5)?.map((similar , index) => (
                     <HStack
-                      w={'100%'}
+                      w={"100%"}
                       py={"5px"}
                       alignItems={"start"}
-                      borderBottom={"1px"}
+                      borderBottom={index != 4 && "1px"}
                       borderBottomColor={"gray.200"}
                       cursor={"pointer"}
                       onClick={(e) => handleSimilarClick(similar?.id)}
                     >
-
                       <Text fontSize={"sm"}>{similar?.content}</Text>
                     </HStack>
                   ))}
@@ -672,18 +681,20 @@ const Index = () => {
                   <Text fontWeight={"bold"} fontSize={"16px"} mb={"10px"}>
                     {t("most_viewed_questions")}
                   </Text>
-                  {dataQuestionSimilar?.data?.slice(5, 10)?.map((related) => (
-                    <VStack
-                      w={'100%'}
-                      alignItems={"start"}
-                      borderBottom={"1px"}
-                      borderBottomColor={"gray.200"}
-                      py={"5px"}
-                      cursor={"pointer"}
-                      onClick={(e) => handleSimilarClick(related?.id)}
-                    >
-                      <Text fontSize={"sm"}>{related?.content}</Text>
-                      {/* <HStack alignItems={"center"}>
+                  {dataQuestionSimilar?.data
+                    ?.slice(5, 10)
+                    ?.map((related, index) => (
+                      <VStack
+                        w={"100%"}
+                        alignItems={"start"}
+                        borderBottom={index != 4 && "1px"}
+                        borderBottomColor={"gray.200"}
+                        py={"5px"}
+                        cursor={"pointer"}
+                        onClick={(e) => handleSimilarClick(related?.id)}
+                      >
+                        <Text fontSize={"sm"}>{related?.content}</Text>
+                        {/* <HStack alignItems={"center"}>
                         <Badge
                           bgColor={"#D2D2D2"}
                           color={"white"}
@@ -697,8 +708,8 @@ const Index = () => {
                           فقه سیاسی
                         </Text>
                       </HStack> */}
-                    </VStack>
-                  ))}
+                      </VStack>
+                    ))}
                 </Box>
               </GridItem>
             </Grid>

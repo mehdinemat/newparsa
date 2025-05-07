@@ -80,8 +80,6 @@ export default function Home({ children }) {
   const [categoryId, setCategoryId] = useState("");
   const [searchType, setSearchType] = useState("search");
 
-
-
   const { t } = useTranslation();
 
   const {
@@ -98,7 +96,8 @@ export default function Home({ children }) {
     error: errorQuestion,
     isLoading: isLoadingQuestion,
   } = useSWR(
-    `user/question?lang=${locale}&page=${page}${categoryId && `&categories__id=${categoryId}`
+    `user/question?lang=${locale}&page=${page}${
+      categoryId && `&categories__id=${categoryId}`
     }`
   );
   // const {
@@ -192,10 +191,8 @@ export default function Home({ children }) {
     router.push(`/result_search?search=${text}&search_type=search`);
   };
 
-
-
   return (
-    <MainLayout >
+    <MainLayout>
       <Head>
         <title>{t("question")}</title>
         <link rel="icon" href="/favicon.ico" />
@@ -251,17 +248,16 @@ export default function Home({ children }) {
                 border={"1px"}
                 borderColor={"#EBEBEB"}
                 borderRadius={"15px"}
+                bgColor={"#CFF186"}
                 height={"min-content"}
-                mb={"30px"}
+                mb={"20px"}
               >
                 <Text fontWeight={"bold"} fontSize={"16px"}>
-                  {t("question_sources")}
+                  {t("hadith_of_the_day")}
                 </Text>
-                <VStack mt={"20px"} w={"100%"} alignItems={"start"}>
-                  {dataSource?.data?.slice(0, 14)?.map((item, index) => (
-                    <LeftSidebar key={index} data={item} t={t} />
-                  ))}
-                </VStack>
+                <Text mt={"10px"} whiteSpace="pre-wrap">
+                  {dataHadith?.data}
+                </Text>
               </Box>
               <Box
                 w={"100%"}
@@ -269,13 +265,21 @@ export default function Home({ children }) {
                 border={"1px"}
                 borderColor={"#EBEBEB"}
                 borderRadius={"15px"}
-                bgColor={"#CFF186"}
                 height={"min-content"}
               >
                 <Text fontWeight={"bold"} fontSize={"16px"}>
-                  {t("hadith_of_the_day")}
+                  {t("question_sources")}
                 </Text>
-                <Text mt={"10px"} whiteSpace="pre-wrap">{dataHadith?.data}</Text>
+                <VStack mt={"20px"} w={"100%"} alignItems={"start"}>
+                  {dataSource?.data?.slice(0, 14)?.map((item, index) => (
+                    <LeftSidebar
+                      key={index}
+                      data={item}
+                      t={t}
+                      last={index == 13}
+                    />
+                  ))}
+                </VStack>
               </Box>
             </Box>
           </GridItem>
