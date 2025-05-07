@@ -11,14 +11,13 @@ import {
   Grid,
   GridItem,
   HStack,
-  Image,
   Input,
   InputGroup,
   InputRightElement,
   Spinner,
   Stack,
   Text,
-  VStack,
+  VStack
 } from "@chakra-ui/react";
 import { Geist, Geist_Mono } from "next/font/google";
 import "slick-carousel/slick/slick-theme.css";
@@ -28,13 +27,13 @@ import QuestionMCard from "@/components/home/mobile/questionMCard";
 import Pagination from "@/components/pagination";
 import QuestionCard from "@/components/questionCars";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { IoSearch } from "react-icons/io5";
 import { TbArrowsSort } from "react-icons/tb";
 import useSWR from "swr";
 import { StringParam, useQueryParams, withDefault } from "use-query-params";
-import { useRouter } from "next/router";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -204,7 +203,7 @@ const Index = ({ children }) => {
             p={{ base: 0, md: "6" }}
             order={{ base: 1, md: 2 }}
             as={GridItem}
-            colSpan={{ md: 2 }}
+            colSpan={{ md: 3 }}
             w="100%"
             overflowWrap="break-word"
             wordBreak="break-word"
@@ -235,25 +234,25 @@ const Index = ({ children }) => {
                 </HStack>
                 {filters?.search !=
                   dataCurrection?.data?.data?.spell_correction_text && (
-                  <HStack>
-                    <Text fontSize={"16px"}>
-                      آیا منظور شما{" "}
-                      <Text
-                        as={"span"}
-                        color={"blue.500"}
-                        cursor={"pointer"}
-                        onClick={(e) =>
-                          handleCurrectClick(
-                            dataCurrection?.data?.data?.spell_correction_text
-                          )
-                        }
-                      >
-                        {dataCurrection?.data?.data?.spell_correction_text}
-                      </Text>{" "}
-                      بود؟
-                    </Text>
-                  </HStack>
-                )}
+                    <HStack>
+                      <Text fontSize={"16px"}>
+                        آیا منظور شما{" "}
+                        <Text
+                          as={"span"}
+                          color={"blue.500"}
+                          cursor={"pointer"}
+                          onClick={(e) =>
+                            handleCurrectClick(
+                              dataCurrection?.data?.data?.spell_correction_text
+                            )
+                          }
+                        >
+                          {dataCurrection?.data?.data?.spell_correction_text}
+                        </Text>{" "}
+                        بود؟
+                      </Text>
+                    </HStack>
+                  )}
               </VStack>
               <Button
                 width={{ base: "152px", md: "189px" }}
@@ -344,7 +343,7 @@ const Index = ({ children }) => {
           </Box>
 
           {/* Left Sidebar */}
-          <Box
+          {/* <Box
             order={3}
             as={GridItem}
             colSpan={"1"}
@@ -382,7 +381,7 @@ const Index = ({ children }) => {
                 </HStack>
               </VStack>
             </Box>
-          </Box>
+          </Box> */}
         </Grid>
       </Box>
     </MainLayout>
