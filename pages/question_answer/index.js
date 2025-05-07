@@ -451,7 +451,7 @@ const Index = () => {
                           />
                         </VStack>
                         <VStack w={"100%"} alignItems={"start"}>
-                          <Text lineHeight={"taller"} w={"fit-content"} textAlign={'justify'} fontSize={'18px'}>
+                          <Text lineHeight={"taller"} w={"fit-content"} textAlign={'justify'} fontSize={'18px'} whiteSpace="pre-wrap">
                             {dataQuestionAnswer?.data?.[0]?.content}
                           </Text>
                           <HStack
