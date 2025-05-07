@@ -79,7 +79,12 @@ const MainLayout = ({ children }) => {
     search: withDefault(StringParam, ""),
   });
 
+
   const [search, setSearch] = useState("");
+
+  const [hideHeaderButton, setHideHeaderButton] = useState(false);
+  const scrollContainerRef = useRef(null);
+
 
   const [activePath, setActivePath] = useState(0);
   const [isSticky, setIsSticky] = useState(false);
@@ -158,6 +163,20 @@ const MainLayout = ({ children }) => {
     router.push(link);
   };
 
+
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const handleScroll = () => {
+      const scrollY = container.scrollTop;
+      setHideHeaderButton(scrollY >= 350);      // you can use scrollY >= 500 to toggle button
+    };
+
+    container.addEventListener('scroll', handleScroll);
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <VStack minHeight="100vh" w={"100%"} alignItems={"start"} gap={0}>
       {/* header */}
@@ -213,39 +232,41 @@ const MainLayout = ({ children }) => {
                 onClick={handleClickHome}
                 cursor={"pointer"}
               />
-              <InputGroup
-                width={"327px"}
-                display={{ base: "none", md: "block" }}
-              >
-                <Input
-                  height={"46px"}
-                  placeholder={t("search")}
-                  onChange={(e) => setSearch(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      handleClickSearch();
-                    }
-                  }}
-                />
-                <InputRightElement h="100%" ml="20px">
-                  <Flex align="center" gap="2">
-                    <IoSearch
-                      fontSize="20px"
-                      style={{ marginTop: "2px" }}
-                      color="#29CCCC"
-                      onClick={handleClickSearch}
-                      cursor={"pointer"}
-                    />
-                    <PiDiamondThin
-                      fontSize="20px"
-                      style={{ marginTop: "2px" }}
-                      color="#29CCCC"
-                      onClick={handleClickSemanticSearch}
-                      cursor={"pointer"}
-                    />
-                  </Flex>
-                </InputRightElement>
-              </InputGroup>
+              {hideHeaderButton && (
+                <InputGroup
+                  width={"327px"}
+                  display={{ base: "none", md: "block" }}
+                >
+                  <Input
+                    height={"46px"}
+                    placeholder={t("search")}
+                    onChange={(e) => setSearch(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        handleClickSearch();
+                      }
+                    }}
+                  />
+                  <InputRightElement h="100%" ml="20px">
+                    <Flex align="center" gap="2">
+                      <IoSearch
+                        fontSize="20px"
+                        style={{ marginTop: "2px" }}
+                        color="#29CCCC"
+                        onClick={handleClickSearch}
+                        cursor={"pointer"}
+                      />
+                      <PiDiamondThin
+                        fontSize="20px"
+                        style={{ marginTop: "2px" }}
+                        color="#29CCCC"
+                        onClick={handleClickSemanticSearch}
+                        cursor={"pointer"}
+                      />
+                    </Flex>
+                  </InputRightElement>
+                </InputGroup>
+              )}
             </HStack>
             <HStack
               w={"100%"}
@@ -367,13 +388,14 @@ const MainLayout = ({ children }) => {
         </HStack>
       </Box>
       {/* header */}
-
       <HStack
         height={"calc( 100vh )"}
         w={"100%"}
         gap={0}
         alignItems={"start"}
         overflowY={"scroll"}
+        ref={scrollContainerRef}
+
       >
         {/* Main content area */}
         <VStack height={"calc( 100vh - 76px )"} w={"100%"} gap={0}>

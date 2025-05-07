@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Center,
   Container,
   Divider,
@@ -14,14 +13,13 @@ import {
   Stack,
   Text,
   useBreakpoint,
-  VStack,
+  VStack
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import CountUp from "react-countup";
 import { IoClose, IoMic, IoMicOutline, IoSearch, IoSendOutline } from "react-icons/io5";
-import { RiSearchEyeLine } from "react-icons/ri";
 import { PiDiamondThin } from "react-icons/pi";
 import useSWRMutation from "swr/mutation";
 import { baseUrl } from "../lib/api";
@@ -288,7 +286,7 @@ const Header = ({
                       onClick={handleStopRecording}
                     />
                     <IoSendOutline
-                      style={{ transform: 'rotate(180deg)' }} 
+                      style={{ transform: 'rotate(180deg)' }}
                       onClick={async () => {
                         handleStopRecording();
                         setTimeout(handleUpload, 500);

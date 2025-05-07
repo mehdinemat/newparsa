@@ -80,6 +80,8 @@ export default function Home({ children }) {
   const [categoryId, setCategoryId] = useState("");
   const [searchType, setSearchType] = useState("search");
 
+
+
   const { t } = useTranslation();
 
   const {
@@ -190,8 +192,10 @@ export default function Home({ children }) {
     router.push(`/result_search?search=${text}&search_type=search`);
   };
 
+
+
   return (
-    <MainLayout>
+    <MainLayout >
       <Head>
         <title>{t("question")}</title>
         <link rel="icon" href="/favicon.ico" />
