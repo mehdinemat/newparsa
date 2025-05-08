@@ -161,14 +161,6 @@ const Header = ({
     }
   };
 
-  const handlePlayRecording = () => {
-    if (recordedBlob) {
-      const audioUrl = URL.createObjectURL(recordedBlob);
-      const audio = new Audio(audioUrl);
-      audio.play();
-    }
-  };
-
   const handleUpload = async () => {
     if (recordedBlob) {
       await uploadAudio(recordedBlob);
@@ -268,9 +260,14 @@ const Header = ({
                 </Flex>
               </InputLeftElement>
             ) : null}
-            <button onClick={handlePlayRecording} disabled={!recordedBlob} style={{color:!recordedBlob ? 'red':'green'}}>
-              Play Recording
-            </button>
+            {recordedBlob && (
+              <a
+                href={URL.createObjectURL(recordedBlob)}
+                download="recording.wav"
+              >
+                <button>Download Recording</button>
+              </a>
+            )}
 
             <Input
               ref={inputRef}
@@ -306,7 +303,7 @@ const Header = ({
                       style={{ transform: "rotate(180deg)" }}
                       onClick={async () => {
                         handleStopRecording();
-                        setTimeout(handleUpload, 500);
+                        // setTimeout(handleUpload, 500);
                       }}
                       fontSize={"25px"}
                       color="white"
