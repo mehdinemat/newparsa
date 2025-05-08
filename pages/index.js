@@ -336,7 +336,11 @@ export default function Home({ children }) {
             ) : (
               <VStack display={{ base: "none", md: "flex" }}>
                 {dataQuestion?.data?.result?.map((item, index) => (
-                  <QuestionCard key={index} data={item} t={t} />
+                  <QuestionCard
+                    key={index}
+                    data={item}
+                    t={t}
+                  />
                 ))}
                 <Stack
                   w={"100%"}

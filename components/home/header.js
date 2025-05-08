@@ -13,13 +13,19 @@ import {
   Stack,
   Text,
   useBreakpoint,
-  VStack
+  VStack,
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import CountUp from "react-countup";
-import { IoClose, IoMic, IoMicOutline, IoSearch, IoSendOutline } from "react-icons/io5";
+import {
+  IoClose,
+  IoMic,
+  IoMicOutline,
+  IoSearch,
+  IoSendOutline,
+} from "react-icons/io5";
 import { PiDiamondThin } from "react-icons/pi";
 import useSWRMutation from "swr/mutation";
 import { baseUrl } from "../lib/api";
@@ -155,6 +161,14 @@ const Header = ({
     }
   };
 
+  const handlePlayRecording = () => {
+    if (recordedBlob) {
+      const audioUrl = URL.createObjectURL(recordedBlob);
+      const audio = new Audio(audioUrl);
+      audio.play();
+    }
+  };
+
   const handleUpload = async () => {
     if (recordedBlob) {
       await uploadAudio(recordedBlob);
@@ -254,6 +268,9 @@ const Header = ({
                 </Flex>
               </InputLeftElement>
             ) : null}
+            <button onClick={handlePlayRecording} disabled={!recordedBlob} style={{color:!recordedBlob ? 'red':'green'}}>
+              Play Recording
+            </button>
 
             <Input
               ref={inputRef}
@@ -286,14 +303,14 @@ const Header = ({
                       onClick={handleStopRecording}
                     />
                     <IoSendOutline
-                      style={{ transform: 'rotate(180deg)' }}
+                      style={{ transform: "rotate(180deg)" }}
                       onClick={async () => {
                         handleStopRecording();
                         setTimeout(handleUpload, 500);
                       }}
-                      fontSize={'25px'}
+                      fontSize={"25px"}
                       color="white"
-                      cursor={'pointer'}
+                      cursor={"pointer"}
                     />
                   </HStack>
                 ) : (
