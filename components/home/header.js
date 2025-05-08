@@ -156,25 +156,21 @@ const Header = ({
 
   const handleStopRecording = async () => {
     if (!recorderRef.current || !isRecording) return;
-
+  
     const { blob } = await recorderRef.current.stop();
     setRecordedBlob(blob);
-
-    // Clean up mic
-    streamRef.current.getTracks().forEach((track) => track.stop());
-
+  
+    streamRef.current.getTracks().forEach(track => track.stop());
     setIsRecording(false);
-
-    // Auto-upload right after recording stops
-    const formData = new FormData();
-    formData.append("file", blob, "recording.wav");
-
-    await fetch(baseUrl + "user/general/speech-to-text?lang=fa-IR", {
-      method: "POST",
-      body: formData,
-    });
-
-    // Optional: Clear the blob after upload
+  
+    try {
+      const response = await uploadAudio(blob); // this sends it
+      console.log('Upload response:', response); // use this data in UI
+    } catch (err) {
+      console.error('Upload failed:', err);
+    }
+  
+    // Optionally clear the blob
     setRecordedBlob(null);
   };
 
@@ -242,10 +238,6 @@ const Header = ({
             width={{ base: "381px", md: "890px" }}
             my="20px"
           >
-            <button onClick={handleDownload} disabled={!recordedBlob}>
-              Download
-            </button>
-
             {isRecording ? (
               <InputLeftElement height="100%" mr="10px">
                 <Flex
@@ -294,14 +286,6 @@ const Header = ({
                 </Flex>
               </InputLeftElement>
             ) : null}
-            {recordedBlob && (
-              <a
-                href={URL.createObjectURL(recordedBlob)}
-                download="recording.wav"
-              >
-                <button>Download Recording</button>
-              </a>
-            )}
 
             <Input
               ref={inputRef}
