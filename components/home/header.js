@@ -108,7 +108,7 @@ const Header = ({
     sendAudio,
     {
       onSuccess: (data) => {
-        handleVoiceSearch(data?.data);
+        handleVoiceSearch(data?.data?.text);
       },
     }
   );
