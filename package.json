@@ -37,6 +37,7 @@
     "react-select": "^5.10.1",
     "react-slick": "^0.30.3",
     "react-table": "^7.8.0",
+    "recorder-js": "^1.0.7",
     "slick-carousel": "^1.8.1",
     "swr": "^2.3.3",
     "use-query-params": "^2.2.1",

@@ -29,6 +29,7 @@ import {
 import { PiDiamondThin } from "react-icons/pi";
 import useSWRMutation from "swr/mutation";
 import { baseUrl } from "../lib/api";
+import Recorder from "recorder-js";
 
 const siteData = [
   {
@@ -98,6 +99,10 @@ const Header = ({
   const [audioChunks, setAudioChunks] = useState([]);
   const [recordedBlob, setRecordedBlob] = useState(null);
   const [voiceText, setVoiceText] = useState("");
+  const audioContextRef = useRef(null);
+  const streamRef = useRef(null);
+  const recorderRef = useRef(null);
+
   const { trigger: uploadAudio } = useSWRMutation(
     "user/general/speech-to-text",
     sendAudio,
@@ -135,29 +140,54 @@ const Header = ({
     if (isRecording) return;
 
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    const recorder = new MediaRecorder(stream);
-    setIsRecording(true);
-    setAudioChunks([]);
+    const audioContext = new (window.AudioContext ||
+      window.webkitAudioContext)();
+    const recorder = new Recorder(audioContext);
 
-    recorder.ondataavailable = (e) => {
-      if (e.data.size > 0) {
-        setAudioChunks((prev) => [...prev, e.data]);
-      }
-    };
-
-    recorder.onstop = () => {
-      const blob = new Blob(audioChunks, { type: "audio/wav" });
-      setRecordedBlob(blob);
-      setIsRecording(false);
-    };
-
+    await recorder.init(stream);
     recorder.start();
-    setMediaRecorder(recorder);
+
+    audioContextRef.current = audioContext;
+    streamRef.current = stream;
+    recorderRef.current = recorder;
+
+    setIsRecording(true);
   };
 
-  const handleStopRecording = () => {
-    if (mediaRecorder && isRecording) {
-      mediaRecorder.stop();
+  const handleStopRecording = async () => {
+    if (!recorderRef.current || !isRecording) return;
+
+    const { blob } = await recorderRef.current.stop();
+    setRecordedBlob(blob);
+
+    // Clean up mic
+    streamRef.current.getTracks().forEach((track) => track.stop());
+
+    setIsRecording(false);
+
+    // Auto-upload right after recording stops
+    const formData = new FormData();
+    formData.append("file", blob, "recording.wav");
+
+    await fetch(baseUrl + "user/general/speech-to-text?lang=fa-IR", {
+      method: "POST",
+      body: formData,
+    });
+
+    // Optional: Clear the blob after upload
+    setRecordedBlob(null);
+  };
+
+  const handleDownload = () => {
+    if (recordedBlob) {
+      const url = URL.createObjectURL(recordedBlob);
+      const a = document.createElement("a");
+      a.style.display = "none";
+      a.href = url;
+      a.download = "recording.wav";
+      document.body.appendChild(a);
+      a.click();
+      URL.revokeObjectURL(url);
     }
   };
 
@@ -212,6 +242,10 @@ const Header = ({
             width={{ base: "381px", md: "890px" }}
             my="20px"
           >
+            <button onClick={handleDownload} disabled={!recordedBlob}>
+              Download
+            </button>
+
             {isRecording ? (
               <InputLeftElement height="100%" mr="10px">
                 <Flex
