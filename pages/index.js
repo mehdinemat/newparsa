@@ -188,7 +188,7 @@ export default function Home({ children }) {
     );
   };
   const handleVoiceSearch = (text) => {
-    router.push(`/result_search?search=${text}&search_type=search`);
+    router.push(`/result_search?search=${text}&search_type=semantic_search`);
   };
 
   return (

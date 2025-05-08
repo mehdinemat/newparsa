@@ -10,6 +10,7 @@ import {
   InputGroup,
   InputLeftElement,
   InputRightElement,
+  Spinner,
   Stack,
   Text,
   useBreakpoint,
@@ -103,7 +104,7 @@ const Header = ({
   const streamRef = useRef(null);
   const recorderRef = useRef(null);
 
-  const { trigger: uploadAudio } = useSWRMutation(
+  const { trigger: uploadAudio, isMutating } = useSWRMutation(
     "user/general/speech-to-text",
     sendAudio,
     {
@@ -156,20 +157,20 @@ const Header = ({
 
   const handleStopRecording = async () => {
     if (!recorderRef.current || !isRecording) return;
-  
+
     const { blob } = await recorderRef.current.stop();
     setRecordedBlob(blob);
-  
-    streamRef.current.getTracks().forEach(track => track.stop());
+
+    streamRef.current.getTracks().forEach((track) => track.stop());
     setIsRecording(false);
-  
+
     try {
       const response = await uploadAudio(blob); // this sends it
-      console.log('Upload response:', response); // use this data in UI
+      console.log("Upload response:", response); // use this data in UI
     } catch (err) {
-      console.error('Upload failed:', err);
+      console.error("Upload failed:", err);
     }
-  
+
     // Optionally clear the blob
     setRecordedBlob(null);
   };
@@ -328,6 +329,8 @@ const Header = ({
                       cursor={"pointer"}
                     />
                   </HStack>
+                ) : isMutating ? (
+                  <Spinner color="white"/>
                 ) : (
                   <>
                     <IoSearch
