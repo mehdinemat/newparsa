@@ -465,20 +465,20 @@ const Index = () => {
                             }}
                             mt={"10px"}
                           >
-                            <HStack order={{ base: 2 }}>
+                            {/* <HStack order={{ base: 2 }}>
                               <Avatar
                                 width={"28px"}
                                 height={"28px"}
                                 order={{ base: 2 }}
                               />
-                              {/* <Text
+                              <Text
                                 color={"gray"}
                                 fontSize={"sm"}
                                 order={{ base: 1 }}
                               >
                                 اسلام کوئست
-                              </Text> */}
-                            </HStack>
+                              </Text>
+                            </HStack> */}
                             <HStack order={{ base: 1 }}>
                               <Text fontSize={"sm"} color={"gray.500"}>
                                 {moment(
@@ -533,7 +533,7 @@ const Index = () => {
                               </Text>
                               <HStack>
                                 <Text fontSize={"sm"} color={"gray"}>
-                                  {t("Write Your Comment")}
+                                  {t("leave_comment")}
                                 </Text>
                                 <IconButton
                                   icon={<IoPencil color="gray" />}

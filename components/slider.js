@@ -26,6 +26,12 @@ const SliderCom = ({ items, height, borderRadius, width = "auto", title }) => {
     rtl: false, // for RTL support
   };
 
+  const handlePublicFiqure = (item) => {
+    router.push(
+      `/questions?public_fiqure=${item?.id}&public_fiqure_name=${item?.title}`
+    );
+  };
+
   const router = useRouter();
   const { t } = useTranslation();
 
@@ -58,6 +64,7 @@ const SliderCom = ({ items, height, borderRadius, width = "auto", title }) => {
         <Slider {...sliderSettings}>
           {items.map((item, index) => (
             <Flex
+            cursor={'pointer'}
               textAlign={"center"}
               w="100%"
               h="100%"
@@ -66,6 +73,7 @@ const SliderCom = ({ items, height, borderRadius, width = "auto", title }) => {
               direction="column"
               justifyContent="space-between"
               alignItems="center"
+              onClick={(e) => handlePublicFiqure(item)}
             >
               <Avatar
                 w="128px"

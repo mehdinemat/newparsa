@@ -336,11 +336,7 @@ export default function Home({ children }) {
             ) : (
               <VStack display={{ base: "none", md: "flex" }}>
                 {dataQuestion?.data?.result?.map((item, index) => (
-                  <QuestionCard
-                    key={index}
-                    data={item}
-                    t={t}
-                  />
+                  <QuestionCard key={index} data={item} t={t} />
                 ))}
                 <Stack
                   w={"100%"}
@@ -387,6 +383,7 @@ export default function Home({ children }) {
                 items={dataReferences?.data?.result?.map((val) => ({
                   title: val?.full_name,
                   image: val?.image_url,
+                  id: val?.id,
                   buttoh: "اطلاعات بیشتر",
                 }))}
                 height={"380px"}
