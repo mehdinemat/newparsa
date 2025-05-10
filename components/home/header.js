@@ -228,7 +228,7 @@ const Header = ({
           height={"100%"}
         >
           <Text
-            fontSize={{ base: "35px", md: "50px" }}
+            fontSize={{ base: "35px", md: "45px" }}
             color={"white"}
             textAlign={{ base: "center", md: "center" }}
           >
