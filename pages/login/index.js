@@ -13,6 +13,7 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -27,40 +28,44 @@ const postRequest = (url, { arg }) => {
 };
 
 const Index = () => {
-
   const { t } = useTranslation();
 
-  const toast = useToast()
+  const toast = useToast();
 
-  const router = useRouter()
+  const router = useRouter();
 
   const { register, setValue, getValues, handleSubmit } = useForm();
 
   const { trigger, isLoading, isMutating } = useSWRMutation(
     "user/auth",
-    postRequest, {
-    onSuccess: (data) => {
-      if (data?.data?.data) {
-        router.push(`/two_step_login/verify_code?code=${data?.data?.data}&username=${getValues('username')}`)
-      } else {
-        toast({
-          title: "خطا",
-          description: data?.data?.message,
-          status: "error",
-          duration: 9000,
-          isClosable: true,
-        })
-      }
+    postRequest,
+    {
+      onSuccess: (data) => {
+        if (data?.data?.data) {
+          router.push(
+            `/two_step_login/verify_code?code=${
+              data?.data?.data
+            }&username=${getValues("username")}`
+          );
+        } else {
+          toast({
+            title: "خطا",
+            description: data?.data?.message,
+            status: "error",
+            duration: 9000,
+            isClosable: true,
+          });
+        }
+      },
     }
-  }
   );
   const handleLogin = (e) => {
     trigger(e);
   };
 
   const handleClickRegister = () => {
-    router.replace('/register')
-  }
+    router.replace("/register");
+  };
 
   return (
     <Box
@@ -88,6 +93,8 @@ const Index = () => {
             height={"100%"}
           >
             <Image
+            cursor={'pointer'}
+            onClick={e=>router.push('/')}
               src="/loginlogo.png"
               width={{ base: "120px", md: "165px" }}
               height={{ base: "50px", md: "68px" }}
@@ -99,15 +106,15 @@ const Index = () => {
               w={"327px"}
               mb={"20px"}
             >
-              {t('religious')}
+              {t("religious")}
             </Text>
             <Divider w={"350px"} h={"2px"} bgColor={"#29CCCC"} />
             <Text fontSize={{ base: "20px", md: "25px" }} mt={"20px"}>
-              {t('log_in_to_your_account')}
+              {t("log_in_to_your_account")}
             </Text>
             <Input
               height={"46px"}
-              placeholder={t('username_or_mobile_number')}
+              placeholder={t("username_or_mobile_number")}
               my={"10px"}
               {...register("username")}
               sx={{
@@ -119,7 +126,7 @@ const Index = () => {
             <Input
               height={"46px"}
               type="password"
-              placeholder={t('password')}
+              placeholder={t("password")}
               mb={"10px"}
               {...register("password")}
               sx={{
@@ -132,16 +139,32 @@ const Index = () => {
               <HStack>
                 <Checkbox></Checkbox>
                 <Text fontSize={{ base: "15px", md: "18px" }}>
-                  {t('remember_me')}
+                  {t("remember_me")}
                 </Text>
               </HStack>
               <Text color={"#29CCCC"} fontSize={{ base: "15px", md: "18px" }}>
-                {t('forgot_password')}
+                {t("forgot_password")}
               </Text>
             </HStack>
-            <Button w={"100%"} bgColor={"#29CCCC"} height={"46px"} my={"20px"} type="submit" isLoading={isMutating}>
-              {t('log_in')}
+            <Button
+              w={"100%"}
+              bgColor={"#29CCCC"}
+              height={"46px"}
+              mt={"20px"}
+              type="submit"
+              isLoading={isMutating}
+            >
+              {t("log_in")}
             </Button>
+            <HStack
+              w={"100%"}
+              alignItems={"start"}
+              onClick={(e) => router.push("/register")}
+            >
+              <Text color={"blue.500"} cursor={"pointer"}>
+                {t("create_account")}
+              </Text>
+            </HStack>
             {/* <Button
               variant={"outline"}
               w={"100%"}

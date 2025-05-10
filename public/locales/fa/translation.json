@@ -86,6 +86,7 @@
 "first_name":"نام",
 "last_name":"نام خانوادگی",
 "register":"ثبت نام",
+"create_account":"ساخت حساب کاربری جدید",
 "login_code":"رمز ورود",
 "sources": "مراجع",
 "search_sources": "جستجو مراجع",
@@ -103,7 +104,9 @@
   "all_products": "همه محصولات",
   "resources": "منابع",
   "institute": "مؤسسه هوش مصنوعی و تمدن اسلامی (همتا)",
-  "answers":"جواب ها"
+  "answers":"جواب ها",
+  "have_account": "حساب کاربری دارید؟"
+
 
 
     

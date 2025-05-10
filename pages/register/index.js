@@ -263,12 +263,22 @@ const Index = () => {
               w={"100%"}
               bgColor={"#29CCCC"}
               height={"46px"}
-              my={"20px"}
+              mt={"20px"}
               type="submit"
               isLoading={isMutating}
             >
               {t("register")}
             </Button>
+            <HStack
+              w={"100%"}
+              alignItems={"start"}
+              onClick={(e) => router.push("/login")}
+            >
+              <Text>{t("have_account")}</Text>
+              <Text color={"blue.500"} cursor={"pointer"} >
+                {t("log_in")}
+              </Text>
+            </HStack>
             {/* <Button
               w={"100%"}
               height={"46px"}

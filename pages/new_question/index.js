@@ -87,8 +87,8 @@ const Index = () => {
   } = useForm();
 
   const breakpointColumnsObj = {
-    default: 2,
-    1100: 2,
+    default: 1,
+    1100: 1,
     700: 1,
   };
 
@@ -154,10 +154,10 @@ const Index = () => {
               </Badge>
             </HStack> */}
             <HStack w={"100%"} justifyContent={"end"} mt={"20px"}>
-              <Button bgColor={"#23D9D7"}>{t("next_step")}</Button>
+              {/* <Button bgColor={"#23D9D7"}>{t("next_step")}</Button> */}
             </HStack>
           </VStack>
-          <VStack
+          {/* <VStack
             w={"calc( 100% - 20px )"}
             alignItems={"start"}
             borderRadius={"15px"}
@@ -202,7 +202,7 @@ const Index = () => {
                 <Text color={"white"}>{t("review_your_question")}</Text>
               </ListItem>
             </UnorderedList>
-          </VStack>
+          </VStack> */}
           <VStack
             w={"calc( 100% - 20px )"}
             alignItems={"start"}
@@ -215,12 +215,9 @@ const Index = () => {
             <Text fontWeight={"bold"} fontSize={"18px"}>
               {t("question_content")}
             </Text>
-            <Text>
-              لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ
-            </Text>
             <Textarea {...registerQuestion("content")}></Textarea>
           </VStack>
-          <VStack
+          {/* <VStack
             w={"calc( 100% - 20px )"}
             alignItems={"start"}
             borderRadius={"15px"}
@@ -229,9 +226,6 @@ const Index = () => {
           >
             <Text fontWeight={"bold"} color={"black"}>
               {t("suggested_questions")}
-            </Text>
-            <Text color={"black"} my={"10px"}>
-              لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ
             </Text>
             <VStack
               w={"100%"}
@@ -318,7 +312,7 @@ const Index = () => {
             <HStack w={"100%"} justifyContent={"end"} mt={"20px"}>
               <Button bgColor={"#23D9D7"}>{t("next_step")}</Button>
             </HStack>
-          </VStack>
+          </VStack> */}
 
           <VStack
             w={"calc( 100% - 20px )"}
@@ -331,9 +325,6 @@ const Index = () => {
           >
             <Text fontWeight={"bold"} fontSize={"18px"}>
               {t("question_tags")}
-            </Text>
-            <Text>
-              لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ
             </Text>
 
             <MultiSelectComboBox

@@ -62,7 +62,7 @@ export default function MultiSelectComboBox({ selectedOptions, setSelectedOption
   };
 
   return (
-    <Box width="100%" maxW="600px" mt={4}>
+    <Box width="100%" maxW="100%" mt={4}>
       <Select
         isMulti
         options={options}
