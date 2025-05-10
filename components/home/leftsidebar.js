@@ -1,6 +1,12 @@
 import { Box, HStack, Image, Text, VStack } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 
 const LeftSidebar = ({ data, t, last }) => {
+const router =useRouter()
+  const handleClickSource = ()=>{
+    router.replace(`/questions?source=${data?.id}`)
+  }
+
   return (
     <HStack
       w="100%"
@@ -8,7 +14,10 @@ const LeftSidebar = ({ data, t, last }) => {
       borderBottom={!last && "1px solid"}
       borderColor="#EBEBEB"
       p="10px 0"
+      onClick={e=>handleClickSource()}
+      cursor={'pointer'}
     >
+  
       <Box
         w="60px"
         h="60px"
