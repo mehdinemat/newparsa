@@ -115,7 +115,7 @@ const MainLayout = ({ children }) => {
     router.push(`/result_search?search=${search}&search_type=search`);
   };
   const handleClickSemanticSearch = () => {
-    router.push(`/result_search?search=${search}search_type=semantic_search`);
+    router.push(`/result_search?search=${search}&search_type=semantic_search`);
   };
 
   const handleToggle = () => {
@@ -138,8 +138,8 @@ const MainLayout = ({ children }) => {
       _.includes(router.asPath.toLowerCase(), "admin_dashboard")
         ? 2
         : _.includes(router.asPath.toLowerCase(), "dashboard")
-        ? 1
-        : 0
+          ? 1
+          : 0
     );
   }, [router]);
 
@@ -324,8 +324,8 @@ const MainLayout = ({ children }) => {
                     {locale == "en"
                       ? t("header_english")
                       : locale == "fa"
-                      ? t("header_persian")
-                      : locale == "ar" && t("header_arabic")}
+                        ? t("header_persian")
+                        : locale == "ar" && t("header_arabic")}
                   </Text>
                   <IoIosArrowDown />
                 </HStack>
