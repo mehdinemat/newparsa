@@ -108,7 +108,11 @@
 "have_account": "هل لديك حساب؟",
 "leave_comment": "اترك تعليقًا",
 "main_page": "الصفحة الرئيسية",
-"topic": "الموضوع"
+"topic": "الموضوع",
+"semantic_search_results_for": "نتائج البحث الدلالي لـ",
+"literal_search_results_for": "نتائج البحث النصي لـ"
+
+
 
 
 

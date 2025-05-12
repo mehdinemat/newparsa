@@ -235,6 +235,7 @@ const MainLayout = ({ children }) => {
                   <Input
                     height={"46px"}
                     placeholder={t("search")}
+                    value={filters?.search}
                     onChange={(e) => setSearch(e.target.value)}
                     onKeyDown={(e) => {
                       if (e.key === "Enter") {

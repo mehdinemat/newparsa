@@ -108,7 +108,11 @@
   "have_account": "حساب کاربری دارید؟",
   "leave_comment": "کامنت بگذارید",
   "main_page": "صفحه اصلی",
-  "topic": "موضوع"
+  "topic": "موضوع",
+  "semantic_search_results_for": "نتایج جستجو معنایی برای",
+  "literal_search_results_for": "نتایج جستجو لفظی برای"
+
+
 
 
 

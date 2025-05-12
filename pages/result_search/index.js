@@ -17,7 +17,7 @@ import {
   Spinner,
   Stack,
   Text,
-  VStack
+  VStack,
 } from "@chakra-ui/react";
 import { Geist, Geist_Mono } from "next/font/google";
 import "slick-carousel/slick/slick-theme.css";
@@ -62,7 +62,9 @@ const Index = ({ children }) => {
     error: errorQuestionSearch,
     isLoading: isLoadingQuestionSearch,
   } = useSWR(
-    `user/question/search?page=${((page - 1) * 10)+1}&search_type=${filters?.search_type}&content=${filters?.search}`
+    `user/question/search?page=${(page - 1) * 10 + 1}&search_type=${
+      filters?.search_type
+    }&content=${filters?.search}`
   );
   const {
     data: dataCurrection,
@@ -82,7 +84,15 @@ const Index = ({ children }) => {
   return (
     <MainLayout>
       <Head>
-        <title>{filters?.search}</title>
+        <title>
+          {t("parsa")} :{" "}
+          {t(
+            filters?.search_type != "search"
+              ? "semantic_search_results_for"
+              : "literal_search_results_for"
+          )}{" "}
+          :{filters?.search}
+        </title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Box
@@ -232,8 +242,9 @@ const Index = ({ children }) => {
                     {filters?.search}
                   </Text>
                 </HStack>
-                {(filters?.search !=
-                  dataCurrection?.data?.data?.spell_correction_text && dataCurrection?.data?.data?.spell_correction_text) && (
+                {filters?.search !=
+                  dataCurrection?.data?.data?.spell_correction_text &&
+                  dataCurrection?.data?.data?.spell_correction_text && (
                     <HStack>
                       <Text fontSize={"16px"}>
                         آیا منظور شما{" "}

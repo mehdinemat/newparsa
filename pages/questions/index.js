@@ -44,6 +44,7 @@ export default function Home({ children }) {
   const {
     source,
     tag,
+    source_name,
     tag_name,
     public_fiqure_name,
     public_fiqure,
@@ -167,8 +168,17 @@ export default function Home({ children }) {
     <MainLayout>
       <Head>
         <title>
-          {dataSource?.data?.find((it) => it?.id == source)?.fa_source_name ||
-            `${t("question")}_${source || category_title || public_fiqure_name || tag_name}`}
+          {`${t("parsa")} | ${t(
+            source
+              ? "source"
+              : category_title
+              ? "topic"
+              : public_fiqure_name
+              ? "resources"
+              : tag_name && "tag"
+          )} : ${
+            source_name || category_title || public_fiqure_name || tag_name
+          }`}
         </title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -242,29 +252,33 @@ export default function Home({ children }) {
                 {t("topics")}
               </Text>
               {dataCategory?.data?.length > 0 ? (
-              dataCategory?.data?.map((item, index) => (
-                <Accordion
-                  key={item.id}
-                  onClick={() => handleClickLink({ title: item?.name, id: item?.id })}
-                  allowToggle
-                >
-                  <AccordionItem
-                    borderTop={index === 0 ? "none" : "1px solid"}
-                    borderBottom={
-                      index === dataCategory.data.length - 1 ? "none" : "1px solid"
+                dataCategory?.data?.map((item, index) => (
+                  <Accordion
+                    key={item.id}
+                    onClick={() =>
+                      handleClickLink({ title: item?.name, id: item?.id })
                     }
-                    borderColor="gray.200"
+                    allowToggle
                   >
-                    <h2>
-                      <AccordionButton>
-                        <Box as="span" flex="1" textAlign="right">
-                          {item?.name}
-                        </Box>
-                      </AccordionButton>
-                    </h2>
-                  </AccordionItem>
-                </Accordion>
-              ))
+                    <AccordionItem
+                      borderTop={index === 0 ? "none" : "1px solid"}
+                      borderBottom={
+                        index === dataCategory.data.length - 1
+                          ? "none"
+                          : "1px solid"
+                      }
+                      borderColor="gray.200"
+                    >
+                      <h2>
+                        <AccordionButton>
+                          <Box as="span" flex="1" textAlign="right">
+                            {item?.name}
+                          </Box>
+                        </AccordionButton>
+                      </h2>
+                    </AccordionItem>
+                  </Accordion>
+                ))
               ) : (
                 <VStack spacing={4} mt={4}>
                   <Text fontSize="lg" color="gray.600">
