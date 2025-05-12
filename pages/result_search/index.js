@@ -62,7 +62,7 @@ const Index = ({ children }) => {
     error: errorQuestionSearch,
     isLoading: isLoadingQuestionSearch,
   } = useSWR(
-    `user/question/search?page=${page}&search_type=${filters?.search_type}&content=${filters?.search}`
+    `user/question/search?page=${((page - 1) * 10)+1}&search_type=${filters?.search_type}&content=${filters?.search}`
   );
   const {
     data: dataCurrection,
