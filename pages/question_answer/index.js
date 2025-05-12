@@ -127,7 +127,7 @@ const Index = () => {
   return (
     <MainLayout>
       <Head>
-        <title>{dataQuestion?.data?.result?.[0]?.title}</title>
+        <title>{dataQuestion?.data?.result?.[0]?.title || dataQuestion?.data?.result?.[0]?.content}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Box
