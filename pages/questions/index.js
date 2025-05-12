@@ -1,7 +1,15 @@
 import Header from "@/components/home/header";
 import MainLayout from "@/components/mainLayout";
 import {
+  Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  AccordionPanel,
   Box,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
   Button,
   Grid,
   GridItem,
@@ -30,45 +38,6 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import useSWR from "swr";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-const items = [
-  {
-    image: "/img1.jpg",
-    title: "آیت الله محمدتقی بهجت فومنی",
-    button: "اطلاعات بیشتر",
-  },
-  {
-    image: "/img2.jpg",
-    title: "آیت الله جعفر سبحانی خیابانی تبریزی",
-    button: "اطلاعات بیشتر",
-  },
-  {
-    image: "/img3.jpg",
-    title: "آیت الله سید عبدالکریم موسوی اردبیلی",
-    button: "اطلاعات بیشتر",
-  },
-];
-const items2 = [
-  {
-    image: "/img1.jpg",
-  },
-  {
-    image: "/img2.jpg",
-  },
-  {
-    image: "/img3.jpg",
-  },
-];
 
 export default function Home({ children }) {
   const router = useRouter();
@@ -111,6 +80,18 @@ export default function Home({ children }) {
       category_id || 0
     }`
   );
+
+  const { data: dataCategory, isLoading: isLoadingCategory } = useSWR(
+    `user/category?type=question&parent_id=${category_id}`,
+    {
+      onSuccess: (res) => {},
+    }
+  );
+  const { data: dataCategoryParent, isLoading: isLoadingCategoryParent } =
+    useSWR(`user/category/parents?category_id=${category_id}`, {
+      onSuccess: (res) => {},
+    });
+
   // const {
   //   data: dataQuestionSearch,
   //   error: errorQuestionSearch,
@@ -143,30 +124,6 @@ export default function Home({ children }) {
       }
     },
   });
-
-  const onLoadData = (treeNode) => {
-    const { key, children } = treeNode;
-
-    // If already loaded, skip
-    if (children) {
-      return Promise.resolve();
-    }
-
-    return fetch(baseUrl + `user/category?parent_id=${key}`)
-      .then((res) => res.json())
-      .then((res) => {
-        if (!res.status) return;
-
-        const newChildren = res.data.map((child) => ({
-          key: child.id.toString(),
-          title: child.name,
-          isLeaf: false, // or true if child has no further children
-        }));
-
-        // Add the new children to the correct parent in treeData
-        setTreeData((origin) => updateTreeData(origin, key, newChildren));
-      });
-  };
 
   // Helper function to update treeData immutably
   const updateTreeData = (list, key, children) =>
@@ -202,6 +159,10 @@ export default function Home({ children }) {
     router.push(`/result_search?search=${text}&search_type=search`);
   };
 
+  const handleClickLink = ({ title, id }) => {
+    router.push(`/questions?category_id=${id}&category_title=${title}`);
+  };
+
   return (
     <MainLayout>
       <Head>
@@ -230,6 +191,28 @@ export default function Home({ children }) {
         marginTop={{ base: "60px", md: "100px" }}
         p={"20px"}
       >
+        <Stack pb={"20px"} mr={"10px"}>
+          <Breadcrumb>
+            {dataCategoryParent?.data
+              ?.slice()
+              .reverse()
+              .map((item) => (
+                <BreadcrumbItem>
+                  <BreadcrumbLink
+                    href={`/questions?category_id=${item?.id}&category_title=${item?.name}`}
+                    fontWeight={"bold"}
+                  >
+                    {item?.name}
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+              ))}
+            <BreadcrumbItem isCurrentPage>
+              <BreadcrumbLink fontWeight={"bold"}>
+                {category_title}
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+          </Breadcrumb>
+        </Stack>
         <Grid
           templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(4, 1fr)" }}
           templateAreas={{
@@ -241,12 +224,71 @@ export default function Home({ children }) {
           {/* Right Sidebar */}
 
           <GridItem colSpan={1}>
-            <SidebarTree
+            <Box
+              w="100%"
+              maxW={{ base: "calc(100vw - 50px)", md: "100vw" }}
+              overflow="hidden"
+              wordBreak="break-word"
+              order={{ base: 2, md: 1 }}
+              zIndex={100}
+              border="1px"
+              borderColor="#EBEBEB"
+              borderRadius="15px"
+              p="10px"
+              height="min-content"
+              dir="rtl" // ✅ RTL direction
+            >
+              <Text fontWeight="bold" fontSize="16px" mb={4}>
+                {t("topics")}
+              </Text>
+              {dataCategory?.data?.length > 0 ? (
+              dataCategory?.data?.map((item, index) => (
+                <Accordion
+                  key={item.id}
+                  onClick={() => handleClickLink({ title: item?.name, id: item?.id })}
+                  allowToggle
+                >
+                  <AccordionItem
+                    borderTop={index === 0 ? "none" : "1px solid"}
+                    borderBottom={
+                      index === dataCategory.data.length - 1 ? "none" : "1px solid"
+                    }
+                    borderColor="gray.200"
+                  >
+                    <h2>
+                      <AccordionButton>
+                        <Box as="span" flex="1" textAlign="right">
+                          {item?.name}
+                        </Box>
+                      </AccordionButton>
+                    </h2>
+                  </AccordionItem>
+                </Accordion>
+              ))
+              ) : (
+                <VStack spacing={4} mt={4}>
+                  <Text fontSize="lg" color="gray.600">
+                    زیرشاخه‌ای برای این مورد وجود ندارد.
+                  </Text>
+                  <Text
+                    color="teal.500"
+                    cursor="pointer"
+                    fontWeight="medium"
+                    onClick={() => router.back()}
+                    _hover={{ textDecoration: "underline" }}
+                  >
+                    بازگشت
+                  </Text>
+                </VStack>
+              )}
+            </Box>
+
+            {/* <SidebarTree
               treeData={treeData}
               onLoadData={onLoadData}
               t={t}
               setCategoryId={setCategoryId}
-            />
+            /> */}
             <Box
               my={"20px"}
               order={3}

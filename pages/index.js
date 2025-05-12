@@ -1,7 +1,15 @@
 import Header from "@/components/home/header";
 import MainLayout from "@/components/mainLayout";
 import {
+  Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  AccordionPanel,
   Box,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
   Button,
   Grid,
   GridItem,
@@ -119,43 +127,12 @@ export default function Home({ children }) {
   const { data: dataReferences, error: errorReferences } =
     useSWR("user/public-figure");
 
-  useSWR(`user/category?type=question`, {
-    onSuccess: (res) => {
-      if (res.status) {
-        setTreeData(
-          res.data.map((item) => ({
-            key: item.id.toString(),
-            title: item.name,
-            isLeaf: false, // assume all root nodes can have children
-          }))
-        );
-      }
-    },
-  });
-
-  const onLoadData = (treeNode) => {
-    const { key, children } = treeNode;
-
-    // If already loaded, skip
-    if (children) {
-      return Promise.resolve();
+  const { data: dataCategory, isLoading: isLoadingCategory } = useSWR(
+    `user/category?type=question`,
+    {
+      onSuccess: (res) => {},
     }
-
-    return fetch(baseUrl + `user/category?parent_id=${key}`)
-      .then((res) => res.json())
-      .then((res) => {
-        if (!res.status) return;
-
-        const newChildren = res.data.map((child) => ({
-          key: child.id.toString(),
-          title: child.name,
-          isLeaf: false, // or true if child has no further children
-        }));
-
-        // Add the new children to the correct parent in treeData
-        setTreeData((origin) => updateTreeData(origin, key, newChildren));
-      });
-  };
+  );
 
   // Helper function to update treeData immutably
   const updateTreeData = (list, key, children) =>
@@ -189,6 +166,10 @@ export default function Home({ children }) {
   };
   const handleVoiceSearch = (text) => {
     router.push(`/result_search?search=${text}&search_type=semantic_search`);
+  };
+
+  const handleCategoryLink = ({ title, id }) => {
+    router.push(`/questions?category_id=${id}&category_title=${title}`);
   };
 
   return (
@@ -226,12 +207,51 @@ export default function Home({ children }) {
           {/* Right Sidebar */}
 
           <GridItem colSpan={1}>
-            <SidebarTree
-              treeData={treeData}
-              onLoadData={onLoadData}
-              t={t}
-              setCategoryId={setCategoryId}
-            />
+            <Box
+              w="100%"
+              maxW={{ base: "calc(100vw - 50px)", md: "100vw" }}
+              overflow="hidden"
+              wordBreak="break-word"
+              order={{ base: 2, md: 1 }}
+              zIndex={100}
+              border="1px"
+              borderColor="#EBEBEB"
+              borderRadius="15px"
+              p="10px"
+              height="min-content"
+              dir="rtl" // ✅ RTL direction
+            >
+              <Text fontWeight="bold" fontSize="16px" mb={4}>
+                {t("topics")}
+              </Text>
+              {dataCategory?.data?.map((item, index) => (
+                <Accordion
+                  key={item.id}
+                  onClick={() =>
+                    handleCategoryLink({ title: item?.name, id: item?.id })
+                  }
+                  allowToggle
+                >
+                  <AccordionItem
+                    borderTop={index === 0 ? "none" : "1px solid"}
+                    borderBottom={
+                      index === dataCategory.data.length - 1
+                        ? "none"
+                        : "1px solid"
+                    }
+                    borderColor="gray.200"
+                  >
+                    <h2>
+                      <AccordionButton>
+                        <Box as="span" flex="1" textAlign="right">
+                          {item?.name}
+                        </Box>
+                      </AccordionButton>
+                    </h2>
+                  </AccordionItem>
+                </Accordion>
+              ))}
+            </Box>
             <Box
               my={"20px"}
               order={3}
