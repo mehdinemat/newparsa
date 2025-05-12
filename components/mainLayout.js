@@ -31,7 +31,7 @@ import {
   useDisclosure,
   VStack,
 } from "@chakra-ui/react";
-import _ from "lodash";
+import _, { filter } from "lodash";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -138,8 +138,8 @@ const MainLayout = ({ children }) => {
       _.includes(router.asPath.toLowerCase(), "admin_dashboard")
         ? 2
         : _.includes(router.asPath.toLowerCase(), "dashboard")
-          ? 1
-          : 0
+        ? 1
+        : 0
     );
   }, [router]);
 
@@ -171,6 +171,10 @@ const MainLayout = ({ children }) => {
   useEffect(() => {
     console.log(asPath == "/");
   }, [asPath]);
+
+  useEffect(() => {
+    setSearch(filters?.search);
+  }, [filters?.search]);
 
   return (
     <VStack minHeight="100vh" w={"100%"} alignItems={"start"} gap={0}>
@@ -235,7 +239,7 @@ const MainLayout = ({ children }) => {
                   <Input
                     height={"46px"}
                     placeholder={t("search")}
-                    value={filters?.search}
+                    value={search}
                     onChange={(e) => setSearch(e.target.value)}
                     onKeyDown={(e) => {
                       if (e.key === "Enter") {
@@ -325,8 +329,8 @@ const MainLayout = ({ children }) => {
                     {locale == "en"
                       ? t("header_english")
                       : locale == "fa"
-                        ? t("header_persian")
-                        : locale == "ar" && t("header_arabic")}
+                      ? t("header_persian")
+                      : locale == "ar" && t("header_arabic")}
                   </Text>
                   <IoIosArrowDown />
                 </HStack>

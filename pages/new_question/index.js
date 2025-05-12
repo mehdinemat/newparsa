@@ -107,7 +107,7 @@ const Index = () => {
     <MainLayout>
       <Head>
         <title>{t("submit_your_question")}</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/parsaheader.png" />
       </Head>
       <Box
         as={"form"}

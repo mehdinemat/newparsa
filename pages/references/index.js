@@ -31,7 +31,7 @@ const Index = () => {
     <MainLayout>
          <Head>
         <title>{t('sources')}</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/parsaheader.png" />
       </Head>
       <Box
         marginTop={{ base: "60px", md: "100px" }}
