@@ -106,7 +106,10 @@
     "answers":"answers",
     "create_account": "Create New Account",
     "have_account": "Already have an account?",
-    "leave_comment": "Leave a Comment"
+    "leave_comment": "Leave a Comment",
+    "main_page": "Main Page",
+    "topic": "Topic"
+  
 
 
 

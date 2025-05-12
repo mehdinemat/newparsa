@@ -175,7 +175,9 @@ export default function Home({ children }) {
   return (
     <MainLayout>
       <Head>
-        <title>{t("question")}</title>
+        <title>
+          {t("parsa")} | {t("main_page")}
+        </title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header
