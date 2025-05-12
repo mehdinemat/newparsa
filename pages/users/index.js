@@ -15,7 +15,7 @@ const Index = () => {
     <MainLayout>
        <Head>
         <title>لیست کاربران</title>
-        <link rel="icon" href="/parsaheader.png" />
+        <link rel="icon" href="/question.png" />
       </Head>
       <Box
         marginTop={{ base: '60px', md: "100px" }}

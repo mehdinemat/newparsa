@@ -128,7 +128,7 @@ const Index = () => {
     <MainLayout>
       <Head>
         <title>{dataQuestion?.data?.result?.[0]?.title || dataQuestion?.data?.result?.[0]?.content}</title>
-        <link rel="icon" href="/parsaheader.png" />
+        <link rel="icon" href="/question.png" />
       </Head>
       <Box
         marginTop={{ base: "60px", md: "100px" }}

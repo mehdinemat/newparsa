@@ -180,7 +180,7 @@ export default function Home({ children }) {
             source_name || category_title || public_fiqure_name || tag_name
           }`}
         </title>
-        <link rel="icon" href="/parsaheader.png" />
+        <link rel="icon" href="/question.png" />
       </Head>
       {/* <Header
         data={dataGeneral?.data}

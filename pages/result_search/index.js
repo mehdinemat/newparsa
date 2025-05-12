@@ -93,7 +93,7 @@ const Index = ({ children }) => {
           )}{" "}
           :{filters?.search}
         </title>
-        <link rel="icon" href="/parsaheader.png" />
+        <link rel="icon" href="/question.png" />
       </Head>
       <Box
         w="100%"
