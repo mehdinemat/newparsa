@@ -217,7 +217,7 @@ export default function Home({ children }) {
                 </BreadcrumbItem>
               ))}
             <BreadcrumbItem isCurrentPage>
-              <BreadcrumbLink fontWeight={"bold"}>
+              <BreadcrumbLink >
                 {category_title}
               </BreadcrumbLink>
             </BreadcrumbItem>
@@ -234,25 +234,25 @@ export default function Home({ children }) {
           {/* Right Sidebar */}
 
           <GridItem colSpan={1}>
-            <Box
-              w="100%"
-              maxW={{ base: "calc(100vw - 50px)", md: "100vw" }}
-              overflow="hidden"
-              wordBreak="break-word"
-              order={{ base: 2, md: 1 }}
-              zIndex={100}
-              border="1px"
-              borderColor="#EBEBEB"
-              borderRadius="15px"
-              p="10px"
-              height="min-content"
-              dir="rtl" // ✅ RTL direction
-            >
-              <Text fontWeight="bold" fontSize="16px" mb={4}>
-                {t("topics")}
-              </Text>
-              {dataCategory?.data?.length > 0 ? (
-                dataCategory?.data?.map((item, index) => (
+            {dataCategory?.data?.length > 0 && (
+              <Box
+                w="100%"
+                maxW={{ base: "calc(100vw - 50px)", md: "100vw" }}
+                overflow="hidden"
+                wordBreak="break-word"
+                order={{ base: 2, md: 1 }}
+                zIndex={100}
+                border="1px"
+                borderColor="#EBEBEB"
+                borderRadius="15px"
+                p="10px"
+                height="min-content"
+                dir="rtl" // ✅ RTL direction
+              >
+                <Text fontWeight="bold" fontSize="16px" mb={4}>
+                  {t("topics")}
+                </Text>
+                {dataCategory?.data?.map((item, index) => (
                   <Accordion
                     key={item.id}
                     onClick={() =>
@@ -278,24 +278,9 @@ export default function Home({ children }) {
                       </h2>
                     </AccordionItem>
                   </Accordion>
-                ))
-              ) : (
-                <VStack spacing={4} mt={4}>
-                  <Text fontSize="lg" color="gray.600">
-                    زیرشاخه‌ای برای این مورد وجود ندارد.
-                  </Text>
-                  <Text
-                    color="teal.500"
-                    cursor="pointer"
-                    fontWeight="medium"
-                    onClick={() => router.back()}
-                    _hover={{ textDecoration: "underline" }}
-                  >
-                    بازگشت
-                  </Text>
-                </VStack>
-              )}
-            </Box>
+                ))}
+              </Box>
+            )}
 
             {/* <SidebarTree
               treeData={treeData}

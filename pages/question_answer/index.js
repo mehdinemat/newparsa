@@ -123,11 +123,25 @@ const Index = () => {
   const handleSimilarClick = (id) => {
     router.push(`question_answer?id=${id}`);
   };
+  const { data: dataSource, error: errorSource } = useSWR(
+    "user/source?size=10"
+  );
+
+  const handleClickSource = (source) => {
+    router.replace(
+      `/questions?source=${
+        dataSource?.data?.find((it) => it?.fa_source_name == source)?.id
+      }`
+    );
+  };
 
   return (
     <MainLayout>
       <Head>
-        <title>{dataQuestion?.data?.result?.[0]?.title || dataQuestion?.data?.result?.[0]?.content}</title>
+        <title>
+          {dataQuestion?.data?.result?.[0]?.title ||
+            dataQuestion?.data?.result?.[0]?.content}
+        </title>
         <link rel="icon" href="/question.png" />
       </Head>
       <Box
@@ -206,7 +220,14 @@ const Index = () => {
                     <Text>{dataQuestion?.data?.result?.[0]?.title}</Text>
                     <HStack w={"100%"}>
                       <HStack w={"100%"} justifyContent={"space-between"}>
-                        <HStack>
+                        <HStack
+                          cursor={"pointer"}
+                          onClick={(e) =>
+                            handleClickSource(
+                              dataQuestion?.data?.result?.[0]?.source
+                            )
+                          }
+                        >
                           <Avatar
                             w={"28px"}
                             h={"28px"}
@@ -384,7 +405,6 @@ const Index = () => {
                           direction={{ base: "column", md: "row" }}
                           w={"100%"}
                         >
-                       
                           <HStack>
                             <Text color={"#3646B3"}>حسن الماسی</Text>
                             <Text color={"gray"} fontSize={"sm"}>
@@ -647,19 +667,21 @@ const Index = () => {
                   <Text fontWeight={"bold"} fontSize={"16px"} mb={"10px"}>
                     {t("related_questions")}
                   </Text>
-                  {dataQuestionSimilar?.data?.slice(0, 5)?.map((similar , index) => (
-                    <HStack
-                      w={"100%"}
-                      py={"5px"}
-                      alignItems={"start"}
-                      borderBottom={index != 4 && "1px"}
-                      borderBottomColor={"gray.200"}
-                      cursor={"pointer"}
-                      onClick={(e) => handleSimilarClick(similar?.id)}
-                    >
-                      <Text fontSize={"14px"}>{similar?.content}</Text>
-                    </HStack>
-                  ))}
+                  {dataQuestionSimilar?.data
+                    ?.slice(0, 5)
+                    ?.map((similar, index) => (
+                      <HStack
+                        w={"100%"}
+                        py={"5px"}
+                        alignItems={"start"}
+                        borderBottom={index != 4 && "1px"}
+                        borderBottomColor={"gray.200"}
+                        cursor={"pointer"}
+                        onClick={(e) => handleSimilarClick(similar?.id)}
+                      >
+                        <Text fontSize={"14px"}>{similar?.content}</Text>
+                      </HStack>
+                    ))}
                 </Box>
                 <Box
                   as={VStack}
