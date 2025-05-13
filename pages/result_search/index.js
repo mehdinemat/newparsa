@@ -28,7 +28,7 @@ import Pagination from "@/components/pagination";
 import QuestionCard from "@/components/questionCars";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { IoSearch } from "react-icons/io5";
 import { TbArrowsSort } from "react-icons/tb";
@@ -57,6 +57,7 @@ const Index = ({ children }) => {
   const [filters, setFilters] = useQueryParams({
     search: withDefault(StringParam, ""),
     search_type: withDefault(StringParam, ""),
+    order_by: withDefault(StringParam, '')
   });
 
   const {
@@ -64,8 +65,8 @@ const Index = ({ children }) => {
     error: errorQuestionSearch,
     isLoading: isLoadingQuestionSearch,
   } = useSWR(
-    `user/question/search?page=${(page - 1) * 10 + 1}&search_type=${filters?.search_type
-    }&content=${filters?.search}&lang=${locale}`
+    `user/question/search?page=${(page - 1) * 10}&search_type=${filters?.search_type
+    }&content=${filters?.search}&lang=${locale}${filters?.order_by && `&order_by=${filters?.order_by}`}`
   );
   const {
     data: dataCurrection,
@@ -78,9 +79,13 @@ const Index = ({ children }) => {
   };
   const handleCurrectClick = (currect) => {
     router.push(
-      `/result_search?search=${currect}&search_type=${filters?.search_type}`
+      `/ result_search?search=${currect}&search_type=${filters?.search_type}`
     );
   };
+
+  useEffect(() => {
+    setPage(1)
+  }, [filters?.search])
 
   return (
     <MainLayout>
@@ -94,7 +99,7 @@ const Index = ({ children }) => {
           )}{" "}
           :{filters?.search}
         </title>
-        <link rel="icon" href="/question.png" />
+        <link rel="icon" href="/porsyab_header.png" />
       </Head>
       <Box
         w="100%"
@@ -287,24 +292,16 @@ const Index = ({ children }) => {
               </Text>
               <HStack>
                 <TbArrowsSort color="gray" fontSize={"16px"} />
-                <Text fontSize={"sm"} w={"max-content"}>
+                <Text fontSize={"sm"} w={"max-content"} >
                   مرتب سازی :
                 </Text>
                 <Button
                   colorScheme="gray"
                   variant={"ghost"}
                   _hover={{ bgColor: "none" }}
-                  fontWeight={"normal"}
                   fontSize={"sm"}
-                >
-                  جدیدترین‌ها
-                </Button>
-                <Button
-                  colorScheme="gray"
-                  variant={"ghost"}
-                  _hover={{ bgColor: "none" }}
-                  fontWeight={"normal"}
-                  fontSize={"sm"}
+                  fontWeight={filters?.order_by == 'view' ? 'bold' : 'normal'}
+                  onClick={e => setFilters({ order_by: 'view' })}
                 >
                   پربازدیدترین‌ها
                 </Button>
@@ -312,8 +309,9 @@ const Index = ({ children }) => {
                   colorScheme="gray"
                   variant={"ghost"}
                   _hover={{ bgColor: "none" }}
-                  fontWeight={"normal"}
+                  fontWeight={filters?.order_by == 'vote' ? 'bold' : 'normal'}
                   fontSize={"sm"}
+                  onClick={e => setFilters({ order_by: 'vote' })}
                 >
                   محبوبترین‌ها
                 </Button>
