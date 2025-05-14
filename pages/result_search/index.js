@@ -57,7 +57,8 @@ const Index = ({ children }) => {
   const [filters, setFilters] = useQueryParams({
     search: withDefault(StringParam, ""),
     search_type: withDefault(StringParam, ""),
-    order_by: withDefault(StringParam, '')
+    order_by: withDefault(StringParam, ''),
+    model: withDefault(StringParam, 'e5')
   });
 
   const {
@@ -66,7 +67,7 @@ const Index = ({ children }) => {
     isLoading: isLoadingQuestionSearch,
   } = useSWR(
     `user/question/search?page=${(page - 1) * 10}&search_type=${filters?.search_type
-    }&content=${filters?.search}&lang=${locale}${filters?.order_by && `&order_by=${filters?.order_by}`}`
+    }&content=${filters?.search}&lang=${locale}${filters?.order_by && `&order_by=${filters?.order_by}`}&model_name=${filters?.model}`
   );
   const {
     data: dataCurrection,
@@ -86,6 +87,10 @@ const Index = ({ children }) => {
   useEffect(() => {
     setPage(1)
   }, [filters?.search])
+
+  const handleChangeModel = () => {
+    setFilters({ model: 'bge' })
+  }
 
   return (
     <MainLayout>
@@ -242,11 +247,12 @@ const Index = ({ children }) => {
                     color={"gray"}
                     letterSpacing={0}
                   >
-                    نتایج جستجو برای:
+                    نتایج جستجو {filters?.search_type == 'search' ? '' : 'معنایی '} برای:
                   </Text>
                   <Text fontWeight={"bold"} fontSize={"16px"}>
                     {filters?.search}
                   </Text>
+                  <Text color={'blue.400'} cursor={'pointer'} onClick={e => handleChangeModel()}>جستجو بر اساس مدل bge</Text>
                 </HStack>
                 {filters?.search !=
                   dataCurrection?.data?.data?.spell_correction_text &&
