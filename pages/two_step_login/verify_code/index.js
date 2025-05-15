@@ -44,8 +44,18 @@ const Index = () => {
     postRequest,
     {
       onSuccess: (data) => {
-        localStorage.setItem("token", data?.data?.data?.access_token);
-        router.replace('/')
+        if (data?.data?.status) {
+          localStorage.setItem("token", data?.data?.data?.access_token);
+          router.replace('/')
+        } else {
+          toast({
+            title: 'خطا',
+            description: data?.data?.message,
+            status: 'error',
+            duration: 9000,
+            isClosable: true,
+          })
+        }
       },
     }
   );

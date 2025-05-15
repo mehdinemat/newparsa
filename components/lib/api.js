@@ -24,7 +24,7 @@ export const useAxiosInterceptors = (showToast) => {
   useEffect(() => {
     const responseInterceptor = axios.interceptors.response.use((response) => {
       // Your response interceptor logic
-      if (response?.config?.method != 'get' && response?.status == 200) {
+      if (response?.config?.method != 'get' && response?.status == 200 && response?.data?.status) {
         showToast({
           title: "موفقیت",
           description: response?.data?.detail,

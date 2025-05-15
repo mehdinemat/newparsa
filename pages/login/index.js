@@ -13,7 +13,6 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import dynamic from "next/dynamic";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -41,11 +40,9 @@ const Index = () => {
     postRequest,
     {
       onSuccess: (data) => {
-        if (data?.data?.data) {
+        if (data?.data?.status) {
           router.push(
-            `/two_step_login/verify_code?code=${
-              data?.data?.data
-            }&username=${getValues("username")}`
+            `/two_step_login/verify_code?username=${getValues("username")}`
           );
         } else {
           toast({
@@ -93,8 +90,8 @@ const Index = () => {
             height={"100%"}
           >
             <Image
-            cursor={'pointer'}
-            onClick={e=>router.push('/')}
+              cursor={'pointer'}
+              onClick={e => router.push('/')}
               src="/loginlogo.png"
               width={{ base: "120px", md: "165px" }}
               height={{ base: "50px", md: "68px" }}
