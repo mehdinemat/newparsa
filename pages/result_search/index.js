@@ -252,7 +252,7 @@ const Index = ({ children }) => {
                   <Text fontWeight={"bold"} fontSize={"16px"}>
                     {filters?.search}
                   </Text>
-                  <Text color={'blue.400'} cursor={'pointer'} onClick={e => handleChangeModel()}>جستجو بر اساس مدل bge</Text>
+                  <Text color={'blue.400'} cursor={'pointer'} onClick={e => handleChangeModel()}>جستجو بر اساس مدل دوم</Text>
                 </HStack>
                 {filters?.search !=
                   dataCurrection?.data?.data?.spell_correction_text &&
