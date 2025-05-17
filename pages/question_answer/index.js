@@ -10,13 +10,12 @@ import {
   GridItem,
   HStack,
   IconButton,
-  Image,
   Spinner,
   Stack,
   Text,
   Textarea,
   useBreakpointValue,
-  VStack,
+  VStack
 } from "@chakra-ui/react";
 import axios from "axios";
 import moment from "moment-jalaali";
@@ -49,8 +48,8 @@ const patchRequest = (
 ) => {
   return axios.post(
     baseUrl +
-      url +
-      `?table_type=${table_type}&table_id=${table_id}&type_param=${type_param}`,
+    url +
+    `?table_type=${table_type}&table_id=${table_id}&type_param=${type_param}`,
     data,
     {
       headers: {
@@ -85,12 +84,12 @@ const Index = () => {
 
   const { data: dataQuestionComment, isLoading: isLoadingComment } = useSWR(
     query?.id &&
-      `user/action?table_id=${query?.id}&table_type=question&type_param=comment`
+    `user/action?table_id=${query?.id}&table_type=question&type_param=comment`
   );
 
   const { data: dataQuestionSimilar, isLoading: isLoadingSimilar } = useSWR(
     dataQuestion?.data &&
-      `user/question/similar-questions?question_elastic_id=${dataQuestion?.data?.result?.[0]?.elastic_id}`
+    `user/question/similar-questions?question_elastic_id=${dataQuestion?.data?.result?.[0]?.elastic_id}`
   );
 
   const { trigger: triggerAnswer, isLoading: isLoadingAnswer } = useSWRMutation(
@@ -129,8 +128,7 @@ const Index = () => {
 
   const handleClickSource = (source) => {
     router.replace(
-      `/questions?source=${
-        dataSource?.data?.find((it) => it?.fa_source_name == source)?.id
+      `/questions?source=${dataSource?.data?.find((it) => it?.fa_source_name == source)?.id
       }`
     );
   };
@@ -608,6 +606,7 @@ const Index = () => {
                           </Text>
                         </VStack>
                         <Button
+                          onClick={e => router.push('/login')}
                           bgColor={"#29CCCC"}
                           fontWeight={"normal"}
                           p={"10px"}
