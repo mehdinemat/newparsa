@@ -247,7 +247,7 @@ const Index = ({ children }) => {
                     color={"gray"}
                     letterSpacing={0}
                   >
-                    نتایج جستجو {filters?.search_type == 'search' ? '' : 'معنایی '} برای:
+                    نتایج جستجو {filters?.search_type == 'search' ? 'لفظی' : 'معنایی '} برای:
                   </Text>
                   <Text fontWeight={"bold"} fontSize={"16px"}>
                     {filters?.search}
