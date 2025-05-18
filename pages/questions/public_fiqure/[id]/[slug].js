@@ -1,11 +1,8 @@
-import Header from "@/components/home/header";
 import MainLayout from "@/components/mainLayout";
 import {
   Accordion,
   AccordionButton,
-  AccordionIcon,
   AccordionItem,
-  AccordionPanel,
   Box,
   Breadcrumb,
   BreadcrumbItem,
@@ -20,7 +17,6 @@ import {
   useBreakpointValue,
   VStack,
 } from "@chakra-ui/react";
-import { Geist, Geist_Mono } from "next/font/google";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 
@@ -28,58 +24,18 @@ import LeftSidebar from "@/components/home/leftsidebar";
 import QuestionMCard from "@/components/home/mobile/questionMCard";
 import Pagination from "@/components/pagination";
 import QuestionCard from "@/components/questionCars";
-import SliderCom from "@/components/slider";
 import { useRouter } from "next/router";
 
-import SidebarTree from "@/components/base/sidebarTree";
-import { baseUrl } from "@/components/lib/api";
 import Head from "next/head";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import useSWR from "swr";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-const items = [
-  {
-    image: "/img1.jpg",
-    title: "آیت الله محمدتقی بهجت فومنی",
-    button: "اطلاعات بیشتر",
-  },
-  {
-    image: "/img2.jpg",
-    title: "آیت الله جعفر سبحانی خیابانی تبریزی",
-    button: "اطلاعات بیشتر",
-  },
-  {
-    image: "/img3.jpg",
-    title: "آیت الله سید عبدالکریم موسوی اردبیلی",
-    button: "اطلاعات بیشتر",
-  },
-];
-const items2 = [
-  {
-    image: "/img1.jpg",
-  },
-  {
-    image: "/img2.jpg",
-  },
-  {
-    image: "/img3.jpg",
-  },
-];
+import { useParams } from "next/navigation";
 
 export default function Home({ children }) {
   const router = useRouter();
+  const { id, slug } = router.query;
   const { locale } = useRouter();
   const slidesToShow = useBreakpointValue({ base: 1, md: 2, lg: 4 }); // responsive value
 
@@ -103,11 +59,19 @@ export default function Home({ children }) {
     data: dataQuestion,
     error: errorQuestion,
     isLoading: isLoadingQuestion,
-  } = useSWR(
-    `user/question?lang=${locale}&page=${page}${
-      categoryId && `&categories__id=${categoryId}`
-    }`
+  } = useSWR(`user/question?lang=${locale}&page=${page}&tags__id=${id || 0}`);
+
+  const { data: dataCategory, isLoading: isLoadingCategory } = useSWR(
+    `user/category?type=question`,
+    {
+      onSuccess: (res) => {},
+    }
   );
+  const { data: dataCategoryParent, isLoading: isLoadingCategoryParent } =
+    useSWR(id && `user/category/parents?category_id=${id}`, {
+      onSuccess: (res) => {},
+    });
+
   // const {
   //   data: dataQuestionSearch,
   //   error: errorQuestionSearch,
@@ -127,12 +91,19 @@ export default function Home({ children }) {
   const { data: dataReferences, error: errorReferences } =
     useSWR("user/public-figure");
 
-  const { data: dataCategory, isLoading: isLoadingCategory } = useSWR(
-    `user/category?type=question`,
-    {
-      onSuccess: (res) => {},
-    }
-  );
+  useSWR(`user/category?type=question`, {
+    onSuccess: (res) => {
+      if (res.status) {
+        setTreeData(
+          res.data.map((item) => ({
+            key: item.id.toString(),
+            title: item.name,
+            isLeaf: false, // assume all root nodes can have children
+          }))
+        );
+      }
+    },
+  });
 
   // Helper function to update treeData immutably
   const updateTreeData = (list, key, children) =>
@@ -165,22 +136,20 @@ export default function Home({ children }) {
     );
   };
   const handleVoiceSearch = (text) => {
-    router.push(`/result_search?search=${text}&search_type=semantic_search`);
+    router.push(`/result_search?search=${text}&search_type=search`);
   };
 
-  const handleCategoryLink = ({ title, id }) => {
+  const handleClickLink = ({ title, id }) => {
     router.push(`/questions/category/${id}/${title}`);
   };
 
   return (
     <MainLayout>
       <Head>
-        <title>
-          {t("parsa")} | {t("main_page")}
-        </title>
+        <title>{`${t("parsa")} | ${t("resources")} : ${slug}`}</title>
         <link rel="icon" href="/question.png" />
       </Head>
-      <Header
+      {/* <Header
         data={dataGeneral?.data}
         t={t}
         register={registerSearch}
@@ -189,15 +158,41 @@ export default function Home({ children }) {
         handleClickSearch={handleClickSearch}
         handleClickSemanticSearch={handleClickSemanticSearch}
         handleVoiceSearch={handleVoiceSearch}
-      />
+      /> */}
       <Box
         w="100%"
         alignItems={"center"}
         justifyContent={"center"}
         maxW="container.xl"
         mx="auto"
+        marginTop={{ base: "60px", md: "100px" }}
         p={"20px"}
       >
+        <Stack pb={"20px"} mr={"10px"}>
+          <Breadcrumb>
+            <BreadcrumbItem>
+              <BreadcrumbLink fontWeight={"bold"} href="/">
+                {t("main_page")}
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            {/* {dataCategoryParent?.data
+              ?.slice()
+              .reverse()
+              .map((item) => (
+                <BreadcrumbItem>
+                  <BreadcrumbLink
+                    href={`/questions/category/${item?.id}?category_title=${item?.name}`}
+                    fontWeight={"bold"}
+                  >
+                    {item?.name}
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+              ))} */}
+            <BreadcrumbItem isCurrentPage>
+              <BreadcrumbLink>{slug}</BreadcrumbLink>
+            </BreadcrumbItem>
+          </Breadcrumb>
+        </Stack>
         <Grid
           templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(4, 1fr)" }}
           templateAreas={{
@@ -220,40 +215,49 @@ export default function Home({ children }) {
               borderColor="#EBEBEB"
               borderRadius="15px"
               p="10px"
+              minHeight={"200px"}
               height="min-content"
               dir="rtl" // ✅ RTL direction
             >
               <Text fontWeight="bold" fontSize="16px" mb={4}>
                 {t("topics")}
               </Text>
-              {dataCategory?.data?.map((item, index) => (
-                <Accordion
-                  key={item.id}
-                  onClick={() =>
-                    handleCategoryLink({ title: item?.name, id: item?.id })
-                  }
-                  allowToggle
-                >
-                  <AccordionItem
-                    borderTop={index === 0 ? "none" : "1px solid"}
-                    borderBottom={
-                      index === dataCategory.data.length - 1
-                        ? "none"
-                        : "1px solid"
+              {dataCategory?.data?.length > 0 &&
+                dataCategory?.data?.map((item, index) => (
+                  <Accordion
+                    key={item.id}
+                    onClick={() =>
+                      handleClickLink({ title: item?.name, id: item?.id })
                     }
-                    borderColor="gray.200"
+                    allowToggle
                   >
-                    <h2>
-                      <AccordionButton>
-                        <Box as="span" flex="1" textAlign="right">
-                          {item?.name}
-                        </Box>
-                      </AccordionButton>
-                    </h2>
-                  </AccordionItem>
-                </Accordion>
-              ))}
+                    <AccordionItem
+                      borderTop={index === 0 ? "none" : "1px solid"}
+                      borderBottom={
+                        index === dataCategory.data.length - 1
+                          ? "none"
+                          : "1px solid"
+                      }
+                      borderColor="gray.200"
+                    >
+                      <h2>
+                        <AccordionButton>
+                          <Box as="span" flex="1" textAlign="right">
+                            {item?.name}
+                          </Box>
+                        </AccordionButton>
+                      </h2>
+                    </AccordionItem>
+                  </Accordion>
+                ))}
             </Box>
+
+            {/* <SidebarTree
+              treeData={treeData}
+              onLoadData={onLoadData}
+              t={t}
+              setCategoryId={setCategoryId}
+            /> */}
             <Box
               my={"20px"}
               order={3}
@@ -327,9 +331,11 @@ export default function Home({ children }) {
               mb={{ base: "20px", md: "10px" }}
               alignItems={{ base: "center", md: "start" }}
             >
-              <Text fontWeight={"700"} fontSize={"22px"} letterSpacing={0}>
-                {t("suggested_questions")}
-              </Text>
+              {id && (
+                <Text fontWeight={"700"} fontSize={"22px"} letterSpacing={0}>
+                  مرجع: {slug}
+                </Text>
+              )}
 
               <Button
                 width={{ base: "152px", md: "189px" }}
@@ -400,12 +406,11 @@ export default function Home({ children }) {
             whiteSpace="normal"
             overflowWrap="break-word"
           >
-            {dataReferences?.data && (
+            {/* {dataReferences?.data && (
               <SliderCom
                 items={dataReferences?.data?.result?.map((val) => ({
                   title: val?.full_name,
                   image: val?.image_url,
-                  id: val?.id,
                   buttoh: "اطلاعات بیشتر",
                 }))}
                 height={"380px"}
@@ -419,7 +424,7 @@ export default function Home({ children }) {
               width="350px"
               borderRadius={"0px"}
               title={t("parsa_supporters")}
-            />
+            /> */}
           </GridItem>
         </Grid>
       </Box>

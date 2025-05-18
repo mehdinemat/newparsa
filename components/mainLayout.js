@@ -218,14 +218,14 @@ const MainLayout = ({ children }) => {
                 <AdminMenuBar />
               )}
               <Image
-                src="../../question.png"
+                src="/question.png"
                 width={{ base: "25px", md: "40px" }}
                 height={{ base: "35px", md: "56px" }}
                 onClick={handleClickHome}
                 cursor={"pointer"}
               />
               <Image
-                src="../../parsaheader.png"
+                src="/parsaheader.png"
                 width={{ base: "57px", md: "91px" }}
                 height={{ base: "23px", md: "37px" }}
                 onClick={handleClickHome}

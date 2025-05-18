@@ -27,9 +27,7 @@ const SliderCom = ({ items, height, borderRadius, width = "auto", title }) => {
   };
 
   const handlePublicFiqure = (item) => {
-    router.push(
-      `/questions?public_fiqure=${item?.id}&public_fiqure_name=${item?.title}`
-    );
+    router.push(`/questions/public_fiqure/${item?.id}/${item?.title}`);
   };
 
   const router = useRouter();
@@ -64,7 +62,7 @@ const SliderCom = ({ items, height, borderRadius, width = "auto", title }) => {
         <Slider {...sliderSettings}>
           {items.map((item, index) => (
             <Flex
-            cursor={'pointer'}
+              cursor={"pointer"}
               textAlign={"center"}
               w="100%"
               h="100%"

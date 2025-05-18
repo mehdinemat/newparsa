@@ -15,7 +15,7 @@ import {
   Stack,
   Text,
   useBreakpointValue,
-  VStack
+  VStack,
 } from "@chakra-ui/react";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
@@ -27,26 +27,16 @@ import QuestionCard from "@/components/questionCars";
 import { useRouter } from "next/router";
 
 import Head from "next/head";
-import { useParams } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import useSWR from "swr";
+import { useParams } from "next/navigation";
 
 export default function Home({ children }) {
   const router = useRouter();
-  const params = useParams()
-  const id = params?.id
-  const {
-    source,
-    tag,
-    source_name,
-    tag_name,
-    public_fiqure_name,
-    public_fiqure,
-    category_id,
-    category_title,
-  } = router.query;
+  const { id, slug } = router.query;
+  const { category_id, category_title } = router.query;
   const { locale } = useRouter();
   const slidesToShow = useBreakpointValue({ base: 1, md: 2, lg: 4 }); // responsive value
 
@@ -71,18 +61,18 @@ export default function Home({ children }) {
     error: errorQuestion,
     isLoading: isLoadingQuestion,
   } = useSWR(
-    `user/question?lang=${locale}&page=${page}&source_id=${id || 0}`
+    `user/question?lang=${locale}&page=${page}&categories__id=${id || 0}`
   );
 
   const { data: dataCategory, isLoading: isLoadingCategory } = useSWR(
-    `user/category?type=question`,
+    id && `user/category?type=question&parent_id=${id}`,
     {
-      onSuccess: (res) => { },
+      onSuccess: (res) => {},
     }
   );
   const { data: dataCategoryParent, isLoading: isLoadingCategoryParent } =
-    useSWR(`user/category/parents?category_id=${category_id || 0}`, {
-      onSuccess: (res) => { },
+    useSWR(id && `user/category/parents?category_id=${id}`, {
+      onSuccess: (res) => {},
     });
 
   // const {
@@ -153,15 +143,13 @@ export default function Home({ children }) {
   };
 
   const handleClickLink = ({ title, id }) => {
-    router.push(`/questions?category_id=${id}&category_title=${title}`);
+    router.push(`/questions/category/${id}/${title}`);
   };
 
   return (
     <MainLayout>
       <Head>
-        <title>
-          {`${t("parsa")} | ${t("source")} : ${source_name}`}
-        </title>
+        <title>{`${t("parsa")} | ${t("topic")} : ${slug}`}</title>
         <link rel="icon" href="/question.png" />
       </Head>
       {/* <Header
@@ -185,7 +173,7 @@ export default function Home({ children }) {
       >
         <Stack pb={"20px"} mr={"10px"}>
           <Breadcrumb>
-            <BreadcrumbItem >
+            <BreadcrumbItem>
               <BreadcrumbLink fontWeight={"bold"} href="/">
                 {t("main_page")}
               </BreadcrumbLink>
@@ -196,7 +184,7 @@ export default function Home({ children }) {
               .map((item) => (
                 <BreadcrumbItem>
                   <BreadcrumbLink
-                    href={`/questions?category_id=${item?.id}&category_title=${item?.name}`}
+                    href={`/questions/category/${item?.id}/${item?.name}`}
                     fontWeight={"bold"}
                   >
                     {item?.name}
@@ -204,9 +192,7 @@ export default function Home({ children }) {
                 </BreadcrumbItem>
               ))}
             <BreadcrumbItem isCurrentPage>
-              <BreadcrumbLink >
-                {category_title}
-              </BreadcrumbLink>
+              <BreadcrumbLink>{slug}</BreadcrumbLink>
             </BreadcrumbItem>
           </Breadcrumb>
         </Stack>
@@ -232,42 +218,42 @@ export default function Home({ children }) {
               borderColor="#EBEBEB"
               borderRadius="15px"
               p="10px"
-              minHeight={'200px'}
+              minHeight={"200px"}
               height="min-content"
               dir="rtl" // ✅ RTL direction
             >
               <Text fontWeight="bold" fontSize="16px" mb={4}>
                 {t("topics")}
               </Text>
-              {dataCategory?.data?.length > 0 && dataCategory?.data?.map((item, index) => (
-                <Accordion
-                  key={item.id}
-                  onClick={() =>
-                    handleClickLink({ title: item?.name, id: item?.id })
-                  }
-                  allowToggle
-                >
-                  <AccordionItem
-                    borderTop={index === 0 ? "none" : "1px solid"}
-                    borderBottom={
-                      index === dataCategory.data.length - 1
-                        ? "none"
-                        : "1px solid"
+              {dataCategory?.data?.length > 0 &&
+                dataCategory?.data?.map((item, index) => (
+                  <Accordion
+                    key={item.id}
+                    onClick={() =>
+                      handleClickLink({ title: item?.name, id: item?.id })
                     }
-                    borderColor="gray.200"
+                    allowToggle
                   >
-                    <h2>
-                      <AccordionButton>
-                        <Box as="span" flex="1" textAlign="right">
-                          {item?.name}
-                        </Box>
-                      </AccordionButton>
-                    </h2>
-                  </AccordionItem>
-                </Accordion>
-              ))}
+                    <AccordionItem
+                      borderTop={index === 0 ? "none" : "1px solid"}
+                      borderBottom={
+                        index === dataCategory.data.length - 1
+                          ? "none"
+                          : "1px solid"
+                      }
+                      borderColor="gray.200"
+                    >
+                      <h2>
+                        <AccordionButton>
+                          <Box as="span" flex="1" textAlign="right">
+                            {item?.name}
+                          </Box>
+                        </AccordionButton>
+                      </h2>
+                    </AccordionItem>
+                  </Accordion>
+                ))}
             </Box>
-
 
             {/* <SidebarTree
               treeData={treeData}
@@ -350,11 +336,7 @@ export default function Home({ children }) {
             >
               {id && (
                 <Text fontWeight={"700"} fontSize={"22px"} letterSpacing={0}>
-                  منبع سوالات:{" "}
-                  {
-                    dataSource?.data?.find((it) => it?.id == id)
-                      ?.fa_source_name
-                  }
+                  عنوان: {slug}
                 </Text>
               )}
 

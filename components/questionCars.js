@@ -12,7 +12,7 @@ const QuestionCard = ({ data, t }) => {
   };
 
   const handleClickTags = (item) => {
-    router.replace(`/questions?tag=${item?.id}&tag_name=${item?.name}`);
+    router.replace(`/questions/tag/${item?.id}/${item?.name}`);
   };
 
   return (

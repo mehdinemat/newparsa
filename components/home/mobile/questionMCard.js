@@ -1,11 +1,5 @@
-import {
-  Avatar,
-  Badge,
-  HStack,
-  Text,
-  VStack
-} from "@chakra-ui/react";
-import moment from 'moment-jalaali';
+import { Avatar, Badge, HStack, Text, VStack } from "@chakra-ui/react";
+import moment from "moment-jalaali";
 import { useRouter } from "next/router";
 import { GiBigDiamondRing } from "react-icons/gi";
 import { IoCheckmark, IoEyeOutline } from "react-icons/io5";
@@ -16,6 +10,9 @@ const QuestionMCard = ({ data, t }) => {
   const handleQuestionRouter = (id) => {
     router.push(`/question_answer?id=${id}`);
   };
+  const handleClickTags = (item) => {
+    router.replace(`/questions/tag/${item?.id}/${item?.name}`);
+  };
 
   return (
     <VStack
@@ -23,22 +20,29 @@ const QuestionMCard = ({ data, t }) => {
       alignItems={"start"}
       borderBottom={"1px solid #E2E8F0"}
       gap={"20px"}
-      mb={'10px'} pb={"20px"}
+      mb={"10px"}
+      pb={"20px"}
       onClick={(e) => handleQuestionRouter(data?.id)}
       cursor={"pointer"}
     >
       <HStack alignItems={"start"} gap={"10px"}>
         <HStack color={"#999999"}>
           <GiBigDiamondRing fontSize={"20px"} />
-          <Text fontSize={"16px"}>{data?.like_count} {t("like")}</Text>
+          <Text fontSize={"16px"}>
+            {data?.like_count} {t("like")}
+          </Text>
         </HStack>
         <HStack color={"#999999"}>
           <IoCheckmark fontSize={"20px"} />
-          <Text fontSize={"16px"}>{data?.answer_count} {t("answer")}</Text>
+          <Text fontSize={"16px"}>
+            {data?.answer_count} {t("answer")}
+          </Text>
         </HStack>
         <HStack color={"#999999"}>
           <IoEyeOutline fontSize={"20px"} />
-          <Text fontSize={"16px"}>{data?.view_count} {t("view")}</Text>
+          <Text fontSize={"16px"}>
+            {data?.view_count} {t("view")}
+          </Text>
         </HStack>
         <HStack></HStack>
       </HStack>
@@ -48,13 +52,14 @@ const QuestionMCard = ({ data, t }) => {
           w="100%"
           whiteSpace="normal"
           lineHeight={"taller"}
-          textAlign={'justify'}
+          textAlign={"justify"}
         >
           {data?.content}
         </Text>
         <HStack>
           {data?.tags?.map((item, index) => (
             <Badge
+              onClick={(e) => handleClickTags(item)}
               key={index}
               color="#16A6A6"
               bgColor="#29CCCC1A"
@@ -89,7 +94,7 @@ const QuestionMCard = ({ data, t }) => {
 
           <HStack w={"100%"} justifyContent={"end"}>
             <Text w={"150px"} color={"gray.400"}>
-              {moment(data?.created_at).format('hh:mm:ss jYYYY/jMM/jDD')}
+              {moment(data?.created_at).format("hh:mm:ss jYYYY/jMM/jDD")}
             </Text>
             {/* <AvatarGroup size="sm" max={2}>
                         <Avatar name="Ryan Florence" src="https://bit.ly/ryan-florence" />
