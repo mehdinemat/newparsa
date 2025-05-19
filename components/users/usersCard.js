@@ -7,7 +7,7 @@ const {
   Button,
 } = require("@chakra-ui/react");
 
-const UsersCard = ({ t, item }) => {
+const UsersCard = ({ t, item, handleProfile }) => {
   return (
     <VStack>
       <Avatar w={"100px"} h={"100px"} />
@@ -15,11 +15,15 @@ const UsersCard = ({ t, item }) => {
         {item?.first_name} {item?.last_name}
       </Text>
       <HStack>
-        <Text>{item?.question_count} {t("question")}</Text>
+        <Text>
+          {item?.question_count} {t("question")}
+        </Text>
         <Divider height={"20px"} orientation="vertical" />
-        <Text color={"#29CCCC"}>{item?.answer_count} {t("answer")}</Text>
+        <Text color={"#29CCCC"}>
+          {item?.answer_count} {t("answer")}
+        </Text>
       </HStack>
-      <Button bgColor={"#29CCCC"} fontWeight={"normal"}>
+      <Button bgColor={"#29CCCC"} fontWeight={"normal"} onClick={e=>handleProfile(item?.id)}>
         {t("view_profile")}
       </Button>
     </VStack>

@@ -126,7 +126,7 @@ const MainLayout = ({ children }) => {
   };
 
   const handleClickMenuLink = (link) => {
-    router.push(link);
+    router.push(`/${link}`);
   };
 
   const handleClickHome = () => {
@@ -138,8 +138,8 @@ const MainLayout = ({ children }) => {
       _.includes(router.asPath.toLowerCase(), "admin_dashboard")
         ? 2
         : _.includes(router.asPath.toLowerCase(), "dashboard")
-          ? 1
-          : 0
+        ? 1
+        : 0
     );
   }, [router]);
 
@@ -329,8 +329,8 @@ const MainLayout = ({ children }) => {
                     {locale == "en"
                       ? t("header_english")
                       : locale == "fa"
-                        ? t("header_persian")
-                        : locale == "ar" && t("header_arabic")}
+                      ? t("header_persian")
+                      : locale == "ar" && t("header_arabic")}
                   </Text>
                   <IoIosArrowDown />
                 </HStack>

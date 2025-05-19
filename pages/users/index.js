@@ -18,8 +18,11 @@ import { useTranslation } from "react-i18next";
 import Head from "next/head";
 import useSWR from "swr";
 import { NumberParam, useQueryParams, withDefault } from "use-query-params";
+import { useRouter } from "next/router";
 
 const Index = () => {
+  const router = useRouter();
+
   const [filters, setFilters] = useQueryParams({
     page: withDefault(NumberParam, 1),
   });
@@ -28,6 +31,10 @@ const Index = () => {
   const { data: dataUser, isLoading: isLoadingUser } = useSWR(
     `user/client?page=${filters?.page}&size=10`
   );
+
+  const handleOpenProfileUser = (id) => {
+    router.push(`/users/${id}`);
+  };
 
   return (
     <MainLayout>
@@ -108,7 +115,11 @@ const Index = () => {
           w={"100%"}
         >
           {dataUser?.data?.result?.map((user) => (
-            <UsersCard t={t} item={user} />
+            <UsersCard
+              t={t}
+              item={user}
+              handleProfile={handleOpenProfileUser}
+            />
           ))}
         </Grid>
         <Stack w={"100%"} justifyContent={"center"} alignItems={"center"}>
