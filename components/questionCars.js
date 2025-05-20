@@ -62,6 +62,8 @@ const QuestionCard = ({ data, t }) => {
           {data?.tags?.map((item, index) => (
             <Badge
               onClick={(e) => handleClickTags(item)}
+              _hover={{bgColor:'#29cccc38' , color:'#1a7c7c'}}
+              transition={'.3s'}
               key={index}
               color="#16A6A6"
               bgColor="#29CCCC1A"
