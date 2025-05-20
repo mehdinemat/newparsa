@@ -322,6 +322,7 @@ const MainLayout = ({ children }) => {
               <Text
                 _hover={{ bgColor: "gray.100" }}
                 borderRadius={"5px"}
+                padding={'5px'}
                 textAlign={"center"}
                 fontSize={"sm"}
                 w={"70px"}
