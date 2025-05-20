@@ -4,6 +4,7 @@ import {
   Button,
   Collapse,
   Container,
+  Divider,
   Fade,
   Flex,
   Grid,
@@ -51,6 +52,7 @@ import { StringParam, useQueryParams, withDefault } from "use-query-params";
 import AdminMenuBar from "./admin_dashboard/adminMenuBar";
 import UserMenuBar from "./mobile/dashboard/userMenuBar";
 import MenuBar from "./mobile/menuBar";
+import useSWR from "swr";
 
 const menuList = [
   {
@@ -90,6 +92,10 @@ const MainLayout = ({ children }) => {
   const [showInput, setShowInput] = useState(false);
   const [isUserLogin, setIsUserLogin] = useState(false);
   const inputRef = useRef(null);
+
+  const { data: dataMe, isLoading: isLoadingMe } = useSWR(
+    isUserLogin && `user/client/me`
+  );
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -168,9 +174,10 @@ const MainLayout = ({ children }) => {
     return () => container.removeEventListener("scroll", handleScroll);
   }, []);
 
-  useEffect(() => {
-    console.log(asPath == "/");
-  }, [asPath]);
+  const handleExit = () => {
+    localStorage.removeItem("token");
+    router.replace("/");
+  };
 
   useEffect(() => {
     setSearch(filters?.search);
@@ -378,8 +385,14 @@ const MainLayout = ({ children }) => {
                     </HStack>
                   </MenuButton>
                   <MenuList>
-                    <MenuItem>انگلیسی</MenuItem>
-                    <MenuItem>عربی</MenuItem>
+                    {console.log(dataMe)}
+                    <MenuItem fontWeight={"bold"} justifyContent={"center"}>
+                      {" "}
+                      {dataMe?.data?.[0]?.first_name}{" "}
+                      {dataMe?.data?.[0]?.last_name}
+                    </MenuItem>
+                    <Divider />
+                    <MenuItem onClick={(e) => handleExit()}>خروج</MenuItem>
                   </MenuList>
                 </Menu>
               </HStack>

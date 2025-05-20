@@ -7,6 +7,7 @@ import {
   Image,
   Input,
   Text,
+  useToast,
   VStack,
 } from "@chakra-ui/react";
 import axios from "axios";
@@ -27,11 +28,12 @@ const postRequest = (url, { arg }) => {
 };
 
 const Index = () => {
+  const toast = useToast();
 
   const { t } = useTranslation();
 
   const searchParams = useSearchParams();
-  const router = useRouter()
+  const router = useRouter();
   const phone = searchParams.get("phone");
   const username = searchParams.get("username");
   const [otp, setOtp] = useState(["", "", "", "", ""]);
@@ -46,15 +48,15 @@ const Index = () => {
       onSuccess: (data) => {
         if (data?.data?.status) {
           localStorage.setItem("token", data?.data?.data?.access_token);
-          router.replace('/')
+          router.replace("/");
         } else {
           toast({
-            title: 'خطا',
+            title: "خطا",
             description: data?.data?.message,
-            status: 'error',
+            status: "error",
             duration: 9000,
             isClosable: true,
-          })
+          });
         }
       },
     }
@@ -122,7 +124,7 @@ const Index = () => {
               w={"327px"}
               mb={"20px"}
             >
-              {t('religious')}
+              {t("religious")}
             </Text>
             <Divider w={"350px"} h={"2px"} bgColor={"#29CCCC"} />
             <Text
@@ -130,7 +132,7 @@ const Index = () => {
               mt={"20px"}
               mb={"10px"}
             >
-              {t('login_code')}
+              {t("login_code")}
             </Text>
             <HStack spacing={3} dir="ltr">
               {otp.map((digit, index) => (
@@ -158,7 +160,7 @@ const Index = () => {
               type="submit"
               isLoading={isMutating}
             >
-              {t('login')}
+              {t("login")}
             </Button>
           </VStack>
         </Box>

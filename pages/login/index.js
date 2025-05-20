@@ -41,9 +41,14 @@ const Index = () => {
     {
       onSuccess: (data) => {
         if (data?.data?.status) {
-          router.push(
-            `/two_step_login/verify_code?username=${getValues("username")}`
-          );
+          if (data?.data?.data?.otp_sended) {
+            router.push(
+              `/two_step_login/verify_code?username=${getValues("username")}`
+            );
+          } else {
+            localStorage.setItem("token", data?.data?.data?.access_token);
+            router.push('/')
+          }
         } else {
           toast({
             title: "خطا",
@@ -90,8 +95,8 @@ const Index = () => {
             height={"100%"}
           >
             <Image
-              cursor={'pointer'}
-              onClick={e => router.push('/')}
+              cursor={"pointer"}
+              onClick={(e) => router.push("/")}
               src="/loginlogo.png"
               width={{ base: "120px", md: "165px" }}
               height={{ base: "50px", md: "68px" }}
@@ -158,6 +163,7 @@ const Index = () => {
               alignItems={"start"}
               onClick={(e) => router.push("/register")}
             >
+              <Text>{t("no_account")}</Text>
               <Text color={"blue.500"} cursor={"pointer"}>
                 {t("create_account")}
               </Text>

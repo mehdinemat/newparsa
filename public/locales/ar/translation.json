@@ -112,5 +112,9 @@
   "semantic_search_results_for": "نتائج البحث الدلالي لـ",
   "literal_search_results_for": "نتائج البحث النصي لـ",
   "ask_question": "لطرح سؤال، يجب أن تسجّل الدخول إلى حسابك.",
-  "your_question": "سؤالك"
+  "your_question": "سؤالك",
+    "login": "تسجيل الدخول",
+      "no_account": "ليس لديك حساب؟"
+
+
 }

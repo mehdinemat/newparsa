@@ -112,5 +112,8 @@
   "semantic_search_results_for": "Semantic Search Results for",
   "literal_search_results_for": "Literal Search Results for",
   "ask_question": "To ask a question, you need to log into your account.",
-  "your_question": "Your question"
+  "your_question": "Your question",
+  "login":"login",
+    "no_account": "Don’t have an account?"
+
 }

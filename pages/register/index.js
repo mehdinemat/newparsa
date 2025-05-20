@@ -18,6 +18,8 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import useSWRMutation from "swr/mutation";
 import * as Yup from "yup";
+import { useEffect, useState } from "react";
+import PhoneInput from "@/components/base/PhoneInput";
 
 const Lottie = dynamic(() => import("lottie-react"), {
   ssr: false,
@@ -28,6 +30,9 @@ const postRequest = (url, { arg }) => {
 };
 
 const Index = () => {
+  const [phone, setPhone] = useState("");
+  const [fullNumber, setFullNumber] = useState("");
+
   const { t } = useTranslation();
 
   const router = useRouter();
@@ -37,21 +42,7 @@ const Index = () => {
     username: Yup.string()
       .required("نام کاربری را وارد کنید")
       .min(3, "نام کاربری باید حداقل 3 کاراکتر باشد"),
-
-    phone_number: Yup.string()
-      .required("شماره موبایل را وارد کنید")
-      .matches(/^\+\d{10,15}$/, "شماره موبایل اشتباست"),
-
-    email: Yup.string().required("ایمیل را وارد کنید").email("ایمیل اشتباست"),
-
-    first_name: Yup.string()
-      .required("نام را وارد کنید")
-      .min(2, "نام حداقل باید 2 کاراکتر باشد"),
-
-    last_name: Yup.string()
-      .required("نام خانوادگی را وارد کنید ")
-      .min(2, "نام خانوادگی حداقل باید 2 کاراکتر باشد"),
-
+    email: Yup.string().email("ایمیل اشتباست"),
     password: Yup.string()
       .required("رمز عبور را وارد کنید")
       .min(6, "رمز عبور حداقل باید 6 کاراکتر باشد"),
@@ -66,6 +57,7 @@ const Index = () => {
     setValue,
     getValues,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(validationSchema),
@@ -76,23 +68,24 @@ const Index = () => {
     postRequest,
     {
       onSuccess: (data) => {
-        console.log(data?.data?.status)
-        if (data?.data?.status) {
-          router.push("/login");
+        if (data?.data?.data?.otp_sended) {
+          router.push(
+            `/two_step_login/verify_code?username=${getValues("username")}`
+          );
         } else {
           toast({
-            title: 'خطا',
+            title: "خطا",
             description: data?.data?.message,
-            status: 'error',
+            status: "error",
             duration: 9000,
             isClosable: true,
-          })
+          });
         }
       },
     }
   );
   const handleRegisterUser = (e) => {
-    trigger(e);
+    trigger({ ...e, phone_number: fullNumber });
   };
 
   return (
@@ -124,8 +117,8 @@ const Index = () => {
               src="/loginlogo.png"
               width={{ base: "120px", md: "165px" }}
               height={{ base: "50px", md: "68px" }}
-              onClick={e => router.replace('/')}
-              cursor={'pointer'}
+              onClick={(e) => router.replace("/")}
+              cursor={"pointer"}
             />
             <Text
               fontSize={{ base: "20px", md: "23px" }}
@@ -140,27 +133,7 @@ const Index = () => {
             <Text fontSize={{ base: "20px", md: "25px" }} mt={"20px"}>
               {t("register")}
             </Text>
-            <Input
-              height={"46px"}
-              placeholder={t("phone_number")}
-              mt={"10px"}
-              {...register("phone_number")}
-              sx={{
-                "::placeholder": {
-                  textAlign: "center", // this line is also needed to target the placeholder itself
-                },
-              }}
-            />
-            <p
-              style={{
-                fontSize: "10px",
-                color: "#e4002b",
-                width: "100%",
-                textAlign: "start",
-              }}
-            >
-              {errors.phone_number?.message}
-            </p>
+            <PhoneInput setFullNumber={setFullNumber} fullNumber={fullNumber} />
             <Input
               height={"46px"}
               placeholder={t("first_name")}
@@ -300,7 +273,7 @@ const Index = () => {
               onClick={(e) => router.push("/login")}
             >
               <Text>{t("have_account")}</Text>
-              <Text color={"blue.500"} cursor={"pointer"} >
+              <Text color={"blue.500"} cursor={"pointer"}>
                 {t("log_in")}
               </Text>
             </HStack>

@@ -8,7 +8,7 @@ const QuestionCard = ({ data, t }) => {
   const router = useRouter();
 
   const handleQuestionRouter = (id) => {
-    router.push(`/question_answer?id=${id}`);
+    router.push(`/question_answer/${id}`);
   };
 
   const handleClickTags = (item) => {
