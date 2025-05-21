@@ -69,6 +69,10 @@ const Index = () => {
     router.replace("/register");
   };
 
+  const handleForgetPasswordClick = ()=>{
+    router.push('forget_password')
+  }
+
   return (
     <Box
       backgroundImage="url('./bg.png')"
@@ -144,7 +148,7 @@ const Index = () => {
                   {t("remember_me")}
                 </Text>
               </HStack>
-              <Text color={"#29CCCC"} fontSize={{ base: "15px", md: "18px" }}>
+              <Text color={"#29CCCC"} fontSize={{ base: "15px", md: "18px" }} cursor={'pointer'} onClick={handleForgetPasswordClick}>
                 {t("forgot_password")}
               </Text>
             </HStack>

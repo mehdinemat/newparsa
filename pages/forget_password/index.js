@@ -10,45 +10,73 @@ import {
   useToast,
   VStack,
 } from "@chakra-ui/react";
+import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import dynamic from "next/dynamic";
-import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
-import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import useSWRMutation from "swr/mutation";
+import * as Yup from "yup";
+import { useEffect, useState } from "react";
+import PhoneInput from "@/components/base/PhoneInput";
 
 const Lottie = dynamic(() => import("lottie-react"), {
   ssr: false,
 });
 
-const postRequest = (url, { arg }) => {
-  return axios.post(baseUrl + url, arg);
+const postRequest = (url, { arg: { number, ...data } }) => {
+  return axios.post(baseUrl + url + `?phone_number=${number}`);
 };
 
 const Index = () => {
-  const toast = useToast();
+  const [phone, setPhone] = useState("");
+  const [fullNumber, setFullNumber] = useState("");
 
   const { t } = useTranslation();
 
-  const searchParams = useSearchParams();
   const router = useRouter();
-  const phone = searchParams.get("phone");
-  const username = searchParams.get("username");
-  const [otp, setOtp] = useState(["", "", "", "", ""]);
-  const inputsRef = useRef([]);
+  const toast = useToast();
 
-  const { register, setValue, getValues, handleSubmit } = useForm();
+  const validationSchema = Yup.object({
+    username: Yup.string()
+      .required("نام کاربری را وارد کنید")
+      .min(3, "نام کاربری باید حداقل 3 کاراکتر باشد"),
+    email: Yup.string().email("ایمیل اشتباست"),
+    password: Yup.string()
+      .required("رمز عبور را وارد کنید")
+      .min(6, "رمز عبور حداقل باید 6 کاراکتر باشد"),
+
+    re_password: Yup.string()
+      .oneOf([Yup.ref("password"), null], "تکرار رمز عبور اشتباست")
+      .required("لطفا تکرار رمز عبور را وارد کنید"),
+  });
+
+  const {
+    register,
+    setValue,
+    getValues,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(validationSchema),
+  });
 
   const { trigger, isLoading, isMutating } = useSWRMutation(
-    "user/auth/verify-code",
+    "user/auth/send-verify-code",
     postRequest,
     {
       onSuccess: (data) => {
+        toast({
+          title: "موفق",
+          description: "کد تایید ارسال شد",
+          status: "success",
+          duration: 6000,
+          isClosable: true,
+        });
         if (data?.data?.status) {
-          localStorage.setItem("token", data?.data?.data?.access_token);
-          router.replace("/");
+          router.push(`/two_step_login/verify_code?username=${fullNumber}`);
         } else {
           toast({
             title: "خطا",
@@ -61,34 +89,8 @@ const Index = () => {
       },
     }
   );
-
-  const handleChange = (element, index) => {
-    const value = element.value.replace(/\D/, ""); // Only digits
-    if (value.length > 1) return;
-
-    const newOtp = [...otp];
-    newOtp[index] = value;
-    setOtp(newOtp);
-
-    // Move to next input if filled
-    if (value && index < 4) {
-      inputsRef.current[index + 1].focus();
-    }
-  };
-
-  const handleKeyDown = (e, index) => {
-    if (e.key === "Backspace" && !otp[index] && index > 0) {
-      inputsRef.current[index - 1].focus();
-    }
-  };
-
-  const handleAddVerifyCode = (e) => {
-    e.preventDefault();
-    trigger({ code: otp?.join(""), username: username?.replace(/ /g, "+") });
-  };
-
-  const handleLoginClick = () => {
-    router.push("/");
+  const handleRegisterUser = (e) => {
+    trigger({ number: fullNumber });
   };
 
   return (
@@ -111,17 +113,15 @@ const Index = () => {
           <VStack
             w={"350px"}
             mt={"20px"}
-            as={"form"}
-            onSubmit={handleAddVerifyCode}
             justifyContent={"center"}
             height={"100%"}
           >
             <Image
               src="/loginlogo.png"
               width={{ base: "120px", md: "165px" }}
-              height={"68px"}
-              onClick={handleLoginClick}
-              cursor={'pointer'}
+              height={{ base: "50px", md: "68px" }}
+              onClick={(e) => router.replace("/")}
+              cursor={"pointer"}
             />
             <Text
               fontSize={{ base: "20px", md: "23px" }}
@@ -133,40 +133,20 @@ const Index = () => {
               {t("religious")}
             </Text>
             <Divider w={"350px"} h={"2px"} bgColor={"#29CCCC"} />
-            <Text
-              fontSize={{ base: "20px", md: "22px" }}
-              mt={"20px"}
-              mb={"10px"}
-            >
-              {t("login_code")}
+            <Text fontSize={{ base: "20px", md: "25px" }} mt={"20px"}>
+              {t("  ")}
             </Text>
-            <HStack spacing={3} dir="ltr">
-              {otp.map((digit, index) => (
-                <Input
-                  key={index}
-                  type="text"
-                  maxLength={1}
-                  textAlign="center"
-                  height="46px"
-                  width="46px"
-                  fontSize="2xl"
-                  value={digit}
-                  onChange={(e) => handleChange(e.target, index)}
-                  onKeyDown={(e) => handleKeyDown(e, index)}
-                  ref={(el) => (inputsRef.current[index] = el)}
-                  placeholder="-"
-                />
-              ))}
-            </HStack>
+            <PhoneInput setFullNumber={setFullNumber} fullNumber={fullNumber} />
             <Button
               w={"100%"}
               bgColor={"#29CCCC"}
               height={"46px"}
-              my={"20px"}
+              mt={"20px"}
               type="submit"
+              onClick={handleRegisterUser}
               isLoading={isMutating}
             >
-              {t("login")}
+              {t("continue")}
             </Button>
           </VStack>
         </Box>
@@ -177,11 +157,11 @@ const Index = () => {
           display={{ base: "none", md: "flex" }}
         >
           {/* Base / background image */}
-          <Image src="../../loginbg.png" objectFit="cover" w="100%" h="100%" />
+          <Image src="/loginbg.png" objectFit="cover" w="100%" h="100%" />
 
           {/* Overlay / centered image */}
           <Image
-            src="../../loginlogoqu.png"
+            src="/loginlogoqu.png"
             alt="Centered Image"
             position="absolute"
             top="50%"
