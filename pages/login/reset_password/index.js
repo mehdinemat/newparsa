@@ -2,6 +2,7 @@ import { baseUrl } from "@/components/lib/api";
 import {
   Box,
   Button,
+  Checkbox,
   Divider,
   HStack,
   Image,
@@ -10,79 +11,36 @@ import {
   useToast,
   VStack,
 } from "@chakra-ui/react";
-import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import useSWRMutation from "swr/mutation";
-import * as Yup from "yup";
-import { useEffect, useState } from "react";
-import PhoneInput from "@/components/base/PhoneInput";
 
 const Lottie = dynamic(() => import("lottie-react"), {
   ssr: false,
 });
 
-const postRequest = (url, { arg: { number, ...data } }) => {
-  return axios.post(
-    baseUrl + url + `?phone_number=${encodeURIComponent(number)}`
-  );
+const patchRequest = (url, { arg }) => {
+  return axios.patch(baseUrl + url, arg);
 };
 
 const Index = () => {
-  const [phone, setPhone] = useState("");
-  const [fullNumber, setFullNumber] = useState("");
-
   const { t } = useTranslation();
 
-  const router = useRouter();
   const toast = useToast();
 
-  const validationSchema = Yup.object({
-    username: Yup.string()
-      .required("نام کاربری را وارد کنید")
-      .min(3, "نام کاربری باید حداقل 3 کاراکتر باشد"),
-    email: Yup.string().email("ایمیل اشتباست"),
-    password: Yup.string()
-      .required("رمز عبور را وارد کنید")
-      .min(6, "رمز عبور حداقل باید 6 کاراکتر باشد"),
-
-    re_password: Yup.string()
-      .oneOf([Yup.ref("password"), null], "تکرار رمز عبور اشتباست")
-      .required("لطفا تکرار رمز عبور را وارد کنید"),
-  });
-
-  const {
-    register,
-    setValue,
-    getValues,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm({
-    resolver: yupResolver(validationSchema),
-  });
+  const router = useRouter();
+  const { register, setValue, getValues, handleSubmit } = useForm();
 
   const { trigger, isLoading, isMutating } = useSWRMutation(
-    "user/auth/send-verify-code",
-    postRequest,
+    "user/client/reset-password",
+    patchRequest,
     {
       onSuccess: (data) => {
-        toast({
-          title: "موفق",
-          description: "کد تایید ارسال شد",
-          status: "success",
-          duration: 6000,
-          isClosable: true,
-        });
         if (data?.data?.status) {
-          router.push(
-            `/two_step_login/verify_code?phone=${encodeURIComponent(
-              fullNumber
-            )}`
-          );
+          router.push(`/`);
         } else {
           toast({
             title: "خطا",
@@ -95,8 +53,16 @@ const Index = () => {
       },
     }
   );
-  const handleRegisterUser = (e) => {
-    trigger({ number: fullNumber });
+  const handleResetPassword = (e) => {
+    trigger(e);
+  };
+
+  const handleClickRegister = () => {
+    router.replace("/register");
+  };
+
+  const handleForgetPasswordClick = () => {
+    router.push("forget_password");
   };
 
   return (
@@ -119,15 +85,17 @@ const Index = () => {
           <VStack
             w={"350px"}
             mt={"20px"}
+            as={"form"}
+            onSubmit={handleSubmit(handleResetPassword)}
             justifyContent={"center"}
             height={"100%"}
           >
             <Image
+              cursor={"pointer"}
+              onClick={(e) => router.push("/")}
               src="/loginlogo.png"
               width={{ base: "120px", md: "165px" }}
               height={{ base: "50px", md: "68px" }}
-              onClick={(e) => router.replace("/")}
-              cursor={"pointer"}
             />
             <Text
               fontSize={{ base: "20px", md: "23px" }}
@@ -139,25 +107,51 @@ const Index = () => {
               {t("religious")}
             </Text>
             <Divider w={"350px"} h={"2px"} bgColor={"#29CCCC"} />
-            <Text
-              fontSize={{ base: "20px", md: "25px" }}
-              mt={"20px"}
-              mb={"10px"}
-            >
-              {t("forgot_password")}
+            <Text fontSize={{ base: "20px", md: "25px" }} mt={"20px"}>
+              {t("new_password")}
             </Text>
-            <PhoneInput setFullNumber={setFullNumber} fullNumber={fullNumber} />
+            <Input
+              height={"46px"}
+              type="password"
+              placeholder={t("password")}
+              my={"10px"}
+              {...register("password")}
+              sx={{
+                "::placeholder": {
+                  textAlign: "center", // this line is also needed to target the placeholder itself
+                },
+              }}
+            />
+            <Input
+              height={"46px"}
+              type="password"
+              placeholder={t("repeat_password")}
+              mb={"10px"}
+              {...register("re_password")}
+              sx={{
+                "::placeholder": {
+                  textAlign: "center", // this line is also needed to target the placeholder itself
+                },
+              }}
+            />
             <Button
               w={"100%"}
               bgColor={"#29CCCC"}
               height={"46px"}
               mt={"20px"}
               type="submit"
-              onClick={handleRegisterUser}
               isLoading={isMutating}
             >
-              {t("continue")}
+              {t("reset_password")}
             </Button>
+            {/* <Button
+              variant={"outline"}
+              w={"100%"}
+              rightIcon={<IoLogoGoogle />}
+              height={"46px"}
+            >
+              ورود با حساب گوگل
+            </Button> */}
           </VStack>
         </Box>
         <Box

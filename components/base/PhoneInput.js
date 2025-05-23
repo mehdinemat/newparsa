@@ -9,7 +9,9 @@ import {
   Flex,
   InputRightElement,
   Text,
+  HStack,
 } from "@chakra-ui/react";
+import { t } from "i18next";
 import React, { useState } from "react";
 
 const countries = [
@@ -35,24 +37,26 @@ export default function PhoneInput({ fullNumber, setFullNumber }) {
   };
 
   return (
-    <Stack spacing={2} w={"100%"} height={"46px"}>
-      <InputGroup w={"100%"} height={"46px"}>
+    <HStack spacing={2} w={"100%"} height={"46px"}>
         <Input
+        width={'100%'}
           dir="ltr"
-          textIndent={"90px"}
           height={"46px"}
           value={number}
           onChange={handleNumberChange}
+          placeholder={t("phone_number")}
+            _placeholder={{ textAlign: 'right' }}
+
         />
-        <InputRightElement width="8rem" pl={2} top={"5px"}>
-          <Flex align="center">
+        {/* <InputRightElement width="8rem" pl={2} top={"5px"}> */}
+        {/* </InputRightElement> */}
             <Select
+            w={'150px'}
               value={country.code}
               onChange={handleCountryChange}
-              border="none"
               fontSize="sm"
               bg="transparent"
-              height={"36px"}
+              height={"46px"}
               pl={0}
               _hover={{ border: "none" }}
               _focusVisible={{ border: "none" }}
@@ -63,9 +67,6 @@ export default function PhoneInput({ fullNumber, setFullNumber }) {
                 </option>
               ))}
             </Select>
-          </Flex>
-        </InputRightElement>
-      </InputGroup>
-    </Stack>
+    </HStack>
   );
 }

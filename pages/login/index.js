@@ -37,7 +37,7 @@ const Index = () => {
 
   const { trigger, isLoading, isMutating } = useSWRMutation(
     "user/auth",
-    postRequest,
+    postRequest,  
     {
       onSuccess: (data) => {
         if (data?.data?.status) {

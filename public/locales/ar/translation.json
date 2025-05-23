@@ -113,9 +113,15 @@
   "literal_search_results_for": "نتائج البحث النصي لـ",
   "ask_question": "لطرح سؤال، يجب أن تسجّل الدخول إلى حسابك.",
   "your_question": "سؤالك",
-    "login": "تسجيل الدخول",
-      "no_account": "ليس لديك حساب؟",
-        "continue": "متابعة"
+  "login": "تسجيل الدخول",
+  "no_account": "ليس لديك حساب؟",
+  "continue": "متابعة",
+  "repeat_password": "تأكيد كلمة المرور",
+    "reset_password": "إعادة تعيين كلمة المرور",
+      "new_password": "كلمة المرور الجديدة"
+
+
+
 
 
 

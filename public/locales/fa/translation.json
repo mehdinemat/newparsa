@@ -114,8 +114,14 @@
   "ask_question": "برای پرسیدن سوال، باید وارد حساب کاربری شوید.",
   "your_question": "سوال شما",
   "login":"ورود",
-    "no_account": "حساب کاربری ندارید؟",
-      "continue": "ادامه"
+  "no_account": "حساب کاربری ندارید؟",
+  "continue": "ادامه",
+  "repeat_password": "تکرار کلمه عبور",
+    "reset_password": "بازنشانی کلمه عبور",
+      "new_password": "رمز عبور جدید"
+
+
+
 
 
 }
