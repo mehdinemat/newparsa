@@ -39,9 +39,7 @@ const Index = () => {
   const toast = useToast();
 
   const validationSchema = Yup.object({
-    username: Yup.string()
-      .required("نام کاربری را وارد کنید")
-      .min(3, "نام کاربری باید حداقل 3 کاراکتر باشد"),
+
     email: Yup.string().email("ایمیل اشتباست"),
     password: Yup.string()
       .required("رمز عبور را وارد کنید")
@@ -134,7 +132,7 @@ const Index = () => {
               {t("register")}
             </Text>
             <PhoneInput setFullNumber={setFullNumber} fullNumber={fullNumber} />
-            <Input
+            {/* <Input
               height={"46px"}
               placeholder={t("first_name")}
               {...register("first_name")}
@@ -153,8 +151,8 @@ const Index = () => {
               }}
             >
               {errors.first_name?.message}
-            </p>
-            <Input
+            </p> */}
+            {/* <Input
               height={"46px"}
               placeholder={t("last_name")}
               {...register("last_name")}
@@ -173,8 +171,8 @@ const Index = () => {
               }}
             >
               {errors.last_name?.message}
-            </p>
-            <Input
+            </p> */}
+            {/* <Input
               height={"46px"}
               placeholder={t("username")}
               {...register("username")}
@@ -193,7 +191,7 @@ const Index = () => {
               }}
             >
               {errors.username?.message}
-            </p>
+            </p> */}
             <Input
               height={"46px"}
               placeholder={t("password")}
@@ -236,7 +234,7 @@ const Index = () => {
             >
               {errors.re_password?.message}
             </p>
-            <Input
+            {/* <Input
               height={"46px"}
               placeholder={t("email")}
               {...register("email")}
@@ -255,7 +253,7 @@ const Index = () => {
               }}
             >
               {errors.email?.message}
-            </p>
+            </p> */}
 
             <Button
               w={"100%"}
