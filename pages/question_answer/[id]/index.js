@@ -36,7 +36,7 @@ import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 
 const postRequest = (url, { arg: { id, ...data } }) => {
-  return axios.post(baseUrl + url + `?id=${id}`, data, {
+  return axios.post(baseUrl + url + `?question_id=${id}`, data, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },

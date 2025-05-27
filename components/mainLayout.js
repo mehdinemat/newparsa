@@ -183,6 +183,10 @@ const MainLayout = ({ children }) => {
     setSearch(filters?.search);
   }, [filters?.search]);
 
+  const handleProfileLink = () => {
+    router.push('/dashboard/profile')
+  };
+
   return (
     <VStack minHeight="100vh" w={"100%"} alignItems={"start"} gap={0}>
       {/* header */}
@@ -322,7 +326,7 @@ const MainLayout = ({ children }) => {
               <Text
                 _hover={{ bgColor: "gray.100" }}
                 borderRadius={"5px"}
-                padding={'5px'}
+                padding={"5px"}
                 textAlign={"center"}
                 fontSize={"sm"}
                 w={"70px"}
@@ -388,8 +392,12 @@ const MainLayout = ({ children }) => {
                     </HStack>
                   </MenuButton>
                   <MenuList>
-                    {console.log(dataMe)}
-                    <MenuItem fontWeight={"bold"} justifyContent={"center"}>
+                    <MenuItem
+                      fontWeight={"bold"}
+                      justifyContent={"center"}
+                      cursor={"pointer"}
+                      onClick={(e) => handleProfileLink()}
+                    >
                       {" "}
                       {dataMe?.data?.[0]?.first_name}{" "}
                       {dataMe?.data?.[0]?.last_name}
