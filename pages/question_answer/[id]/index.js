@@ -15,12 +15,13 @@ import {
   Text,
   Textarea,
   useBreakpointValue,
-  VStack
+  VStack,
 } from "@chakra-ui/react";
 import axios from "axios";
 import moment from "moment-jalaali";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import {
@@ -29,6 +30,7 @@ import {
   IoBookmark,
   IoBookmarkOutline,
   IoCheckmark,
+  IoClose,
   IoPencil,
   IoWarningOutline,
 } from "react-icons/io5";
@@ -42,14 +44,31 @@ const postRequest = (url, { arg: { id, ...data } }) => {
     },
   });
 };
+const postActionRequest = (
+  url,
+  { arg: { table_id, table_type, type_param, ...data } }
+) => {
+  return axios.post(
+    baseUrl +
+      url +
+      `?table_type=${table_type}&table_id=${table_id}&type_param=${type_param}`,
+    data,
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    }
+  );
+};
+
 const patchRequest = (
   url,
   { arg: { table_id, table_type, type_param, ...data } }
 ) => {
   return axios.post(
     baseUrl +
-    url +
-    `?table_type=${table_type}&table_id=${table_id}&type_param=${type_param}`,
+      url +
+      `?table_type=${table_type}&table_id=${table_id}&type_param=${type_param}`,
     data,
     {
       headers: {
@@ -62,17 +81,28 @@ const patchRequest = (
 const Index = () => {
   const { t } = useTranslation();
 
+  const [isInputOpen, setIsInputOpen] = useState(false);
+  const [comment, setComment] = useState("");
+
   const slidesToShow = useBreakpointValue({ base: 1, md: 2, lg: 4 }); // responsive value
 
   const router = useRouter();
-  
+
   const { query } = router;
 
   const {
     register: registerAnswer,
     setValue: setValueAnswer,
     getValues: getValuesAnswer,
+    reset: resetAnswer,
     handleSubmit: handleSubmitAnswer,
+  } = useForm();
+  const {
+    register: registerComment,
+    setValue: setValueComment,
+    getValues: getValuesComment,
+    reset: resetComment,
+    handleSubmit: handleSubmitComment,
   } = useForm();
 
   const {
@@ -85,35 +115,66 @@ const Index = () => {
 
   const { data: dataQuestionComment, isLoading: isLoadingComment } = useSWR(
     query?.id &&
-    `user/action?table_id=${query?.id}&table_type=question&type_param=comment`
+      `user/action?table_id=${query?.id}&table_type=question&type_param=comment`
+  );
+  const { data: dataQuestionLike, isLoading: isLoadingLike } = useSWR(
+    query?.id &&
+      `user/action?table_id=${query?.id}&table_type=question&type_param=like`
+  );
+  const { data: dataQuestionSave, isLoading: isLoadingSave } = useSWR(
+    query?.id &&
+      `user/action?table_id=${query?.id}&table_type=question&type_param=save_message`
   );
 
   const { data: dataQuestionSimilar, isLoading: isLoadingSimilar } = useSWR(
     dataQuestion?.data &&
-    `user/question/similar-questions?question_elastic_id=${dataQuestion?.data?.result?.[0]?.elastic_id}`
+      `user/question/similar-questions?question_elastic_id=${dataQuestion?.data?.result?.[0]?.elastic_id}`
   );
 
-  const { trigger: triggerAnswer, isLoading: isLoadingAnswer } = useSWRMutation(
-    `user/question/answer`,
-    postRequest
-  );
+  const {
+    trigger: triggerAnswer,
+    isLoading: isLoadingAnswer,
+    isMutating: isMutatingQuestionAnswer,
+  } = useSWRMutation(`user/question/answer`, postRequest, {
+    onSuccess: () => {
+      resetAnswer();
+    },
+  });
 
-  const { trigger: triggerLike, isLoading: isLoadingLike } = useSWRMutation(
-    `user/action`,
-    patchRequest,
-    {
+  const { trigger: triggerUpdateLike, isLoading: isLoadingUpdateLike } =
+    useSWRMutation(`user/action`, patchRequest, {
       onSuccess: () => {
         mutateQuestion();
       },
-    }
-  );
+    });
+  const {
+    trigger: triggerAddLike,
+    isLoading: isLoadingAddLike,
+    isMutating: isMutatingAddAction,
+  } = useSWRMutation(`user/action`, postActionRequest, {
+    onSuccess: () => {
+      mutateQuestion();
+      resetComment();
+    },
+  });
 
   const handleAddAnswer = (e) => {
     triggerAnswer({ ...e, id: query?.id, lang: "fa" });
   };
 
   const handleAddAction = (type, action) => {
-    triggerLike({ table_id: query?.id, table_type: type, type_param: action });
+    triggerAddLike({
+      table_id: query?.id,
+      table_type: type,
+      type_param: action,
+    });
+  };
+  const handleUpdateAction = (type, action) => {
+    triggerUpdateLike({
+      table_id: query?.id,
+      table_type: type,
+      type_param: action,
+    });
   };
 
   const handleNewQuestionButton = () => {
@@ -129,9 +190,32 @@ const Index = () => {
 
   const handleClickSource = (source) => {
     router.replace(
-      `/questions?source=${dataSource?.data?.find((it) => it?.fa_source_name == source)?.id
+      `/questions?source=${
+        dataSource?.data?.find((it) => it?.fa_source_name == source)?.id
       }`
     );
+  };
+
+  const handleToggleInput = () => {
+    setIsInputOpen((prev) => !prev);
+  };
+
+  const handleChange = (e) => {
+    setComment(e.target.value);
+  };
+
+  const handleSendComment = (type, action) => {
+    triggerAddLike({
+      table_id: query?.id,
+      table_type: type,
+      type_param: action,
+      content: getValuesComment("content"),
+    });
+    setIsInputOpen(false);
+  };
+
+  const handleUserProfileLink = (username) => {
+    router.push(`/users/${username}`);
   };
 
   return (
@@ -173,8 +257,15 @@ const Index = () => {
                 }
                 borderRadius={"100%"}
                 size={"sm"}
-                onClick={(e) => handleAddAction("question", "like")}
+                onClick={(e) => {
+                  if (dataQuestion?.data?.result?.[0]?.is_user_liked) {
+                    handleUpdateAction("question", "like");
+                  } else {
+                    handleAddAction("question", "like");
+                  }
+                }}
               />
+              <Text>{dataQuestionLike?.data?.count}</Text>
               <IconButton
                 icon={<IoArrowDown color="gray" />}
                 variant={"outline"}
@@ -386,22 +477,63 @@ const Index = () => {
                           <Text fontSize={"sm"} color={"gray"}>
                             {t("write_your_comment")}
                           </Text>
-                          <IconButton
-                            icon={<IoPencil color="gray" />}
-                            variant={"ghost"}
-                          />
+                          {!isInputOpen ? (
+                            <IconButton
+                              icon={<IoPencil color="gray" />}
+                              variant={"ghost"}
+                              onClick={handleToggleInput}
+                            />
+                          ) : (
+                            <IconButton
+                              icon={<IoClose color="gray" />}
+                              variant={"ghost"}
+                              onClick={handleToggleInput}
+                            />
+                          )}
                         </HStack>
                       </HStack>
+                      {isInputOpen && (
+                        <VStack mt={4} align="stretch">
+                          <Textarea
+                            {...registerComment("content")}
+                            placeholder={t("write_your_comment")}
+                            autoFocus
+                          />
+                          <HStack justifyContent="flex-end">
+                            <Button
+                              onClick={(e) =>
+                                handleSendComment("question", "comment")
+                              }
+                              bgColor={"#29CCCC"}
+                              isLoading={isMutatingAddAction}
+                            >
+                              {t("send")}
+                            </Button>
+                          </HStack>
+                        </VStack>
+                      )}
                       {dataQuestionComment?.data?.result?.map((comment) => (
                         <Stack
                           direction={{ base: "column", md: "row" }}
                           w={"100%"}
+                          mt={"10px"}
                         >
-                          <HStack>
-                            <Text color={"#3646B3"}>حسن الماسی</Text>
-                            <Text color={"gray"} fontSize={"sm"}>
-                              ۴ {t("days_ago")}
-                            </Text>
+                          <HStack w={"100%"} justifyContent={"space-between"}>
+                            <Text>{comment?.content}</Text>
+                            <HStack>
+                              <Text
+                                color={"#3646B3"}
+                                cursor={"pointer"}
+                                onClick={(e) =>
+                                  handleUserProfileLink(comment?.user__username)
+                                }
+                              >
+                                {comment?.user__username}
+                              </Text>
+                              <Text color={"gray"} fontSize={"sm"}>
+                                ۴ {t("days_ago")}
+                              </Text>
+                            </HStack>
                           </HStack>
                         </Stack>
                       ))}
@@ -567,7 +699,7 @@ const Index = () => {
                           </Text>
                         </VStack>
                         <Button
-                          onClick={e => router.push('/login')}
+                          onClick={(e) => router.push("/login")}
                           bgColor={"#29CCCC"}
                           fontWeight={"normal"}
                           p={"10px"}
@@ -604,6 +736,7 @@ const Index = () => {
                           p={"10px"}
                           size={"sm"}
                           type="submit"
+                          isLoading={isMutatingQuestionAnswer}
                         >
                           {t("submit_answer")}
                         </Button>

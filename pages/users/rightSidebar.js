@@ -1,12 +1,15 @@
+import { baseUrl } from "@/components/lib/api";
 import {
   Avatar,
   Box,
+  Button,
   Divider,
   HStack,
   IconButton,
   Text,
   VStack,
 } from "@chakra-ui/react";
+import axios from "axios";
 import _ from "lodash";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -19,6 +22,7 @@ import {
   IoPersonOutline,
   IoSettingsOutline,
 } from "react-icons/io5";
+import useSWRMutation from "swr/mutation";
 
 const menuList = [
   { title: "پروفایل", icon: <IoPersonOutline />, link: "profile" },
@@ -30,9 +34,25 @@ const menuList = [
   { title: "حساب کاربری", icon: <IoSettingsOutline />, link: "account" },
 ];
 
+const patchRequest = (url, { arg: { id, ...data } }) => {
+  return axios.patch(baseUrl + url + `${id}`, data, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+};
+
 const RightSidebar = ({
-  user: { first_name, last_name, username, ...user },
+  user: { first_name, last_name, username, id, is_following, ...user },
+  mutate,
 }) => {
+  const { trigger: triggerUserFollow, isLoading: isLoadingUserFollow } =
+    useSWRMutation(`user/client/flow-action/`, patchRequest, {
+      onSuccess: () => {
+        mutate();
+      },
+    });
+
   const [activePage, setActivePage] = useState("");
 
   const router = useRouter();
@@ -61,11 +81,35 @@ const RightSidebar = ({
     >
       <Avatar />
       <Text fontWeight={"bold"} fontSize={"20px"}>
-        {first_name} {last_name}
+        {first_name || ""} {last_name || ""}
       </Text>
       <Text fontSize={"md"} color={"gray.500"}>
         {username}
       </Text>
+      {is_following ? (
+        <Button
+          bgColor={"#29CCCC"}
+          color={"white"}
+          _hover={{ bgColor: "white", color: "#29CCCC" }}
+          variant={"outline"}
+          onClick={(e) => {
+            triggerUserFollow({ id: id });
+          }}
+        >
+          آنفالو کردن
+        </Button>
+      ) : (
+        <Button
+          color={"#29CCCC"}
+          _hover={{ bgColor: "#29CCCC", color: "white" }}
+          variant={"outline"}
+          onClick={(e) => {
+            triggerUserFollow({ id: id });
+          }}
+        >
+          دنبال کردن
+        </Button>
+      )}
       {/* <Text fontSize={"sm"}>۱۲ سال سابقه عضویت در پارسا</Text>
       <Text fontSize={"sm"}>آخرین فعالیت: ۳ روز پیش</Text> */}
     </VStack>

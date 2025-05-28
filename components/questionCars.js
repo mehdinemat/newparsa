@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { GiBigDiamondRing } from "react-icons/gi";
 import { IoCheckmark, IoEyeOutline } from "react-icons/io5";
 
-const QuestionCard = ({ data, t }) => {
+const QuestionCard = ({ data, t, type = "question" }) => {
   const router = useRouter();
 
   const handleQuestionRouter = (id) => {
@@ -49,7 +49,11 @@ const QuestionCard = ({ data, t }) => {
       </VStack>
       <VStack w={"100%"} alignItems={"start"} gap={"20px"}>
         <Text
-          onClick={(e) => handleQuestionRouter(data?.id)}
+          onClick={(e) =>
+            handleQuestionRouter(
+              type == "question" ? data?.id : data?.question_id
+            )
+          }
           fontSize={"18px"}
           w="full"
           whiteSpace="normal"
@@ -62,8 +66,8 @@ const QuestionCard = ({ data, t }) => {
           {data?.tags?.map((item, index) => (
             <Badge
               onClick={(e) => handleClickTags(item)}
-              _hover={{bgColor:'#29cccc38' , color:'#1a7c7c'}}
-              transition={'.3s'}
+              _hover={{ bgColor: "#29cccc38", color: "#1a7c7c" }}
+              transition={".3s"}
               key={index}
               color="#16A6A6"
               bgColor="#29CCCC1A"

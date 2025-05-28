@@ -118,7 +118,8 @@
   "continue": "متابعة",
   "repeat_password": "تأكيد كلمة المرور",
     "reset_password": "إعادة تعيين كلمة المرور",
-      "new_password": "كلمة المرور الجديدة"
+      "new_password": "كلمة المرور الجديدة",
+        "send":"يرسل"
 
 
 

@@ -118,7 +118,8 @@
   "continue": "ادامه",
   "repeat_password": "تکرار کلمه عبور",
     "reset_password": "بازنشانی کلمه عبور",
-      "new_password": "رمز عبور جدید"
+      "new_password": "رمز عبور جدید",
+      "send":"ارسال"
 
 
 

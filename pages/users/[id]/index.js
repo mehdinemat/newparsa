@@ -25,6 +25,9 @@ import { useRouter } from "next/router";
 import useSWR from "swr";
 import { useTranslation } from "react-i18next";
 import { useMemo } from "react";
+import useSWRMutation from "swr/mutation";
+import axios from "axios";
+import { baseUrl } from "@/components/lib/api";
 
 const menuList = [
   { title: "پروفایل", icon: <IoPersonOutline /> },
@@ -43,9 +46,11 @@ const Index = () => {
 
   const { id } = router.query;
 
-  const { data: dataUser, isLoading: isLoadingUser } = useSWR(
-    `user/client?id=${id}`
-  );
+  const {
+    data: dataUser,
+    isLoading: isLoadingUser,
+    mutate: mutateUser,
+  } = useSWR(`user/client?username__icontains=${id}`);
 
   return (
     <MainLayout>
@@ -65,8 +70,8 @@ const Index = () => {
           w={"100%"}
         >
           <GridItem colSpan={1} display={{ base: "none", md: "flex" }}>
-            {dataUser?.data?.result && (
-              <RightSidebar user={dataUser?.data?.result?.[0]} />
+            {dataUser?.data?.result?.[0] && (
+              <RightSidebar user={dataUser?.data?.result?.[0]}  mutate={mutateUser}/>
             )}
           </GridItem>
           <GridItem as={Stack} gap={"20px"} colSpan={3}>

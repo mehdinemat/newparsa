@@ -122,12 +122,12 @@ const Index = () => {
 
               <VStack display={{ base: "none", md: "flex" }}>
                 {dataAnswers?.data?.map((item) => (
-                  <QuestionCard t={t} data={item} />
+                  <QuestionCard t={t} data={item} type={"answer"} />
                 ))}
               </VStack>
               <VStack display={{ base: "flex", md: "none" }}>
                 {dataAnswers?.data?.map((item) => (
-                  <QuestionMCard t={t} data={item} />
+                  <QuestionMCard t={t} data={item} type={"answer"} />
                 ))}
               </VStack>
             </Box>

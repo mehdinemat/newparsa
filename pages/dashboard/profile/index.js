@@ -6,6 +6,7 @@ import { FaQuestion } from "react-icons/fa";
 import { GiGlobeRing } from "react-icons/gi";
 import { IoPeopleOutline, IoPersonOutline, IoSettingsOutline } from "react-icons/io5";
 import RightSidebar from "../rightSidebar";
+import useSWR from "swr";
 
 
 const menuList = [
@@ -19,6 +20,9 @@ const menuList = [
 ]
 
 const Index = () => {
+
+    const { data: dataMe, isLoading: isLoadingMe } = useSWR(`user/client/me`);
+
   return (
     <MainLayout>
       <Box
@@ -39,7 +43,7 @@ const Index = () => {
           <GridItem as={Stack} gap={'20px'} colSpan={3} >
             <VStack w={'100%'} alignItems={'start'} border={'1px'} borderRadius={'15px'} borderColor={'gray.200'} padding={'20px'}>
               <Text fontWeight={'bold'}>درباره کاربر</Text>
-              <Text>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی</Text>
+              <Text>{dataMe?.data?.[0]?.bio}</Text>
             </VStack>
             <Stack direction={{ base: 'column', md: 'row' }} gap={{ base: '20px' }} w={'100%'}>
               <Box as={VStack} gap={'20px'} w={'100%'} border={'1px'} borderRadius={'15px'} borderColor={'gray.200'} padding={'20px'} py={'10px'} pb={'40px'} bgColor={'#3646B3'} color={'white'}>
