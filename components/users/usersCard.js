@@ -23,7 +23,11 @@ const UsersCard = ({ t, item, handleProfile }) => {
           {item?.answer_count} {t("answer")}
         </Text>
       </HStack>
-      <Button bgColor={"#29CCCC"} fontWeight={"normal"} onClick={e=>handleProfile(item?.id)}>
+      <Button
+        bgColor={"#29CCCC"}
+        fontWeight={"normal"}
+        onClick={(e) => handleProfile(item?.username)}
+      >
         {t("view_profile")}
       </Button>
     </VStack>
