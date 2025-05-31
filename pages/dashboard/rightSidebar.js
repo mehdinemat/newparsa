@@ -24,7 +24,7 @@ const menuList = [
   { title: "پروفایل", icon: <IoPersonOutline />, link: "profile" },
   { title: "پرسش‌ها", icon: <FaQuestion />, link: "questions" },
   { title: "پاسخ‌ها", icon: <BsReply />, link: "answers" },
-  { title: "نوشته‌ها", icon: <CiFileOn />, link: "profile" },
+  { title: "نوشته‌ها", icon: <CiFileOn />, link: "writting" },
   { title: "حسنات", icon: <GiGlobeRing />, link: "goods" },
   { title: "دوستان", icon: <IoPeopleOutline />, link: "friends" },
   { title: "حساب کاربری", icon: <IoSettingsOutline />, link: "account" },

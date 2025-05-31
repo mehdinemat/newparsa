@@ -46,7 +46,7 @@ const RightSidebar = ({
   user: { first_name, last_name, username, id, is_following, ...user },
   mutate,
 }) => {
-  const { trigger: triggerUserFollow, isLoading: isLoadingUserFollow } =
+  const { trigger: triggerUserFollow, isLoading: isLoadingUserFollow, isMutating: isMutatingFollow } =
     useSWRMutation(`user/client/flow-action/`, patchRequest, {
       onSuccess: () => {
         mutate();
@@ -106,6 +106,7 @@ const RightSidebar = ({
           onClick={(e) => {
             triggerUserFollow({ id: id });
           }}
+          isLoading={isMutatingFollow}
         >
           دنبال کردن
         </Button>
