@@ -14,7 +14,7 @@ clone:
 
 steps:
   - name: clone
-    image: 65.108.27.212:5000/alpine/git
+    image: alpine/git
     environment:
       GITEA_DEPLOY_TOKEN:
         from_secret: deploy-token
@@ -47,6 +47,7 @@ steps:
       - docker stop ${DRONE_REPO_NAME} || true
       - docker rm ${DRONE_REPO_NAME} || true
       - docker run -d --name ${DRONE_REPO_NAME} --env-file .env --restart unless-stopped -p 3000:3000 ${DRONE_REPO_NAME}:latest
+      - docker image prune -f
       - rm .env
 
 volumes:
