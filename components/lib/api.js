@@ -36,14 +36,15 @@ export const useAxiosInterceptors = (showToast) => {
       return response;
     }, (error) => {
       if (error?.response?.status === 401) {
-        showToast({
-          title: "خطا",
-          description: error?.response?.data?.detail,
-          status: "error",
-          duration: 9000,
-          isClosable: true,
-        })
-        router.push('/login')
+        // showToast({
+        //   title: "خطا",
+        //   description: error?.response?.data?.detail,
+        //   status: "error",
+        //   duration: 9000,
+        //   isClosable: true,
+        // })
+        // router.push('/login')
+        localStorage.removeItem('token')
 
       }
       if (error?.response?.status === 400) {
