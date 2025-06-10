@@ -265,22 +265,25 @@ export default function Home({ children }) {
               overflowWrap="break-word"
             >
               <Box
-                w={"100%"}
+                w="100%"
+                maxW="100%"
                 p="4"
-                border={"1px"}
-                borderColor={"#EBEBEB"}
-                borderRadius={"15px"}
-                bgColor={"#CFF186"}
-                height={"min-content"}
-                mb={"20px"}
+                border="1px"
+                borderColor="#EBEBEB"
+                borderRadius="15px"
+                bgColor="#CFF186"
+                height="min-content"
+                mb="20px"
+                overflow="hidden"
               >
-                <Text fontWeight={"bold"} fontSize={"16px"}>
+                <Text fontWeight="bold" fontSize="16px">
                   {t("hadith_of_the_day")}
                 </Text>
-                <Text mt={"10px"} whiteSpace="pre-wrap">
+                <Text mt="10px" whiteSpace="pre-wrap" wordBreak="break-word">
                   {dataHadith?.data}
                 </Text>
               </Box>
+
               <Box
                 w={"100%"}
                 p="4"
