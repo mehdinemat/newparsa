@@ -31,7 +31,6 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import useSWR from "swr";
-import { useParams } from "next/navigation";
 
 export default function Home({ children }) {
   const router = useRouter();
@@ -64,12 +63,12 @@ export default function Home({ children }) {
   const { data: dataCategory, isLoading: isLoadingCategory } = useSWR(
     `user/category?type=question`,
     {
-      onSuccess: (res) => {},
+      onSuccess: (res) => { },
     }
   );
   const { data: dataCategoryParent, isLoading: isLoadingCategoryParent } =
     useSWR(id && `user/category/parents?category_id=${id}`, {
-      onSuccess: (res) => {},
+      onSuccess: (res) => { },
     });
 
   // const {
@@ -372,7 +371,7 @@ export default function Home({ children }) {
                   alignItems={"center"}
                 >
                   <Pagination
-                    totalPages={dataQuestion?.data?.total_count}
+                    totalPages={Math.ceil(dataQuestion?.data?.total_count / 10)}
                     currentPage={page}
                     onPageChange={setPage}
                     t={t}
@@ -387,7 +386,7 @@ export default function Home({ children }) {
               ))}
               <Stack w={"100%"} justifyContent={"center"} alignItems={"center"}>
                 <Pagination
-                  totalPages={dataQuestion?.data?.total_count}
+                  totalPages={Math.ceil(dataQuestion?.data?.total_count / 10)}
                   currentPage={page}
                   onPageChange={setPage}
                   t={t}

@@ -27,7 +27,6 @@ import QuestionCard from "@/components/questionCars";
 import { useRouter } from "next/router";
 
 import Head from "next/head";
-import { useParams } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -64,7 +63,7 @@ export default function Home({ children }) {
   const { data: dataCategory, isLoading: isLoadingCategory } = useSWR(
     `user/category?type=question`,
     {
-      onSuccess: (res) => {},
+      onSuccess: (res) => { },
     }
   );
 
@@ -356,7 +355,7 @@ export default function Home({ children }) {
                   alignItems={"center"}
                 >
                   <Pagination
-                    totalPages={dataQuestion?.data?.total_count}
+                    totalPages={Math.ceil(dataQuestion?.data?.total_count / 10)}
                     currentPage={page}
                     onPageChange={setPage}
                     t={t}
@@ -371,7 +370,7 @@ export default function Home({ children }) {
               ))}
               <Stack w={"100%"} justifyContent={"center"} alignItems={"center"}>
                 <Pagination
-                  totalPages={dataQuestion?.data?.total_count}
+                  totalPages={Math.ceil(dataQuestion?.data?.total_count / 10)}
                   currentPage={page}
                   onPageChange={setPage}
                   t={t}
