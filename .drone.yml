@@ -32,6 +32,7 @@ steps:
     commands:
       - cd ${DRONE_REPO_NAME}/
       - docker build -t ${DRONE_REPO_NAME}:latest .
+      - docker builder prune -f
 
   - name: deploy
     image: docker.arvancloud.ir/docker
