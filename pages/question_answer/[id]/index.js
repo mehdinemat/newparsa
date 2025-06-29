@@ -21,7 +21,7 @@ import axios from "axios";
 import moment from "moment-jalaali";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import {
@@ -83,6 +83,8 @@ const Index = () => {
 
   const [isInputOpen, setIsInputOpen] = useState(false);
   const [comment, setComment] = useState("");
+
+  const [isUserLogin, setIsUserLogin] = useState("");
 
   const slidesToShow = useBreakpointValue({ base: 1, md: 2, lg: 4 }); // responsive value
 
@@ -217,6 +219,10 @@ const Index = () => {
   const handleUserProfileLink = (username) => {
     router.push(`/users/${username}`);
   };
+
+  useEffect(() => {
+    setIsUserLogin(!!localStorage.getItem("token"));
+  }, []);
 
   return (
     <MainLayout>
@@ -492,26 +498,62 @@ const Index = () => {
                           )}
                         </HStack>
                       </HStack>
-                      {isInputOpen && (
-                        <VStack mt={4} align="stretch">
-                          <Textarea
-                            {...registerComment("content")}
-                            placeholder={t("write_your_comment")}
-                            autoFocus
-                          />
-                          <HStack justifyContent="flex-end">
-                            <Button
-                              onClick={(e) =>
-                                handleSendComment("question", "comment")
-                              }
-                              bgColor={"#29CCCC"}
-                              isLoading={isMutatingAddAction}
-                            >
-                              {t("send")}
-                            </Button>
-                          </HStack>
-                        </VStack>
-                      )}
+                      {isInputOpen &&
+                        (isUserLogin ? (
+                          <VStack mt={4} align="stretch">
+                            <Textarea
+                              {...registerComment("content")}
+                              placeholder={t("write_your_comment")}
+                              autoFocus
+                            />
+                            <HStack justifyContent="flex-end">
+                              <Button
+                                onClick={(e) =>
+                                  handleSendComment("question", "comment")
+                                }
+                                bgColor={"#29CCCC"}
+                                isLoading={isMutatingAddAction}
+                              >
+                                {t("send")}
+                              </Button>
+                            </HStack>
+                          </VStack>
+                        ) : (
+                          <Box
+                            w={{ base: "fit-content", md: "100%" }}
+                            padding={"20px"}
+                            bgColor={"#3646B3"}
+                            borderRadius={"15px"}
+                            my={{ base: "0px", md: "0px" }}
+                            mr={{ base: "-40px", md: "0px" }}
+                          >
+                            <HStack>
+                              <VStack w={"100%"} alignItems={"start"}>
+                                <Text
+                                  fontWeight={"bold"}
+                                  color={"white"}
+                                  fontSize={"16px"}
+                                  mb={"10px"}
+                                >
+                                  {t("your_answer")}
+                                </Text>
+                                <Text fontSize={"xs"} color={"white"}>
+                                  {t("you_must_log")}
+                                </Text>
+                              </VStack>
+                              <Button
+                                onClick={(e) => router.push("/login")}
+                                bgColor={"#29CCCC"}
+                                fontWeight={"normal"}
+                                p={"10px"}
+                                w={{ base: "200px", md: "150px" }}
+                                size={"sm"}
+                              >
+                                {t("log_in_to_your_account")}
+                              </Button>
+                            </HStack>
+                          </Box>
+                        ))}
                       {dataQuestionComment?.data?.result?.map((comment) => (
                         <Stack
                           direction={{ base: "column", md: "row" }}
@@ -676,72 +718,79 @@ const Index = () => {
                       </HStack>
                       <Divider mt={"20px"} borderColor={"gray.200"} />
                     </Box>
-                    <Box
-                      w={{ base: "fit-content", md: "100%" }}
-                      padding={"20px"}
-                      bgColor={"#3646B3"}
-                      borderRadius={"15px"}
-                      my={{ base: "0px", md: "0px" }}
-                      mr={{ base: "-40px", md: "0px" }}
-                    >
-                      <HStack>
+                    {!isUserLogin ? (
+                      <Box
+                        w={{ base: "fit-content", md: "100%" }}
+                        padding={"20px"}
+                        bgColor={"#3646B3"}
+                        borderRadius={"15px"}
+                        my={{ base: "0px", md: "0px" }}
+                        mr={{ base: "-40px", md: "0px" }}
+                      >
+                        <HStack>
+                          <VStack w={"100%"} alignItems={"start"}>
+                            <Text
+                              fontWeight={"bold"}
+                              color={"white"}
+                              fontSize={"16px"}
+                              mb={"10px"}
+                            >
+                              {t("your_answer")}
+                            </Text>
+                            <Text fontSize={"xs"} color={"white"}>
+                              {t("you_must_log")}
+                            </Text>
+                          </VStack>
+                          <Button
+                            onClick={(e) => router.push("/login")}
+                            bgColor={"#29CCCC"}
+                            fontWeight={"normal"}
+                            p={"10px"}
+                            w={{ base: "200px", md: "150px" }}
+                            size={"sm"}
+                          >
+                            {t("log_in_to_your_account")}
+                          </Button>
+                        </HStack>
+                      </Box>
+                    ) : (
+                      <Box
+                        w={{ base: "full", md: "100%" }}
+                        padding={"20px"}
+                        bgColor={"white"}
+                        border={"1px"}
+                        borderColor={"gray.200"}
+                        borderRadius={"15px"}
+                        my={"10px"}
+                        mr={{ base: "-40px", md: "0px" }}
+                        as="form"
+                        onSubmit={handleSubmitAnswer(handleAddAnswer)}
+                      >
                         <VStack w={"100%"} alignItems={"start"}>
                           <Text
                             fontWeight={"bold"}
-                            color={"white"}
                             fontSize={"16px"}
                             mb={"10px"}
                           >
                             {t("your_answer")}
                           </Text>
-                          <Text fontSize={"xs"} color={"white"}>
-                            {t("you_must_log")}
-                          </Text>
+                          <Text fontSize={"xs"}>{t("AI-generated")}</Text>
                         </VStack>
-                        <Button
-                          onClick={(e) => router.push("/login")}
-                          bgColor={"#29CCCC"}
-                          fontWeight={"normal"}
-                          p={"10px"}
-                          w={{ base: "200px", md: "150px" }}
-                          size={"sm"}
-                        >
-                          {t("log_in_to_your_account")}
-                        </Button>
-                      </HStack>
-                    </Box>
-                    <Box
-                      w={{ base: "full", md: "100%" }}
-                      padding={"20px"}
-                      bgColor={"white"}
-                      border={"1px"}
-                      borderColor={"gray.200"}
-                      borderRadius={"15px"}
-                      my={"10px"}
-                      mr={{ base: "-40px", md: "0px" }}
-                      as="form"
-                      onSubmit={handleSubmitAnswer(handleAddAnswer)}
-                    >
-                      <VStack w={"100%"} alignItems={"start"}>
-                        <Text fontWeight={"bold"} fontSize={"16px"} mb={"10px"}>
-                          {t("your_answer")}
-                        </Text>
-                        <Text fontSize={"xs"}>{t("AI-generated")}</Text>
-                      </VStack>
-                      <Textarea my={"20px"} {...registerAnswer("content")} />
-                      <HStack w={"100%"} justifyContent={"end"}>
-                        <Button
-                          bgColor={"#29CCCC"}
-                          fontWeight={"normal"}
-                          p={"10px"}
-                          size={"sm"}
-                          type="submit"
-                          isLoading={isMutatingQuestionAnswer}
-                        >
-                          {t("submit_answer")}
-                        </Button>
-                      </HStack>
-                    </Box>
+                        <Textarea my={"20px"} {...registerAnswer("content")} />
+                        <HStack w={"100%"} justifyContent={"end"}>
+                          <Button
+                            bgColor={"#29CCCC"}
+                            fontWeight={"normal"}
+                            p={"10px"}
+                            size={"sm"}
+                            type="submit"
+                            isLoading={isMutatingQuestionAnswer}
+                          >
+                            {t("submit_answer")}
+                          </Button>
+                        </HStack>
+                      </Box>
+                    )}
                   </VStack>
                 )}
               </GridItem>
@@ -772,7 +821,7 @@ const Index = () => {
                         cursor={"pointer"}
                         onClick={(e) => handleSimilarClick(similar?.id)}
                       >
-                        <Text fontSize={"14px"}>{similar?.content}</Text>
+                        <Text fontSize={"14px"}>{similar?.content?.substring(0,100)}</Text>
                       </HStack>
                     ))}
                 </Box>
@@ -801,7 +850,7 @@ const Index = () => {
                         cursor={"pointer"}
                         onClick={(e) => handleSimilarClick(related?.id)}
                       >
-                        <Text fontSize={"14px"}>{related?.content}</Text>
+                        <Text fontSize={"14px"}>{related?.content?.substring(0,100)}</Text>
                       </VStack>
                     ))}
                 </Box>

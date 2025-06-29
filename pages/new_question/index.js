@@ -9,11 +9,11 @@ import {
   Flex,
   FormControl,
   FormErrorMessage,
-  HStack,
-  Input,
   List,
   ListItem,
   Spinner,
+  HStack,
+  Input,
   Text,
   Textarea,
   VStack,
@@ -149,10 +149,10 @@ const Index = () => {
     <MainLayout>
       <Head>
         <title>{t("submit_your_question")}</title>
-        <link rel="icon" href="/question.png" />
+        <link rel="icon" href="/porsyab_header.png" />
       </Head>
 
-      {false ? (
+      {!isUserLogin ? (
         <IsLogin type="question" />
       ) : (
         <Box
@@ -167,7 +167,6 @@ const Index = () => {
           maxW="container.xl"
           mx="auto"
           mt={{ base: "80px", md: "120px" }}
-          mb={"10px"}
           onSubmit={handleSubmitQuestion(handleAddNewQuestion)}
         >
           <Text fontWeight={"bold"} fontSize={"20px"} mb={"30px"}>

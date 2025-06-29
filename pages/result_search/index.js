@@ -57,8 +57,8 @@ const Index = ({ children }) => {
   const [filters, setFilters] = useQueryParams({
     search: withDefault(StringParam, ""),
     search_type: withDefault(StringParam, ""),
-    order_by: withDefault(StringParam, ''),
-    model: withDefault(StringParam, 'e5')
+    order_by: withDefault(StringParam, ""),
+    model: withDefault(StringParam, "e5"),
   });
 
   const {
@@ -66,8 +66,11 @@ const Index = ({ children }) => {
     error: errorQuestionSearch,
     isLoading: isLoadingQuestionSearch,
   } = useSWR(
-    `user/question/search?page=${(page - 1) * 10}&search_type=${filters?.search_type
-    }&content=${filters?.search}&lang=${locale}${filters?.order_by && `&order_by=${filters?.order_by}`}&model_name=${filters?.model}`
+    `user/question/search?page=${(page - 1) * 10}&search_type=${
+      filters?.search_type
+    }&content=${filters?.search}&lang=${locale}${
+      filters?.order_by && `&order_by=${filters?.order_by}`
+    }&model_name=${filters?.model}`
   );
   const {
     data: dataCurrection,
@@ -85,12 +88,13 @@ const Index = ({ children }) => {
   };
 
   useEffect(() => {
-    setPage(1)
-  }, [filters?.search])
+    setPage(1);
+  }, [filters?.search]);
 
   const handleChangeModel = () => {
-    setFilters({ model: 'bge' })
-  }
+    setPage(1)
+    setFilters({ model: "bge" });
+  };
 
   return (
     <MainLayout>
@@ -194,7 +198,7 @@ const Index = ({ children }) => {
                 </AccordionPanel>
               </AccordionItem>
 
-              <AccordionItem>
+              {/* <AccordionItem>
                 <h2>
                   <AccordionButton flexDirection="row-reverse">
                     <AccordionIcon ml={2} />
@@ -215,7 +219,7 @@ const Index = ({ children }) => {
                   </AccordionButton>
                 </h2>
                 <AccordionPanel pb={4}>لورم ایپسوم متن ساختگی</AccordionPanel>
-              </AccordionItem>
+              </AccordionItem> */}
             </Accordion>
           </Box>
 
@@ -247,12 +251,20 @@ const Index = ({ children }) => {
                     color={"gray"}
                     letterSpacing={0}
                   >
-                    نتایج جستجو {filters?.search_type == 'search' ? 'لفظی' : 'معنایی '} برای:
+                    نتایج جستجو{" "}
+                    {filters?.search_type == "search" ? "لفظی" : "معنایی "}{" "}
+                    برای:
                   </Text>
                   <Text fontWeight={"bold"} fontSize={"16px"}>
                     {filters?.search}
                   </Text>
-                  <Text color={'blue.400'} cursor={'pointer'} onClick={e => handleChangeModel()}>جستجو بر اساس مدل دوم</Text>
+                  <Text
+                    color={"blue.400"}
+                    cursor={"pointer"}
+                    onClick={(e) => handleChangeModel()}
+                  >
+                    جستجو بر اساس مدل دوم
+                  </Text>
                 </HStack>
                 {filters?.search !=
                   dataCurrection?.data?.data?.spell_correction_text &&
@@ -298,7 +310,7 @@ const Index = ({ children }) => {
               </Text>
               <HStack>
                 <TbArrowsSort color="gray" fontSize={"16px"} />
-                <Text fontSize={"sm"} w={"max-content"} >
+                <Text fontSize={"sm"} w={"max-content"}>
                   مرتب سازی :
                 </Text>
                 <Button
@@ -306,8 +318,8 @@ const Index = ({ children }) => {
                   variant={"ghost"}
                   _hover={{ bgColor: "none" }}
                   fontSize={"sm"}
-                  fontWeight={filters?.order_by == 'view' ? 'bold' : 'normal'}
-                  onClick={e => setFilters({ order_by: 'view' })}
+                  fontWeight={filters?.order_by == "view" ? "bold" : "normal"}
+                  onClick={(e) => setFilters({ order_by: "view" })}
                 >
                   پربازدیدترین‌ها
                 </Button>
@@ -315,9 +327,9 @@ const Index = ({ children }) => {
                   colorScheme="gray"
                   variant={"ghost"}
                   _hover={{ bgColor: "none" }}
-                  fontWeight={filters?.order_by == 'vote' ? 'bold' : 'normal'}
+                  fontWeight={filters?.order_by == "vote" ? "bold" : "normal"}
                   fontSize={"sm"}
-                  onClick={e => setFilters({ order_by: 'vote' })}
+                  onClick={(e) => setFilters({ order_by: "vote" })}
                 >
                   محبوبترین‌ها
                 </Button>
@@ -342,7 +354,9 @@ const Index = ({ children }) => {
                   alignItems={"center"}
                 >
                   <Pagination
-                    totalPages={dataQuestionSearch?.data?.total_count}
+                    totalPages={Math?.ceil(
+                      dataQuestionSearch?.data?.total_count / 10
+                    )}
                     currentPage={page}
                     onPageChange={setPage}
                     t={t}
