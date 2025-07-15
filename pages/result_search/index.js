@@ -318,7 +318,7 @@ const Index = ({ children }) => {
             </HStack>
             <HStack w={"100%"} justifyContent={"space-between"} mb={"20px"}>
               <Text w={"full"}>
-                {dataQuestionSearch?.data?.data?.total_count} نتیجه ({(dataQuestionSearch?.duration / 1000) || 0} ثانیه)
+                {dataQuestionSearch?.data?.data?.total_count} نتیجه ({(dataQuestionSearch?.duration / 1000).toFixed(3) || 0} ثانیه)
               </Text>
               <HStack>
                 <TbArrowsSort color="gray" fontSize={"16px"} />
