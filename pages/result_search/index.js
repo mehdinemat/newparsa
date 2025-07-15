@@ -24,6 +24,7 @@ import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 
 import QuestionMCard from "@/components/home/mobile/questionMCard";
+import { baseUrl } from "@/components/lib/api";
 import Pagination from "@/components/pagination";
 import QuestionCard from "@/components/questionCars";
 import Head from "next/head";
@@ -44,6 +45,19 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
+
+export const fetcherWithTiming = async (url) => {
+  const startTime = performance.now();
+  const response = await fetch(baseUrl + url);
+  const endTime = performance.now();
+  const duration = endTime - startTime;
+
+  if (!response.ok) throw new Error('Request failed');
+
+  const data = await response.json();
+
+  return { data, duration };
+};
 
 const Index = ({ children }) => {
   const { t } = useTranslation();
@@ -66,11 +80,9 @@ const Index = ({ children }) => {
     error: errorQuestionSearch,
     isLoading: isLoadingQuestionSearch,
   } = useSWR(
-    `user/question/search?page=${(page - 1) * 10}&search_type=${
-      filters?.search_type
-    }&content=${filters?.search}&lang=${locale}${
-      filters?.order_by && `&order_by=${filters?.order_by}`
-    }&model_name=${filters?.model}`
+    `user/question/search?page=${(page - 1) * 10}&search_type=${filters?.search_type
+    }&content=${filters?.search}&lang=${locale}${filters?.order_by && `&order_by=${filters?.order_by}`
+    }&model_name=${filters?.model}`, fetcherWithTiming
   );
   const {
     data: dataCurrection,
@@ -306,7 +318,7 @@ const Index = ({ children }) => {
             </HStack>
             <HStack w={"100%"} justifyContent={"space-between"} mb={"20px"}>
               <Text w={"full"}>
-                {dataQuestionSearch?.data?.total_count} نتیجه (۲/۴۶ ثانیه)
+                {dataQuestionSearch?.data?.data?.total_count} نتیجه ({(dataQuestionSearch?.duration / 1000) || 0} ثانیه)
               </Text>
               <HStack>
                 <TbArrowsSort color="gray" fontSize={"16px"} />
@@ -345,7 +357,7 @@ const Index = ({ children }) => {
               </HStack>
             ) : (
               <VStack display={{ base: "none", md: "flex" }}>
-                {dataQuestionSearch?.data?.result?.map((item, index) => (
+                {dataQuestionSearch?.data?.data?.result?.map((item, index) => (
                   <QuestionCard key={index} data={item} t={t} />
                 ))}
                 <Stack
@@ -355,8 +367,8 @@ const Index = ({ children }) => {
                 >
                   <Pagination
                     totalPages={Math?.ceil(
-                      dataQuestionSearch?.data?.total_count / 10
-                    )}
+                      dataQuestionSearch?.data?.data?.total_count / 10
+                    ) - 1}
                     currentPage={page}
                     onPageChange={setPage}
                     t={t}
@@ -366,7 +378,7 @@ const Index = ({ children }) => {
             )}
 
             <VStack display={{ base: "flex", md: "none" }}>
-              {dataQuestionSearch?.data?.result?.map((item, index) => (
+              {dataQuestionSearch?.data?.data?.result?.map((item, index) => (
                 <QuestionMCard key={index} data={item} t={t} />
               ))}
             </VStack>
