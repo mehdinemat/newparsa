@@ -1,6 +1,9 @@
 import Header from "@/components/home/header";
 import MainLayout from "@/components/mainLayout";
 import {
+  Accordion,
+  AccordionButton,
+  AccordionItem,
   Badge,
   Box,
   Button,
