@@ -1,18 +1,16 @@
 import {
-  Box,
-  Divider,
   HStack,
   IconButton,
   Image,
   Text,
-  VStack,
+  VStack
 } from "@chakra-ui/react";
 import _ from "lodash";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { BsReply } from "react-icons/bs";
 import { FaQuestion } from "react-icons/fa";
-import { IoExit, IoPersonOutline } from "react-icons/io5";
+import { IoPersonOutline } from "react-icons/io5";
 import { RxExit } from "react-icons/rx";
 
 const menuList = [
@@ -45,7 +43,7 @@ const RightSidebar = () => {
       border={"1px"}
       borderRadius={"15px"}
       borderColor={"gray.200"}
-      padding={"20px"}
+      padding={"10px"}
       pt={"14px"}
       bgColor={"#3646B3"}
       height={'calc( 100vh - 70px )'}
@@ -81,20 +79,7 @@ const RightSidebar = () => {
               w={"100%"}
               borderRadius={"10px"}
             >
-              {console.log(getLastPathSegment(activePage) == item?.link)}
-              {
-                <Box
-                  w={"2px"}
-                  height={"40px"}
-                  bgColor={
-                    getLastPathSegment(activePage) == item?.link
-                      ? "#29CCCC"
-                      : ""
-                  }
-                  right={"-21px"}
-                  position={"absolute"}
-                ></Box>
-              }
+
               <IconButton
                 icon={item?.icon}
                 color={

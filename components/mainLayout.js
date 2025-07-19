@@ -48,11 +48,11 @@ import {
 } from "react-icons/io";
 import { IoCall, IoExitOutline, IoLocation, IoSearch } from "react-icons/io5";
 import { PiDiamondThin } from "react-icons/pi";
+import useSWR from "swr";
 import { StringParam, useQueryParams, withDefault } from "use-query-params";
 import AdminMenuBar from "./admin_dashboard/adminMenuBar";
 import UserMenuBar from "./mobile/dashboard/userMenuBar";
 import MenuBar from "./mobile/menuBar";
-import useSWR from "swr";
 
 const menuList = [
   {
@@ -144,8 +144,8 @@ const MainLayout = ({ children }) => {
       _.includes(router.asPath.toLowerCase(), "admin_dashboard")
         ? 2
         : _.includes(router.asPath.toLowerCase(), "dashboard")
-        ? 1
-        : 0
+          ? 1
+          : 0
     );
   }, [router]);
 
@@ -243,40 +243,39 @@ const MainLayout = ({ children }) => {
                 cursor={"pointer"}
               />
               {(hideHeaderButton || !(asPath == "/")) && (
-                <InputGroup
-                  width={"327px"}
-                  display={{ base: "none", md: "block" }}
-                >
-                  <Input
-                    height={"46px"}
-                    placeholder={t("search")}
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        handleClickSearch();
-                      }
-                    }}
-                  />
-                  <InputRightElement h="100%" ml="20px">
-                    <Flex align="center" gap="2">
-                      <IoSearch
-                        fontSize="20px"
-                        style={{ marginTop: "2px" }}
-                        color="#29CCCC"
-                        onClick={handleClickSearch}
-                        cursor={"pointer"}
-                      />
-                      <PiDiamondThin
-                        fontSize="20px"
-                        style={{ marginTop: "2px" }}
-                        color="#29CCCC"
-                        onClick={handleClickSemanticSearch}
-                        cursor={"pointer"}
-                      />
-                    </Flex>
-                  </InputRightElement>
-                </InputGroup>
+                <HStack gap={0}>
+                  <InputGroup
+                    width={"266px"}
+                    display={{ base: "none", md: "block" }}
+                  >
+                    <Input
+                      height={"46px"}
+                      placeholder={t("search")}
+                      value={search}
+                      bgColor={'#F7F7F7'}
+                      onChange={(e) => setSearch(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          handleClickSearch();
+                        }
+                      }}
+                    />
+                    <InputRightElement h="100%" >
+                      <Flex align="center" gap="2">
+                        <IoSearch
+                          fontSize="20px"
+                          style={{ marginTop: "2px" }}
+                          color="#29CCCC"
+                          onClick={handleClickSearch}
+                          cursor={"pointer"}
+                        />
+
+                      </Flex>
+                    </InputRightElement>
+                  </InputGroup>
+                  <IconButton icon={<PiDiamondThin fontSize="20px" color="white" />} bgColor={'#29CCCC'} onClick={handleClickSemanticSearch} height={'46px'} width={'46px'} />
+
+                </HStack>
               )}
             </HStack>
             <HStack
@@ -343,8 +342,8 @@ const MainLayout = ({ children }) => {
                     {locale == "en"
                       ? t("header_english")
                       : locale == "fa"
-                      ? t("header_persian")
-                      : locale == "ar" && t("header_arabic")}
+                        ? t("header_persian")
+                        : locale == "ar" && t("header_arabic")}
                   </Text>
                   <IoIosArrowDown />
                 </HStack>

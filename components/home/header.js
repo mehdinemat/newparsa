@@ -1,8 +1,8 @@
 import {
   Box,
+  Button,
   Center,
   Container,
-  Divider,
   Flex,
   HStack,
   IconButton,
@@ -14,7 +14,7 @@ import {
   Stack,
   Text,
   useBreakpoint,
-  VStack,
+  VStack
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
@@ -28,9 +28,9 @@ import {
   IoSendOutline,
 } from "react-icons/io5";
 import { PiDiamondThin } from "react-icons/pi";
+import Recorder from "recorder-js";
 import useSWRMutation from "swr/mutation";
 import { baseUrl } from "../lib/api";
-import Recorder from "recorder-js";
 
 const siteData = [
   {
@@ -234,135 +234,145 @@ const Header = ({
           >
             {t("home_parsa_header_title")}
           </Text>
-          <InputGroup
-            height="60px"
-            width={{ base: "381px", md: "890px" }}
-            my="20px"
-          >
-            {isRecording ? (
-              <InputLeftElement height="100%" mr="10px">
-                <Flex
-                  position="relative"
-                  align="center"
-                  justify="center"
-                  w="50px"
-                  h="50px"
-                >
-                  {/* First Wave */}
+          <HStack>
+            <InputGroup
+              height="74px"
+              width={{ base: "381px", md: "1050px" }}
+              my="20px"
+            >
+              {isRecording ? (
+                <InputLeftElement height="100%" mr="10px">
+                  <Flex
+                    position="relative"
+                    align="center"
+                    justify="center"
+                    w="50px"
+                    h="50px"
+                  >
+                    {/* First Wave */}
 
-                  {/* Second Wave (delayed) */}
-                  <MotionBox
-                    position="absolute"
-                    width="32px"
-                    height="32px"
-                    borderRadius="50%"
-                    border="3px solid #7fe0e0"
-                    animate={{
-                      scale: [1, 1.5],
-                      opacity: [1, 0],
-                    }}
-                    transition={{
-                      duration: 1.7,
-                      repeat: Infinity,
-                      repeatType: "loop",
-                      ease: "easeInOut",
-                      delay: 1, // important! delay start
-                    }}
-                  />
-
-                  {/* Mic Icon Button */}
-                  <IconButton
-                    aria-label="Record"
-                    bgColor="white"
-                    borderRadius="50px"
-                    size="sm"
-                    icon={
-                      <IoMicOutline
-                        fontSize="24px"
-                        color="#29CCCC"
-                        style={{ cursor: "pointer", zIndex: 1 }}
-                      />
-                    }
-                  />
-                </Flex>
-              </InputLeftElement>
-            ) : null}
-
-            <Input
-              ref={inputRef}
-              borderRadius="10px"
-              width={{ base: "381px", md: "100%" }}
-              bgColor={isRecording ? "#29CCCC" : "#2A378C"}
-              height="60px"
-              textIndent={"20px"}
-              placeholder={isRecording ? t("listening") : t("search_among")}
-              color="white"
-              border="none"
-              pl={isRecording ? "50px" : "12px"}
-              _placeholder={{ color: "gray.300" }}
-              {...register("search")}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  handleClickSearch();
-                }
-              }}
-            />
-
-            <InputRightElement height="100%" ml="30px">
-              <Flex align="center" gap="2">
-                {isRecording ? (
-                  <HStack>
-                    <IoClose
-                      fontSize="16px"
-                      color="white"
-                      style={{ cursor: "pointer" }}
-                      onClick={handleStopRecording}
-                    />
-                    <IoSendOutline
-                      style={{ transform: "rotate(180deg)" }}
-                      onClick={async () => {
-                        handleStopRecording();
-                        // setTimeout(handleUpload, 500);
+                    {/* Second Wave (delayed) */}
+                    <MotionBox
+                      position="absolute"
+                      width="32px"
+                      height="32px"
+                      borderRadius="50%"
+                      border="3px solid #7fe0e0"
+                      animate={{
+                        scale: [1, 1.5],
+                        opacity: [1, 0],
                       }}
-                      fontSize={"25px"}
-                      color="white"
-                      cursor={"pointer"}
+                      transition={{
+                        duration: 1.7,
+                        repeat: Infinity,
+                        repeatType: "loop",
+                        ease: "easeInOut",
+                        delay: 1, // important! delay start
+                      }}
                     />
-                  </HStack>
-                ) : isMutating ? (
-                  <Spinner color="white"/>
-                ) : (
-                  <>
-                    <IoSearch
-                      fontSize="20px"
-                      color="#29CCCC"
-                      cursor="pointer"
-                      onClick={(e) => handleClickSearch()}
+
+                    {/* Mic Icon Button */}
+                    <IconButton
+                      aria-label="Record"
+                      bgColor="white"
+                      borderRadius="50px"
+                      size="sm"
+                      icon={
+                        <IoMicOutline
+                          fontSize="24px"
+                          color="#29CCCC"
+                          style={{ cursor: "pointer", zIndex: 1 }}
+                        />
+                      }
                     />
-                    <PiDiamondThin
-                      fontSize="20px"
-                      color="#29CCCC"
-                      cursor="pointer"
-                      onClick={(e) => handleClickSemanticSearch()}
-                    />
-                    <IoMic
-                      fontSize="20px"
-                      color="#29CCCC"
-                      style={{ cursor: "pointer" }}
-                      onClick={handleMicClick}
-                    />
-                  </>
-                )}
-              </Flex>
-            </InputRightElement>
-          </InputGroup>
+                  </Flex>
+                </InputLeftElement>
+              ) : null}
+
+              <Input
+                ref={inputRef}
+                borderRadius="13px"
+                width={{ base: "381px", md: "100%" }}
+                bgColor={isRecording ? "#29CCCC" : "#00000059"}
+                height="74px"
+                textIndent={"20px"}
+                placeholder={isRecording ? t("listening") : t("search_among")}
+                color="white"
+                border="none"
+                pl={isRecording ? "50px" : "12px"}
+                _placeholder={{ color: "gray.300" }}
+                {...register("search")}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleClickSearch();
+                  }
+                }}
+              />
+
+              <InputRightElement height="100%" ml="30px">
+                <Flex align="center" gap="2">
+                  {isRecording ? (
+                    <HStack>
+                      <IoClose
+                        fontSize="16px"
+                        color="white"
+                        style={{ cursor: "pointer" }}
+                        onClick={handleStopRecording}
+                      />
+                      <IoSendOutline
+                        style={{ transform: "rotate(180deg)" }}
+                        onClick={async () => {
+                          handleStopRecording();
+                          // setTimeout(handleUpload, 500);
+                        }}
+                        fontSize={"25px"}
+                        color="white"
+                        cursor={"pointer"}
+                      />
+                    </HStack>
+                  ) : isMutating ? (
+                    <Spinner color="white" />
+                  ) : (
+                    <>
+                      <IoSearch
+                        fontSize={'30px'}
+                        color="#29CCCC"
+                        cursor="pointer"
+                        onClick={(e) => handleClickSearch()}
+                      />
+                      {/* <PiDiamondThin
+                        fontSize="20px"
+                        color="#29CCCC"
+                        cursor="pointer"
+                        onClick={(e) => handleClickSemanticSearch()}
+                      /> */}
+                      <IoMic
+                        fontSize={'30px'}
+                        color="#29CCCC"
+                        style={{ cursor: "pointer" }}
+                        onClick={handleMicClick}
+                      />
+                    </>
+                  )}
+                </Flex>
+              </InputRightElement>
+            </InputGroup>
+            <Button border={'1px'} borderColor={'#29CCCC'} w={'206px'} height={'74px'} bgColor={'#00000059'} color={'#29CCCC'} borderRadius="13px" rightIcon={<PiDiamondThin fontSize={'40px'} />}
+              onClick={(e) => handleClickSemanticSearch()}>جستجوی معنایی</Button>
+          </HStack>
           <HStack as={Center} justifyContent="center" w="50%">
             {siteData?.map((item, index) => (
               <React.Fragment key={index}>
                 <VStack
+                  bgColor={'#2A378CB2'}
+                  borderRadius={'13px'}
                   spacing={0}
-                  w={"136px"}
+                  w={"132px"}
+                  height={'65px'}
+                  textAlign={'center'}
                   display={item?.size != breakpoint ? "flex" : "none"}
+                  justifyContent={'space-between'}
+                  padding={'5px'}
                 >
                   <CountUp
                     start={0}
@@ -382,9 +392,9 @@ const Header = ({
                         <Stack>
                           <Text
                             color="white"
-                            fontWeight="thin"
+                            fontWeight="500"
                             ref={countUpRef}
-                            fontSize={{ base: "20px", md: "22px" }}
+                            fontSize={{ base: "20px", md: "20px" }}
                           >
                             {item?.number}
                           </Text>
@@ -392,26 +402,19 @@ const Header = ({
                       );
                     }}
                   </CountUp>
-                  <Text color="white" fontSize={{ base: "20px", md: "22px" }}>
+                  <Text color="white" fontWeight="300" fontSize={{ base: "14px", md: "14px" }}>
                     {t(item?.t_title)}
                   </Text>
                 </VStack>
 
                 {/* Only add divider if it's not the last item */}
-                {index !== siteData.length - 1 && (
-                  <Divider
-                    display={item?.size != breakpoint ? "flex" : "none"}
-                    orientation="vertical"
-                    h="50px"
-                    borderColor="gray.300"
-                  />
-                )}
+
               </React.Fragment>
             ))}
           </HStack>
         </VStack>
-      </HStack>
-    </Box>
+      </HStack >
+    </Box >
   );
 };
 

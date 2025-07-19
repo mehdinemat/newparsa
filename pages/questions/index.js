@@ -1,11 +1,8 @@
-import Header from "@/components/home/header";
 import MainLayout from "@/components/mainLayout";
 import {
   Accordion,
   AccordionButton,
-  AccordionIcon,
   AccordionItem,
-  AccordionPanel,
   Box,
   Breadcrumb,
   BreadcrumbItem,
@@ -18,9 +15,8 @@ import {
   Stack,
   Text,
   useBreakpointValue,
-  VStack,
+  VStack
 } from "@chakra-ui/react";
-import { Geist, Geist_Mono } from "next/font/google";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 
@@ -28,11 +24,8 @@ import LeftSidebar from "@/components/home/leftsidebar";
 import QuestionMCard from "@/components/home/mobile/questionMCard";
 import Pagination from "@/components/pagination";
 import QuestionCard from "@/components/questionCars";
-import SliderCom from "@/components/slider";
 import { useRouter } from "next/router";
 
-import SidebarTree from "@/components/base/sidebarTree";
-import { baseUrl } from "@/components/lib/api";
 import Head from "next/head";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -75,22 +68,20 @@ export default function Home({ children }) {
     error: errorQuestion,
     isLoading: isLoadingQuestion,
   } = useSWR(
-    `user/question?lang=${locale}&page=${page}${
-      categoryId && `&categories__id=${categoryId}`
-    }&source_id=${source || 0}&tags__id=${tag || 0}&categories__id=${
-      category_id || 0
+    `user/question?lang=${locale}&page=${page}${categoryId && `&categories__id=${categoryId}`
+    }&source_id=${source || 0}&tags__id=${tag || 0}&categories__id=${category_id || 0
     }`
   );
 
   const { data: dataCategory, isLoading: isLoadingCategory } = useSWR(
     `user/category?type=question&parent_id=${category_id}`,
     {
-      onSuccess: (res) => {},
+      onSuccess: (res) => { },
     }
   );
   const { data: dataCategoryParent, isLoading: isLoadingCategoryParent } =
     useSWR(`user/category/parents?category_id=${category_id}`, {
-      onSuccess: (res) => {},
+      onSuccess: (res) => { },
     });
 
   // const {
@@ -172,13 +163,12 @@ export default function Home({ children }) {
             source
               ? "source"
               : category_title
-              ? "topic"
-              : public_fiqure_name
-              ? "resources"
-              : tag_name && "tag"
-          )} : ${
-            source_name || category_title || public_fiqure_name || tag_name
-          }`}
+                ? "topic"
+                : public_fiqure_name
+                  ? "resources"
+                  : tag_name && "tag"
+          )} : ${source_name || category_title || public_fiqure_name || tag_name
+            }`}
         </title>
         <link rel="icon" href="/question.png" />
       </Head>
@@ -421,7 +411,7 @@ export default function Home({ children }) {
                   alignItems={"center"}
                 >
                   <Pagination
-                    totalPages={dataQuestion?.data?.total_count}
+                    totalPages={Math.ceil(dataQuestion?.data?.total_count / 10)}
                     currentPage={page}
                     onPageChange={setPage}
                     t={t}
@@ -436,7 +426,7 @@ export default function Home({ children }) {
               ))}
               <Stack w={"100%"} justifyContent={"center"} alignItems={"center"}>
                 <Pagination
-                  totalPages={dataQuestion?.data?.total_count}
+                  totalPages={Math.ceil(dataQuestion?.data?.total_count / 10)}
                   currentPage={page}
                   onPageChange={setPage}
                   t={t}

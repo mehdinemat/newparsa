@@ -1,24 +1,31 @@
 import Header from "@/components/home/header";
 import MainLayout from "@/components/mainLayout";
 import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
+  Badge,
   Box,
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
   Button,
+  Center,
+  chakra,
   Grid,
   GridItem,
   HStack,
+  IconButton,
+  Popover,
+  PopoverBody,
+  PopoverContent,
+  PopoverTrigger,
+  Portal,
+  SimpleGrid,
   Spinner,
   Stack,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
   Text,
   useBreakpointValue,
-  VStack,
+  VStack
 } from "@chakra-ui/react";
 import { Geist, Geist_Mono } from "next/font/google";
 import "slick-carousel/slick/slick-theme.css";
@@ -28,16 +35,16 @@ import LeftSidebar from "@/components/home/leftsidebar";
 import QuestionMCard from "@/components/home/mobile/questionMCard";
 import Pagination from "@/components/pagination";
 import QuestionCard from "@/components/questionCars";
-import SliderCom from "@/components/slider";
 import { useRouter } from "next/router";
 
-import SidebarTree from "@/components/base/sidebarTree";
-import { baseUrl } from "@/components/lib/api";
 import Head from "next/head";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { IoIosArrowBack, IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import useSWR from "swr";
+import { StringParam, useQueryParams, withDefault } from "use-query-params";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -78,7 +85,26 @@ const items2 = [
   },
 ];
 
+const RotatingIcon = chakra(IoIosArrowDown, {
+  baseStyle: {
+    transition: 'transform 0.3s ease',
+  },
+});
+
 export default function Home({ children }) {
+
+  const [hoveredIndex, setHoveredIndex] = useState({ selected: '', val: '' });
+
+
+  const [filters, setFilters] = useQueryParams({
+    category_id: withDefault(StringParam, '')
+  })
+
+  const scrollRef = useRef(null)
+  const [isDragging, setIsDragging] = useState(false)
+  const [startX, setStartX] = useState(0)
+  const [scrollLeft, setScrollLeft] = useState(0)
+
   const router = useRouter();
   const { locale } = useRouter();
   const slidesToShow = useBreakpointValue({ base: 1, md: 2, lg: 4 }); // responsive value
@@ -104,8 +130,7 @@ export default function Home({ children }) {
     error: errorQuestion,
     isLoading: isLoadingQuestion,
   } = useSWR(
-    `user/question?lang=${locale}&page=${page}${
-      categoryId && `&categories__id=${categoryId}`
+    `user/question?lang=${locale}&page=${page}${categoryId && `&categories__id=${categoryId}`
     }`
   );
   // const {
@@ -120,6 +145,10 @@ export default function Home({ children }) {
   // );
 
   const { data: dataGeneral, error: errorGeneral } = useSWR("user/general");
+
+  const { data: dataCategoryChild, error: errorCategoryChild, mutate: mutateCategory, isLoading: isLoadingChildCategory } = useSWR(`user/category?parent_id=${filters?.category_id}&type=question`);
+  const { data: dataCategoryChild2, error: errorCategoryChild2, mutate: mutateCategory2, isLoading: isLoadingChildCategory2 } = useSWR(hoveredIndex?.val && `user/category?parent_id=${hoveredIndex?.val}&type=question`);
+
   const { data: dataHadith, error: errorHadith } = useSWR("user/general/hadis");
   const { data: dataSource, error: errorSource } = useSWR(
     "user/source?size=10"
@@ -130,7 +159,7 @@ export default function Home({ children }) {
   const { data: dataCategory, isLoading: isLoadingCategory } = useSWR(
     `user/category?type=question`,
     {
-      onSuccess: (res) => {},
+      onSuccess: (res) => { },
     }
   );
 
@@ -148,6 +177,35 @@ export default function Home({ children }) {
       return node;
     });
 
+  const scroll = (direction) => {
+    if (scrollRef.current) {
+      const scrollAmount = direction === 'left' ? -150 : 150
+      scrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' })
+    }
+  }
+
+  const handleMouseDown = (e) => {
+    if (!scrollRef.current) return
+    setIsDragging(true)
+    setStartX(e.pageX - scrollRef.current.offsetLeft)
+    setScrollLeft(scrollRef.current.scrollLeft)
+  }
+
+  const handleMouseLeave = () => {
+    setIsDragging(false)
+  }
+
+  const handleMouseUp = () => {
+    setIsDragging(false)
+  }
+
+  const handleMouseMove = (e) => {
+    if (!isDragging || !scrollRef.current) return
+    e.preventDefault()
+    const x = e.pageX - scrollRef.current.offsetLeft
+    const walk = x - startX
+    scrollRef.current.scrollLeft = scrollLeft - walk
+  }
   const handleNewQuestionButton = () => {
     router.push("/new_question");
   };
@@ -171,6 +229,9 @@ export default function Home({ children }) {
   const handleCategoryLink = ({ title, id }) => {
     router.push(`/questions/category/${id}/${title}`);
   };
+  const handleCategoryClick = (index, val) => {
+    setHoveredIndex({ selected: index, val: val })
+  }
 
   return (
     <MainLayout>
@@ -198,6 +259,133 @@ export default function Home({ children }) {
         mx="auto"
         p={"20px"}
       >
+        <HStack
+          w="100%"
+          whiteSpace="normal"
+          justifyContent={"space-between"}
+          mb={{ base: "20px", md: "25px" }}
+          mt={{ base: "20px", md: "25px" }}
+          alignItems={{ base: "center", md: "start" }}
+        >
+          <Text fontWeight={"700"} fontSize={"22px"} letterSpacing={0}>
+            {t("suggested_questions")}
+          </Text>
+
+          <Button
+            width={{ base: "152px", md: "189px" }}
+            height={"50px"}
+            bgColor={"#F9C96D"}
+            color={"black"}
+            fontWeight={"400"}
+            fontSize={"16px"}
+            lineHeight={"100%"}
+            letterSpacing={0}
+            borderRadius={"10px"}
+            onClick={(e) => handleNewQuestionButton()}
+          >
+            {t("ask_your_question")}
+          </Button>
+        </HStack>
+        <Tabs>
+          <Box display="flex" alignItems="center">
+            <IconButton
+              colorScheme="gray"
+              icon={<IoIosArrowForward />}
+              aria-label="Scroll Left"
+              onClick={() => scroll('left')}
+              size="sm"
+              mr={2}
+              mb={'10px'}
+            />
+            <Box
+              ref={scrollRef}
+              overflowX="auto"
+              whiteSpace="nowrap"
+              flex="1"
+              cursor={isDragging ? 'grabbing' : 'grab'}
+              onMouseDown={handleMouseDown}
+              onMouseLeave={handleMouseLeave}
+              onMouseUp={handleMouseUp}
+              onMouseMove={handleMouseMove}
+              css={{
+                '&::-webkit-scrollbar': { display: 'none' },
+                '-ms-overflow-style': 'none',
+                'scrollbar-width': 'none',
+              }}
+              borderBottom={'1px'}
+              borderBottomColor={'gray.200'}
+            >
+              <TabList mb={'2px'} borderBottom={'none'}>
+                {dataCategory?.data?.map((item, i) => (
+                  <Tab key={i} whiteSpace="nowrap"
+                    onClick={e => setFilters({ category_id: item?.id })}
+                    _selected={{
+                      borderBottom: '3px solid #3646B3', // custom color and width
+                      bgColor: '#F7F7F7',
+                      color: '#3646B3'
+                    }}
+                    px={4}
+                    py={2}>
+                    {item?.name}
+                  </Tab>
+                ))}
+              </TabList>
+            </Box>
+            <IconButton
+              colorScheme="gray"
+              icon={<IoIosArrowBack />}
+              aria-label="Scroll Right"
+              onClick={() => scroll('right')}
+              size="sm"
+              ml={2}
+              mb={'10px'}
+            />
+          </Box>
+
+          <TabPanels>
+            {[...Array(20)].map((_, i) => (
+              <TabPanel key={i}>
+                {!isLoadingChildCategory ? <SimpleGrid
+                  columns={{ base: 1, sm: 2, md: 3, lg: 5 }}
+                  spacing={5}
+                  mb={'50px'}
+                >{dataCategoryChild?.data?.map((val, index) => (
+                  <Popover >
+                    <PopoverTrigger>
+                      <Button as={Badge} height={'35px'} width={'200px'} colorScheme="gray" bgColor={hoveredIndex?.selected === index ? 'white' : ''} borderRadius={'7px'} py={'8px'} textAlign={'center'} cursor={'pointer'} color={'#3646B3'} onClick={() => handleCategoryClick(index, val?.id)} borderBottomRightRadius={hoveredIndex?.selected === index ? 0 : ''} borderBottomLeftRadius={hoveredIndex?.selected === index ? 0 : ''} variant={hoveredIndex?.selected === index ? 'outline' : 'solid'} rightIcon={
+                        <RotatingIcon
+                          transform={hoveredIndex?.selected === index ? 'rotate(180deg)' : 'rotate(0deg)'}
+                        />
+                      }
+                      >{val?.name}</Button>
+                      {/* <Badge colorScheme="gray" borderRadius={'7px'} py={'8px'} textAlign={'center'} cursor={'pointer'} color={'#3646B3'}>{val?.name}</Badge> */}
+                    </PopoverTrigger>
+                    <Portal>
+                      <PopoverContent bg="gray.100" // match your badge's color if needed
+                        borderColor="gray.200"
+                        borderRadius="7px"
+                        mt="-8px" width={'none'} borderTopRightRadius={0} borderTopLeftRadius={0} boxShadow="0px 10px 22px 0px #00000040"
+                      >
+                        {/* <PopoverHeader>{val?.name}</PopoverHeader> */}
+                        <PopoverBody padding={0} width={'200px'} >
+                          {
+                            !mutateCategory2 ? <Spinner /> : dataCategoryChild2?.data?.map((item) => (
+
+                              <Badge height={'35px'} width={'200px'} colorScheme="gray" bgColor={'white'} py={'8px'} textAlign={'center'} cursor={'pointer'} color={'#3646B3'} _hover={{ bgColor: '#D9D9D9' }} borderBottom={'1px'} borderBottomColor={'gray.200'}> {item?.name}</Badge>
+                            ))
+                          }
+
+                        </PopoverBody>
+                      </PopoverContent>
+                    </Portal>
+                  </Popover>
+
+                ))}
+                </SimpleGrid> : <Center><Spinner /></Center>}
+              </TabPanel>
+            ))}
+          </TabPanels>
+        </Tabs>
         <Grid
           templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(4, 1fr)" }}
           templateAreas={{
@@ -209,7 +397,7 @@ export default function Home({ children }) {
           {/* Right Sidebar */}
 
           <GridItem colSpan={1}>
-            <Box
+            {/* <Box
               w="100%"
               maxW={{ base: "calc(100vw - 50px)", md: "100vw" }}
               overflow="hidden"
@@ -253,7 +441,7 @@ export default function Home({ children }) {
                   </AccordionItem>
                 </Accordion>
               ))}
-            </Box>
+            </Box> */}
             <Box
               my={"20px"}
               order={3}
@@ -310,8 +498,8 @@ export default function Home({ children }) {
           </GridItem>
 
           {/* Main Content */}
-          <Box
-            p={{ base: 0, md: "6" }}
+          <GridItem
+            p={{ base: 0, md: "0" }}
             order={{ base: 1, md: 2 }}
             as={GridItem}
             colSpan={{ md: 3 }}
@@ -323,32 +511,6 @@ export default function Home({ children }) {
             pr={{ base: 0, md: "21px" }}
             area={{ base: "main", md: "auto" }}
           >
-            <HStack
-              w="100%"
-              whiteSpace="normal"
-              justifyContent={"space-between"}
-              mb={{ base: "20px", md: "10px" }}
-              alignItems={{ base: "center", md: "start" }}
-            >
-              <Text fontWeight={"700"} fontSize={"22px"} letterSpacing={0}>
-                {t("suggested_questions")}
-              </Text>
-
-              <Button
-                width={{ base: "152px", md: "189px" }}
-                height={"50px"}
-                bgColor={"#F9C96D"}
-                color={"black"}
-                fontWeight={"400"}
-                fontSize={"16px"}
-                lineHeight={"100%"}
-                letterSpacing={0}
-                borderRadius={"10px"}
-                onClick={(e) => handleNewQuestionButton()}
-              >
-                {t("ask_your_question")}
-              </Button>
-            </HStack>
 
             {isLoadingQuestion ? (
               <HStack
@@ -391,10 +553,10 @@ export default function Home({ children }) {
                 />
               </Stack>
             </VStack>
-          </Box>
+          </GridItem>
 
           {/* Left Sidebar */}
-
+          {/* 
           <GridItem
             order={4}
             colSpan={{ md: 4 }}
@@ -423,9 +585,9 @@ export default function Home({ children }) {
               borderRadius={"0px"}
               title={t("parsa_supporters")}
             />
-          </GridItem>
+          </GridItem> */}
         </Grid>
       </Box>
-    </MainLayout>
+    </MainLayout >
   );
 }
