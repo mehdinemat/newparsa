@@ -397,7 +397,7 @@ export default function Home({ children }) {
           {/* Right Sidebar */}
 
           <GridItem colSpan={1}>
-            {/* <Box
+            <Box
               w="100%"
               maxW={{ base: "calc(100vw - 50px)", md: "100vw" }}
               overflow="hidden"
@@ -441,7 +441,7 @@ export default function Home({ children }) {
                   </AccordionItem>
                 </Accordion>
               ))}
-            </Box> */}
+            </Box>
             <Box
               my={"20px"}
               order={3}
