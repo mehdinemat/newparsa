@@ -117,13 +117,8 @@
   "no_account": "ليس لديك حساب؟",
   "continue": "متابعة",
   "repeat_password": "تأكيد كلمة المرور",
-    "reset_password": "إعادة تعيين كلمة المرور",
-      "new_password": "كلمة المرور الجديدة",
-        "send":"يرسل"
-
-
-
-
-
-
+  "reset_password": "إعادة تعيين كلمة المرور",
+  "new_password": "كلمة المرور الجديدة",
+  "send": "يرسل",
+  "create_an_account": "إنشاء حساب مستخدم"
 }

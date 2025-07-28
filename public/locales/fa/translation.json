@@ -2,6 +2,8 @@
   "home_parsa_header_title": "پارسا؛ شبکه اجتماعی پرسش و پاسخ دینی",
   "about": "سلام",
   "header_products": "محصولات",
+  "header_dashboard": "داشبورد",
+  "header_answers": "پاسخ ها",
   "header_users": "کاربران",
   "header_tags": "برچسب ها",
   "header_questions": "سوال ها",
@@ -85,7 +87,7 @@
   "email": "ایمیل",
   "first_name": "نام",
   "last_name": "نام خانوادگی",
-  "register": "ثبت نام",
+  "register": "ایجاد حساب",
   "create_account": "ساخت حساب کاربری جدید",
   "login_code": "کد تایید",
   "sources": "مراجع",
@@ -113,16 +115,12 @@
   "literal_search_results_for": "نتایج جستجو لفظی برای",
   "ask_question": "برای پرسیدن سوال، باید وارد حساب کاربری شوید.",
   "your_question": "سوال شما",
-  "login":"ورود",
+  "login": "ورود",
   "no_account": "حساب کاربری ندارید؟",
   "continue": "ادامه",
   "repeat_password": "تکرار کلمه عبور",
-    "reset_password": "بازنشانی کلمه عبور",
-      "new_password": "رمز عبور جدید",
-      "send":"ارسال"
-
-
-
-
-
+  "reset_password": "بازنشانی کلمه عبور",
+  "new_password": "رمز عبور جدید",
+  "send": "ارسال",
+  "create_an_account": "ایجاد حساب کاربری"
 }

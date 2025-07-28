@@ -1,7 +1,6 @@
 import {
   HStack,
   IconButton,
-  Image,
   Text,
   VStack
 } from "@chakra-ui/react";
@@ -14,9 +13,11 @@ import { IoPersonOutline } from "react-icons/io5";
 import { RxExit } from "react-icons/rx";
 
 const menuList = [
-  { title: "پروفایل", icon: <IoPersonOutline />, link: "profile" },
-  { title: "پرسش‌ها", icon: <FaQuestion />, link: "questions" },
+  { title: "داشبورد", icon: <IoPersonOutline />, link: "dashboard" },
+  { title: "سوالات", icon: <FaQuestion />, link: "questions" },
   { title: "پاسخ‌ها", icon: <BsReply />, link: "answers" },
+  { title: "دیدگاه ها", icon: <BsReply />, link: "comments" },
+  { title: "کاربران", icon: <BsReply />, link: "users" },
 ];
 
 const RightSidebar = () => {
@@ -44,17 +45,12 @@ const RightSidebar = () => {
       borderRadius={"15px"}
       borderColor={"gray.200"}
       padding={"10px"}
-      pt={"14px"}
+      pt={"10px"}
       bgColor={"#3646B3"}
       height={'calc( 100vh - 70px )'}
     >
-      <Image
-        src="/dashboard/parsa_logo_admin.png"
-        width={"139px"}
-        height={"57px"}
-      />
       {/* <Text fontWeight={'bold'} fontSize={'20px'}>حسن الماسی</Text>
-      <Text fontSize={'sm'}>مدیر</Text> */}
+        <Text fontSize={'sm'}>مدیر</Text> */}
       {/* <Text fontSize={'sm'}>آخرین فعالیت: ۳ روز پیش</Text> */}
       {/* <Divider my={'20px'} /> */}
       <VStack
@@ -90,13 +86,13 @@ const RightSidebar = () => {
                 fontSize={"20px"}
               />
               <Text
-                fontWeight={"800"}
+                fontWeight={"extrabold"}
                 color={
                   getLastPathSegment(activePage) == item?.link
                     ? "#3646B3"
                     : "white"
                 }
-                fontSize={"18px"}
+                fontSize={"10px"}
               >
                 {item?.title}
               </Text>

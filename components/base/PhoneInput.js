@@ -1,18 +1,11 @@
 // components/PhoneInput.tsx
 import {
-  Box,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  Select,
-  Stack,
-  Flex,
-  InputRightElement,
-  Text,
   HStack,
+  Input,
+  Select
 } from "@chakra-ui/react";
 import { t } from "i18next";
-import React, { useState } from "react";
+import { useState } from "react";
 
 const countries = [
   { code: "US", dialCode: "+1", label: "United States" },
@@ -38,35 +31,41 @@ export default function PhoneInput({ fullNumber, setFullNumber }) {
 
   return (
     <HStack spacing={2} w={"100%"} height={"46px"}>
-        <Input
+      <Input
+        border={'1px'}
+        borderColor={'#B7B7B7'}
+        borderRadius={'10px'}
         width={'100%'}
-          dir="ltr"
-          height={"46px"}
-          value={number}
-          onChange={handleNumberChange}
-          placeholder={t("phone_number")}
-            _placeholder={{ textAlign: 'right' }}
+        dir="ltr"
+        height={"46px"}
+        value={number}
+        onChange={handleNumberChange}
+        placeholder={t("phone_number")}
+        _placeholder={{ textAlign: 'right' }}
 
-        />
-        {/* <InputRightElement width="8rem" pl={2} top={"5px"}> */}
-        {/* </InputRightElement> */}
-            <Select
-            w={'150px'}
-              value={country.code}
-              onChange={handleCountryChange}
-              fontSize="sm"
-              bg="transparent"
-              height={"46px"}
-              pl={0}
-              _hover={{ border: "none" }}
-              _focusVisible={{ border: "none" }}
-            >
-              {countries.map((c) => (
-                <option key={c.code} value={c.code}>
-                  {c.label} ({c.dialCode})
-                </option>
-              ))}
-            </Select>
+      />
+      {/* <InputRightElement width="8rem" pl={2} top={"5px"}> */}
+      {/* </InputRightElement> */}
+      <Select
+        border={'1px'}
+        borderColor={'#B7B7B7'}
+        borderRadius={'10px'}
+        w={'150px'}
+        value={country.code}
+        onChange={handleCountryChange}
+        fontSize="sm"
+        bg="transparent"
+        height={"46px"}
+        pl={0}
+        _hover={{ border: "none" }}
+        _focusVisible={{ border: "none" }}
+      >
+        {countries.map((c) => (
+          <option key={c.code} value={c.code}>
+            {c.label} ({c.dialCode})
+          </option>
+        ))}
+      </Select>
     </HStack>
   );
 }

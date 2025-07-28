@@ -1,5 +1,5 @@
-import AnswerCard from "@/components/admin_dashboard/answers/answerCard";
-import AnswerEdit from "@/components/admin_dashboard/answers/answerEdit";
+import CommentCard from "@/components/admin_dashboard/comments/commentCard";
+import CommentEdit from "@/components/admin_dashboard/comments/commentEdit";
 import Header from "@/components/admin_dashboard/header";
 import {
   Box,
@@ -53,9 +53,9 @@ const Index = () => {
             borderRadius={"15px"}
             padding={'10px'}
           >
-            <Text fontWeight={'700'} fontSize={'30px'} pr={'16px'} >سوالات</Text>
+            <Text fontWeight={'700'} fontSize={'30px'} pr={'16px'} >دیــدگاه ها</Text>
             <Grid templateColumns="repeat(4, 1fr)" gap={6} w={'100%'} p={'10px'} >
-              <GridItem bgColor={"white"} w={"100%"} height={"100%"} colSpan={3} borderRadius={"15px"} padding={'15px'}>
+              <GridItem bgColor={"#F3F3F3"} w={"100%"} height={"100%"} colSpan={3} borderRadius={"15px"} padding={'15px'}>
                 <HStack w={'100%'} justifyContent={'space-between'} paddingX={'16px'}>
                   <HStack color="#979797" alignItems={'baseline'}>
                     <Text height={'20px'} fontWeight={'800'} fontSize={'18px'}>مرتب سازی براساس</Text>
@@ -71,15 +71,15 @@ const Index = () => {
                   </HStack>
                 </HStack>
                 <Box as={VStack} w={'100%'} height={'calc( 100vh - 270px )'} padding={'16px'} gap={'10px'} overflowY={'auto'}>
-                  <AnswerCard />
-                  <AnswerCard />
-                  <AnswerCard />
-                  <AnswerCard />
-                  <AnswerCard />
+                  <CommentCard />
+                  <CommentCard />
+                  <CommentCard />
+                  <CommentCard />
+                  <CommentCard />
                 </Box>
               </GridItem>
               <GridItem bgColor={"white"} w={"100%"} height={"100%"} borderRadius={"15px"} padding={'20px'}>
-                <AnswerEdit />
+                <CommentEdit />
               </GridItem>
             </Grid>
           </Box>

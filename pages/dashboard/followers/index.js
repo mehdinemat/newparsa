@@ -1,0 +1,104 @@
+import {
+  Avatar,
+  Box,
+  Button,
+  Card,
+  Grid,
+  GridItem,
+  HStack,
+  Select,
+  Text,
+  VStack
+} from "@chakra-ui/react";
+
+import MainLayout from "@/components/mainLayout";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import RightSidebar from "../rightSidebar";
+
+
+
+const Index = () => {
+  const { t } = useTranslation();
+
+  const [type, setType] = useState(false)
+
+  const handleResizeQuestions = () => {
+    setType(!type)
+  }
+
+  return (
+    <MainLayout>
+      <Box
+        w="100%"
+        alignItems={"center"}
+        justifyContent={"center"}
+        // maxW="container.xl"
+        px="34px"
+        // p={{ base: "20px", md: "60px" }}
+        my={"34px"}
+        mt={{ base: "40px", md: "120px" }}
+      >
+        <Grid
+          templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(8, 1fr)" }}
+          w={"100%"}
+        >
+          <GridItem colSpan={1} display={{ base: "none", md: "flex" }}>
+            <RightSidebar />
+          </GridItem>
+          <GridItem as={VStack} gap={"8px"} colSpan={7} mr={"8px"} bgColor={'#F3F3F3'} padding={'12px'} borderRadius={'15px'} height={'calc( 100% - 70px )'}>
+            <HStack w={'100%'} alignItems={'center'} justifyContent={'space-between'}>
+              <HStack>
+                <Text fontSize={'18px'} fontWeight={'bold'} color={'#979797'}>مرتبط سازی بر اساس</Text>
+                <Select w={'120px'} bgColor={'white'} color={'#3646B3'} height={'40px'} borderRadius={'13px'}>
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                </Select>
+              </HStack>
+              <HStack color={'white'} borderRadius={'10px'}>
+                <Button bgColor={'#C2C2C2'} borderRadius={'10px'}>دنبال شونده ها</Button>
+                <Button bgColor={'#C2C2C2'} borderRadius={'10px'}>دنبال کننده ‌ها</Button>
+                <Button bgColor={'#3646B3'} borderRadius={'10px'}>همه</Button>
+              </HStack>
+            </HStack>
+            <Grid templateColumns='repeat(4, 1fr)' gap={'70px'} w={'auto'} mt={'30px'} height={'calc( 100% - 120px )'} overflowY={'scroll'} overflowX={'hidden'}>
+              <Card bgColor={'white'} height={'300px'} as={VStack} padding={'5px'}>
+                <Avatar height={'195px'} w={'205px'} />
+                <Text fontSize={'15px'} fontWeight={'bold'}>محمد محمدی</Text>
+                <Text>mohammadi@gmail.com</Text>
+                <Button bgColor={'#29CCCC'} w={'100%'} minH={'30px'}>دنبال کردن</Button>
+              </Card>
+              <Card bgColor={'white'} height={'300px'} as={VStack} padding={'5px'}>
+                <Avatar height={'195px'} w={'205px'} />
+                <Text fontSize={'15px'} fontWeight={'bold'}>محمد محمدی</Text>
+                <Text>mohammadi@gmail.com</Text>
+                <Button bgColor={'#29CCCC'} w={'100%'} minH={'30px'}>دنبال کردن</Button>
+              </Card>
+              <Card bgColor={'white'} height={'300px'} as={VStack} padding={'5px'}>
+                <Avatar height={'195px'} w={'205px'} />
+                <Text fontSize={'15px'} fontWeight={'bold'}>محمد محمدی</Text>
+                <Text>mohammadi@gmail.com</Text>
+                <Button bgColor={'#29CCCC'} w={'100%'} minH={'30px'}>دنبال کردن</Button>
+              </Card>
+              <Card bgColor={'white'} height={'300px'} as={VStack} padding={'5px'}>
+                <Avatar height={'195px'} w={'205px'} />
+                <Text fontSize={'15px'} fontWeight={'bold'}>محمد محمدی</Text>
+                <Text>mohammadi@gmail.com</Text>
+                <Button bgColor={'#29CCCC'} w={'100%'} minH={'30px'}>دنبال کردن</Button>
+              </Card>
+              <Card bgColor={'white'} height={'300px'} as={VStack} padding={'5px'}>
+                <Avatar height={'195px'} w={'205px'} />
+                <Text fontSize={'15px'} fontWeight={'bold'}>محمد محمدی</Text>
+                <Text>mohammadi@gmail.com</Text>
+                <Button bgColor={'#29CCCC'} w={'100%'} minH={'30px'}>دنبال کردن</Button>
+              </Card>
+            </Grid>
+          </GridItem>
+        </Grid>
+      </Box >
+    </MainLayout>
+  );
+};
+
+export default Index;

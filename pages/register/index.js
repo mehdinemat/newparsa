@@ -1,3 +1,4 @@
+import PhoneInput from "@/components/base/PhoneInput";
 import { baseUrl } from "@/components/lib/api";
 import {
   Box,
@@ -14,12 +15,12 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { GoArrowLeft } from "react-icons/go";
 import useSWRMutation from "swr/mutation";
 import * as Yup from "yup";
-import { useEffect, useState } from "react";
-import PhoneInput from "@/components/base/PhoneInput";
 
 const Lottie = dynamic(() => import("lottie-react"), {
   ssr: false,
@@ -118,7 +119,15 @@ const Index = () => {
               onClick={(e) => router.replace("/")}
               cursor={"pointer"}
             />
-            <Text
+            <Image
+              cursor={"pointer"}
+              onClick={(e) => router.push("/")}
+              src="/loginsubtitle.png"
+              width={{ base: "220px", md: "465px" }}
+              height={{ base: "30px", md: "38px" }}
+              mt={'21px'}
+            />
+            {/* <Text
               fontSize={{ base: "20px", md: "23px" }}
               color={"#333333"}
               textAlign={"center"}
@@ -126,13 +135,15 @@ const Index = () => {
               mb={"20px"}
             >
               {t("religious")}
+            </Text> */}
+            <Divider w={"350px"} h={"2px"} bgColor={"#ADADAD"} my={'10px'} />
+            <Text fontSize={{ base: "20px", md: "18px" }} mt={"9px"} fontWeight={'extrabold'} color={'#979797'} letterSpacing={'-2%'} alignItems={'start'} w={'100%'}>
+              {t("create_an_account")}
             </Text>
-            <Divider w={"350px"} h={"2px"} bgColor={"#29CCCC"} />
-            <Text fontSize={{ base: "20px", md: "25px" }} mt={"20px"}>
-              {t("register")}
-            </Text>
-            <PhoneInput setFullNumber={setFullNumber} fullNumber={fullNumber} />
-            {/* <Input
+
+            <VStack bgColor={'gray.100'} padding={'12px'} borderRadius={'18px'}>
+              <PhoneInput setFullNumber={setFullNumber} fullNumber={fullNumber} />
+              {/* <Input
               height={"46px"}
               placeholder={t("first_name")}
               {...register("first_name")}
@@ -152,7 +163,7 @@ const Index = () => {
             >
               {errors.first_name?.message}
             </p> */}
-            {/* <Input
+              {/* <Input
               height={"46px"}
               placeholder={t("last_name")}
               {...register("last_name")}
@@ -172,7 +183,7 @@ const Index = () => {
             >
               {errors.last_name?.message}
             </p> */}
-            {/* <Input
+              {/* <Input
               height={"46px"}
               placeholder={t("username")}
               {...register("username")}
@@ -192,49 +203,55 @@ const Index = () => {
             >
               {errors.username?.message}
             </p> */}
-            <Input
-              height={"46px"}
-              placeholder={t("password")}
-              type="password"
-              {...register("password")}
-              sx={{
-                "::placeholder": {
-                  textAlign: "center", // this line is also needed to target the placeholder itself
-                },
-              }}
-            />
-            <p
-              style={{
-                fontSize: "10px",
-                color: "#e4002b",
-                width: "100%",
-                textAlign: "start",
-              }}
-            >
-              {errors.password?.message}
-            </p>
-            <Input
-              height={"46px"}
-              placeholder={t("confirm_password")}
-              type="password"
-              {...register("re_password")}
-              sx={{
-                "::placeholder": {
-                  textAlign: "center", // this line is also needed to target the placeholder itself
-                },
-              }}
-            />
-            <p
-              style={{
-                fontSize: "10px",
-                color: "#e4002b",
-                width: "100%",
-                textAlign: "start",
-              }}
-            >
-              {errors.re_password?.message}
-            </p>
-            {/* <Input
+              <Input
+                border={'1px'}
+                borderColor={'#B7B7B7'}
+                borderRadius={'10px'}
+                height={"46px"}
+                placeholder={t("password")}
+                type="password"
+                {...register("password")}
+                sx={{
+                  "::placeholder": {
+                    textAlign: "center", // this line is also needed to target the placeholder itself
+                  },
+                }}
+              />
+              <p
+                style={{
+                  fontSize: "10px",
+                  color: "#e4002b",
+                  width: "100%",
+                  textAlign: "start",
+                }}
+              >
+                {errors.password?.message}
+              </p>
+              <Input
+                border={'1px'}
+                borderColor={'#B7B7B7'}
+                borderRadius={'10px'}
+                height={"46px"}
+                placeholder={t("confirm_password")}
+                type="password"
+                {...register("re_password")}
+                sx={{
+                  "::placeholder": {
+                    textAlign: "center", // this line is also needed to target the placeholder itself
+                  },
+                }}
+              />
+              <p
+                style={{
+                  fontSize: "10px",
+                  color: "#e4002b",
+                  width: "100%",
+                  textAlign: "start",
+                }}
+              >
+                {errors.re_password?.message}
+              </p>
+              {/* <Input
               height={"46px"}
               placeholder={t("email")}
               {...register("email")}
@@ -255,26 +272,28 @@ const Index = () => {
               {errors.email?.message}
             </p> */}
 
-            <Button
-              w={"100%"}
-              bgColor={"#29CCCC"}
-              height={"46px"}
-              mt={"20px"}
-              type="submit"
-              isLoading={isMutating}
-            >
-              {t("register")}
-            </Button>
-            <HStack
-              w={"100%"}
-              alignItems={"start"}
-              onClick={(e) => router.push("/login")}
-            >
-              <Text>{t("have_account")}</Text>
-              <Text color={"blue.500"} cursor={"pointer"}>
-                {t("log_in")}
-              </Text>
-            </HStack>
+              <Button
+                w={"100%"}
+                leftIcon={<GoArrowLeft />}
+                height={"46px"}
+                mt={"20px"}
+                type="submit"
+                isLoading={isMutating}
+                bgColor={"#3646B3"}
+              >
+                {t("register")}
+              </Button>
+              <HStack
+                w={"100%"}
+                alignItems={"start"}
+                onClick={(e) => router.push("/login")}
+              >
+                {/* <Text>{t("have_account")}</Text> */}
+                <Text color={"#29CCCC"} cursor={"pointer"} fontWeight={'extrabold'} fontSize={'16px'} w={'100%'} textAlign={'end'}>
+                  {t("log_in_to_your_account")}
+                </Text>
+              </HStack>
+            </VStack>
             {/* <Button
               w={"100%"}
               height={"46px"}
@@ -301,17 +320,17 @@ const Index = () => {
           display={{ base: "none", md: "flex" }}
         >
           {/* Base / background image */}
-          <Image src="/loginbg.png" objectFit="cover" w="100%" h="100%" />
+          <Image src="/loginlogo1.png" objectFit="cover" w="100%" h="100%" />
 
           {/* Overlay / centered image */}
           <Image
-            src="/loginlogoqu.png"
+            src="/loginquestion.png"
             alt="Centered Image"
             position="absolute"
             top="50%"
             left="50%"
-            width={"130px"}
-            height={"158px"}
+            width={"262px"}
+            height={"369px"}
             transform="translate(-50%, -50%)"
           />
         </Box>

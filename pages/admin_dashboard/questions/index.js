@@ -1,91 +1,125 @@
-import QuestionMCard from "@/components/home/mobile/questionMCard"
-import MainLayout from "@/components/mainLayout"
-import QuestionCard from "@/components/questionCars"
-import { Box, Button, Divider, Grid, GridItem, HStack, Stack, Text, VStack } from "@chakra-ui/react"
-import { BiSortAlt2 } from "react-icons/bi"
-import RightSidebar from "../rightSidebar"
+import Header from "@/components/admin_dashboard/header";
+import QuestionCard from "@/components/admin_dashboard/questions/QuestionCard";
+import {
+  Box,
+  Button,
+  Grid,
+  GridItem,
+  HStack,
+  IconButton,
+  Select,
+  Text,
+  Textarea,
+  VStack
+} from "@chakra-ui/react";
+import { useTranslation } from "react-i18next";
+import { GoPencil } from "react-icons/go";
+import { IoArrowBack, IoClose, IoPencil, IoTrash } from "react-icons/io5";
+import RightSidebar from "../rightSidebar";
 
 const Index = () => {
-  return (
-    <MainLayout>
-      <Box
-        w="100%"
-        alignItems={"center"}
-        justifyContent={"center"}
-        maxW="container.xl"
-        mx="auto"
-        p={{ base: '20px', md: "60px" }}
-        my={"20px"}
-        mt={{ base: '40px', md: '60px' }}
-      >
-        <Grid templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(4, 1fr)" }} gap={'32px'} w={'100%'}>
-          <GridItem colSpan={1} display={{ base: 'none', md: 'flex' }}>
-            <RightSidebar />
-          </GridItem>
-          <GridItem as={Stack} gap={'20px'} colSpan={3} >
-            <Box p="6" colSpan={'2'}>
-              <HStack
-                w={"100%"}
-                justifyContent={"space-between"}
-                mb={"10px"}
-                alignItems={"center"}
-              >
-                <Text fontWeight={"bold"} fontSize={"16px"}>
-                  سؤال‌ها
-                </Text>
-                <Button
-                  width={"189px"}
-                  height={"50px"}
-                  bgColor={"#F9C96D"}
-                  color={"black"}
-                  fontWeight={"normal"}
-                >
-                  سوال خود را بپرسید
-                </Button>
-              </HStack>
-              <HStack w={"100%"}
-                justifyContent={"space-between"}
-                mb={"10px"}
-                alignItems={'center'}>
-                <Text fontSize={"14px"}>
-                  ۲۵۸ سؤال
-                </Text>
-                <HStack>
-                  <HStack justifyContent={{ base: 'start' }}>
-                    <BiSortAlt2 color="gray" />
-                    <Button variant={'ghost'} fontSize={'sm'} padding={{ base: '0px' }} display={{ base: 'none', md: 'flex' }}>مرتب سازی براساس:</Button>
-                    <Button variant={'ghost'} fontSize={'sm'} padding={{ base: '0px' }} display={{ base: 'flex', md: 'none' }}>جدیدترین ها</Button>
+  const { t } = useTranslation();
 
+  return (
+    // <MainLayout>
+    <Box
+      w="100%"
+      alignItems={"center"}
+      justifyContent={"center"}
+      // maxW="container.xl"
+      mx="34px"
+      // p={{ base: "20px", md: "60px" }}
+      my={"34px"}
+    // mt={{ base: "40px", md: "60px" }}
+    >
+      <Grid
+        templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(8, 1fr)" }}
+        w={"100%"}
+      >
+        <GridItem colSpan={1} display={{ base: "none", md: "flex" }}>
+          <RightSidebar />
+        </GridItem>
+        <GridItem as={VStack} gap={"8px"} colSpan={7} pl={"50px"} mr={"8px"}>
+          <Box
+            w={"100%"}
+            height={"85px"}
+            bgColor={"#F3F3F3"}
+            borderRadius={"15px"}
+          >
+            <Header />
+          </Box>
+          <Box
+            w={"100%"}
+            height={"100%"}
+            bgColor={"#F3F3F3"}
+            borderRadius={"15px"}
+            padding={'10px'}
+          >
+            <Text fontWeight={'700'} fontSize={'30px'} pr={'16px'} >سوالات</Text>
+            <Grid templateColumns="repeat(4, 1fr)" gap={6} w={'100%'} p={'10px'} >
+              <GridItem bgColor={"white"} w={"100%"} height={"100%"} colSpan={3} borderRadius={"15px"} padding={'15px'}>
+                <HStack w={'100%'} justifyContent={'space-between'} paddingX={'16px'}>
+                  <HStack color="#979797" alignItems={'baseline'}>
+                    <Text height={'20px'} fontWeight={'800'} fontSize={'18px'}>مرتب سازی براساس</Text>
+                    <Select bgColor={'#F3F3F3'} height={'40px'} width={'90px'}>
+                      <option>1</option>
+                      <option>2</option>
+                      <option>3</option>
+                    </Select>
                   </HStack>
-                  <HStack display={{ base: 'none', md: 'flex' }}>
-                    <Button colorScheme="gray" variant={'ghost'} _hover={{ bgColor: 'none' }} fontWeight={'normal'}>جدیدترین‌ها</Button>
-                    <Button colorScheme="gray" variant={'ghost'} _hover={{ bgColor: 'none' }} fontWeight={'normal'}>پربازدیدترین‌ها</Button>
-                    <Button colorScheme="gray" variant={'ghost'} _hover={{ bgColor: 'none' }} fontWeight={'normal'}>محبوبترین‌ها</Button>
+                  <HStack>
+                    <IconButton icon={<IoPencil />} colorScheme="blue" fontSize={'31px'} />
+                    <IconButton icon={<IoTrash />} colorScheme="blue" fontSize={'31px'} />
                   </HStack>
                 </HStack>
-              </HStack>
+                <Box as={VStack} w={'100%'} height={'calc( 100vh - 270px )'} padding={'16px'} gap={'10px'} overflowY={'auto'}>
+                  <QuestionCard />
+                  <QuestionCard />
+                  <QuestionCard />
+                  <QuestionCard />
+                  <QuestionCard />
+                </Box>
+              </GridItem>
+              <GridItem bgColor={"white"} w={"100%"} height={"100%"} borderRadius={"15px"} padding={'20px'}>
+                <VStack w={'100%'} alignItems={'start'} justifyContent={'space-between'} height={'100%'}>
+                  <VStack w={'100%'} alignItems={'start'}>
+                    <HStack color={'#3646B3'} w={'100%'} alignItems={'center'} justifyContent={'start'} gap={0} fontWeight={'600'} fontSize={'16px'}>
+                      <IconButton icon={<GoPencil />} variant={'ghost'} />
+                      <Text>ویرایش سوال</Text>
+                    </HStack>
+                    <Select bgColor={'#F3F3F3'} height={'40px'} width={'100%'} mt={'27px'}>
+                      <option>1</option>
+                      <option>2</option>
+                      <option>3</option>
+                    </Select>
+                    <Text color={'#979797'} fontWeight={'800'} fontSize={'18px'} mt={'24px'} >متن پاسخ</Text>
+                    <Textarea bgColor={'#F3F3F3'} />
+                    <Text color={'#979797'} fontWeight={'800'} fontSize={'18px'} mt={'24px'} >انتخاب مراجع</Text>
+                    <Select bgColor={'#F3F3F3'} height={'40px'} width={'100%'} mt={'27px'}>
+                      <option>1</option>
+                      <option>2</option>
+                      <option>3</option>
+                    </Select>
+                    <Text color={'#979797'} fontWeight={'800'} fontSize={'18px'} mt={'24px'} >انتخاب واژگان کلیدی</Text>
+                    <Select bgColor={'#F3F3F3'} height={'40px'} width={'100%'} mt={'27px'}>
+                      <option>1</option>
+                      <option>2</option>
+                      <option>3</option>
+                    </Select>
+                  </VStack>
+                  <VStack w={'100%'}>
+                    <Button bgColor={'#3646B3'} fontWeight={'800'} fontSize={'14px'} mt={'24px'} leftIcon={<IoArrowBack />} w={'100%'} height={'49px'}>ثبت و ادامه</Button>
+                    <Button color={'#FF0000'} fontWeight={'800'} fontSize={'14px'} mt={'8px'} leftIcon={<IoClose />} w={'100%'} variant={'ghost'}>حذف این سوال</Button>
+                  </VStack>
+                </VStack>
+              </GridItem>
+            </Grid>
+          </Box>
+        </GridItem>
+      </Grid>
+    </Box >
+    // </MainLayout>
+  );
+};
 
-              <VStack display={{ base: 'none', md: 'flex' }}>
-                <Divider my={"20px"} />
-                <QuestionCard />
-                <Divider my={"20px"} />
-                <QuestionCard />
-                <Divider my={"20px"} />
-              </VStack>
-              <VStack display={{ base: 'flex', md: 'none' }}>
-                <Divider my={"20px"} />
-                <QuestionMCard />
-                <Divider my={"20px"} />
-                <QuestionMCard />
-                <Divider my={"20px"} />
-              </VStack>
-
-            </Box>
-          </GridItem>
-        </Grid>
-      </Box>
-    </MainLayout>
-  )
-}
-
-export default Index
+export default Index;

@@ -16,6 +16,8 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { GoArrowLeft } from "react-icons/go";
+import { IoAdd } from "react-icons/io5";
 import useSWRMutation from "swr/mutation";
 
 const Lottie = dynamic(() => import("lottie-react"), {
@@ -37,7 +39,7 @@ const Index = () => {
 
   const { trigger, isLoading, isMutating } = useSWRMutation(
     "user/auth",
-    postRequest,  
+    postRequest,
     {
       onSuccess: (data) => {
         if (data?.data?.status) {
@@ -69,7 +71,7 @@ const Index = () => {
     router.replace("/register");
   };
 
-  const handleForgetPasswordClick = ()=>{
+  const handleForgetPasswordClick = () => {
     router.push('forget_password')
   }
 
@@ -105,7 +107,15 @@ const Index = () => {
               width={{ base: "120px", md: "165px" }}
               height={{ base: "50px", md: "68px" }}
             />
-            <Text
+            <Image
+              cursor={"pointer"}
+              onClick={(e) => router.push("/")}
+              src="/loginsubtitle.png"
+              width={{ base: "220px", md: "465px" }}
+              height={{ base: "30px", md: "38px" }}
+              mt={'21px'}
+            />
+            {/* <Text
               fontSize={{ base: "20px", md: "23px" }}
               color={"#333333"}
               textAlign={"center"}
@@ -113,13 +123,17 @@ const Index = () => {
               mb={"20px"}
             >
               {t("religious")}
-            </Text>
-            <Divider w={"350px"} h={"2px"} bgColor={"#29CCCC"} />
-            <Text fontSize={{ base: "20px", md: "25px" }} mt={"20px"}>
+            </Text> */}
+            <Divider w={"350px"} h={"2px"} bgColor={"#ADADAD"} my={'10px'} />
+            <Text fontSize={{ base: "20px", md: "18px" }} mt={"20px"} fontWeight={'extrabold'} color={'#979797'} letterSpacing={'-2%'} alignItems={'start'} w={'100%'}>
               {t("log_in_to_your_account")}
             </Text>
             <Input
+              border={'1px'}
+              borderColor={'#B7B7B7'}
+              color={'#F7F7F7'}
               height={"46px"}
+              borderRadius={'10px'}
               placeholder={t("username_or_mobile_number")}
               my={"10px"}
               {...register("username")}
@@ -130,10 +144,14 @@ const Index = () => {
               }}
             />
             <Input
+              border={'1px'}
+              borderColor={'#B7B7B7'}
+              color={'#F7F7F7'}
               height={"46px"}
+              borderRadius={'10px'}
               type="password"
               placeholder={t("password")}
-              mb={"10px"}
+              mb={"0px"}
               {...register("password")}
               sx={{
                 "::placeholder": {
@@ -148,16 +166,17 @@ const Index = () => {
                   {t("remember_me")}
                 </Text>
               </HStack>
-              <Text color={"#29CCCC"} fontSize={{ base: "15px", md: "18px" }} cursor={'pointer'} onClick={handleForgetPasswordClick}>
+              <Text color={"#29CCCC"} fontSize={{ base: "15px", md: "16px" }} fontWeight={'extrabold'} cursor={'pointer'} onClick={handleForgetPasswordClick}>
                 {t("forgot_password")}
               </Text>
             </HStack>
             <Button
               w={"100%"}
-              bgColor={"#29CCCC"}
+              bgColor={"#3646B3"}
               height={"46px"}
               mt={"20px"}
               type="submit"
+              leftIcon={<GoArrowLeft />}
               isLoading={isMutating}
             >
               {t("log_in")}
@@ -167,10 +186,13 @@ const Index = () => {
               alignItems={"start"}
               onClick={(e) => router.push("/register")}
             >
-              <Text>{t("no_account")}</Text>
-              <Text color={"blue.500"} cursor={"pointer"}>
-                {t("create_account")}
-              </Text>
+              {/* <Text>{t("no_account")}</Text> */}
+              <HStack w={'100%'} justifyContent={'end'} alignItems={'center'} style={{ fontWeight: 'bold' }} gap={0}>
+                <IoAdd fontSize={'16px'} color={"#29CCCC"} />
+                <Text fontSize={'16px'} cursor={"pointer"} color={"#29CCCC"} fontWeight={'extrabold'} >
+                  {t("create_account")}
+                </Text>
+              </HStack>
             </HStack>
             {/* <Button
               variant={"outline"}
@@ -189,17 +211,17 @@ const Index = () => {
           display={{ base: "none", md: "flex" }}
         >
           {/* Base / background image */}
-          <Image src="/loginbg.png" objectFit="cover" w="100%" h="100%" />
+          <Image src="/loginlogo1.png" objectFit="cover" w="100%" h="100%" />
 
           {/* Overlay / centered image */}
           <Image
-            src="/loginlogoqu.png"
+            src="/loginquestion.png"
             alt="Centered Image"
             position="absolute"
             top="50%"
             left="50%"
-            width={"130px"}
-            height={"158px"}
+            width={"262px"}
+            height={"369px"}
             transform="translate(-50%, -50%)"
           />
         </Box>

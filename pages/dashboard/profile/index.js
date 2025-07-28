@@ -1,27 +1,35 @@
+import {
+  Box,
+  Grid,
+  GridItem,
+  HStack,
+  Text,
+  VStack
+} from "@chakra-ui/react";
+
+import Bookmarks from "@/components/dashboard/bookmarks";
+import Friends from "@/components/dashboard/friends";
+import Info from "@/components/dashboard/info";
+import MyQuestion from "@/components/dashboard/myQuestion";
+import Scores from "@/components/dashboard/scores";
 import MainLayout from "@/components/mainLayout";
-import { Badge, Box, Divider, Grid, GridItem, HStack, Image, Stack, Text, VStack } from "@chakra-ui/react";
-import { BsReply } from "react-icons/bs";
-import { CiFileOn } from "react-icons/ci";
-import { FaQuestion } from "react-icons/fa";
-import { GiGlobeRing } from "react-icons/gi";
-import { IoPeopleOutline, IoPersonOutline, IoSettingsOutline } from "react-icons/io5";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { CiBookmark } from "react-icons/ci";
+import { HiOutlineBellAlert } from "react-icons/hi2";
+import { IoPeopleOutline, IoSettingsSharp } from "react-icons/io5";
 import RightSidebar from "../rightSidebar";
-import useSWR from "swr";
 
 
-const menuList = [
-  { title: 'پروفایل', icon: <IoPersonOutline /> },
-  { title: 'پرسش‌ها', icon: <FaQuestion /> },
-  { title: 'پاسخ‌ها', icon: <BsReply /> },
-  { title: 'نوشته‌ها', icon: <CiFileOn /> },
-  { title: 'حسنات', icon: <GiGlobeRing /> },
-  { title: 'دوستان', icon: <IoPeopleOutline /> },
-  { title: 'حساب کاربری', icon: <IoSettingsOutline /> },
-]
 
 const Index = () => {
+  const { t } = useTranslation();
 
-    const { data: dataMe, isLoading: isLoadingMe } = useSWR(`user/client/me`);
+  const [type, setType] = useState(false)
+
+  const handleResizeQuestions = () => {
+    setType(!type)
+  }
 
   return (
     <MainLayout>
@@ -29,172 +37,97 @@ const Index = () => {
         w="100%"
         alignItems={"center"}
         justifyContent={"center"}
-        maxW="container.xl"
-        mx="auto"
-        p={{ base: '20px', md: "60px" }}
-        my={"20px"}
-        mt={'60px'}
+        // maxW="container.xl"
+        px="34px"
+        // p={{ base: "20px", md: "60px" }}
+        my={"34px"}
+        mt={{ base: "40px", md: "120px" }}
       >
-
-        <Grid templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(4, 1fr)" }} gap={'32px'} w={'100%'}>
-          <GridItem colSpan={1} display={{ base: 'none', md: 'flex' }}>
+        <Grid
+          templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(8, 1fr)" }}
+          w={"100%"}
+        >
+          <GridItem colSpan={1} display={{ base: "none", md: "flex" }}>
             <RightSidebar />
           </GridItem>
-          <GridItem as={Stack} gap={'20px'} colSpan={3} >
-            <VStack w={'100%'} alignItems={'start'} border={'1px'} borderRadius={'15px'} borderColor={'gray.200'} padding={'20px'}>
-              <Text fontWeight={'bold'}>درباره کاربر</Text>
-              <Text>{dataMe?.data?.[0]?.bio}</Text>
-            </VStack>
-            <Stack direction={{ base: 'column', md: 'row' }} gap={{ base: '20px' }} w={'100%'}>
-              <Box as={VStack} gap={'20px'} w={'100%'} border={'1px'} borderRadius={'15px'} borderColor={'gray.200'} padding={'20px'} py={'10px'} pb={'40px'} bgColor={'#3646B3'} color={'white'}>
-                <HStack w={'100%'} justifyContent={'space-between'} color={'white'}>
-                  <Text>آمار کاربر</Text>
-                  <Text fontSize={'xs'}>اطلاعات بیشتر</Text>
-                </HStack>
-                <HStack w={'100%'} justifyContent={'space-between'} px={'20px'}>
-                  <VStack>
-                    <FaQuestion fontSize={'40px'} />
-                    <Image src="../../dashboard/ellipse.png" w={'45px'} h={'auto'} />
+          <GridItem as={VStack} gap={"8px"} colSpan={7} mr={"8px"}>
+            <Grid templateColumns="repeat(3, 1fr)" gap={2} h={"calc( 100% - 50px )"} w={'100%'} >
+              <GridItem bgColor={"white"} w={"100%"} height={"100%"} colSpan={2} borderRadius={"15px"} >
+                <VStack w={'100%'} alignItems={'start'} >
+                  <Grid templateColumns='repeat(2, 1fr)' gap={2} w={'100%'}>
+                    <GridItem colSpan={1} bgColor={'#F7F7F7'} padding={'16px'} borderRadius={'15px'}>
+                      <HStack alignItems={'center'} fontSize={'20px'}>
+                        <IoSettingsSharp />
+                        <Text fontWeight={'bold'}>امتیازات</Text>
+                      </HStack>
+                      <Box as={VStack} w={'100%'} transition="height 0.3s ease" height={type ? '100%' : '320px'} gap={'10px'} overflowY={'scroll'} mt={'16px'}>
+                        <Scores />
 
-                    <Text fontSize={'sm'}>۳۵ پرسش</Text>
-                  </VStack>
-                  <VStack>
-                    <CiFileOn fontSize={'40px'} />
-                    <Image src="../../dashboard/ellipse.png" w={'45px'} h={'auto'} />
+                      </Box>
+                    </GridItem>
+                    <GridItem colSpan={1} bgColor={'#F7F7F7'} padding={'16px'} borderRadius={'15px'}>
+                      <HStack alignItems={'center'} fontSize={'20px'}>
+                        <HiOutlineBellAlert />
+                        <Text fontWeight={'bold'}>اعلان ها</Text>
+                      </HStack>
+                      <Box as={VStack} w={'100%'} transition="height 0.3s ease" height={type ? '100%' : '320px'} overflowY={'scroll'} mt={'25px'}>
+                        <Info />
+                        <Info />
+                        <Info />
 
-                    <Text fontSize={'sm'}>۳۵ پرسش</Text>
-                  </VStack>
-                  <VStack>
-                    <BsReply fontSize={'40px'} />
-                    <Image src="../../dashboard/ellipse.png" w={'45px'} h={'auto'} />
+                      </Box>
+                    </GridItem>
+                    <GridItem colSpan={1} bgColor={'#F7F7F7'} padding={'16px'} borderRadius={'15px'}>
+                      <HStack alignItems={'center'} fontSize={'20px'}>
+                        <CiBookmark />
+                        <Text fontWeight={'bold'}>ذخیره شده‌ ها</Text>
+                      </HStack>
+                      <Box as={VStack} w={'100%'} transition="height 0.3s ease" height={type ? '100%' : '320px'} overflowY={'scroll'} mt={'25px'}>
+                        <Bookmarks />
+                        <Bookmarks />
+                        <Bookmarks />
+                        <Bookmarks />
 
-                    <Text fontSize={'sm'}>۳۵ پرسش</Text>
-                  </VStack>
-                </HStack>
-              </Box>
-              <Box as={VStack} w={'100%'} gap={'20px'} border={'1px'} borderRadius={'15px'} borderColor={'gray.200'} padding={'20px'} py={'10px'} pb={'40px'} bgColor={'#29CCCC'} color={'white'}>
-                <HStack w={'100%'} justifyContent={'space-between'}>
-                  <Text>حسنات</Text>
-                  <Text fontSize={'xs'}>مشاهده همه</Text>
-                </HStack>
-                <HStack w={'100%'} justifyContent={'space-between'} px={'20px'}>
+                      </Box>
+                    </GridItem>
+                    <GridItem colSpan={1} bgColor={'#F7F7F7'} padding={'16px'} borderRadius={'15px'}>
+                      <HStack w={'100%'} justifyContent={'space-between'}>
+                        <HStack alignItems={'center'} fontSize={'20px'}>
+                          <IoPeopleOutline />
+                          <Text fontWeight={'bold'}>دوستان</Text>
+                        </HStack>
+                        <Text color={'#3646B3'} fontSize={'8px'} cursor={'pointer'}>مشاهده کامل</Text>
+                      </HStack>
+                      <Box as={VStack} gap={'15px'} w={'100%'} transition="height 0.3s ease" height={type ? '100%' : '320px'} overflowY={'scroll'} mt={'25px'}>
+                        <Friends />
+                        <Friends />
+                        <Friends />
 
-                  <VStack>
-                    <GiGlobeRing fontSize={'40px'} />
-                    <Image src="../../dashboard/ellipse.png" w={'45px'} h={'auto'} />
-                    <Text fontSize={'sm'}>۴ انگشتر عقیق</Text>
-                  </VStack>
-                  <VStack>
-                    <Image src="../../dashboard/mohr.png" w={'45px'} h={'40px'} />
-                    <Image src="../../dashboard/ellipse.png" w={'45px'} h={'auto'} />
-                    <Text fontSize={'sm'}>۳۵ پرسش</Text>
-                  </VStack>
-                  <VStack>
-                    <Image src="../../dashboard/tasbih.png" w={'45px'} h={'40px'} />
-                    <Image src="../../dashboard/ellipse.png" w={'45px'} h={'auto'} />
-                    <Text fontSize={'sm'}>۳۵ پرسش</Text>
-                  </VStack>
+                      </Box>
+                    </GridItem>
+                  </Grid>
+                </VStack>
+              </GridItem>
+              <GridItem colSpan={1} bgColor={'#F7F7F7'} padding={'16px'} borderRadius={'15px'} >
+                <HStack alignItems={'center'} fontSize={'20px'}>
+                  <Text fontWeight={'bold'}>سوالات من</Text>
                 </HStack>
-              </Box>
-            </Stack>
-            <VStack w={'100%'} alignItems={'start'} border={'1px'} borderRadius={'15px'} borderColor={'gray.200'} padding={'20px'}>
-              <HStack w={'100%'} justifyContent={'space-between'}>
-                <Text fontWeight={'bold'} mb={'10px'}>آخرین پرسش‌ها</Text>
-                <Text fontSize={'xs'} color={'#29CCCC'}>مشاهده همه</Text>
-              </HStack>
-              <Stack direction={{ base: 'column', md: 'row' }} w={'100%'} justifyContent={'space-between'}>
-                <Text>اگر نتوانیم آن را انجام دهیم، آیا می‌توان فطریه را به یک بدهکار ورشکسته داد؟</Text>
-                <HStack>
-                  <Text fontSize={'xs'} color={'gray'}> ۲۱ ساعت قبل</Text>
-                  <Badge bgColor={'#29CCCC'} color={'white'} borderRadius={'5px'} p={'2px'}>۳ پاسخ</Badge>
-                </HStack>
-              </Stack>
-              <Divider />
-              <Stack direction={{ base: 'column', md: 'row' }} w={'100%'} justifyContent={'space-between'}>
-                <Text>اگر نتوانیم آن را انجام دهیم، آیا می‌توان فطریه را به یک بدهکار ورشکسته داد؟</Text>
-                <HStack>
-                  <Text fontSize={'xs'} color={'gray'}> ۲۱ ساعت قبل</Text>
-                  <Badge bgColor={'#29CCCC'} color={'white'} borderRadius={'5px'} p={'2px'}>۳ پاسخ</Badge>
-                </HStack>
-              </Stack>
-              <Divider />
-              <Stack direction={{ base: 'column', md: 'row' }} w={'100%'} justifyContent={'space-between'}>
-                <Text>اگر نتوانیم آن را انجام دهیم، آیا می‌توان فطریه را به یک بدهکار ورشکسته داد؟</Text>
-                <HStack>
-                  <Text fontSize={'xs'} color={'gray'}> ۲۱ ساعت قبل</Text>
-                  <Badge bgColor={'#29CCCC'} color={'white'} borderRadius={'5px'} p={'2px'}>۳ پاسخ</Badge>
-                </HStack>
-              </Stack>
-              <Divider />
-              <Stack direction={{ base: 'column', md: 'row' }} w={'100%'} justifyContent={'space-between'}>
-                <Text>اگر نتوانیم آن را انجام دهیم، آیا می‌توان فطریه را به یک بدهکار ورشکسته داد؟</Text>
-                <HStack>
-                  <Text fontSize={'xs'} color={'gray'}> ۲۱ ساعت قبل</Text>
-                  <Badge bgColor={'#29CCCC'} color={'white'} borderRadius={'5px'} p={'2px'}>۳ پاسخ</Badge>
-                </HStack>
-              </Stack>
-              <Divider />
-              <Stack direction={{ base: 'column', md: 'row' }} w={'100%'} justifyContent={'space-between'}>
-                <Text>اگر نتوانیم آن را انجام دهیم، آیا می‌توان فطریه را به یک بدهکار ورشکسته داد؟</Text>
-                <HStack w={'100%'} >
-                  <Text fontSize={'xs'} color={'gray'}> ۲۱ ساعت قبل</Text>
-                  <Badge bgColor={'#29CCCC'} color={'white'} borderRadius={'5px'} p={'2px'}>۳ پاسخ</Badge>
-                </HStack>
-              </Stack>
-              <Divider />
-            </VStack>
-            <VStack w={'100%'} alignItems={'start'} border={'1px'} borderRadius={'15px'} borderColor={'gray.200'} padding={'20px'}>
-              <HStack w={'100%'} justifyContent={'space-between'}>
-                <Text fontWeight={'bold'} mb={'10px'}>آخرین پاسخ ها</Text>
-                <Text fontSize={'xs'} color={'#29CCCC'}>مشاهده همه</Text>
-              </HStack>
-              <Stack direction={{ base: 'column', md: 'row' }} w={'100%'} justifyContent={'space-between'}>
-                <Text>اگر نتوانیم آن را انجام دهیم، آیا می‌توان فطریه را به یک بدهکار ورشکسته داد؟</Text>
-                <HStack>
-                  <Text fontSize={'xs'} color={'gray'}> ۲۱ ساعت قبل</Text>
-                  <Badge bgColor={'#29CCCC'} color={'white'} borderRadius={'5px'} p={'2px'}>۳ پاسخ</Badge>
-                </HStack>
-              </Stack>
-              <Divider />
-              <Stack direction={{ base: 'column', md: 'row' }} w={'100%'} justifyContent={'space-between'}>
-                <Text>اگر نتوانیم آن را انجام دهیم، آیا می‌توان فطریه را به یک بدهکار ورشکسته داد؟</Text>
-                <HStack>
-                  <Text fontSize={'xs'} color={'gray'}> ۲۱ ساعت قبل</Text>
-                  <Badge bgColor={'#29CCCC'} color={'white'} borderRadius={'5px'} p={'2px'}>۳ پاسخ</Badge>
-                </HStack>
-              </Stack>
-              <Divider />
-              <Stack direction={{ base: 'column', md: 'row' }} w={'100%'} justifyContent={'space-between'}>
-                <Text>اگر نتوانیم آن را انجام دهیم، آیا می‌توان فطریه را به یک بدهکار ورشکسته داد؟</Text>
-                <HStack>
-                  <Text fontSize={'xs'} color={'gray'}> ۲۱ ساعت قبل</Text>
-                  <Badge bgColor={'#29CCCC'} color={'white'} borderRadius={'5px'} p={'2px'}>۳ پاسخ</Badge>
-                </HStack>
-              </Stack>
-              <Divider />
-              <Stack direction={{ base: 'column', md: 'row' }} w={'100%'} justifyContent={'space-between'}>
-                <Text>اگر نتوانیم آن را انجام دهیم، آیا می‌توان فطریه را به یک بدهکار ورشکسته داد؟</Text>
-                <HStack>
-                  <Text fontSize={'xs'} color={'gray'}> ۲۱ ساعت قبل</Text>
-                  <Badge bgColor={'#29CCCC'} color={'white'} borderRadius={'5px'} p={'2px'}>۳ پاسخ</Badge>
-                </HStack>
-              </Stack>
-              <Divider />
-              <Stack direction={{ base: 'column', md: 'row' }} w={'100%'} justifyContent={'space-between'}>
-                <Text>اگر نتوانیم آن را انجام دهیم، آیا می‌توان فطریه را به یک بدهکار ورشکسته داد؟</Text>
-                <HStack>
-                  <Text fontSize={'xs'} color={'gray'}> ۲۱ ساعت قبل</Text>
-                  <Badge bgColor={'#29CCCC'} color={'white'} borderRadius={'5px'} p={'2px'}>۳ پاسخ</Badge>
-                </HStack>
-              </Stack>
-              <Divider />
-            </VStack>
+                <Box as={VStack} w={'100%'} transition="height 0.3s ease" height={'calc( 100% - 70px )'} overflowY={'scroll'} mt={'25px'}>
+                  <MyQuestion />
+                  <MyQuestion />
+                  <MyQuestion />
+                  <MyQuestion />
+                  <MyQuestion />
+                  <MyQuestion />
+
+                </Box>
+              </GridItem>
+            </Grid>
           </GridItem>
         </Grid>
-
-      </Box>
+      </Box >
     </MainLayout>
-  )
-}
+  );
+};
 
-export default Index
+export default Index;

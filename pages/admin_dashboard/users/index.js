@@ -1,6 +1,6 @@
-import AnswerCard from "@/components/admin_dashboard/answers/answerCard";
-import AnswerEdit from "@/components/admin_dashboard/answers/answerEdit";
 import Header from "@/components/admin_dashboard/header";
+import UserCard from "@/components/admin_dashboard/users/userCard";
+import UserInfoCard from "@/components/admin_dashboard/users/userInfoCard";
 import {
   Box,
   Grid,
@@ -12,7 +12,7 @@ import {
   VStack
 } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { IoPencil, IoTrash } from "react-icons/io5";
+import { IoMenu } from "react-icons/io5";
 import RightSidebar from "../rightSidebar";
 
 const Index = () => {
@@ -53,7 +53,7 @@ const Index = () => {
             borderRadius={"15px"}
             padding={'10px'}
           >
-            <Text fontWeight={'700'} fontSize={'30px'} pr={'16px'} >سوالات</Text>
+            <Text fontWeight={'700'} fontSize={'30px'} pr={'16px'} >کاربران</Text>
             <Grid templateColumns="repeat(4, 1fr)" gap={6} w={'100%'} p={'10px'} >
               <GridItem bgColor={"white"} w={"100%"} height={"100%"} colSpan={3} borderRadius={"15px"} padding={'15px'}>
                 <HStack w={'100%'} justifyContent={'space-between'} paddingX={'16px'}>
@@ -66,20 +66,19 @@ const Index = () => {
                     </Select>
                   </HStack>
                   <HStack>
-                    <IconButton icon={<IoPencil />} colorScheme="blue" fontSize={'31px'} />
-                    <IconButton icon={<IoTrash />} colorScheme="blue" fontSize={'31px'} />
+                    <IconButton icon={<IoMenu />} colorScheme="blue" fontSize={'31px'} />
                   </HStack>
                 </HStack>
-                <Box as={VStack} w={'100%'} height={'calc( 100vh - 270px )'} padding={'16px'} gap={'10px'} overflowY={'auto'}>
-                  <AnswerCard />
-                  <AnswerCard />
-                  <AnswerCard />
-                  <AnswerCard />
-                  <AnswerCard />
-                </Box>
+                <Grid templateColumns="repeat(3, 1fr)" height={'calc( 100vh - 270px )'} w={'100%'} p={'10px'} padding={'16px'} gap={'10px'} overflowY={'auto'}>
+                  <UserCard />
+                  <UserCard />
+                  <UserCard />
+                  <UserCard />
+                  <UserCard />
+                </Grid>
               </GridItem>
-              <GridItem bgColor={"white"} w={"100%"} height={"100%"} borderRadius={"15px"} padding={'20px'}>
-                <AnswerEdit />
+              <GridItem bgColor={"white"} w={"100%"} height={"100%"} borderRadius={"15px"} >
+                <UserInfoCard />
               </GridItem>
             </Grid>
           </Box>

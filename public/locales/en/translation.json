@@ -113,17 +113,12 @@
   "literal_search_results_for": "Literal Search Results for",
   "ask_question": "To ask a question, you need to log into your account.",
   "your_question": "Your question",
-  "login":"login",
+  "login": "login",
   "no_account": "Don’t have an account?",
   "continue": "Continue",
   "repeat_password": "Repeat Password",
-    "reset_password": "Reset Password",
-      "new_password": "New Password",
-        "send":"send"
-        
-
-
-
-
-
+  "reset_password": "Reset Password",
+  "new_password": "New Password",
+  "send": "send",
+  "create_an_account": "Create an account"
 }

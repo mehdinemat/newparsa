@@ -56,16 +56,24 @@ import MenuBar from "./mobile/menuBar";
 
 const menuList = [
   {
-    title: "برچسب ها",
-    t_title: "header_tags",
+    title: "داشبورد",
+    t_title: "header_dashboard",
   },
   {
-    title: "کاربران",
+    title: "سوالات",
+    t_title: "header_questions",
+  },
+  {
+    title: "پاسخ ها",
+    t_title: "header_answers",
+  },
+  {
+    title: "دیدگاه ها",
     link: "users",
     t_title: "header_users",
   },
   {
-    title: "محصولات",
+    title: "کاربران",
     link: "products",
     t_title: "header_products",
   },

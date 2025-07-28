@@ -9,16 +9,16 @@ import {
   Input,
   InputGroup,
   InputRightElement,
+  Select,
   Stack,
-  Text,
+  Text
 } from "@chakra-ui/react";
-import { BiSortAlt2 } from "react-icons/bi";
-import { IoSearch } from "react-icons/io5";
-import { useTranslation } from "react-i18next";
 import Head from "next/head";
+import { useRouter } from "next/router";
+import { useTranslation } from "react-i18next";
+import { IoSearch } from "react-icons/io5";
 import useSWR from "swr";
 import { NumberParam, useQueryParams, withDefault } from "use-query-params";
-import { useRouter } from "next/router";
 
 const Index = () => {
   const router = useRouter();
@@ -53,13 +53,52 @@ const Index = () => {
         p={{ base: "0px", md: "20px" }}
         px={{ base: "20px" }}
       >
+
         <HStack
           w={"100%"}
           justifyContent={"space-between"}
           display={{ base: "none", md: "flex" }}
         >
-          <Text fontWeight={"bold"}>{t("users")}</Text>
-          <InputGroup width={"290px"} height={"46px"}>
+          <Text fontWeight={"bold"} fontSize={'33px'}>{t("users")}</Text>
+          <HStack w={"100%"} alignItems={"end"} justifyContent={"end"}>
+            <HStack justifyContent={{ base: "start" }}>
+              <Button
+                color={'#979797'}
+                variant={"ghost"}
+                fontSize={"18px"}
+                fontWeight={'600'}
+                padding={{ base: "0px" }}
+                display={{ base: "none", md: "flex" }}
+              >
+                {t("sort_by")}
+              </Button>
+              <Select bgColor={'#F3F3F3'} color={'#3646B3'} borderRadius={'13px'} height={'40px'} width={'117px'} border={'none'}>
+                <option>{t("latest")}</option>
+                <option>{t("most_viewed")}</option>
+                <option>{t("most_popular")}</option>
+              </Select>
+              {/* <Button
+                variant={"ghost"}
+                fontSize={"sm"}
+                padding={{ base: "0px" }}
+                display={{ md: "none", md: "flex" }}
+              >
+                {t("latest")}
+              </Button> */}
+            </HStack>
+            {/* <HStack display={{ base: "none", md: "flex" }}>
+            <Button variant={"ghost"} fontSize={"sm"}>
+              {t("latest")}
+            </Button>
+            <Button variant={"ghost"} fontSize={"sm"}>
+              {t("most_viewed")}
+            </Button>
+            <Button variant={"ghost"} fontSize={"sm"}>
+              {t("most_popular")}
+            </Button>
+          </HStack> */}
+          </HStack>
+          <InputGroup width={"290px"} height={"46px"} bgColor={'#F3F3F3'} color={'#3646B3'}>
             <Input
               width={"290px"}
               height={"46px"}
@@ -76,40 +115,12 @@ const Index = () => {
         </HStack>
         <HStack w={"100%"} justifyContent={"space-between"} my={"20px"}>
           {/* <Text fontWeight={'bold'} >کاربر</Text> */}
-          <HStack w={"100%"} alignItems={"end"} justifyContent={"end"}>
-            <HStack justifyContent={{ base: "start" }}>
-              <BiSortAlt2 color="gray" />
-              <Button
-                variant={"ghost"}
-                fontSize={"sm"}
-                padding={{ base: "0px" }}
-                display={{ base: "none", md: "flex" }}
-              >
-                {t("sort_by")}
-              </Button>
-              <Button
-                variant={"ghost"}
-                fontSize={"sm"}
-                padding={{ base: "0px" }}
-                display={{ md: "none", md: "flex" }}
-              >
-                {t("latest")}
-              </Button>
-            </HStack>
-            <HStack display={{ base: "none", md: "flex" }}>
-              <Button variant={"ghost"} fontSize={"sm"}>
-                {t("latest")}
-              </Button>
-              <Button variant={"ghost"} fontSize={"sm"}>
-                {t("most_viewed")}
-              </Button>
-              <Button variant={"ghost"} fontSize={"sm"}>
-                {t("most_popular")}
-              </Button>
-            </HStack>
-          </HStack>
+
         </HStack>
         <Grid
+          bgColor={'#F3F3F3'}
+          padding={'26px'}
+          borderRadius={'15px'}
           templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(4, 1fr)" }}
           gap={"20px"}
           w={"100%"}
