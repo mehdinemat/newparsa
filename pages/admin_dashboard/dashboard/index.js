@@ -24,12 +24,17 @@ import {
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { IoResize, IoSettingsSharp } from "react-icons/io5";
+import useSWR from "swr";
 import RightSidebar from "../rightSidebar";
 
 
 
 const Index = () => {
   const { t } = useTranslation();
+
+  const { data: dataQuestion, isLoading: isLoadingQuestion } = useSWR(`admin/question`)
+  const { data: dataAnswer, isLoading: isLoadingAnswer } = useSWR(`admin/question/answer`)
+  const { data: dataClient, isLoading: isLoadingClient } = useSWR(`admin/client`)
 
   const [type, setType] = useState(false)
 
@@ -91,10 +96,11 @@ const Index = () => {
                     <GridItem colSpan={2}>
                       <Text height={'20px'}></Text>
                       <Box as={VStack} w={'100%'} transition="height 0.3s ease" height={type ? '100%' : '320px'} padding={'16px'} gap={'10px'} overflowY={'scroll'}>
-                        <QuestionCard />
-                        <QuestionCard />
-                        <QuestionCard />
-                        <QuestionCard />
+                        {
+                          dataQuestion?.data?.result?.map((question) => (
+                            <QuestionCard data={question} />
+                          ))
+                        }
 
                       </Box>
                     </GridItem>
@@ -106,12 +112,11 @@ const Index = () => {
                       <HStack w={'100%'} height={'calc( 100% - 20px )'} bgColor={'#F7F7F7'} padding={'16px'} gap={'32px'} borderRadius={'5px'}>
 
                         <Box as={VStack} w={'100%'} gap={'10px'} transition="height 0.3s ease" height={type ? '100%' : '270px'} overflowY={'auto'}>
-                          <AnswerCard />
-                          <AnswerCard />
-                          <AnswerCard />
-                          <AnswerCard />
-                          <AnswerCard />
-                          <AnswerCard />
+                          {
+                            dataAnswer?.data?.result?.map((answer) => (
+                              <AnswerCard data={answer} />
+                            ))
+                          }
                         </Box>
                         <Box as={VStack} w={'100%'} gap={'10px'} transition="height 0.3s ease" height={type ? '100%' : '270px'} overflowY={'auto'}>
                           <AnswerCard />
@@ -138,11 +143,11 @@ const Index = () => {
                   <Text height={'20px'} fontWeight={'800'} fontSize={'18px'}>آدمین ها</Text>
                 </HStack>
                 <Box as={VStack} w={'100%'} height={'320px'} padding={'16px'} gap={'10px'} overflowY={'auto'}>
-                  <AdminListCard />
-                  <AdminListCard />
-                  <AdminListCard />
-                  <AdminListCard />
-                  <AdminListCard />
+                  {
+                    dataClient?.data?.result?.map((client) => (
+                      <AdminListCard data={client} />
+                    ))
+                  }
                 </Box>
               </GridItem>
               <GridItem bgColor={"white"} w={"100%"} height={"100%"} colSpan={2} borderRadius={"15px"}>
@@ -169,41 +174,15 @@ const Index = () => {
                       </Tr>
                     </Thead>
                     <Tbody>
-                      <Tr>
-                        <Td>inches</Td>
-                        <Td>millimetres (mm)</Td>
-                        <Td >25.4</Td>
-                      </Tr>
-                      <Tr>
-                        <Td>feet</Td>
-                        <Td>centimetres (cm)</Td>
-                        <Td >30.48</Td>
-                      </Tr>
-                      <Tr>
-                        <Td>yards</Td>
-                        <Td>metres (m)</Td>
-                        <Td >0.91444</Td>
-                      </Tr>
-                      <Tr>
-                        <Td>yards</Td>
-                        <Td>metres (m)</Td>
-                        <Td >0.91444</Td>
-                      </Tr>
-                      <Tr>
-                        <Td>yards</Td>
-                        <Td>metres (m)</Td>
-                        <Td >0.91444</Td>
-                      </Tr>
-                      <Tr>
-                        <Td>yards</Td>
-                        <Td>metres (m)</Td>
-                        <Td >0.91444</Td>
-                      </Tr>
-                      <Tr>
-                        <Td>yards</Td>
-                        <Td>metres (m)</Td>
-                        <Td >0.91444</Td>
-                      </Tr>
+                      {
+                        dataClient?.data?.result?.map((client) => (
+                          <Tr>
+                            <Td>{client?.username}</Td>
+                            <Td></Td>
+                            <Td ></Td>
+                          </Tr>
+                        ))
+                      }
                     </Tbody>
                   </Table>
                 </TableContainer>

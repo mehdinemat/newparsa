@@ -2,15 +2,15 @@ import { Avatar, Badge, Button, Card, Checkbox, Divider, Grid, GridItem, HStack,
 import { IoArrowBack, IoChatbubbleEllipsesOutline, IoEyeOutline } from "react-icons/io5"
 import { TiInputChecked } from "react-icons/ti"
 
-const QuestionCard = () => {
+const QuestionCard = ({ data }) => {
   return (
-    <Grid templateColumns='repeat(4, 1fr)' gap={2} height={'150px'} w={'100%'}>
+    <Grid templateColumns='repeat(4, 1fr)' gap={2} height={'auto'} w={'100%'}>
       <GridItem colSpan={3} height={'100%'}>
         <Card as={VStack} height={'100%'} w={'100%'} bgColor={'#F7F7F7'} variant={'unstyled'} flexShrink={0} gap={0} padding={'10px'} borderRadius={'10px'}>
           <HStack w={'100%'} alignItems={'start'} >
             <Checkbox></Checkbox>
             <VStack w={'100%'} alignItems={'start'}>
-              <Text fontWeight={'400'} fontSize={'18px'}>آیا می‌توان نذر کرد که فطریه را به زلزله زده‌گان داد؟  داد؟</Text>
+              <Text fontWeight={'400'} fontSize={'18px'}>{data?.content?.slice(0, 200)}</Text>
               <HStack w={'100%'} justifyContent={'space-between'}>
                 <HStack>
                   <Badge bgColor={'#29CCCC2B'} color={'#16A6A6'} fontSize={'12px'} padding={'5px'} borderRadius={'5px'}>خداشناسی</Badge>

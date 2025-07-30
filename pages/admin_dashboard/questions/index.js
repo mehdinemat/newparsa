@@ -15,10 +15,15 @@ import {
 import { useTranslation } from "react-i18next";
 import { GoPencil } from "react-icons/go";
 import { IoArrowBack, IoClose, IoPencil, IoTrash } from "react-icons/io5";
+import useSWR from "swr";
 import RightSidebar from "../rightSidebar";
 
 const Index = () => {
+
+  const { data: dataQuestions, isLoading: isLoadingQuestions } = useSWR(`admin/question`)
+
   const { t } = useTranslation();
+
 
   return (
     // <MainLayout>
@@ -73,11 +78,11 @@ const Index = () => {
                   </HStack>
                 </HStack>
                 <Box as={VStack} w={'100%'} height={'calc( 100vh - 270px )'} padding={'16px'} gap={'10px'} overflowY={'auto'}>
-                  <QuestionCard />
-                  <QuestionCard />
-                  <QuestionCard />
-                  <QuestionCard />
-                  <QuestionCard />
+                  {
+                    dataQuestions?.data?.result?.map((question) => (
+                      <QuestionCard data={question} />
+                    ))
+                  }
                 </Box>
               </GridItem>
               <GridItem bgColor={"white"} w={"100%"} height={"100%"} borderRadius={"15px"} padding={'20px'}>

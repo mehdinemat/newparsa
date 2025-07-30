@@ -146,7 +146,6 @@ const Index = () => {
             <Input
               border={'1px'}
               borderColor={'#B7B7B7'}
-              color={'#F7F7F7'}
               height={"46px"}
               borderRadius={'10px'}
               type="password"

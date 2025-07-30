@@ -2,13 +2,13 @@ import { Avatar, Badge, Button, Card, Checkbox, Divider, HStack, Text, VStack } 
 import { IoArrowBack, IoChatbubbleEllipsesOutline, IoEyeOutline } from "react-icons/io5"
 import { TiInputChecked } from "react-icons/ti"
 
-const questionCard = () => {
+const questionCard = ({ data }) => {
   return (
     <Card as={VStack} height={'126px'} w={'100%'} bgColor={'#F7F7F7'} variant={'unstyled'} flexShrink={0} gap={0} padding={'10px'}>
       <HStack w={'100%'} alignItems={'start'} >
         <Checkbox></Checkbox>
         <VStack w={'100%'} alignItems={'start'}>
-          <Text fontWeight={'400'} fontSize={'10px'}>آیا می‌توان نذر کرد که فطریه را به زلزله زده‌گان داد؟ اگر نتوانیم آن را انجام دهیم، آیا می‌توان فطریه را به یک بدهکار ورشکسته داد؟</Text>
+          <Text fontWeight={'400'} fontSize={'10px'}>{data?.content?.slice(0, 200)}</Text>
           <HStack w={'100%'} justifyContent={'space-between'}>
             <HStack>
               <Badge colorScheme="blue" fontSize={'7px'}>خداشناسی</Badge>

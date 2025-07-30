@@ -3,7 +3,7 @@ import { Avatar, Box, Button, Card, Checkbox, Divider, Grid, GridItem, HStack, I
 import { IoArrowBack, IoChatbubbleEllipsesOutline, IoEyeOutline } from "react-icons/io5"
 import { TiInputChecked } from "react-icons/ti"
 
-const AnswerCard = () => {
+const AnswerCard = ({ data }) => {
   return (
     <Grid templateColumns='repeat(4, 1fr)' gap={2} height={'170px'} w={'100%'}>
       <GridItem colSpan={3} height={'100%'}>
@@ -13,7 +13,7 @@ const AnswerCard = () => {
             <VStack w={'100%'} alignItems={'start'}>
               <Box display={'flex'} height={'38px'} bgColor={'white'} w={'100%'} alignItems={'center'} p={'8px'} position={'relative'} pr={'10px'} borderRadius={'5px'}>
                 <Box bgColor={'#3646B3'} height={'90%'} w={'3px'} position={'absolute'} zIndex={'9999'} borderTopRightRadius={'10px'} borderBottomRightRadius={'10px'} right={'2px'} />
-                <Text>آیا می‌توان نذر کرد که فطریه را به زلزله زده‌گان داد؟  داد؟</Text>
+                <Text>{data?.content?.slice(0, 200)}</Text>
               </Box>
               <Text fontWeight={'400'} fontSize={'18px'}>آیا می‌توان نذر کرد که فطریه را به زلزله زده‌گان داد؟  داد؟</Text>
               <HStack w={'100%'} justifyContent={'end'}>

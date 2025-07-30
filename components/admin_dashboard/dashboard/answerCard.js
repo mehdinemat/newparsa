@@ -1,11 +1,11 @@
 import { Avatar, Card, Divider, HStack, Text, VStack } from "@chakra-ui/react"
 
-const AnswerCard = () => {
+const AnswerCard = ({ data }) => {
   return (
     <Card as={VStack} height={'119px'} w={'100%'} bgColor={'white'} variant={'unstyled'} flexShrink={0} gap={0} padding={'10px'}>
       <HStack w={'100%'} alignItems={'start'} >
         <VStack w={'100%'} alignItems={'start'}>
-          <Text fontWeight={'400'} fontSize={'12px'}>آیا می‌توان نذر کرد که فطریه را به زلزله زده‌گان داد؟ اگر نتوانیم آن را انجام دهیم، آیا می‌توان فطریه را به یک بدهکار ورشکسته داد؟</Text>
+          <Text fontWeight={'400'} fontSize={'12px'}>{data?.content?.slice(0, 200)}</Text>
 
           <Divider my={'5px'} />
         </VStack>

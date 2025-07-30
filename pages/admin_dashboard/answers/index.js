@@ -11,12 +11,21 @@ import {
   Text,
   VStack
 } from "@chakra-ui/react";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { IoPencil, IoTrash } from "react-icons/io5";
+import useSWR from "swr";
 import RightSidebar from "../rightSidebar";
 
 const Index = () => {
   const { t } = useTranslation();
+
+  const { data: dataAnswer, isLoading: isLoadingAnswer } = useSWR(`admin/question/answer`)
+
+
+  useEffect(() => {
+    console.log(dataAnswer)
+  }, [dataAnswer])
 
   return (
     // <MainLayout>
@@ -71,11 +80,11 @@ const Index = () => {
                   </HStack>
                 </HStack>
                 <Box as={VStack} w={'100%'} height={'calc( 100vh - 270px )'} padding={'16px'} gap={'10px'} overflowY={'auto'}>
-                  <AnswerCard />
-                  <AnswerCard />
-                  <AnswerCard />
-                  <AnswerCard />
-                  <AnswerCard />
+                  {
+                    dataAnswer?.data?.result?.map((answer) => (
+                      <AnswerCard data={answer} />
+                    ))
+                  }
                 </Box>
               </GridItem>
               <GridItem bgColor={"white"} w={"100%"} height={"100%"} borderRadius={"15px"} padding={'20px'}>
