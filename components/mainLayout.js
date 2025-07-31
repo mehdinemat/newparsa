@@ -56,28 +56,55 @@ import MenuBar from "./mobile/menuBar";
 
 const menuList = [
   {
-    title: "داشبورد",
-    t_title: "header_dashboard",
-  },
-  {
-    title: "سوالات",
-    t_title: "header_questions",
-  },
-  {
-    title: "پاسخ ها",
-    t_title: "header_answers",
-  },
-  {
-    title: "دیدگاه ها",
-    link: "users",
-    t_title: "header_users",
+    title: "برچسب ها",
+    t_title: "header_tags",
   },
   {
     title: "کاربران",
-    link: "products",
-    t_title: "header_products",
+    t_title: "header_users",
+    link: "users",
   },
+  {
+    title: "محصولات",
+    t_title: "header_products",
+    link: "products",
+  },
+  // {
+  //   title: "دیدگاه ها",
+  //   link: "users",
+  //   t_title: "header_users",
+  // },
+  // {
+  //   title: "کاربران",
+  //   link: "products",
+  //   t_title: "header_products",
+  // },
 ];
+
+// const menuList = [
+//   {
+//     title: "داشبورد",
+//     t_title: "header_dashboard",
+//   },
+//   {
+//     title: "سوالات",
+//     t_title: "header_questions",
+//   },
+//   {
+//     title: "پاسخ ها",
+//     t_title: "header_answers",
+//   },
+//   {
+//     title: "دیدگاه ها",
+//     link: "users",
+//     t_title: "header_users",
+//   },
+//   {
+//     title: "کاربران",
+//     link: "products",
+//     t_title: "header_products",
+//   },
+// ];
 
 const MainLayout = ({ children }) => {
   const { t } = useTranslation();
