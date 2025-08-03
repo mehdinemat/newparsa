@@ -7,6 +7,7 @@ import {
   AccordionPanel,
   Box,
   Button,
+  Center,
   Checkbox,
   Grid,
   GridItem,
@@ -52,7 +53,7 @@ export const fetcherWithTiming = async (url) => {
   const endTime = performance.now();
   const duration = endTime - startTime;
 
-  if (!response.ok) throw new Error('Request failed');
+  if (!response.ok) throw new Error("Request failed");
 
   const data = await response.json();
 
@@ -73,16 +74,23 @@ const Index = ({ children }) => {
     search_type: withDefault(StringParam, ""),
     order_by: withDefault(StringParam, ""),
     model: withDefault(StringParam, "e5"),
+    source: withDefault(StringParam, ""),
   });
+
+  const { data: dataResource, isLoading: isLoadingResource } =
+    useSWR(`user/source`);
 
   const {
     data: dataQuestionSearch,
     error: errorQuestionSearch,
     isLoading: isLoadingQuestionSearch,
   } = useSWR(
-    `user/question/search?page=${(page - 1) * 10}&search_type=${filters?.search_type
-    }&content=${filters?.search}&lang=${locale}${filters?.order_by && `&order_by=${filters?.order_by}`
-    }&model_name=${filters?.model}`, fetcherWithTiming
+    `user/question/search?page=${(page - 1) * 10}&search_type=${
+      filters?.search_type
+    }&content=${filters?.search}&lang=${locale}${
+      filters?.order_by && `&order_by=${filters?.order_by}`
+    }&model_name=${filters?.model}&source_name=${filters?.source}`,
+    fetcherWithTiming
   );
   const {
     data: dataCurrection,
@@ -104,7 +112,7 @@ const Index = ({ children }) => {
   }, [filters?.search]);
 
   const handleChangeModel = () => {
-    setPage(1)
+    setPage(1);
     setFilters({ model: "bge" });
   };
 
@@ -156,82 +164,58 @@ const Index = ({ children }) => {
             <Text fontWeight={"bold"} fontSize={"16px"}>
               فیلترها
             </Text>
-            <Accordion dir="rtl" mt={"20px"} w="100%">
-              <AccordionItem>
-                <h2>
-                  <AccordionButton flexDirection="row-reverse">
-                    <AccordionIcon ml={2} />
-                    <Box as="span" flex="1" textAlign="right">
-                      عبارات{" "}
-                    </Box>
-                  </AccordionButton>
-                </h2>
-                <AccordionPanel pb={4}>
-                  <VStack gap={"20px"}>
-                    <InputGroup>
+            <Accordion dir="rtl" mt={"20px"} w="100%" allowMultiple>
+              {isLoadingResource ? (
+                <Center>
+                  <Spinner />
+                </Center>
+              ) : (
+                <AccordionItem>
+                  <h2>
+                    <AccordionButton flexDirection="row-reverse">
+                      <AccordionIcon ml={2} />
+                      <Box as="span" flex="1" textAlign="right">
+                        منابع
+                      </Box>
+                    </AccordionButton>
+                  </h2>
+                  <AccordionPanel pb={4}>
+                    <VStack gap={"20px"}>
+                      {/* <InputGroup>
                       <Input placeholder="جستجوی عبارت" />
                       <InputRightElement>
                         <IoSearch />
                       </InputRightElement>
-                    </InputGroup>
-                    <HStack
-                      w={"100%"}
-                      alignItems={"center"}
-                      justifyContent={"start"}
-                    >
-                      <Checkbox size={"lg"}></Checkbox>
-                      <Text>وحی</Text>
-                    </HStack>
-                    <HStack
-                      w={"100%"}
-                      alignItems={"center"}
-                      justifyContent={"start"}
-                    >
-                      <Checkbox size={"lg"}></Checkbox>
-                      <Text>ویژگی ها و اختصاصات قرآن</Text>
-                    </HStack>
-                    <HStack
-                      w={"100%"}
-                      alignItems={"center"}
-                      justifyContent={"start"}
-                    >
-                      <Checkbox size={"lg"}></Checkbox>
-                      <Text>نزول قرآن</Text>
-                    </HStack>
-                    <HStack
-                      w={"100%"}
-                      alignItems={"center"}
-                      justifyContent={"start"}
-                    >
-                      <Checkbox size={"lg"}></Checkbox>
-                      <Text>کتابت و جمع آوری قرآن</Text>
-                    </HStack>
-                  </VStack>
-                </AccordionPanel>
-              </AccordionItem>
-
-              {/* <AccordionItem>
-                <h2>
-                  <AccordionButton flexDirection="row-reverse">
-                    <AccordionIcon ml={2} />
-                    <Box as="span" flex="1" textAlign="right">
-                      تب دوم
-                    </Box>
-                  </AccordionButton>
-                </h2>
-                <AccordionPanel pb={4}>لورم ایپسوم متن ساختگی</AccordionPanel>
-              </AccordionItem>
-              <AccordionItem>
-                <h2>
-                  <AccordionButton flexDirection="row-reverse">
-                    <AccordionIcon ml={2} />
-                    <Box as="span" flex="1" textAlign="right">
-                      تب دوم
-                    </Box>
-                  </AccordionButton>
-                </h2>
-                <AccordionPanel pb={4}>لورم ایپسوم متن ساختگی</AccordionPanel>
-              </AccordionItem> */}
+                    </InputGroup> */}
+                      {dataResource?.data?.map((source) => (
+                        <HStack
+                          w={"100%"}
+                          alignItems={"center"}
+                          justifyContent={"start"}
+                        >
+                          <Checkbox
+                            colorScheme="blue"
+                            isChecked={
+                              source?.en_source_name == filters?.source
+                            }
+                            size={"lg"}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setFilters({ source: source?.en_source_name });
+                              } else if (
+                                filters?.source == source?.en_source_name
+                              ) {
+                                setFilters({ source: undefined });
+                              }
+                            }}
+                          ></Checkbox>
+                          <Text>{source?.fa_source_name}</Text>
+                        </HStack>
+                      ))}
+                    </VStack>
+                  </AccordionPanel>
+                </AccordionItem>
+              )}
             </Accordion>
           </Box>
 
@@ -318,7 +302,8 @@ const Index = ({ children }) => {
             </HStack>
             <HStack w={"100%"} justifyContent={"space-between"} mb={"20px"}>
               <Text w={"full"}>
-                {dataQuestionSearch?.data?.data?.total_count} نتیجه ({(dataQuestionSearch?.duration / 1000).toFixed(3) || 0} ثانیه)
+                {dataQuestionSearch?.data?.data?.total_count} نتیجه (
+                {(dataQuestionSearch?.duration / 1000).toFixed(3) || 0} ثانیه)
               </Text>
               <HStack>
                 <TbArrowsSort color="gray" fontSize={"16px"} />
@@ -366,9 +351,11 @@ const Index = ({ children }) => {
                   alignItems={"center"}
                 >
                   <Pagination
-                    totalPages={Math?.ceil(
-                      dataQuestionSearch?.data?.data?.total_count / 10
-                    ) - 1}
+                    totalPages={
+                      Math?.ceil(
+                        dataQuestionSearch?.data?.data?.total_count / 10
+                      ) - 1
+                    }
                     currentPage={page}
                     onPageChange={setPage}
                     t={t}
