@@ -55,10 +55,10 @@ import UserMenuBar from "./mobile/dashboard/userMenuBar";
 import MenuBar from "./mobile/menuBar";
 
 const menuList = [
-  {
-    title: "برچسب ها",
-    t_title: "header_tags",
-  },
+  // {
+  //   title: "برچسب ها",
+  //   t_title: "header_tags",
+  // },
   {
     title: "کاربران",
     t_title: "header_users",

@@ -26,16 +26,17 @@ const QuestionCard = ({ data, t, type = "question" }) => {
       bgColor={'#F7F7F7'}
       borderRadius={'13px'}
       padding={'10px'}
+      onClick={(e) =>
+        handleQuestionRouter(
+          type == "question" ? data?.id : data?.question_id
+        )
+      }
 
     >
       <Image src="/minquestion.png" w={'23px'} height={'32px'} mt={'10px'} mr={'10px'} />
       <VStack w={"100%"} alignItems={"start"} gap={"15px"} paddingBottom={'16px'}>
         <Text
-          onClick={(e) =>
-            handleQuestionRouter(
-              type == "question" ? data?.id : data?.question_id
-            )
-          }
+
           fontSize={"18px"}
           w="full"
           whiteSpace="normal"

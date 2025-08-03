@@ -131,7 +131,7 @@ const Index = () => {
             <Input
               border={'1px'}
               borderColor={'#B7B7B7'}
-              color={'#F7F7F7'}
+              color={'black'}
               height={"46px"}
               borderRadius={'10px'}
               placeholder={t("username_or_mobile_number")}

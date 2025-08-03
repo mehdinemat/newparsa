@@ -30,9 +30,7 @@ import {
   IoBookmark,
   IoBookmarkOutline,
   IoCheckmark,
-  IoClose,
-  IoPencil,
-  IoWarningOutline,
+  IoWarningOutline
 } from "react-icons/io5";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
@@ -50,8 +48,8 @@ const postActionRequest = (
 ) => {
   return axios.post(
     baseUrl +
-      url +
-      `?table_type=${table_type}&table_id=${table_id}&type_param=${type_param}`,
+    url +
+    `?table_type=${table_type}&table_id=${table_id}&type_param=${type_param}`,
     data,
     {
       headers: {
@@ -67,8 +65,8 @@ const patchRequest = (
 ) => {
   return axios.post(
     baseUrl +
-      url +
-      `?table_type=${table_type}&table_id=${table_id}&type_param=${type_param}`,
+    url +
+    `?table_type=${table_type}&table_id=${table_id}&type_param=${type_param}`,
     data,
     {
       headers: {
@@ -117,20 +115,20 @@ const Index = () => {
 
   const { data: dataQuestionComment, isLoading: isLoadingComment } = useSWR(
     query?.id &&
-      `user/action?table_id=${query?.id}&table_type=question&type_param=comment`
+    `user/action?table_id=${query?.id}&table_type=question&type_param=comment`
   );
   const { data: dataQuestionLike, isLoading: isLoadingLike } = useSWR(
     query?.id &&
-      `user/action?table_id=${query?.id}&table_type=question&type_param=like`
+    `user/action?table_id=${query?.id}&table_type=question&type_param=like`
   );
   const { data: dataQuestionSave, isLoading: isLoadingSave } = useSWR(
     query?.id &&
-      `user/action?table_id=${query?.id}&table_type=question&type_param=save_message`
+    `user/action?table_id=${query?.id}&table_type=question&type_param=save_message`
   );
 
   const { data: dataQuestionSimilar, isLoading: isLoadingSimilar } = useSWR(
     dataQuestion?.data &&
-      `user/question/similar-questions?question_elastic_id=${dataQuestion?.data?.result?.[0]?.elastic_id}`
+    `user/question/similar-questions?question_elastic_id=${dataQuestion?.data?.result?.[0]?.elastic_id}`
   );
 
   const {
@@ -192,8 +190,7 @@ const Index = () => {
 
   const handleClickSource = (source) => {
     router.replace(
-      `/questions?source=${
-        dataSource?.data?.find((it) => it?.fa_source_name == source)?.id
+      `/questions?source=${dataSource?.data?.find((it) => it?.fa_source_name == source)?.id
       }`
     );
   };
@@ -467,7 +464,7 @@ const Index = () => {
                         <IoWarningOutline color="gray" />
                       </HStack>
                     </Stack>
-                    <Box
+                    {/* <Box
                       w={"100%"}
                       padding={"10px"}
                       px={"20px"}
@@ -579,7 +576,7 @@ const Index = () => {
                           </HStack>
                         </Stack>
                       ))}
-                    </Box>
+                    </Box> */}
                     <Box
                       w={{ base: "fit-content", md: "100%" }}
                       padding={{ base: "none", md: "10px" }}
@@ -597,7 +594,7 @@ const Index = () => {
                         my={"10px"}
                       >
                         <Text fontWeight={"bold"} fontSize={"18px"}>
-                          {t("answers")}
+                          {t(dataQuestionAnswer?.data?.length == 1 ? "answer_one" : "answers")}
                         </Text>
                       </HStack>
                       <HStack alignItems={"start"} gap={"10px"}>
@@ -643,7 +640,7 @@ const Index = () => {
                           >
                             {dataQuestionAnswer?.data?.[0]?.content}
                           </Text>
-                          <HStack
+                          {/* <HStack
                             w={"100%"}
                             justifyContent={{
                               base: "start",
@@ -677,7 +674,7 @@ const Index = () => {
                                 </HStack>
                               )}
                             </HStack>
-                          </HStack>
+                          </HStack> */}
                           {slidesToShow == 1 && (
                             <HStack gap={0} alignItems={"center"}>
                               <Button
@@ -692,7 +689,7 @@ const Index = () => {
                               <IoWarningOutline color="gray" />
                             </HStack>
                           )}
-                          <Box
+                          {/* <Box
                             w={"100%"}
                             padding={"10px"}
                             px={"20px"}
@@ -713,10 +710,10 @@ const Index = () => {
                                 />
                               </HStack>
                             </HStack>
-                          </Box>
+                          </Box> */}
                         </VStack>
                       </HStack>
-                      <Divider mt={"20px"} borderColor={"gray.200"} />
+                      {/* <Divider mt={"20px"} borderColor={"gray.200"} /> */}
                     </Box>
                     {!isUserLogin ? (
                       <Box
@@ -821,7 +818,7 @@ const Index = () => {
                         cursor={"pointer"}
                         onClick={(e) => handleSimilarClick(similar?.id)}
                       >
-                        <Text fontSize={"14px"}>{similar?.content?.substring(0,100)}</Text>
+                        <Text fontSize={"14px"}>{similar?.content?.substring(0, 100)}</Text>
                       </HStack>
                     ))}
                 </Box>
@@ -850,7 +847,7 @@ const Index = () => {
                         cursor={"pointer"}
                         onClick={(e) => handleSimilarClick(related?.id)}
                       >
-                        <Text fontSize={"14px"}>{related?.content?.substring(0,100)}</Text>
+                        <Text fontSize={"14px"}>{related?.content?.substring(0, 100)}</Text>
                       </VStack>
                     ))}
                 </Box>
