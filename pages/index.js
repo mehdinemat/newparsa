@@ -100,7 +100,7 @@ export default function Home({ children }) {
 
 
   const [filters, setFilters] = useQueryParams({
-    category_id: withDefault(StringParam, '')
+    category_id: withDefault(StringParam, '28')
   })
 
   const scrollRef = useRef(null)
@@ -298,7 +298,20 @@ export default function Home({ children }) {
               onClick={() => scroll('left')}
               size="sm"
               mr={2}
+              borderRadius={0}
               mb={'10px'}
+              color={'#3646B3'}
+            />
+            <IconButton
+              colorScheme="gray"
+              icon={<IoIosArrowBack />}
+              aria-label="Scroll Right"
+              onClick={() => scroll('right')}
+              size="sm"
+              ml={2}
+              mb={'10px'}
+              borderRadius={0}
+              color={'#3646B3'}
             />
             <Box
               ref={scrollRef}
@@ -334,15 +347,7 @@ export default function Home({ children }) {
                 ))}
               </TabList>
             </Box>
-            <IconButton
-              colorScheme="gray"
-              icon={<IoIosArrowBack />}
-              aria-label="Scroll Right"
-              onClick={() => scroll('right')}
-              size="sm"
-              ml={2}
-              mb={'10px'}
-            />
+
           </Box>
 
           <TabPanels>
