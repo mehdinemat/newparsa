@@ -1,8 +1,5 @@
 import MainLayout from "@/components/mainLayout";
 import {
-  Accordion,
-  AccordionButton,
-  AccordionItem,
   Box,
   Breadcrumb,
   BreadcrumbItem,
@@ -15,7 +12,7 @@ import {
   Stack,
   Text,
   useBreakpointValue,
-  VStack,
+  VStack
 } from "@chakra-ui/react";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
@@ -206,7 +203,7 @@ export default function Home({ children }) {
           {/* Right Sidebar */}
 
           <GridItem colSpan={1}>
-            <Box
+            {/* <Box
               w="100%"
               maxW={{ base: "calc(100vw - 50px)", md: "100vw" }}
               overflow="hidden"
@@ -252,7 +249,7 @@ export default function Home({ children }) {
                     </AccordionItem>
                   </Accordion>
                 ))}
-            </Box>
+            </Box> */}
 
             {/* <SidebarTree
               treeData={treeData}
@@ -261,7 +258,7 @@ export default function Home({ children }) {
               setCategoryId={setCategoryId}
             /> */}
             <Box
-              my={"20px"}
+              mb={"20px"}
               order={3}
               as={GridItem}
               colSpan={"1"}
