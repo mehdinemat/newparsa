@@ -1,17 +1,16 @@
 // pages/_app.js
 import { Fonts } from "@/components/base/global";
 import { fetcher, useAxiosInterceptors } from "@/components/lib/api";
-import { theme } from "@/components/theme";
+import { getTheme } from "@/components/theme";
+import { UserProvider } from "@/context/UserContext";
 import { ChakraProvider, useToast } from "@chakra-ui/react";
-import { SWRConfig } from "swr";
-import "../styles/globals.css";
-import i18n from "../i18n"; // Assuming i18n.js is in the root directory
-import { useTranslation } from "react-i18next";
+import { NextAdapter } from "next-query-params";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { getTheme } from "@/components/theme";
+import { SWRConfig } from "swr";
 import { QueryParamProvider } from "use-query-params";
-import { NextAdapter } from "next-query-params";
+import i18n from "../i18n"; // Assuming i18n.js is in the root directory
+import "../styles/globals.css";
 
 const AppWrapper = ({ Component, pageProps }) => {
   const toast = useToast();
@@ -45,12 +44,14 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <ChakraProvider theme={theme}>
-      <QueryParamProvider adapter={Adapter} options={{ enableBatching: true }}>
-        <SWRConfig value={{ fetcher }}>
-          <AppWrapper Component={Component} pageProps={pageProps} />
-        </SWRConfig>
-        <Fonts lang={locale || "en"} />
-      </QueryParamProvider>
+      <UserProvider>
+        <QueryParamProvider adapter={Adapter} options={{ enableBatching: true }}>
+          <SWRConfig value={{ fetcher }}>
+            <AppWrapper Component={Component} pageProps={pageProps} />
+          </SWRConfig>
+          <Fonts lang={locale || "en"} />
+        </QueryParamProvider>
+      </UserProvider>
     </ChakraProvider>
   );
 }

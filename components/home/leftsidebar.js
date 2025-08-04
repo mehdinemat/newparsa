@@ -3,8 +3,9 @@ import { useRouter } from "next/router";
 
 const LeftSidebar = ({ data, t, last }) => {
   const router = useRouter();
-  const handleClickSource = () => {
-    router.replace(`/questions/source/${data?.id}/${data?.fa_source_name}`);
+  const handleClickSource = (link) => {
+    window.open(`${link}`, "_blank")
+    // router.replace(`/questions/source/${data?.id}/${data?.fa_source_name}`);
   };
 
   return (
@@ -14,7 +15,7 @@ const LeftSidebar = ({ data, t, last }) => {
       borderBottom={!last && "1px solid"}
       borderColor="#EBEBEB"
       p="10px 0"
-      onClick={(e) => handleClickSource()}
+      onClick={(e) => handleClickSource(data?.source_link)}
       cursor={"pointer"}
     >
       <Box
