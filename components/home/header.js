@@ -20,6 +20,7 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import CountUp from "react-countup";
+import { BiSupport } from "react-icons/bi";
 import {
   IoClose,
   IoMic,
@@ -28,6 +29,7 @@ import {
   IoSendOutline,
 } from "react-icons/io5";
 import { PiDiamondThin } from "react-icons/pi";
+import { RiTelegram2Line, RiThreadsFill } from "react-icons/ri";
 import Recorder from "recorder-js";
 import useSWRMutation from "swr/mutation";
 import { baseUrl } from "../lib/api";
@@ -212,7 +214,15 @@ const Header = ({
       bgSize="cover" // 👈 this makes it cover the container
       bgRepeat="no-repeat"
       bgPosition="center"
+      position={'relative'}
     >
+      <VStack height={"350px"} position={'absolute'} right={0} top={0} alignItems={'center'} justifyContent={'center'} pr={'25px'}>
+        <IconButton icon={<BiSupport />} bgColor={'#3646B3'} borderRadius={'8px'} />
+        <IconButton icon={<RiTelegram2Line />} bgColor={'#3646B3'} borderRadius={'8px'} />
+        <IconButton icon={<RiThreadsFill />} bgColor={'#3646B3'} borderRadius={'8px'} />
+        <IconButton icon={<BiSupport />} bgColor={'#3646B3'} borderRadius={'8px'} />
+
+      </VStack>
       <HStack
         height={"500px"}
         as={Container}
