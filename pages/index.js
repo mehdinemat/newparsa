@@ -1,9 +1,6 @@
 import Header from "@/components/home/header";
 import MainLayout from "@/components/mainLayout";
 import {
-  Accordion,
-  AccordionButton,
-  AccordionItem,
   Badge,
   Box,
   Button,
@@ -379,7 +376,10 @@ export default function Home({ children }) {
                           {
                             !mutateCategory2 ? <Spinner /> : dataCategoryChild2?.data?.map((item) => (
 
-                              <Badge height={'35px'} width={'200px'} colorScheme="gray" bgColor={'white'} py={'8px'} textAlign={'center'} cursor={'pointer'} color={'#3646B3'} _hover={{ bgColor: '#D9D9D9' }} borderBottom={'1px'} borderBottomColor={'gray.200'}> {item?.name}</Badge>
+                              <Badge height={'35px'} width={'200px'} colorScheme="gray" bgColor={'white'} py={'8px'} textAlign={'center'} cursor={'pointer'} color={'#3646B3'} _hover={{ bgColor: '#D9D9D9' }} borderBottom={'1px'} borderBottomColor={'gray.200'} onClick={e => {
+                                handleCategoryLink({ title: item?.name, id: item?.id })
+
+                              }}> {item?.name}</Badge>
                             ))
                           }
 
@@ -405,7 +405,7 @@ export default function Home({ children }) {
           {/* Right Sidebar */}
 
           <GridItem colSpan={1}>
-            <Box
+            {/* <Box
               w="100%"
               maxW={{ base: "calc(100vw - 50px)", md: "100vw" }}
               overflow="hidden"
@@ -449,9 +449,9 @@ export default function Home({ children }) {
                   </AccordionItem>
                 </Accordion>
               ))}
-            </Box>
+            </Box> */}
             <Box
-              my={"20px"}
+              mb={"20px"}
               order={3}
               as={GridItem}
               colSpan={"1"}
