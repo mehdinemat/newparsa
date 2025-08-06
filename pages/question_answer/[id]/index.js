@@ -126,8 +126,8 @@ const Index = () => {
   );
 
   const { data: dataAnswerLike, mutate: mutateAnswerLike } = useSWR(
-    query?.id &&
-    `user/action?table_id=${query?.id}&table_type=answer&type_param=like`
+    dataQuestionAnswer?.data &&
+    `user/action?table_id=${dataQuestionAnswer?.data?.[0]?.id}&table_type=answer&type_param=like`
   );
 
   // const { data: dataQuestionSave, isLoading: isLoadingSave } = useSWR(
@@ -648,12 +648,13 @@ const Index = () => {
                                 size={"sm"}
                                 onClick={(e) => {
                                   if (answer?.is_user_liked) {
-                                    // handleUpdateAction("answer", "like", dataQuestionLike?.data?.result?.find((user) => (user?.user__username == dataMe?.data?.[0]?.username))?.id);
+                                    handleUpdateAction("answer", "like", dataAnswerLike?.data?.result?.find((user) => (user?.user__username == dataMe?.data?.[0]?.username))?.id);
                                   } else {
                                     handleAddAction("answer", "like", answer?.id);
                                   }
                                 }}
                               />
+                              <Text>{dataAnswerLike?.data?.count}</Text>
                               <IconButton
                                 icon={<IoArrowDown color="gray" />}
                                 variant={"outline"}
