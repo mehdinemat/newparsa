@@ -67,7 +67,7 @@ const NewsSlider = () => {
           >
             <Stack direction={{ base: 'column', md: 'row' }} dir="rtl">
               <VStack w={'100%'} alignItems={{ baes: 'center', md: 'start' }} order={{ base: 2, md: 1 }}>
-                <Text fontSize={'24px'} fontWeight={'bold'} color={'white'} w={{ base: 'auto', md: '280px' }} textAlign={{ base: 'center', md: 'start' }}>موتور جستجو هوشمند سؤالات</Text>
+                <Text fontSize={'24px'} fontWeight={'bold'} color={'white'} w={{ base: 'auto', md: '280px' }} textAlign={{ base: 'center', md: 'start' }}>موتور جستجو هوشمند سوالات</Text>
                 <Text w={{ base: 'auto', md: '500px' }} fontSize={'16px'} textAlign={{ base: 'center', md: 'start' }} color={'white'}>
                   لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و
                   با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و

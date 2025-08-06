@@ -58,7 +58,7 @@ const Index = () => {
               textAlign={"start"}
               mb={"10px"}
             >
-              موتور جستجو هوشمند سؤالات
+              موتور جستجو هوشمند سوالات
             </Text>
             <Text w={"auto"} fontSize={"16px"} textAlign={"start"} whiteSpace="normal">
               لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با
@@ -97,7 +97,7 @@ const Index = () => {
               textAlign={"start"}
               mb={"10px"}
             >
-              موتور جستجو هوشمند سؤالات
+              موتور جستجو هوشمند سوالات
             </Text>
             <Text w={"auto"} fontSize={"16px"} textAlign={"start"} whiteSpace="normal">
               لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با

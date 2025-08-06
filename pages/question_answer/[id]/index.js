@@ -125,6 +125,11 @@ const Index = () => {
     `user/action?table_id=${query?.id}&table_type=question&type_param=like`
   );
 
+  const { data: dataAnswerLike, mutate: mutateAnswerLike } = useSWR(
+    query?.id &&
+    `user/action?table_id=${query?.id}&table_type=answer&type_param=like`
+  );
+
   // const { data: dataQuestionSave, isLoading: isLoadingSave } = useSWR(
   //   query?.id &&
   //   `user/action?table_id=${query?.id}&table_type=question&type_param=save_message`

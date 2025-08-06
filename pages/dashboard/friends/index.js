@@ -9,11 +9,11 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { BiSortAlt2 } from "react-icons/bi";
-import RightSidebar from "../rightSidebar";
-import { useTranslation } from "react-i18next";
-import useSWR from "swr";
 import { useRouter } from "next/router";
+import { useTranslation } from "react-i18next";
+import { BiSortAlt2 } from "react-icons/bi";
+import useSWR from "swr";
+import RightSidebar from "../rightSidebar";
 
 const Index = () => {
   const router = useRouter();
@@ -22,7 +22,7 @@ const Index = () => {
 
   const { data: dataFollowing, isLoading: isLoadingFollowing } = useSWR(
     dataMe?.data?.[0]?.id &&
-      `user/client/follows/${dataMe?.data?.[0]?.id}?query_type=following`
+    `user/client/follows/${dataMe?.data?.[0]?.id}?query_type=following`
   );
 
   const { t } = useTranslation();
@@ -59,7 +59,7 @@ const Index = () => {
                 mb={"10px"}
                 alignItems={"center"}
               >
-                <Text fontSize={"14px"}>۲۵۸ سؤال</Text>
+                <Text fontSize={"14px"}>۲۵۸ سوال</Text>
                 <HStack>
                   <HStack justifyContent={{ base: "start" }}>
                     <BiSortAlt2 color="gray" />

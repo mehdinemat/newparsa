@@ -28,7 +28,7 @@ const Index = () => {
                 mb={"10px"}
                 alignItems={'center'}>
                 <Text fontSize={"14px"}>
-                  ۲۵۸ سؤال
+                  ۲۵۸ سوال
                 </Text>
                 <HStack>
                   <HStack justifyContent={{ base: 'start' }}>

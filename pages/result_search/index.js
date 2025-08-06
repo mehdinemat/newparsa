@@ -12,13 +12,10 @@ import {
   Grid,
   GridItem,
   HStack,
-  Input,
-  InputGroup,
-  InputRightElement,
   Spinner,
   Stack,
   Text,
-  VStack,
+  VStack
 } from "@chakra-ui/react";
 import { Geist, Geist_Mono } from "next/font/google";
 import "slick-carousel/slick/slick-theme.css";
@@ -32,7 +29,6 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { IoSearch } from "react-icons/io5";
 import { TbArrowsSort } from "react-icons/tb";
 import useSWR from "swr";
 import { StringParam, useQueryParams, withDefault } from "use-query-params";
@@ -85,10 +81,8 @@ const Index = ({ children }) => {
     error: errorQuestionSearch,
     isLoading: isLoadingQuestionSearch,
   } = useSWR(
-    `user/question/search?page=${(page - 1) * 10}&search_type=${
-      filters?.search_type
-    }&content=${filters?.search}&lang=${locale}${
-      filters?.order_by && `&order_by=${filters?.order_by}`
+    `user/question/search?page=${(page - 1) * 10}&search_type=${filters?.search_type
+    }&content=${filters?.search}&lang=${locale}${filters?.order_by && `&order_by=${filters?.order_by}`
     }&model_name=${filters?.model}&source_name=${filters?.source}`,
     fetcherWithTiming
   );
@@ -297,7 +291,7 @@ const Index = ({ children }) => {
                 borderRadius={"10px"}
                 onClick={(e) => handleNewQuestionButton()}
               >
-                سؤال خود را بپرسید
+                سوال خود را بپرسید
               </Button>
             </HStack>
             <HStack w={"100%"} justifyContent={"space-between"} mb={"20px"}>

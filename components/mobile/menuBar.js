@@ -25,7 +25,7 @@ import { IoIosArrowDown, IoIosMenu } from "react-icons/io";
 
 const menuList = [
   {
-    title: "سؤال‌ها",
+    title: "سوال ها",
     icon: "/mobile/question.png",
     link: "/questions",
     t_title: "questions",
