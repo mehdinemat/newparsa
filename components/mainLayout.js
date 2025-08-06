@@ -517,17 +517,18 @@ const MainLayout = ({ children }) => {
                       },
                     }}
                   >
-                    <ListItem>{t("home")}</ListItem>
-                    <ListItem>{t("questions")}</ListItem>
+                    <ListItem cursor={"pointer"}
+                      onClick={(e) => handleFooterLink("/")}>{t("home")}</ListItem>
+                    {/* <ListItem>{t("questions")}</ListItem>
                     <ListItem>{t("tags")}</ListItem>
-                    <ListItem>{t("users")}</ListItem>
+                    <ListItem>{t("users")}</ListItem> */}
                     <ListItem
                       cursor={"pointer"}
                       onClick={(e) => handleFooterLink("/aboutus")}
                     >
                       {t("about_us")}
                     </ListItem>
-                    <ListItem>{t("terms_of_use")}</ListItem>
+                    {/* <ListItem>{t("terms_of_use")}</ListItem> */}
                   </UnorderedList>
                 </VStack>
                 <VStack
