@@ -12,11 +12,12 @@ const LeftSidebar = ({ data, t, last }) => {
     <HStack
       w="100%"
       alignItems="start"
-      borderBottom={!last && "1px solid"}
-      borderColor="#EBEBEB"
       p="10px 0"
       onClick={(e) => handleClickSource(data?.source_link)}
       cursor={"pointer"}
+      bgColor={'#F7F7F7'}
+      borderRadius={'10px'}
+      padding={'5px'}
     >
       <Box
         w="60px"

@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { GiBigDiamondRing } from "react-icons/gi";
 import { IoCheckmark, IoEyeOutline } from "react-icons/io5";
 
-const QuestionCard = ({ data, t, type = "question" }) => {
+const QuestionCard = ({ data, t, type = "question", bgColor }) => {
   const router = useRouter();
 
   const handleQuestionRouter = (id) => {
@@ -23,7 +23,7 @@ const QuestionCard = ({ data, t, type = "question" }) => {
       pb={"20px"}
       gap={"20px"}
       cursor={"pointer"}
-      bgColor={'#F7F7F7'}
+      bgColor={bgColor ? bgColor : '#F7F7F7'}
       borderRadius={'13px'}
       padding={'10px'}
       onClick={(e) =>

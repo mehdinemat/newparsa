@@ -1,8 +1,11 @@
+import CommentCard from "@/components/commentCard";
 import { baseUrl } from "@/components/lib/api";
 import MainLayout from "@/components/mainLayout";
+import QuestionAnswerCard from "@/components/questionAnswerCard";
 import { useUser } from "@/context/UserContext";
 import {
   Avatar,
+  AvatarGroup,
   Badge,
   Box,
   Button,
@@ -14,9 +17,8 @@ import {
   Spinner,
   Stack,
   Text,
-  Textarea,
   useBreakpointValue,
-  VStack,
+  VStack
 } from "@chakra-ui/react";
 import axios from "axios";
 import moment from "moment-jalaali";
@@ -30,7 +32,8 @@ import {
   IoArrowUp,
   IoBookmark,
   IoBookmarkOutline,
-  IoWarningOutline
+  IoChevronDown,
+  IoChevronUpOutline
 } from "react-icons/io5";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
@@ -255,74 +258,10 @@ const Index = () => {
         p={"20px"}
       >
         <HStack w={"100%"} alignItems={"start"} gap={"20px"}>
-          {slidesToShow != 1 && (
-            <VStack>
-              <IconButton
-                icon={
-                  <IoArrowUp
-                    color={
-                      dataQuestion?.data?.result?.[0]?.is_user_liked
-                        ? "orange"
-                        : "gray"
-                    }
-                  />
-                }
-                variant={"outline"}
-                colorScheme={
-                  dataQuestion?.data?.result?.[0]?.is_user_liked
-                    ? "orange"
-                    : "gray"
-                }
-                borderRadius={"100%"}
-                size={"sm"}
-                onClick={(e) => {
-                  if (dataQuestion?.data?.result?.[0]?.is_user_liked) {
-                    handleUpdateAction("question", "like", dataQuestionLike?.data?.result?.find((user) => (user?.user__username == dataMe?.data?.[0]?.username))?.id);
-                  } else {
-                    handleAddAction("question", "like");
-                  }
-                }}
-              />
-              <Text>{dataQuestionLike?.data?.count}</Text>
-              <IconButton
-                icon={<IoArrowDown color="gray" />}
-                variant={"outline"}
-                colorScheme="gray"
-                borderRadius={"100%"}
-                size={"sm"}
-              />
-              <IconButton
-                icon={
-                  dataQuestion?.data?.result?.[0]?.is_user_saved ? (
-                    <IoBookmark color="orange" onClick={(e) => {
-                      if (dataQuestion?.data?.result?.[0]?.is_user_saved) {
-                        // handleUpdateAction("question", "save_message", dataQuestionLike?.data?.result?.find((user) => (user?.user__username == dataMe?.data?.[0]?.username))?.id)
-                      } else {
-                        handleAddAction("question", "save_message")
-                      }
-                    }
-                    } />
-                  ) : (
-                    <IoBookmarkOutline
-                      color="gray"
-                      onClick={(e) => {
-                        if (dataQuestion?.data?.result?.[0]?.is_user_saved) {
-                          // handleUpdateAction("question", "save_message", dataQuestionLike?.data?.result?.find((user) => (user?.user__username == dataMe?.data?.[0]?.username))?.id)
-                        } else {
-                          handleAddAction("question", "save_message")
-                        }
-                      }
-                      }
-                    />
-                  )
-                }
-                size={"lg"}
-              />
-            </VStack>
-          )}
+
 
           <VStack w={"100%"}>
-            <Grid
+            {/* <Grid
               templateColumns={{ base: "repeat(2, 1fr)", md: "repeat(3, 1fr)" }}
               gap={"2px"}
               w={"100%"}
@@ -340,27 +279,7 @@ const Index = () => {
                     <Text>{dataQuestion?.data?.result?.[0]?.title}</Text>
                     <HStack w={"100%"}>
                       <HStack w={"100%"} justifyContent={"space-between"}>
-                        <HStack
-                          cursor={"pointer"}
-                          onClick={(e) =>
-                            handleClickSource(
-                              dataQuestion?.data?.result?.[0]?.source
-                            )
-                          }
-                        >
-                          <Avatar
-                            w={"28px"}
-                            h={"28px"}
-                            display={{ base: "none", md: "flex" }}
-                          />
-                          <Text
-                            minW={"150px"}
-                            color={"gray.400"}
-                            fontSize={"16px"}
-                          >
-                            {dataQuestion?.data?.result?.[0]?.source}
-                          </Text>
-                        </HStack>
+
                         <HStack
                           w={"100%"}
                           justifyContent={"end"}
@@ -402,7 +321,7 @@ const Index = () => {
                 </Button>
               </GridItem>
             </Grid>
-            <Divider my={"10px"} />
+            <Divider my={"10px"} /> */}
             <Grid
               templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(3, 1fr)" }}
               gap={{ base: "10px", md: "20px" }}
@@ -447,175 +366,161 @@ const Index = () => {
                 {isLoadingQuestion ? (
                   <Spinner />
                 ) : (
+
+
                   <VStack w={"100%"} alignItems={"start"}>
-                    <Text
-                      lineHeight={"taller"}
-                      textAlign={"justify"}
-                      fontSize={"18px"}
-                    >
-                      {dataQuestion?.data?.result?.[0]?.content}
-                    </Text>
+                    <HStack alignItems={'start'}>
+                      {slidesToShow != 1 && (
+                        <VStack>
+                          <IconButton
+                            icon={
+                              <IoChevronUpOutline
+                                color={
+                                  dataQuestion?.data?.result?.[0]?.is_user_liked
+                                    ? "orange"
+                                    : "gray"
+                                }
+                              />
+                            }
+                            variant={"outline"}
+                            colorScheme={
+                              dataQuestion?.data?.result?.[0]?.is_user_liked
+                                ? "orange"
+                                : "gray"
+                            }
+                            border={'none'}
+                            size={"sm"}
+                            onClick={(e) => {
+                              if (dataQuestion?.data?.result?.[0]?.is_user_liked) {
+                                handleUpdateAction("question", "like", dataQuestionLike?.data?.result?.find((user) => (user?.user__username == dataMe?.data?.[0]?.username))?.id);
+                              } else {
+                                handleAddAction("question", "like");
+                              }
+                            }}
+                          />
+                          <Text>{dataQuestionLike?.data?.count}</Text>
+                          <IconButton
+                            icon={<IoChevronDown rowDown color="gray" />}
+                            variant={"outline"}
+                            colorScheme="gray"
+                            border={'none'}
+                            size={"sm"}
+
+                          />
+
+                        </VStack>
+                      )}
+                      <HStack alignItems={'start'}
+                        bgColor={'#F7F7F7'}
+                        padding={'8px'}
+                        borderRadius={'10px'}>
+                        <IconButton
+                          minWidth={'none'}
+                          icon={
+                            dataQuestion?.data?.result?.[0]?.is_user_saved ? (
+                              <IoBookmark color="orange" onClick={(e) => {
+                                if (dataQuestion?.data?.result?.[0]?.is_user_saved) {
+                                  // handleUpdateAction("question", "save_message", dataQuestionLike?.data?.result?.find((user) => (user?.user__username == dataMe?.data?.[0]?.username))?.id)
+                                } else {
+                                  handleAddAction("question", "save_message")
+                                }
+                              }
+                              } />
+                            ) : (
+                              <IoBookmarkOutline
+                                color="gray"
+                                onClick={(e) => {
+                                  if (dataQuestion?.data?.result?.[0]?.is_user_saved) {
+                                    // handleUpdateAction("question", "save_message", dataQuestionLike?.data?.result?.find((user) => (user?.user__username == dataMe?.data?.[0]?.username))?.id)
+                                  } else {
+                                    handleAddAction("question", "save_message")
+                                  }
+                                }
+                                }
+                              />
+                            )
+                          }
+                          size={"lg"}
+                        />
+                        <VStack w={'100%'} alignItems={'start'}>
+                          <Text
+                            lineHeight={"taller"}
+                            textAlign={"justify"}
+                            fontSize={'21px'}
+                            fontWeight={'bold'}
+                          >
+                            {dataQuestion?.data?.result?.[0]?.content}
+                          </Text>
+
+                          <HStack w={'100%'} justifyContent={'space-between'}>
+                            <HStack
+                              cursor={"pointer"}
+                              onClick={(e) =>
+                                handleClickSource(
+                                  dataQuestion?.data?.result?.[0]?.source
+                                )
+                              }
+                            >
+                              <Avatar
+                                w={"28px"}
+                                h={"28px"}
+                                display={{ base: "none", md: "flex" }}
+                              />
+                              <Text
+                                minW={"150px"}
+                                color={"gray.400"}
+                                fontSize={"16px"}
+                              >
+                                {dataQuestion?.data?.result?.[0]?.source}
+                              </Text>
+                            </HStack>
+                            <HStack>
+                              <Text fontSize={"sm"} color={"gray.400"}>
+                                {moment(
+                                  dataQuestion?.data?.result?.[0]?.created_at
+                                ).format("jYYYY/jMM/jDD")}
+                              </Text>
+                              <AvatarGroup size='md' max={3} >
+                                <Avatar name='Ryan Florence' src='https://bit.ly/ryan-florence' w={"28px"}
+                                  h={"28px"} />
+                                <Avatar name='Segun Adebayo' src='https://bit.ly/sage-adebayo' w={"28px"}
+                                  h={"28px"} />
+                                <Avatar name='Kent Dodds' src='https://bit.ly/kent-c-dodds' w={"28px"}
+                                  h={"28px"} />
+                                <Avatar name='Prosper Otemuyiwa' src='https://bit.ly/prosper-baba' w={"28px"}
+                                  h={"28px"} />
+                                <Avatar name='Christian Nwamba' src='https://bit.ly/code-beast' w={"28px"}
+                                  h={"28px"} />
+                              </AvatarGroup>
+                            </HStack>
+
+                          </HStack>
+
+                        </VStack>
+
+                      </HStack>
+                    </HStack>
+
+
+
                     <Stack
                       direction={{ base: "column", md: "row" }}
                       w={"100%"}
                       justifyContent={"space-between"}
-                      my={"20px"}
+                      mt={'10px'}
                     >
-                      <HStack
-                        w={{ base: "100%" }}
-                        justifyContent={{ base: "start" }}
-                      >
-                        {dataQuestion?.data?.result?.[0]?.tags?.map((tag) => (
-                          <Badge
-                            bgColor={"#29CCCC1A"}
-                            color={"#16A6A6"}
-                            padding={"5px"}
-                            borderRadius={"5px"}
-                            w={{ base: "min-content" }}
-                            textAlign={"center"}
-                          >
-                            {tag?.name}
-                          </Badge>
-                        ))}
-                      </HStack>
-                      <HStack gap={0} alignItems={"center"}>
-                        <Button
-                          colorScheme="gray"
-                          color={"gray"}
-                          variant={"ghost"}
-                          fontWeight={"normal"}
-                          size={"sm"}
-                        >
-                          {t("report_inappropriate_content")}
-                        </Button>
-                        <IoWarningOutline color="gray" />
-                      </HStack>
+
                     </Stack>
-                    {/* <Box
-                      w={"100%"}
-                      padding={"10px"}
-                      px={"20px"}
-                      bgColor={"#f9f9fd"}
-                      borderRadius={"15px"}
-                      my={{ base: "0px", md: "10px" }}
-                    >
-                      <HStack w={"100%"} justifyContent={"space-between"}>
-                        <Text fontWeight={"bold"} fontSize={"16px"}>
-                          {t("comments")}
-                        </Text>
-                        <HStack>
-                          <Text fontSize={"sm"} color={"gray"}>
-                            {t("write_your_comment")}
-                          </Text>
-                          {!isInputOpen ? (
-                            <IconButton
-                              icon={<IoPencil color="gray" />}
-                              variant={"ghost"}
-                              onClick={handleToggleInput}
-                            />
-                          ) : (
-                            <IconButton
-                              icon={<IoClose color="gray" />}
-                              variant={"ghost"}
-                              onClick={handleToggleInput}
-                            />
-                          )}
-                        </HStack>
-                      </HStack>
-                      {isInputOpen &&
-                        (isUserLogin ? (
-                          <VStack mt={4} align="stretch">
-                            <Textarea
-                              {...registerComment("content")}
-                              placeholder={t("write_your_comment")}
-                              autoFocus
-                            />
-                            <HStack justifyContent="flex-end">
-                              <Button
-                                onClick={(e) =>
-                                  handleSendComment("question", "comment")
-                                }
-                                bgColor={"#29CCCC"}
-                                isLoading={isMutatingAddAction}
-                              >
-                                {t("send")}
-                              </Button>
-                            </HStack>
-                          </VStack>
-                        ) : (
-                          <Box
-                            w={{ base: "fit-content", md: "100%" }}
-                            padding={"20px"}
-                            bgColor={"#3646B3"}
-                            borderRadius={"15px"}
-                            my={{ base: "0px", md: "0px" }}
-                            mr={{ base: "-40px", md: "0px" }}
-                          >
-                            <HStack>
-                              <VStack w={"100%"} alignItems={"start"}>
-                                <Text
-                                  fontWeight={"bold"}
-                                  color={"white"}
-                                  fontSize={"16px"}
-                                  mb={"10px"}
-                                >
-                                  {t("your_answer")}
-                                </Text>
-                                <Text fontSize={"xs"} color={"white"}>
-                                  {t("you_must_log")}
-                                </Text>
-                              </VStack>
-                              <Button
-                                onClick={(e) => router.push("/login")}
-                                bgColor={"#29CCCC"}
-                                fontWeight={"normal"}
-                                p={"10px"}
-                                w={{ base: "200px", md: "150px" }}
-                                size={"sm"}
-                              >
-                                {t("log_in_to_your_account")}
-                              </Button>
-                            </HStack>
-                          </Box>
-                        ))}
-                      {dataQuestionComment?.data?.result?.map((comment) => (
-                        <Stack
-                          direction={{ base: "column", md: "row" }}
-                          w={"100%"}
-                          mt={"10px"}
-                        >
-                          <HStack w={"100%"} justifyContent={"space-between"}>
-                            <Text>{comment?.content}</Text>
-                            <HStack>
-                              <Text
-                                color={"#3646B3"}
-                                cursor={"pointer"}
-                                onClick={(e) =>
-                                  handleUserProfileLink(comment?.user__username)
-                                }
-                              >
-                                {comment?.user__username}
-                              </Text>
-                              <Text color={"gray"} fontSize={"sm"}>
-                                ۴ {t("days_ago")}
-                              </Text>
-                            </HStack>
-                          </HStack>
-                        </Stack>
-                      ))}
-                    </Box> */}
                     <Box
                       w={{ base: "fit-content", md: "100%" }}
-                      padding={{ base: "none", md: "10px" }}
+                      padding={{ base: "none", md: "0px" }}
                       px={{ base: "none", md: "20px" }}
-                      bgColor={"white"}
-                      borderRadius={"15px"}
+                      bgColor={"#F7F7F7"}
+                      borderRadius={"10px"}
                       mb={"10px"}
                       mr={{ base: "-40px", md: "0px" }}
-                      border={{ base: "none", md: "1px" }}
-                      borderColor={{ base: "none", md: "gray.200" }}
                     >
-                      <HStack
+                      {/* <HStack
                         w={"100%"}
                         justifyContent={"space-between"}
                         my={"10px"}
@@ -623,11 +528,11 @@ const Index = () => {
                         <Text fontWeight={"bold"} fontSize={"18px"}>
                           {t(dataQuestionAnswer?.data?.length == 1 ? "answer_one" : "answers")}
                         </Text>
-                      </HStack>
+                      </HStack> */}
                       {
                         dataQuestionAnswer?.data?.map((answer) => (
                           <HStack alignItems={"start"} gap={"10px"}>
-                            <VStack>
+                            {/* <VStack>
                               <IconButton
                                 icon={
                                   <IoArrowUp
@@ -662,13 +567,6 @@ const Index = () => {
                                 borderRadius={"100%"}
                                 size={"sm"}
                               />
-                              {/* <IconButton
-                                icon={<IoCheckmark color="white" />}
-                                variant={"ghost"}
-                                bgColor="#29CCCC"
-                                borderRadius={"100%"}
-                                size={"sm"}
-                              /> */}
                               <IconButton
                                 icon={
                                   answer?.is_user_saved ? (
@@ -696,7 +594,7 @@ const Index = () => {
                                 }
                                 size={"lg"}
                               />
-                            </VStack>
+                            </VStack> */}
                             <VStack w={"100%"} alignItems={"start"}>
                               <Text
                                 lineHeight={"taller"}
@@ -715,69 +613,31 @@ const Index = () => {
                                 }}
                                 mt={"10px"}
                               >
-                                <HStack order={{ base: 1 }}>
+                                <HStack order={{ base: 1 }} w={'100%'} justifyContent={'space-between'}>
+                                  <HStack
+                                    w={{ base: "100%" }}
+                                    justifyContent={{ base: "start" }}
+                                  >
+                                    {dataQuestion?.data?.result?.[0]?.tags?.map((tag) => (
+                                      <Badge
+                                        bgColor={"#29CCCC1A"}
+                                        color={"#16A6A6"}
+                                        padding={"5px"}
+                                        borderRadius={"5px"}
+                                        w={{ base: "min-content" }}
+                                        textAlign={"center"}
+                                      >
+                                        {tag?.name}
+                                      </Badge>
+                                    ))}
+                                  </HStack>
                                   <Text fontSize={"sm"} color={"gray.500"}>
                                     {moment(
                                       answer?.created_at
                                     ).format("jYYYY/jMM/jDD")}
                                   </Text>
-                                  {/* <Divider
-                                height={"10px"}
-                                borderColor={"#EBEBEB"}
-                                orientation="vertical"
-                              /> */}
-                                  {/* {slidesToShow != 1 && (
-                                <HStack gap={0} alignItems={"center"}>
-                                  <Button
-                                    colorScheme="gray"
-                                    color={"gray"}
-                                    variant={"ghost"}
-                                    fontWeight={"normal"}
-                                    size={"sm"}
-                                  >
-                                    {t("report_inappropriate_content")}
-                                  </Button>
-                                  <IoWarningOutline color="gray" />
-                                </HStack>
-                              )} */}
                                 </HStack>
                               </HStack>
-                              {/* {slidesToShow == 1 && (
-                            <HStack gap={0} alignItems={"center"}>
-                              <Button
-                                colorScheme="gray"
-                                color={"gray"}
-                                variant={"ghost"}
-                                fontWeight={"normal"}
-                                size={"sm"}
-                              >
-                                {t("report_inappropriate_content")}
-                              </Button>
-                              <IoWarningOutline color="gray" />
-                            </HStack>
-                          )} */}
-                              {/* <Box
-                            w={"100%"}
-                            padding={"10px"}
-                            px={"20px"}
-                            bgColor={"#f9f9fd"}
-                            borderRadius={"15px"}
-                          >
-                            <HStack w={"100%"} justifyContent={"space-between"}>
-                              <Text fontWeight={"bold"} fontSize={"16px"}>
-                                {t("comments")}
-                              </Text>
-                              <HStack>
-                                <Text fontSize={"sm"} color={"gray"}>
-                                  {t("leave_comment")}
-                                </Text>
-                                <IconButton
-                                  icon={<IoPencil color="gray" />}
-                                  variant={"ghost"}
-                                />
-                              </HStack>
-                            </HStack>
-                          </Box> */}
                             </VStack>
                           </HStack>
                         ))
@@ -821,43 +681,39 @@ const Index = () => {
                         </HStack>
                       </Box>
                     ) : (
-                      <Box
-                        w={{ base: "full", md: "100%" }}
-                        padding={"20px"}
-                        bgColor={"white"}
-                        border={"1px"}
-                        borderColor={"gray.200"}
-                        borderRadius={"15px"}
-                        my={"10px"}
-                        mr={{ base: "-40px", md: "0px" }}
-                        as="form"
-                        onSubmit={handleSubmitAnswer(handleAddAnswer)}
-                      >
-                        <VStack w={"100%"} alignItems={"start"}>
+                      <VStack w={'100%'}>
+                        <HStack w={'100%'} justifyContent={'space-between'}>
+                          <HStack>
+                            <Text fontSize={'33px'} fontWeight={'extrabold'} color={'#333333'}>پاسخ ها</Text>
+                            <Text fontSize={'14px'} color={'#999999'}>5 پاسخ</Text>
+                          </HStack>
                           <Text
-                            fontWeight={"bold"}
-                            fontSize={"16px"}
-                            mb={"10px"}
+                            fontWeight={"700"}
+                            fontSize={"12px"}
+                            color="#3646B3"
+                            cursor={"pointer"}
+                            onClick={(e) => router.push("/references")}
                           >
-                            {t("your_answer")}
+                            {t("show_all")}
                           </Text>
-                          <Text fontSize={"xs"}>{t("AI-generated")}</Text>
-                        </VStack>
-                        <Textarea my={"20px"} {...registerAnswer("content")} />
-                        <HStack w={"100%"} justifyContent={"end"}>
-                          <Button
-                            bgColor={"#29CCCC"}
-                            fontWeight={"normal"}
-                            p={"10px"}
-                            size={"sm"}
-                            type="submit"
-                            isLoading={isMutatingQuestionAnswer}
-                          >
-                            {t("submit_answer")}
-                          </Button>
                         </HStack>
-                      </Box>
+                        <QuestionAnswerCard handleSubmitAnswer={handleSubmitAnswer} handleAddAnswer={handleAddAnswer} isMutatingQuestionAnswer={isMutatingQuestionAnswer} registerAnswer={registerAnswer} t={t} />
+                      </VStack>
                     )}
+                    <HStack w={'100%'} justifyContent={'space-between'}>
+                      <Text fontSize={'33px'} fontWeight={'extrabold'} color={'#333333'}>دیدگاه ها</Text>
+                      <Text
+                        fontWeight={"700"}
+                        fontSize={"12px"}
+                        color="#3646B3"
+                        cursor={"pointer"}
+                        onClick={(e) => router.push("/references")}
+                      >
+                        {t("show_all")}
+                      </Text>
+                    </HStack>
+                    <CommentCard t={t} />
+
                   </VStack>
                 )}
               </GridItem>

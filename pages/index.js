@@ -405,51 +405,7 @@ export default function Home({ children }) {
           {/* Right Sidebar */}
 
           <GridItem colSpan={1}>
-            {/* <Box
-              w="100%"
-              maxW={{ base: "calc(100vw - 50px)", md: "100vw" }}
-              overflow="hidden"
-              wordBreak="break-word"
-              order={{ base: 2, md: 1 }}
-              zIndex={100}
-              border="1px"
-              borderColor="#EBEBEB"
-              borderRadius="15px"
-              p="10px"
-              height="min-content"
-              dir="rtl" // ✅ RTL direction
-            >
-              <Text fontWeight="bold" fontSize="16px" mb={4}>
-                {t("topics")}
-              </Text>
-              {dataCategory?.data?.map((item, index) => (
-                <Accordion
-                  key={item.id}
-                  onClick={() =>
-                    handleCategoryLink({ title: item?.name, id: item?.id })
-                  }
-                  allowToggle
-                >
-                  <AccordionItem
-                    borderTop={index === 0 ? "none" : "1px solid"}
-                    borderBottom={
-                      index === dataCategory.data.length - 1
-                        ? "none"
-                        : "1px solid"
-                    }
-                    borderColor="gray.200"
-                  >
-                    <h2>
-                      <AccordionButton>
-                        <Box as="span" flex="1" textAlign="right">
-                          {item?.name}
-                        </Box>
-                      </AccordionButton>
-                    </h2>
-                  </AccordionItem>
-                </Accordion>
-              ))}
-            </Box> */}
+
             <Box
               mb={"20px"}
               order={3}
@@ -471,24 +427,27 @@ export default function Home({ children }) {
                 height="min-content"
                 mb="20px"
                 overflow="hidden"
+                bgImage={'/bghadith.png'}
+                bgSize={'cover'}
+                position={'relative'}
+                bgPosition={'center'}
               >
-                <Text fontWeight="bold" fontSize="16px">
-                  {t("hadith_of_the_day")}
-                </Text>
-                <Text mt="10px" whiteSpace="pre-wrap" wordBreak="break-word">
-                  {dataHadith?.data}
-                </Text>
+                <VStack alignItems={'center'}  >
+                  <Text fontSize="22px" fontWeight='extrabold' mt={'60px'}>
+                    {t("hadith_of_the_day")}
+                  </Text>
+                  <Text mt="10px" whiteSpace="pre-wrap" wordBreak="break-word" align={'justify'}>
+                    {dataHadith?.data}
+                  </Text>
+                </VStack>
               </Box>
 
               <Box
                 w={"100%"}
                 p="4"
-                border={"1px"}
-                borderColor={"#EBEBEB"}
-                borderRadius={"15px"}
                 height={"min-content"}
               >
-                <Text fontWeight={"bold"} fontSize={"16px"}>
+                <Text fontWeight={"extrabold"} fontSize={"16px"} lineHeight={'100%'}>
                   {t("question_sources")}
                 </Text>
                 <VStack mt={"20px"} w={"100%"} alignItems={"start"}>

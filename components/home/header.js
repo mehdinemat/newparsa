@@ -368,7 +368,7 @@ const Header = ({
                 </Flex>
               </InputRightElement>
             </InputGroup>
-            <Button border={'1px'} borderColor={'#29CCCC'} w={'206px'} height={'74px'} bgColor={'#00000059'} color={'#29CCCC'} borderRadius="13px" rightIcon={<PiDiamondThin fontSize={'40px'} />}
+            <Button bgColor={'#29CCCC'} w={'206px'} height={'74px'} color={'white'} borderRadius="13px" rightIcon={<PiDiamondThin fontSize={'40px'} />}
               onClick={(e) => handleClickSemanticSearch()}>جستجوی معنایی</Button>
           </HStack>
           <HStack as={Center} justifyContent="center" w="50%">

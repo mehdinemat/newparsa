@@ -91,7 +91,7 @@ const Header = ({ children }) => {
             textAlign={'center'}
           // position={"absolute"}
           >
-            <Text color={'#29CCCC'} fontSize={'18px'}>محصولات</Text>
+            <Text color={'#29CCCC'} fontSize={'33px'} fontWeight={'extrabold'}>موتور جستجو هوشمند سوالات</Text>
             <Text color={'white'} fontWeight={'bold'} fontSize={'26px'} my={'10px'}>موتور جستجوی هوشمند</Text>
             <Text color={'white'} >لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است</Text>
           </Stack>

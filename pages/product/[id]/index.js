@@ -3,10 +3,8 @@ import Header from "@/components/product/header";
 import SliderProduct from "@/components/product/slider";
 import {
   Box,
-  Button,
+  Divider,
   HStack,
-  Image,
-  Stack,
   Text,
   useBreakpointValue,
   VStack
@@ -47,32 +45,25 @@ const Index = () => {
         p={{ base: '20px', md: "60px" }}
         height={"100%"}
         my={"20px"}
+        py={'0px'}
       >
-        <Stack dir="rtl" justifyContent={"space-between"} direction={{ base: 'column', md: 'row' }} w={{ base: 'calc( 100% - 10px )', md: "100%" }}>
-          <VStack w={"100%"} order={{ base: 2, md: 1 }} alignItems={{ base: 'center', md: "start" }}>
-            <Text
-
-              fontSize={"24px"}
-              fontWeight={"bold"}
-              w={"auto"}
-              textAlign={"start"}
-              mb={"10px"}
-            >
-              موتور جستجو هوشمند سوالات
-            </Text>
-            <Text w={"auto"} fontSize={"16px"} textAlign={"start"} whiteSpace="normal">
-              لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با
-              استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله
-              در ستون و سطرآنچنان که لازم است
-            </Text>
-            <Button bgColor={"#29CCCC"} fontWeight={"normal"} mt={"20px"}>
-              اطلاعات بیشتر
-            </Button>
-          </VStack>
-          <Stack w={"100%"} order={{ base: 1, md: 2 }} alignItems={{ base: 'center' }}>
-            <Image src="../../questionlogo.png" w={{ base: '357px', md: "509px" }} h={{ base: '350px', md: "500px" }} />
-          </Stack>
-        </Stack>
+        <HStack w={"100%"} order={{ base: 2, md: 1 }} alignItems={{ base: 'center', md: "center" }} justifyContent={'space-between'} mb={'40px'}>
+          <Text
+            color={'#3646B3'}
+            fontSize={"24px"}
+            fontWeight={"bold"}
+            w={"250px"}
+            textAlign={"start"}
+            mb={"10px"}
+          >
+            محصولات پربازدید
+          </Text>
+          <Divider w={'100%'} borderColor={'#3646B3'} />
+          <Text fontSize={'14px'} fontWeight={'extrabold'} color={'#3646B3'} w={'150px'}>مشاهده همه</Text>
+        </HStack>
+        <VStack justifyContent={"space-between"} direction={{ base: 'column', md: 'row' }} w={{ base: 'calc( 100% - 10px )', md: "100%" }}>
+          <SliderProduct bgColor={"white"} />
+        </VStack>
       </Box>
       <Box
         w="100%"
@@ -83,73 +74,40 @@ const Index = () => {
         p={{ base: '20px', md: "60px" }}
         height={"100%"}
         my={"20px"}
+        py={'0px'}
       >
-        <Stack dir="rtl" justifyContent={"space-between"} direction={{ base: 'column', md: 'row' }} w={{ base: 'calc( 100% - 10px )', md: "100%" }}>
-          <Stack w={"100%"} alignItems={{ base: 'center' }}>
-            <Image src="../../questionlogo.png" w={{ base: '357px', md: "509px" }} h={{ base: '350px', md: "500px" }} />
-          </Stack>
-
-          <VStack w={"100%"} alignItems={{ base: 'center', md: "start" }}>
-            <Text
-              fontSize={"24px"}
-              fontWeight={"bold"}
-              w={"auto"}
-              textAlign={"start"}
-              mb={"10px"}
-            >
-              موتور جستجو هوشمند سوالات
-            </Text>
-            <Text w={"auto"} fontSize={"16px"} textAlign={"start"} whiteSpace="normal">
-              لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با
-              استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله
-              در ستون و سطرآنچنان که لازم است
-            </Text>
-            <Button bgColor={"#29CCCC"} fontWeight={"normal"} mt={"20px"}>
-              اطلاعات بیشتر
-            </Button>
-          </VStack>
-        </Stack>
+        <VStack justifyContent={"space-between"} direction={{ base: 'column', md: 'row' }} w={{ base: 'calc( 100% - 10px )', md: "100%" }}>
+          <SliderProduct bgColor={"#3646B3"} title={'محصولات جدید'} />
+        </VStack>
       </Box>
       <Box
-        marginTop={{ base: '0px', md: "100px" }}
-        as={Stack}
-        justifyContent={"center"}
+        w="100%"
         alignItems={"center"}
-        width="100%"
-        height={{ base: '386px', md: "564px" }}
-        bg={"#3646B3"}
-        p={2}
-        px={4}
-        bgImage={"./homeheader.png"}
-        bgSize="cover" // 👈 this makes it cover the container
-        bgRepeat="no-repeat"
-        bgPosition="center"
+        justifyContent={"center"}
+        maxW="container.xl"
+        mx="auto"
+        p={{ base: '20px', md: "60px" }}
+        height={"100%"}
+        my={"20px"}
+        py={'0px'}
       >
-        <HStack
-          height={{ base: '380px', md: "500px" }}
-          w={"100%"}
-          alignItems={"center"}
-          justifyContent={"space-between"}
-        >
-          <VStack
-            w={"100%"}
-            alignItems={"center"}
-            justifyContent={"center"}
-            height={"100%"}
+        <HStack w={"100%"} order={{ base: 2, md: 1 }} alignItems={{ base: 'center', md: "center" }} justifyContent={'space-between'} mb={'40px'}>
+          <Text
+            color={'#3646B3'}
+            fontSize={"24px"}
+            fontWeight={"bold"}
+            w={"350px"}
+            textAlign={"start"}
+            mb={"10px"}
           >
-            <Stack
-              maxW={{ base: '100%', md: "80%" }}
-              mx="auto"
-              py={4}
-              px={{ base: 8 }}
-              top={'0px'}
-              textAlign={'center'}
-            // position={"absolute"}
-            >
-              <SliderProduct items={items} title={'سایر محصولات'} height={slidesToShow == 1 ? '386px' : null} />
-            </Stack>
-          </VStack>
+            محصولات پرسش و پاسخ
+          </Text>
+          <Divider w={'100%'} borderColor={'#3646B3'} />
+          <Text fontSize={'14px'} fontWeight={'extrabold'} color={'#3646B3'} w={'150px'}>مشاهده همه</Text>
         </HStack>
+        <VStack justifyContent={"space-between"} direction={{ base: 'column', md: 'row' }} w={{ base: 'calc( 100% - 10px )', md: "100%" }}>
+          <SliderProduct bgColor={"white"} />
+        </VStack>
       </Box>
     </MainLayout>
   );

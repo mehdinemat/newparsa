@@ -57,29 +57,31 @@ const Header = ({ children }) => {
 
   return (
     <Box
-      marginTop={{base:'20px' , md:"100px"}}
+      marginTop={{ base: '20px', md: "100px" }}
       as={Stack}
       justifyContent={"center"}
-      alignItems={"center"}
+      alignItems={"start"}
       width="100%"
       height={"500px"}
       bg={"#3646B3"}
       p={2}
       px={4}
-      bgImage={"./homeheader.png"}
+      bgImage={"/bgaboutus.png"}
       bgSize="cover" // 👈 this makes it cover the container
       bgRepeat="no-repeat"
       bgPosition="center"
+
     >
       <HStack
         height={"500px"}
         w={"100%"}
-        alignItems={"center"}
+        alignItems={"start"}
         justifyContent={"space-between"}
+        maxW="container.xl"
       >
         <VStack
           w={"100%"}
-          alignItems={"center"}
+          alignItems={"start"}
           justifyContent={"center"}
           height={"100%"}
         >
@@ -88,12 +90,12 @@ const Header = ({ children }) => {
             mx="auto"
             py={4}
             top={'0px'}
-            textAlign={'center'}
+            textAlign={'start'}
           // position={"absolute"}
           >
-            <Text color={'#29CCCC'} fontSize={'18px'}>پارسا</Text>
-            <Text color={'white'} fontWeight={'bold'} fontSize={'26px'} my={'10px'}>درباره ما</Text>
-            <Text color={'white'} >شبکه اجتماعی پرسش و پاسخ دینی</Text>
+            <Text color={'#29CCCC'} fontSize={'32px'} fontWeight={'extrabold'}>درباره پارسا</Text>
+            <Text color={'white'} fontWeight={'bold'} fontSize={'26px'} my={'10px'}>شبکه اجتماعی پرسش و پاسخ دینی</Text>
+            <Text color={'white'} w={'470px'}>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است.</Text>
           </Stack>
         </VStack>
       </HStack>
