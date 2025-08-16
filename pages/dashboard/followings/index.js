@@ -12,14 +12,20 @@ import {
 } from "@chakra-ui/react";
 
 import MainLayout from "@/components/mainLayout";
+import { useUser } from "@/context/UserContext";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import useSWR from "swr";
 import RightSidebar from "../rightSidebar";
 
 
 
 const Index = () => {
   const { t } = useTranslation();
+
+  const { dataMe } = useUser()
+
+  const { data: dataFollowing } = useSWR(dataMe?.data?.[0]?.id && `user/client/follows/${dataMe?.data?.[0]?.id}?query_type=following`)
 
   const [type, setType] = useState(false)
 
@@ -63,36 +69,18 @@ const Index = () => {
               </HStack>
             </HStack>
             <Grid templateColumns='repeat(4, 1fr)' gap={'70px'} w={'auto'} mt={'30px'}>
-              <Card bgColor={'white'} height={'300px'} as={VStack} padding={'5px'}>
-                <Avatar height={'195px'} w={'205px'} />
-                <Text fontSize={'15px'} fontWeight={'bold'}>محمد محمدی</Text>
-                <Text>mohammadi@gmail.com</Text>
-                <Button bgColor={'#29CCCC'} w={'100%'} minH={'30px'}>دنبال کردن</Button>
-              </Card>
-              <Card bgColor={'white'} height={'300px'} as={VStack} padding={'5px'}>
-                <Avatar height={'195px'} w={'205px'} />
-                <Text fontSize={'15px'} fontWeight={'bold'}>محمد محمدی</Text>
-                <Text>mohammadi@gmail.com</Text>
-                <Button bgColor={'#29CCCC'} w={'100%'} minH={'30px'}>دنبال کردن</Button>
-              </Card>
-              <Card bgColor={'white'} height={'300px'} as={VStack} padding={'5px'}>
-                <Avatar height={'195px'} w={'205px'} />
-                <Text fontSize={'15px'} fontWeight={'bold'}>محمد محمدی</Text>
-                <Text>mohammadi@gmail.com</Text>
-                <Button bgColor={'#29CCCC'} w={'100%'} minH={'30px'}>دنبال کردن</Button>
-              </Card>
-              <Card bgColor={'white'} height={'300px'} as={VStack} padding={'5px'}>
-                <Avatar height={'195px'} w={'205px'} />
-                <Text fontSize={'15px'} fontWeight={'bold'}>محمد محمدی</Text>
-                <Text>mohammadi@gmail.com</Text>
-                <Button bgColor={'#29CCCC'} w={'100%'} minH={'30px'}>دنبال کردن</Button>
-              </Card>
-              <Card bgColor={'white'} height={'300px'} as={VStack} padding={'5px'}>
-                <Avatar height={'195px'} w={'205px'} />
-                <Text fontSize={'15px'} fontWeight={'bold'}>محمد محمدی</Text>
-                <Text>mohammadi@gmail.com</Text>
-                <Button bgColor={'#29CCCC'} w={'100%'} minH={'30px'}>دنبال کردن</Button>
-              </Card>
+              {
+                dataFollowing?.data?.map((item) => (
+                  <Card bgColor={'white'} height={'300px'} as={VStack} padding={'5px'} justifyContent={'space-between'}>
+                    <VStack w={'100%'}>
+                      <Avatar height={'195px'} w={'205px'} />
+                      <Text fontSize={'15px'} fontWeight={'bold'}>{item?.first_name} {item?.last_name}</Text>
+                      {/* <Text>mohammadi@gmail.com</Text> */}
+                    </VStack>
+                    <Button bgColor={'#29CCCC'} w={'100%'} minH={'30px'}>دنبال کردن</Button>
+                  </Card>
+                ))
+              }
             </Grid>
           </GridItem>
         </Grid>

@@ -1,11 +1,24 @@
 import { Avatar, Button, Card, HStack, Image, Text, VStack } from "@chakra-ui/react"
+import axios from "axios"
 import { useRouter } from "next/router"
+import useSWRMutation from "swr/mutation"
+import { baseUrl } from "../lib/api"
+
+const patchRequest = (url, { arg: { id, ...data } }) => {
+  return axios.patch(baseUrl + url + id);
+}
 
 const Friends = ({ item }) => {
+
+  const { trigger: triggerFollow, isLoading: isLoadingFollow } = useSWRMutation(`user/client/flow-action/`, patchRequest)
 
   const router = useRouter()
   const handleClickFriend = () => {
     router.push('/dashboard/user/434')
+  }
+
+  const handleFollow = (id) => {
+    triggerFollow({ id: id })
   }
 
   return (
@@ -21,7 +34,7 @@ const Friends = ({ item }) => {
             {/* <Text>mohammadi@gmail.com</Text> */}
           </VStack>
         </HStack>
-        <Button colorScheme="teal" variant={'outline'}>دنبال کردن</Button>
+        <Button colorScheme="teal" variant={'outline'} onClick={e => handleFollow(item?.id)}>دنبال کردن</Button>
       </HStack>
     </Card>
   )

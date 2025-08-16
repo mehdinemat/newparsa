@@ -4,7 +4,6 @@ import {
   Button,
   Collapse,
   Container,
-  Divider,
   Fade,
   Flex,
   Grid,
@@ -30,7 +29,7 @@ import {
   Text,
   UnorderedList,
   useDisclosure,
-  VStack,
+  VStack
 } from "@chakra-ui/react";
 import _ from "lodash";
 import { useRouter } from "next/router";
@@ -46,7 +45,7 @@ import {
   IoLogoTwitter,
   IoLogoYoutube,
 } from "react-icons/io";
-import { IoCall, IoExitOutline, IoLocation, IoSearch } from "react-icons/io5";
+import { IoCall, IoExitOutline, IoLocation, IoPersonOutline, IoSearch } from "react-icons/io5";
 import { PiDiamondThin } from "react-icons/pi";
 import useSWR from "swr";
 import { StringParam, useQueryParams, withDefault } from "use-query-params";
@@ -425,19 +424,27 @@ const MainLayout = ({ children }) => {
                       <Avatar size={"sm"} />
                     </HStack>
                   </MenuButton>
-                  <MenuList>
+                  <MenuList padding={'6px'} borderRadius={'10px'}>
                     <MenuItem
                       fontWeight={"bold"}
-                      justifyContent={"center"}
+                      justifyContent={"start"}
                       cursor={"pointer"}
-                      onClick={(e) => handleProfileLink()}
+                      as={HStack}
+                      borderRadius={'10px'}
                     >
-                      {" "}
-                      {dataMe?.data?.[0]?.first_name}{" "}
-                      {dataMe?.data?.[0]?.last_name}
+                      <Avatar />
+                      <VStack w={'100%'} alignItems={'baseline'} gap={0} height={'100%'} justifyContent={'start'}>
+                        <Text>{" "}
+                          {dataMe?.data?.[0]?.first_name}{" "}
+                          {dataMe?.data?.[0]?.last_name}</Text>
+                        <Text fontSize={'8px'}></Text>
+                      </VStack>
                     </MenuItem>
-                    <Divider />
-                    <MenuItem onClick={(e) => handleExit()}>خروج</MenuItem>
+                    <MenuItem onClick={(e) => handleProfileLink()} borderRadius={'10px'} as={HStack} justifyContent={'start'} fontWeight={'bold'} cursor={'pointer'} height={'43px'}>
+                      <IoPersonOutline />
+                      <Text fontSize={'14px'} >پروفایل کاربری</Text>
+                    </MenuItem>
+                    <MenuItem onClick={(e) => handleExit()} borderRadius={'10px'} height={'43px'}>خروج</MenuItem>
                   </MenuList>
                 </Menu>
               </HStack>
