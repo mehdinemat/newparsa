@@ -42,7 +42,7 @@ const Scores = () => {
           </HStack>
         </VStack>
       </HStack>
-      <HStack w={'100%'} alignItems={'start'} bgColor={'white'} padding={'10px'} borderRadius={'10px'}>
+      {/* <HStack w={'100%'} alignItems={'start'} bgColor={'white'} padding={'10px'} borderRadius={'10px'}>
         <VStack w={'100%'} alignItems={'start'}>
           <HStack w={'100%'} justifyContent={'space-between'}>
             <Text fontWeight={'bold'} fontSize={'10px'}>امتیاز دیدگاه ها</Text>
@@ -69,7 +69,7 @@ const Scores = () => {
             </HStack>
           </HStack>
         </VStack>
-      </HStack>
+      </HStack> */}
     </Card>
   )
 }

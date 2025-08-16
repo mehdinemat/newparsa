@@ -9,21 +9,31 @@ import {
 
 import Bookmarks from "@/components/dashboard/bookmarks";
 import Friends from "@/components/dashboard/friends";
-import Info from "@/components/dashboard/info";
 import MyQuestion from "@/components/dashboard/myQuestion";
 import Scores from "@/components/dashboard/scores";
 import MainLayout from "@/components/mainLayout";
+import { useUser } from "@/context/UserContext";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { CiBookmark } from "react-icons/ci";
-import { HiOutlineBellAlert } from "react-icons/hi2";
 import { IoPeopleOutline, IoSettingsSharp } from "react-icons/io5";
+import useSWR from "swr";
 import RightSidebar from "../rightSidebar";
 
 
 
 const Index = () => {
   const { t } = useTranslation();
+  const { locale } = useRouter();
+
+  const { dataMe, isLoadingMe } = useUser();
+  const { data: dataQuestions, isLoading: isLoadingQuestions } = useSWR(`user/question?lang=${locale}`)
+  const { data: dataRank, isLoading: isLoadingRank } = useSWR(`user/client/my/rank?rate_type=1`)
+  const { data: dataRank2, isLoading: isLoadingRank2 } = useSWR(`user/client/my/rank?rate_type=2`)
+  const { data: dataRank3, isLoading: isLoadingRank3 } = useSWR(`user/client/my/rank?rate_type=3`)
+  const { data: dataSaved, isLoading: isLoadingSaved } = useSWR(`user/action/me?type=save_message`)
+  const { data: dataFollowers, isLoading: isLoadingFollowers } = useSWR(dataMe?.data?.[0]?.id && `user/client/follows/${dataMe?.data?.[0]?.id}?query_type=following`)
 
   const [type, setType] = useState(false)
 
@@ -65,7 +75,7 @@ const Index = () => {
 
                       </Box>
                     </GridItem>
-                    <GridItem colSpan={1} bgColor={'#F7F7F7'} padding={'16px'} borderRadius={'15px'}>
+                    {/* <GridItem colSpan={1} bgColor={'#F7F7F7'} padding={'16px'} borderRadius={'15px'}>
                       <HStack alignItems={'center'} fontSize={'20px'}>
                         <HiOutlineBellAlert />
                         <Text fontWeight={'bold'}>اعلان ها</Text>
@@ -76,17 +86,18 @@ const Index = () => {
                         <Info />
 
                       </Box>
-                    </GridItem>
+                    </GridItem> */}
                     <GridItem colSpan={1} bgColor={'#F7F7F7'} padding={'16px'} borderRadius={'15px'}>
                       <HStack alignItems={'center'} fontSize={'20px'}>
                         <CiBookmark />
                         <Text fontWeight={'bold'}>ذخیره شده‌ ها</Text>
                       </HStack>
                       <Box as={VStack} w={'100%'} transition="height 0.3s ease" height={type ? '100%' : '320px'} overflowY={'scroll'} mt={'25px'}>
-                        <Bookmarks />
-                        <Bookmarks />
-                        <Bookmarks />
-                        <Bookmarks />
+                        {
+                          dataSaved?.data?.actions?.map((item) => (
+                            <Bookmarks item={item} />
+                          ))
+                        }
 
                       </Box>
                     </GridItem>
@@ -99,9 +110,11 @@ const Index = () => {
                         <Text color={'#3646B3'} fontSize={'8px'} cursor={'pointer'}>مشاهده کامل</Text>
                       </HStack>
                       <Box as={VStack} gap={'15px'} w={'100%'} transition="height 0.3s ease" height={type ? '100%' : '320px'} overflowY={'scroll'} mt={'25px'}>
-                        <Friends />
-                        <Friends />
-                        <Friends />
+                        {
+                          dataFollowers?.data?.map((item) => (
+                            <Friends item={item} />
+                          ))
+                        }
 
                       </Box>
                     </GridItem>
@@ -113,12 +126,14 @@ const Index = () => {
                   <Text fontWeight={'bold'}>سوالات من</Text>
                 </HStack>
                 <Box as={VStack} w={'100%'} transition="height 0.3s ease" height={'calc( 100% - 70px )'} overflowY={'scroll'} mt={'25px'}>
-                  <MyQuestion />
-                  <MyQuestion />
-                  <MyQuestion />
-                  <MyQuestion />
-                  <MyQuestion />
-                  <MyQuestion />
+                  {
+                    console.log(dataQuestions)
+                  }
+                  {
+                    dataQuestions?.data?.result?.map((item) => (
+                      <MyQuestion item={item} />
+                    ))
+                  }
 
                 </Box>
               </GridItem>

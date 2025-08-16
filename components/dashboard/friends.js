@@ -1,7 +1,7 @@
 import { Avatar, Button, Card, HStack, Image, Text, VStack } from "@chakra-ui/react"
 import { useRouter } from "next/router"
 
-const Friends = () => {
+const Friends = ({ item }) => {
 
   const router = useRouter()
   const handleClickFriend = () => {
@@ -16,9 +16,9 @@ const Friends = () => {
           <VStack onClick={e => handleClickFriend()} cursor={'pointer'}>
             <HStack w={'100%'} alignItems={'center'}>
               <Image src="/start.png" w={'14px'} h={'13px'} />
-              <Text>علیرضا نوری</Text>
+              <Text>{item?.first_name} {item?.last_name}</Text>
             </HStack>
-            <Text>mohammadi@gmail.com</Text>
+            {/* <Text>mohammadi@gmail.com</Text> */}
           </VStack>
         </HStack>
         <Button colorScheme="teal" variant={'outline'}>دنبال کردن</Button>
