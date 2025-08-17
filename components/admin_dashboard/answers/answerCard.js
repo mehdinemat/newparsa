@@ -13,7 +13,7 @@ const AnswerCard = ({ data }) => {
             <VStack w={'100%'} alignItems={'start'}>
               <Box display={'flex'} height={'38px'} bgColor={'white'} w={'100%'} alignItems={'center'} p={'8px'} position={'relative'} pr={'10px'} borderRadius={'5px'}>
                 <Box bgColor={'#3646B3'} height={'90%'} w={'3px'} position={'absolute'} zIndex={'9999'} borderTopRightRadius={'10px'} borderBottomRightRadius={'10px'} right={'2px'} />
-                <Text>{data?.content?.slice(0, 200)}</Text>
+                <Text>{data?.content?.length > 80 ? `${data?.content?.slice(0, 80)}...`: data?.content}</Text>
               </Box>
               <Text fontWeight={'400'} fontSize={'18px'}>آیا می‌توان نذر کرد که فطریه را به زلزله زده‌گان داد؟  داد؟</Text>
               <HStack w={'100%'} justifyContent={'end'}>

@@ -20,7 +20,7 @@ import RightSidebar from "../rightSidebar";
 const Index = () => {
   const { t } = useTranslation();
 
-  const { data: dataAnswer, isLoading: isLoadingAnswer } = useSWR(`admin/question/answer`)
+  const { data: dataAnswer, isLoading: isLoadingAnswer } = useSWR(`admin/question/answer?lang=fa`)
 
 
   useEffect(() => {

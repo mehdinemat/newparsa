@@ -215,7 +215,7 @@ const Index = () => {
           </GridItem>
           <GridItem>
             <Box as={VStack} bgColor={'#F3F3F3'} padding={'14px'} borderRadius={'10px'} gap={'10px'} height={'500px'} overflowY={'auto'}>
-              <Box bgColor={'white'} padding={'5px'} borderRadius={'10px'}>
+              {/* <Box bgColor={'white'} padding={'5px'} borderRadius={'10px'}>
                 <Text>لورم ایپسوم متن ساختگی با تولید سادگی از صنعت چاپ، و با استفاده از طراحان گرافیــک اســت،</Text>
               </Box>
               <Box bgColor={'white'} padding={'5px'} borderRadius={'10px'}>
@@ -241,12 +241,12 @@ const Index = () => {
               </Box>
               <Box bgColor={'white'} padding={'5px'} borderRadius={'10px'}>
                 <Text>لورم ایپسوم متن ساختگی با تولید سادگی از صنعت چاپ، و با استفاده از طراحان گرافیــک اســت،</Text>
-              </Box>
+              </Box> */}
             </Box>
           </GridItem>
           <GridItem>
             <Box as={VStack} bgColor={'#F3F3F3'} padding={'14px'} borderRadius={'10px'} gap={'10px'} height={'500px'} overflowY={'auto'}>
-              <Box bgColor={'white'} padding={'5px'} borderRadius={'10px'}>
+              {/* <Box bgColor={'white'} padding={'5px'} borderRadius={'10px'}>
                 <Text>لورم ایپسوم متن ساختگی با تولید سادگی از صنعت چاپ، و با استفاده از طراحان گرافیــک اســت،</Text>
               </Box>
               <Box bgColor={'white'} padding={'5px'} borderRadius={'10px'}>
@@ -272,39 +272,14 @@ const Index = () => {
               </Box>
               <Box bgColor={'white'} padding={'5px'} borderRadius={'10px'}>
                 <Text>لورم ایپسوم متن ساختگی با تولید سادگی از صنعت چاپ، و با استفاده از طراحان گرافیــک اســت،</Text>
-              </Box>
+              </Box> */}
             </Box>
-          </GridItem>   <GridItem>
+          </GridItem> 
+            <GridItem>
             <Box as={VStack} bgColor={'#F3F3F3'} padding={'14px'} borderRadius={'10px'} gap={'10px'} height={'500px'} overflowY={'auto'} >
-              <Box bgColor={'white'} padding={'7px'} borderRadius={'10px'} w={'100%'}>
-                <VStack w={'100%'} alignItems={'start'} justifyContent={'start'}>
-                  <HStack w={'100%'} alignItems={'start'} justifyContent={'start'} position={'relative'}>
-                    <Box width={'25px'} height={'25px'} bgColor={'#29CCCC'} borderRadius={'5px'} />
-                    <Text position={'absolute'} color={'white'} right={'11px'} top={'3px'}>1</Text>
-                    <Text fontWeight={'400'} fontSize={'14px'} flex="1" color={'#333333'}>لورم ایپسوم متن ساختگی با تولید سادگی از صنعت چاپ، و با استفاده از طراحان گرافیــک اســت،</Text>
-                  </HStack>
-                  <HStack w={'100%'} justifyContent={'space-between'}>
-                    <HStack gap={'14px'}>
-                      <HStack gap={'2px'}>
-                        <TiInputChecked width={'10px'} height={'10px'} color="#C2C2C2" />
-                        <Text fontWeight={'600'} fontSize={'7px'} color={'#C2C2C2'}>3 پسند</Text>
-                      </HStack>
-                      <HStack gap={'2px'}>
-                        <IoEyeOutline width={'10px'} height={'10px'} color="#C2C2C2" />
-                        <Text fontWeight={'600'} fontSize={'7px'} color={'#C2C2C2'}>3 پسند</Text>
-                      </HStack>
-                      <HStack gap={'2px'}>
-                        <IoChatbubbleEllipsesOutline width={'10px'} height={'10px'} color="#C2C2C2" />
-                        <Text fontWeight={'600'} fontSize={'7px'} color={'#C2C2C2'}>3 پسند</Text>
-                      </HStack>
-                    </HStack>
-                    <HStack>
-                      <Text fontWeight={'500'} fontSize={'8px'} color={'#999999'}>1404/2/2</Text>
-                    </HStack>
-                  </HStack>
-                </VStack>
-              </Box>
-              <Box bgColor={'white'} padding={'5px'} borderRadius={'10px'}>
+            
+             */}
+              {/* <Box bgColor={'white'} padding={'5px'} borderRadius={'10px'}>
                 <Text>لورم ایپسوم متن ساختگی با تولید سادگی از صنعت چاپ، و با استفاده از طراحان گرافیــک اســت،</Text>
               </Box>
               <Box bgColor={'white'} padding={'5px'} borderRadius={'10px'}>
@@ -327,7 +302,7 @@ const Index = () => {
               </Box>
               <Box bgColor={'white'} padding={'5px'} borderRadius={'10px'}>
                 <Text>لورم ایپسوم متن ساختگی با تولید سادگی از صنعت چاپ، و با استفاده از طراحان گرافیــک اســت،</Text>
-              </Box>
+              </Box> */}
             </Box>
           </GridItem>
         </Grid>

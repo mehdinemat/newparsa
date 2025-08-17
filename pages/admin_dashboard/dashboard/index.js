@@ -32,8 +32,8 @@ import RightSidebar from "../rightSidebar";
 const Index = () => {
   const { t } = useTranslation();
 
-  const { data: dataQuestion, isLoading: isLoadingQuestion } = useSWR(`admin/question`)
-  const { data: dataAnswer, isLoading: isLoadingAnswer } = useSWR(`admin/question/answer`)
+  const { data: dataQuestion, isLoading: isLoadingQuestion } = useSWR(`admin/question?lang=fa`)
+  const { data: dataAnswer, isLoading: isLoadingAnswer } = useSWR(`admin/question/answer?lang=fa`)
   const { data: dataClient, isLoading: isLoadingClient } = useSWR(`admin/client`)
 
   const [type, setType] = useState(false)
@@ -140,7 +140,7 @@ const Index = () => {
               <GridItem bgColor={"white"} w={"100%"} height={"100%"} borderRadius={"15px"}>
                 <HStack mr={'15px'} mt={'15px'} color="#979797" alignItems={'flex-start'}>
                   <IoSettingsSharp size={'25px'} />
-                  <Text height={'20px'} fontWeight={'800'} fontSize={'18px'}>آدمین ها</Text>
+                  <Text height={'20px'} fontWeight={'800'} fontSize={'18px'}>ادمین ها</Text>
                 </HStack>
                 <Box as={VStack} w={'100%'} height={'320px'} padding={'16px'} gap={'10px'} overflowY={'auto'}>
                   {

@@ -20,7 +20,7 @@ import RightSidebar from "../rightSidebar";
 
 const Index = () => {
 
-  const { data: dataQuestions, isLoading: isLoadingQuestions } = useSWR(`admin/question`)
+  const { data: dataQuestions, isLoading: isLoadingQuestions } = useSWR(`admin/question?lang=fa`)
 
   const { t } = useTranslation();
 

@@ -69,7 +69,7 @@ const Index = () => {
                     <IconButton icon={<IoMenu />} colorScheme="blue" fontSize={'31px'} />
                   </HStack>
                 </HStack>
-                <Grid templateColumns="repeat(3, 1fr)" height={'calc( 100vh - 270px )'} w={'100%'} p={'10px'} padding={'16px'} gap={'10px'} overflowY={'auto'}>
+                <Grid templateColumns="repeat(3, 1fr)" height={'100%'} w={'100%'} p={'10px'} padding={'16px'} gap={'10px'} overflowY={'auto'}>
                   <UserCard />
                   <UserCard />
                   <UserCard />

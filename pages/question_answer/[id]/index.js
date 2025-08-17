@@ -480,18 +480,18 @@ const Index = () => {
                                   dataQuestion?.data?.result?.[0]?.created_at
                                 ).format("jYYYY/jMM/jDD")}
                               </Text>
-                              <AvatarGroup size='md' max={3} >
-                                <Avatar name='Ryan Florence' src='https://bit.ly/ryan-florence' w={"28px"}
-                                  h={"28px"} />
-                                <Avatar name='Segun Adebayo' src='https://bit.ly/sage-adebayo' w={"28px"}
-                                  h={"28px"} />
-                                <Avatar name='Kent Dodds' src='https://bit.ly/kent-c-dodds' w={"28px"}
-                                  h={"28px"} />
-                                <Avatar name='Prosper Otemuyiwa' src='https://bit.ly/prosper-baba' w={"28px"}
-                                  h={"28px"} />
-                                <Avatar name='Christian Nwamba' src='https://bit.ly/code-beast' w={"28px"}
-                                  h={"28px"} />
-                              </AvatarGroup>
+                                {/* <AvatarGroup size='md' max={3} >
+                                  <Avatar name='Ryan Florence' src='https://bit.ly/ryan-florence' w={"28px"}
+                                    h={"28px"} />
+                                  <Avatar name='Segun Adebayo' src='https://bit.ly/sage-adebayo' w={"28px"}
+                                    h={"28px"} />
+                                  <Avatar name='Kent Dodds' src='https://bit.ly/kent-c-dodds' w={"28px"}
+                                    h={"28px"} />
+                                  <Avatar name='Prosper Otemuyiwa' src='https://bit.ly/prosper-baba' w={"28px"}
+                                    h={"28px"} />
+                                  <Avatar name='Christian Nwamba' src='https://bit.ly/code-beast' w={"28px"}
+                                    h={"28px"} />
+                                </AvatarGroup> */}
                             </HStack>
 
                           </HStack>
