@@ -8,7 +8,7 @@ const questionCard = ({ data }) => {
       <HStack w={'100%'} alignItems={'start'} >
         <Checkbox></Checkbox>
         <VStack w={'100%'} alignItems={'start'}>
-          <Text fontWeight={'400'} fontSize={'10px'}>{data?.content?.slice(0, 200)}</Text>
+          <Text fontWeight={'400'} fontSize={'10px'}>{data?.content?.slice(0, 100)}</Text>
           <HStack w={'100%'} justifyContent={'space-between'}>
             <HStack>
               <Badge colorScheme="blue" fontSize={'7px'}>خداشناسی</Badge>
