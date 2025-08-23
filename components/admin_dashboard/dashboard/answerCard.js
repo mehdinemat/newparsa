@@ -5,7 +5,7 @@ const AnswerCard = ({ data }) => {
     <Card as={VStack} height={'119px'} w={'100%'} bgColor={'white'} variant={'unstyled'} flexShrink={0} gap={0} padding={'10px'}>
       <HStack w={'100%'} alignItems={'start'} >
         <VStack w={'100%'} alignItems={'start'}>
-          <Text fontWeight={'400'} fontSize={'12px'}>{data?.content?.slice(0, 200)}</Text>
+          <Text fontWeight={'400'} fontSize={'12px'}>{data?.content?.slice(0, 100)}</Text>
 
           <Divider my={'5px'} />
         </VStack>
