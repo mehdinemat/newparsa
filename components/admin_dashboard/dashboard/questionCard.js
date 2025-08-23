@@ -1,6 +1,7 @@
-import { Avatar, Badge, Button, Card, Checkbox, Divider, HStack, Text, VStack } from "@chakra-ui/react"
-import { IoArrowBack, IoChatbubbleEllipsesOutline, IoEyeOutline } from "react-icons/io5"
-import { TiInputChecked } from "react-icons/ti"
+import { Avatar, Button, Card, Checkbox, Divider, HStack, Text, VStack } from "@chakra-ui/react";
+import moment from "moment-jalaali";
+import { IoArrowBack, IoChatbubbleEllipsesOutline, IoEyeOutline } from "react-icons/io5";
+import { TiInputChecked } from "react-icons/ti";
 
 const questionCard = ({ data }) => {
   return (
@@ -10,33 +11,34 @@ const questionCard = ({ data }) => {
         <VStack w={'100%'} alignItems={'start'}>
           <Text fontWeight={'400'} fontSize={'10px'}>{data?.content?.slice(0, 100)}</Text>
           <HStack w={'100%'} justifyContent={'space-between'}>
-            <HStack>
+            {/* <HStack>
               <Badge colorScheme="blue" fontSize={'7px'}>خداشناسی</Badge>
               <Badge colorScheme="blue" fontSize={'7px'}>خداشناسی</Badge>
               <Badge colorScheme="blue" fontSize={'7px'}>خداشناسی</Badge>
               <Badge colorScheme="blue" fontSize={'7px'}>خداشناسی</Badge>
-            </HStack>
-            <Text fontWeight={'400'} fontSize={'8px'}>1404/4/1</Text>
+            </HStack> */}
+            <Text fontWeight={'400'} fontSize={'8px'}>{moment(data?.created_at).format("jYYYY/jMM/jDD")}
+            </Text>
           </HStack>
           <HStack w={'100%'} justifyContent={'space-between'}>
-            <HStack>
+            {/* <HStack>
               <Avatar height={'13px'} width={'13px'} />
               <Text fontWeight={'400'} fontSize={'7px'}>اسلام کوئست</Text>
               <Divider orientation="vertical" />
-            </HStack>
+            </HStack> */}
             <HStack>
               <HStack gap={'14px'}>
                 <HStack gap={'2px'}>
                   <TiInputChecked width={'10px'} height={'10px'} color="#C2C2C2" />
-                  <Text fontWeight={'600'} fontSize={'7px'} color={'#C2C2C2'}>3 پسند</Text>
+                  <Text fontWeight={'600'} fontSize={'7px'} color={'#C2C2C2'}>{data?.like_count} پسند</Text>
                 </HStack>
                 <HStack gap={'2px'}>
                   <IoEyeOutline width={'10px'} height={'10px'} color="#C2C2C2" />
-                  <Text fontWeight={'600'} fontSize={'7px'} color={'#C2C2C2'}>3 پسند</Text>
+                  <Text fontWeight={'600'} fontSize={'7px'} color={'#C2C2C2'}>{data?.viewer} بازدید</Text>
                 </HStack>
                 <HStack gap={'2px'}>
                   <IoChatbubbleEllipsesOutline width={'10px'} height={'10px'} color="#C2C2C2" />
-                  <Text fontWeight={'600'} fontSize={'7px'} color={'#C2C2C2'}>3 پسند</Text>
+                  <Text fontWeight={'600'} fontSize={'7px'} color={'#C2C2C2'}>{data?.comment_count} کامنت</Text>
                 </HStack>
               </HStack>
             </HStack>

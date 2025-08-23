@@ -1,19 +1,19 @@
 
-import { Avatar, Box, Button, Card, Checkbox, Divider, Grid, GridItem, HStack, Image, Text, VStack } from "@chakra-ui/react"
-import { IoArrowBack, IoChatbubbleEllipsesOutline, IoEyeOutline } from "react-icons/io5"
+import { Box, Card, Checkbox, Divider, Grid, GridItem, HStack, Text, VStack } from "@chakra-ui/react"
+import { IoChatbubbleEllipsesOutline } from "react-icons/io5"
 import { TiInputChecked } from "react-icons/ti"
 
 const AnswerCard = ({ data }) => {
   return (
     <Grid templateColumns='repeat(4, 1fr)' gap={2} height={'170px'} w={'100%'}>
-      <GridItem colSpan={3} height={'100%'}>
+      <GridItem colSpan={4} height={'100%'}>
         <Card as={VStack} height={'100%'} w={'100%'} bgColor={'#F7F7F7'} variant={'unstyled'} flexShrink={0} gap={0} padding={'10px'} borderRadius={'10px'}>
           <HStack w={'100%'} alignItems={'start'} >
             <Checkbox></Checkbox>
             <VStack w={'100%'} alignItems={'start'}>
               <Box display={'flex'} height={'38px'} bgColor={'white'} w={'100%'} alignItems={'center'} p={'8px'} position={'relative'} pr={'10px'} borderRadius={'5px'}>
                 <Box bgColor={'#3646B3'} height={'90%'} w={'3px'} position={'absolute'} zIndex={'9999'} borderTopRightRadius={'10px'} borderBottomRightRadius={'10px'} right={'2px'} />
-                <Text>{data?.content?.length > 80 ? `${data?.content?.slice(0, 80)}...`: data?.content}</Text>
+                <Text>{data?.content?.length > 80 ? `${data?.content?.slice(0, 80)}...` : data?.content}</Text>
               </Box>
               <Text fontWeight={'400'} fontSize={'18px'}>آیا می‌توان نذر کرد که فطریه را به زلزله زده‌گان داد؟  داد؟</Text>
               <HStack w={'100%'} justifyContent={'end'}>
@@ -38,22 +38,22 @@ const AnswerCard = ({ data }) => {
               <HStack gap={'14px'} color={'#3646B3'}>
                 <HStack gap={'2px'} >
                   <TiInputChecked width={'10px'} height={'15px'} />
-                  <Text fontWeight={'600'} fontSize={'12px'} >3پسند</Text>
+                  <Text fontWeight={'600'} fontSize={'12px'} whiteSpace="nowrap">{data?.like_count} پسند</Text>
                 </HStack>
-                <HStack gap={'2px'}>
+                {/* <HStack gap={'2px'}>
                   <IoEyeOutline width={'10px'} height={'15px'} />
-                  <Text fontWeight={'600'} fontSize={'12px'} >3پسند</Text>
-                </HStack>
+                  <Text fontWeight={'600'} fontSize={'12px'} whiteSpace="nowrap">{data?.}</Text>
+                </HStack> */}
                 <HStack gap={'2px'}>
                   <IoChatbubbleEllipsesOutline width={'15px'} height={'10px'} />
-                  <Text fontWeight={'600'} fontSize={'12px'} >3پسند</Text>
+                  <Text fontWeight={'600'} fontSize={'12px'} whiteSpace="nowrap">{data?.comment_count} کامنت</Text>
                 </HStack>
               </HStack>
             </HStack>
           </HStack>
         </Card>
       </GridItem>
-      <GridItem height={'100%'}>
+      {/* <GridItem height={'100%'}>
         <Card height={'100%'} w={'100%'} variant={'unstyled'} flexShrink={0} position={'relative'}>
           <Image position={'absolute'} src="/medal.png" height={'56px'} w={'40px'} left={'10px'} />
           <Text fontWeight={'900'} fontSize={'15px'} position={'absolute'} color={'#29CCCC'} left={'25px'} top={'27px'}>7</Text>
@@ -68,7 +68,7 @@ const AnswerCard = ({ data }) => {
           </HStack>
           <Button leftIcon={<IoArrowBack />} bgColor={'#29CCCC'} minHeight={'36px'} w={'100%'} mt={'2px'} borderRadius={'10px'}>مشاهده فعالیت</Button>
         </Card>
-      </GridItem>
+      </GridItem> */}
     </Grid>
   )
 }
