@@ -16,13 +16,10 @@ import { CiFileOn } from "react-icons/ci";
 import { FaQuestion } from "react-icons/fa";
 import { GiGlobeRing } from "react-icons/gi";
 import {
-  IoChatbubbleEllipsesOutline,
-  IoEyeOutline,
   IoPeopleOutline,
   IoPersonOutline,
-  IoSettingsOutline,
+  IoSettingsOutline
 } from "react-icons/io5";
-import { TiInputChecked } from "react-icons/ti";
 import useSWR from "swr";
 import RightSidebar from "../rightSidebar";
 
@@ -274,11 +271,11 @@ const Index = () => {
                 <Text>لورم ایپسوم متن ساختگی با تولید سادگی از صنعت چاپ، و با استفاده از طراحان گرافیــک اســت،</Text>
               </Box> */}
             </Box>
-          </GridItem> 
-            <GridItem>
+          </GridItem>
+          <GridItem>
             <Box as={VStack} bgColor={'#F3F3F3'} padding={'14px'} borderRadius={'10px'} gap={'10px'} height={'500px'} overflowY={'auto'} >
-            
-             */}
+
+
               {/* <Box bgColor={'white'} padding={'5px'} borderRadius={'10px'}>
                 <Text>لورم ایپسوم متن ساختگی با تولید سادگی از صنعت چاپ، و با استفاده از طراحان گرافیــک اســت،</Text>
               </Box>
