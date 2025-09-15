@@ -12,7 +12,8 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
-import { FiMessageCircle, FiX } from "react-icons/fi";
+import { FaRegComments } from "react-icons/fa";
+import { FiX } from "react-icons/fi";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 import { StringParam, useQueryParams, withDefault } from "use-query-params";
@@ -265,50 +266,49 @@ export default function ChatBot() {
     <>
       {/* Floating button */}
       {!isOpen && (
-        <IconButton
-          icon={<FiMessageCircle size={22} />}
-          aria-label="Open Chat"
-          position="fixed"
-          bottom="20px"
-          right="20px"
-          colorScheme="teal"
-          borderRadius="full"
-          size="lg"
-          onClick={() => handleOpenChatBot()}
-        />
+        <Box bgGradient="linear(58.61deg, #3646B3 42.05%, #29CCCC 180.32%)" w={'160px'} h={'61px'} position="fixed" bottom="20px"
+          right="20px" boxShadow="0px 7px 11.2px 0px #00000026" borderRadius={'15px'} borderBottomLeftRadius={'0px'} as={HStack} padding={'15px'} alignItems={'center'} justifyContent={'center'} onClick={() => handleOpenChatBot()} cursor={'pointer'}
+        >
+          <Text fontWeight={'bold'} color={'white'}>گفتگو بات</Text>
+          <IconButton
+            icon={<FaRegComments size={30} />}
+            borderRadius="full"
+            size="lg"
+
+          />
+        </Box>
       )}
 
       {/* Chat window */}
       {isOpen && (
         <Box
+          bgGradient="linear(58.61deg, #3646B3 42.05%, #29CCCC 180.32%)"
           position="fixed"
           bottom="20px"
           right="20px"
-          w="300px"
-          h="400px"
-          bg="white"
+          w="386px"
+          h="586px"
           border="1px solid #ccc"
           borderRadius="md"
           boxShadow="lg"
           display="flex"
           flexDirection="column"
+          zIndex={9999}
         >
           {/* Header */}
-          <HStack
-            p={2}
-            bg="teal.500"
-            color="white"
-            justifyContent="space-between"
-          >
-            <Text fontWeight="bold">چت بات</Text>
+
+          <HStack w={'100%'} alignItems={'center'} padding={'10px'} justifyContent={'space-between'}>
             <IconButton
               icon={<FiX size={18} />}
               aria-label="Close Chat"
               size="sm"
               onClick={() => setIsOpen(false)}
             />
+            <HStack >
+              <Text fontWeight="bold" color={'white'}>گفتگو بات</Text>
+              <FaRegComments color="white" fontSize={'30px'} />
+            </HStack>
           </HStack>
-
           {/* Messages */}
           <VStack
             flex="1"
@@ -316,6 +316,9 @@ export default function ChatBot() {
             spacing={2}
             align="stretch"
             overflowY="auto"
+            bgColor={'#C3C3C3'}
+            borderTopRightRadius={'13px'}
+            borderTopLeftRadius={'13px'}
           >
             {chatHistory?.map((chat, index) => {
               const isLast = index === chatHistory.length - 1;
@@ -362,7 +365,9 @@ export default function ChatBot() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSubmit(input)}
+              color={'white'}
             />
+            {/* <IconButton icon={<IoSend />} /> */}
             <Button colorScheme="teal" onClick={e => handleSubmit(input)}>
               ارسال
             </Button>
