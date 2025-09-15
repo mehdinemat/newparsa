@@ -39,7 +39,7 @@ import { useRouter } from "next/router";
 
 import ChatBot from "@/components/chatbot";
 import Head from "next/head";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { IoIosArrowBack, IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
@@ -95,7 +95,7 @@ const RotatingIcon = chakra(IoIosArrowDown, {
 export default function Home({ children }) {
 
   const [hoveredIndex, setHoveredIndex] = useState({ selected: '', val: '' });
-
+  const [isUserLogin, setIsUserLogin] = useState("");
 
   const [filters, setFilters] = useQueryParams({
     category_id: withDefault(StringParam, '28')
@@ -234,6 +234,10 @@ export default function Home({ children }) {
     setHoveredIndex({ selected: index, val: val })
   }
 
+  useEffect(() => {
+    setIsUserLogin(!!localStorage.getItem("token"));
+  }, []);
+
   return (
     <MainLayout>
       <Head>
@@ -260,7 +264,7 @@ export default function Home({ children }) {
         mx="auto"
         p={"20px"}
       >
-        <ChatBot />
+        {isUserLogin && <ChatBot />}
         <HStack
           w="100%"
           whiteSpace="normal"
