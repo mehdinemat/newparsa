@@ -1,3 +1,4 @@
+import PhoneInput from "@/components/base/PhoneInput";
 import { baseUrl } from "@/components/lib/api";
 import {
   Box,
@@ -14,6 +15,7 @@ import {
 import axios from "axios";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { GoArrowLeft } from "react-icons/go";
@@ -34,6 +36,9 @@ const Index = () => {
   const toast = useToast();
 
   const router = useRouter();
+
+  const [fullNumber, setFullNumber] = useState("");
+
 
   const { register, setValue, getValues, handleSubmit } = useForm();
 
@@ -64,7 +69,7 @@ const Index = () => {
     }
   );
   const handleLogin = (e) => {
-    trigger(e);
+    trigger({ ...e, username: fullNumber });
   };
 
   const handleClickRegister = () => {
@@ -128,7 +133,8 @@ const Index = () => {
             <Text fontSize={{ base: "20px", md: "18px" }} mt={"20px"} fontWeight={'extrabold'} color={'#979797'} letterSpacing={'-2%'} alignItems={'start'} w={'100%'}>
               {t("log_in_to_your_account")}
             </Text>
-            <Input
+            <PhoneInput setFullNumber={setFullNumber} fullNumber={fullNumber} />
+            {/* <Input
               border={'1px'}
               borderColor={'#B7B7B7'}
               color={'black'}
@@ -142,7 +148,7 @@ const Index = () => {
                   textAlign: "center", // this line is also needed to target the placeholder itself
                 },
               }}
-            />
+            /> */}
             <Input
               border={'1px'}
               borderColor={'#B7B7B7'}

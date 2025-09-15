@@ -15,7 +15,7 @@ const countries = [
 ];
 
 export default function PhoneInput({ fullNumber, setFullNumber }) {
-  const [country, setCountry] = useState(countries[0]);
+  const [country, setCountry] = useState(countries[3]);
   const [number, setNumber] = useState("");
 
   const handleCountryChange = (e) => {
@@ -40,9 +40,13 @@ export default function PhoneInput({ fullNumber, setFullNumber }) {
         height={"46px"}
         value={number}
         onChange={handleNumberChange}
-        placeholder={t("phone_number")}
         _placeholder={{ textAlign: 'right' }}
-
+        placeholder={t("phone_number")}
+        sx={{
+          "::placeholder": {
+            textAlign: "center", // this line is also needed to target the placeholder itself
+          },
+        }}
       />
       {/* <InputRightElement width="8rem" pl={2} top={"5px"}> */}
       {/* </InputRightElement> */}
