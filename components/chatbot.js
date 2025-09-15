@@ -3,7 +3,6 @@
 
 import {
   Box,
-  Button,
   HStack,
   IconButton,
   Input,
@@ -14,6 +13,7 @@ import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { FaRegComments } from "react-icons/fa";
 import { FiX } from "react-icons/fi";
+import { IoSend } from "react-icons/io5";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 import { StringParam, useQueryParams, withDefault } from "use-query-params";
@@ -367,10 +367,7 @@ export default function ChatBot() {
               onKeyDown={(e) => e.key === "Enter" && handleSubmit(input)}
               color={'white'}
             />
-            {/* <IconButton icon={<IoSend />} /> */}
-            <Button colorScheme="teal" onClick={e => handleSubmit(input)}>
-              ارسال
-            </Button>
+            <IconButton icon={<IoSend />} onClick={e => handleSubmit(input)} transform={'rotate(180deg)'} />
           </HStack>
         </Box>
       )}
