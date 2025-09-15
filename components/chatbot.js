@@ -216,7 +216,7 @@ export default function ChatBot() {
           if (parsed.chunk) {
             setIsStreaming(false)
             botMessage += parsed.chunk;
-
+            console.log(parsed)
             // update assistant message in history
             setChatHistory((prev) =>
               prev.map((msg) =>
@@ -291,11 +291,12 @@ export default function ChatBot() {
           h="586px"
           border="1px solid #ccc"
           borderRadius="md"
-          boxShadow="lg"
+
           display="flex"
           flexDirection="column"
           zIndex={9999}
           padding={'3px'}
+          boxShadow="0px 7px 11.2px 0px #00000026"
         >
           {/* Header */}
 

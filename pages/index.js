@@ -418,14 +418,15 @@ export default function Home({ children }) {
               as={GridItem}
               colSpan={"1"}
               w="100%"
-              maxW={{ base: "calc( 100vw - 50px )", md: "100vw" }}
+              maxW={{ base: "calc( 100vw - 50px )", md: "100%" }}
               whiteSpace="normal"
               overflowWrap="break-word"
+
             >
               <Box
                 w="100%"
                 maxW="100%"
-                p="4"
+                p="30px"
                 border="1px"
                 borderColor="#EBEBEB"
                 borderRadius="15px"
@@ -433,16 +434,26 @@ export default function Home({ children }) {
                 height="min-content"
                 mb="20px"
                 overflow="hidden"
-                bgImage={'/bghadith.png'}
+                bgImage={'/bghadith2.png'}
                 bgSize={'cover'}
                 position={'relative'}
                 bgPosition={'center'}
+                overflowY={'hidden'}
+
               >
-                <VStack alignItems={'center'}  >
-                  <Text fontSize="22px" fontWeight='extrabold' mt={'60px'}>
+                <Box
+                  as="img"
+                  src={'/vec1.png'}
+                  position="absolute"
+                  top="0px"
+                  left="0px"
+                  maxHeight={'585px'}
+                />
+                <VStack alignItems={'center'} paddingX={'30px'}>
+                  <Text fontSize="22px" fontWeight='extrabold' mt={'40px'}>
                     {t("hadith_of_the_day")}
                   </Text>
-                  <Text mt="10px" whiteSpace="pre-wrap" wordBreak="break-word" align={'justify'}>
+                  <Text mt="0px" whiteSpace="pre-wrap" wordBreak="break-word" align={'justify'} fontSize={'9px'} fontWeight={'bold'}>
                     {dataHadith?.data}
                   </Text>
                 </VStack>

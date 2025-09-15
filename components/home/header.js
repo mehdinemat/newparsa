@@ -304,12 +304,15 @@ const Header = ({
                 ref={inputRef}
                 borderRadius="13px"
                 width={{ base: "381px", md: "100%" }}
-                bgColor={isRecording ? "#29CCCC" : "#00000059"}
+                bgColor="#00000059" // your background
+                backdropFilter="blur(9px)" // blur effect
                 height="74px"
-                textIndent={"20px"}
+                textIndent="20px"
                 placeholder={isRecording ? t("listening") : t("search_among")}
                 color="white"
-                border="none"
+                border="0.7px solid" // border width
+                borderImageSource="linear-gradient(360deg, rgba(255, 255, 255, 0.55) -32.14%, rgba(255, 255, 255, 0) 19.32%, rgba(255, 255, 255, 0) 53.62%, rgba(255, 255, 255, 0.33) 100%)"
+                borderImageSlice={1} // necessary for gradient borders
                 pl={isRecording ? "50px" : "12px"}
                 _placeholder={{ color: "gray.300" }}
                 {...register("search")}
@@ -375,16 +378,21 @@ const Header = ({
             {siteData?.map((item, index) => (
               <React.Fragment key={index}>
                 <VStack
-                  bgColor={'#2A378CB2'}
-                  borderRadius={'13px'}
+                  bgColor="#2A378C4D"
+                  borderRadius="13px"
                   spacing={0}
-                  w={"132px"}
-                  height={'65px'}
-                  textAlign={'center'}
+                  w="132px"
+                  height="65px"
+                  textAlign="center"
                   display={item?.size != breakpoint ? "flex" : "none"}
-                  justifyContent={'space-between'}
-                  padding={'5px'}
+                  justifyContent="space-between"
+                  padding="5px"
+                  backdropFilter="blur(4px)"
+                  boxShadow="0px 7px 7px 0px #0000001A"
+                  borderImageSource="linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 36.54%, rgba(255, 255, 255, 0) 72.12%, rgba(255, 255, 255, 0.33) 100%)"
+                  borderImageSlice={1}
                 >
+
                   <CountUp
                     start={0}
                     end={data?.[dataTranslate?.[item?.title]]}
