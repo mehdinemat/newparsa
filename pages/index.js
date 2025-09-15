@@ -37,6 +37,7 @@ import Pagination from "@/components/pagination";
 import QuestionCard from "@/components/questionCars";
 import { useRouter } from "next/router";
 
+import ChatBot from "@/components/chatbot";
 import Head from "next/head";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -259,6 +260,7 @@ export default function Home({ children }) {
         mx="auto"
         p={"20px"}
       >
+        <ChatBot />
         <HStack
           w="100%"
           whiteSpace="normal"
