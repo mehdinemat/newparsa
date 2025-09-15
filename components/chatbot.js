@@ -11,9 +11,10 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
+import { AiFillAudio } from "react-icons/ai";
 import { FaRegComments } from "react-icons/fa";
 import { FiX } from "react-icons/fi";
-import { IoSend } from "react-icons/io5";
+import { IoAdd, IoSend } from "react-icons/io5";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 import { StringParam, useQueryParams, withDefault } from "use-query-params";
@@ -294,6 +295,7 @@ export default function ChatBot() {
           display="flex"
           flexDirection="column"
           zIndex={9999}
+          padding={'3px'}
         >
           {/* Header */}
 
@@ -329,7 +331,7 @@ export default function ChatBot() {
                   id={chat.role === 2 ? 'user' : 'bot'}
                   alignSelf={chat.role === 2 ? 'flex-start' : 'flex-end'}
                   border={'.3px'}
-                  bgColor={chat.role === 2 ? '#DDDDDD' : '#E5F6FF'}
+                  bgColor={chat.role === 2 ? '#3646B3' : '#FFFFFF'}
                   px={'18px'}
                   py={'8px'}
                   borderRadius={'20px'}
@@ -337,12 +339,14 @@ export default function ChatBot() {
                   w={'auto'}
                   maxW={'220px'}
                   mb={'15px'}
+                  boxShadow="0px 1px 5.6px 0px #0000001A"
                   justifyContent={'start'}
                 >
                   <Text
                     fontSize={chat.role === 2 ? '13px' : '14px'}
                     fontWeight={'400'}
                     whiteSpace="pre-wrap"
+                    color={chat.role === 2 ? 'white' : 'black'}
                   >
                     {chat.content}
                   </Text>
@@ -359,15 +363,22 @@ export default function ChatBot() {
           </VStack>
 
           {/* Input */}
-          <HStack p={2} borderTop="1px solid #ddd">
-            <Input
-              placeholder="سوال خود را بپرسید..."
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleSubmit(input)}
-              color={'white'}
-            />
-            <IconButton icon={<IoSend />} onClick={e => handleSubmit(input)} transform={'rotate(180deg)'} />
+          <HStack w={'100%'} gap={'1px'} bgColor={'#C3C3C3'}>
+            <IconButton icon={<IoAdd color="#BCBCBC" />} bgColor={'#FFFFFF'} height={'29px'} />
+            <HStack p={1} borderTop="1px solid #ddd" bgColor={'#FFFFFF'} borderRadius={'5px'} height={'29px'} w={'100%'} paddingY={'0px'}>
+              <AiFillAudio color="#BCBCBC" width={'29px'} height={'29px'} />
+              <Input
+                placeholder="نوشتن متن..."
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleSubmit(input)}
+                color={'black'}
+                height={'auto'}
+                bgColor={'#EBEBEB'}
+                w={'100%'}
+              />
+              <IoSend color="#29CCCC" onClick={e => handleSubmit(input)} style={{ transform: 'rotate(180deg)' }} cursor={'pointer'} />
+            </HStack>
           </HStack>
         </Box>
       )}
