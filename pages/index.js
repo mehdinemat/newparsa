@@ -115,6 +115,8 @@ export default function Home({ children }) {
   const [categoryId, setCategoryId] = useState("");
   const [searchType, setSearchType] = useState("search");
 
+  const panelsRef = useRef(null);
+
   const { t } = useTranslation();
 
   const {
@@ -231,12 +233,28 @@ export default function Home({ children }) {
     router.push(`/questions/category/${id}/${title}`);
   };
   const handleCategoryClick = (index, val) => {
-    setHoveredIndex({ selected: index, val: val })
+    console.log(index, val, hoveredIndex)
+    if (hoveredIndex?.selected == index && hoveredIndex?.val == val) {
+      setHoveredIndex({ selected: '', val: '' })
+    } else {
+
+      setHoveredIndex({ selected: index, val: val })
+    }
   }
 
   useEffect(() => {
     setIsUserLogin(!!localStorage.getItem("token"));
   }, []);
+
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (panelsRef.current && !panelsRef.current.contains(e.target)) {
+        setHoveredIndex({ selected: "", val: "" }); // reset on outside click
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [setHoveredIndex]);
 
   return (
     <MainLayout>
@@ -355,7 +373,7 @@ export default function Home({ children }) {
 
           <TabPanels>
             {[...Array(20)].map((_, i) => (
-              <TabPanel key={i}>
+              <TabPanel key={i} ref={panelsRef}>
                 {!isLoadingChildCategory ? <SimpleGrid
                   columns={{ base: 1, sm: 2, md: 3, lg: 5 }}
                   spacing={5}
