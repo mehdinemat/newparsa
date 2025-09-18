@@ -268,7 +268,7 @@ export default function ChatBot() {
       {/* Floating button */}
       {!isOpen && (
         <Box bgGradient="linear(58.61deg, #3646B3 42.05%, #29CCCC 180.32%)" w={'160px'} h={'61px'} position="fixed" bottom="20px"
-          right="20px" boxShadow="0px 7px 11.2px 0px #00000026" borderRadius={'15px'} borderBottomLeftRadius={'0px'} as={HStack} padding={'15px'} alignItems={'center'} justifyContent={'center'} onClick={() => handleOpenChatBot()} cursor={'pointer'}
+          right="20px" boxShadow="0px 7px 11.2px 0px #00000026" borderRadius={'15px'} borderBottomLeftRadius={'0px'} as={HStack} padding={'15px'} alignItems={'center'} justifyContent={'center'} onClick={() => handleOpenChatBot()} cursor={'pointer'} zIndex={9999}
         >
           <Text fontWeight={'bold'} color={'white'}>گفتگو بات</Text>
           <IconButton
