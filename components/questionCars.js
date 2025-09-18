@@ -1,4 +1,4 @@
-import { Avatar, Badge, Divider, HStack, Image, Text, VStack } from "@chakra-ui/react";
+import { Avatar, Badge, Divider, HStack, Image, Text, VStack, Wrap } from "@chakra-ui/react";
 import moment from "moment-jalaali";
 import { useRouter } from "next/router";
 import { GiBigDiamondRing } from "react-icons/gi";
@@ -46,7 +46,7 @@ const QuestionCard = ({ data, t, type = "question", bgColor }) => {
           {data?.content}
         </Text>
         <HStack w={'100%'} justifyContent={'space-between'}>
-          <HStack>
+          <Wrap spacing="8px">
             {data?.tags?.map((item, index) => (
               <Badge
                 onClick={(e) => handleClickTags(item)}
@@ -66,7 +66,7 @@ const QuestionCard = ({ data, t, type = "question", bgColor }) => {
                 {item?.name}
               </Badge>
             ))}
-          </HStack>
+          </Wrap>
           {data?.source && (
             <HStack>
               <Avatar size={"sm"} />
