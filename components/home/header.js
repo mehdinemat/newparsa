@@ -238,10 +238,11 @@ const Header = ({
           justifyContent={"center"}
           height={"100%"}
         >
-          <Text
+          <Text fontFamily="morabba"
             fontSize={{ base: "35px", md: "45px" }}
             color={"white"}
             textAlign={{ base: "center", md: "center" }}
+            fontWeight={'700'}
           >
             {t("home_parsa_header_title")}
           </Text>

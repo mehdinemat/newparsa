@@ -170,7 +170,7 @@ const Index = () => {
           onSubmit={handleSubmitQuestion(handleAddNewQuestion)}
           mb={'20px'}
         >
-          <Text fontWeight={"bold"} fontSize={"20px"} mb={"30px"}>
+          <Text fontWeight={"800"} fontSize={"33px"} mb={"30px"} fontFamily={'morabba'}>
             {t("ask_your_question")}...
           </Text>
           {/* <Masonry

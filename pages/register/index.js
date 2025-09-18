@@ -119,14 +119,9 @@ const Index = () => {
               onClick={(e) => router.replace("/")}
               cursor={"pointer"}
             />
-            <Image
-              cursor={"pointer"}
-              onClick={(e) => router.push("/")}
-              src="/loginsubtitle.png"
-              width={{ base: "220px", md: "465px" }}
-              height={{ base: "30px", md: "38px" }}
-              mt={'21px'}
-            />
+            <Text fontFamily={'morabba'} fontSize={'24px'} fontWeight={'800'}>
+              شـبکه اجتماعی پرسش و پاسخ دیـنی
+            </Text>
             {/* <Text
               fontSize={{ base: "20px", md: "23px" }}
               color={"#333333"}
@@ -137,7 +132,7 @@ const Index = () => {
               {t("religious")}
             </Text> */}
             <Divider w={"350px"} h={"2px"} bgColor={"#ADADAD"} my={'10px'} />
-            <Text fontSize={{ base: "20px", md: "18px" }} mt={"9px"} fontWeight={'extrabold'} color={'#979797'} letterSpacing={'-2%'} alignItems={'start'} w={'100%'}>
+            <Text fontSize={{ base: "20px", md: "18px" }} mt={"0px"} fontWeight={'extrabold'} color={'#979797'} letterSpacing={'-2%'} alignItems={'start'} w={'100%'} onClick={(e) => router.push("/")}>
               {t("create_an_account")}
             </Text>
 
@@ -208,6 +203,7 @@ const Index = () => {
                 borderColor={'#B7B7B7'}
                 borderRadius={'10px'}
                 height={"46px"}
+                mt={'7px'}
                 placeholder={t("password")}
                 type="password"
                 {...register("password")}

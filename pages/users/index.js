@@ -59,7 +59,7 @@ const Index = () => {
           justifyContent={"space-between"}
           display={{ base: "none", md: "flex" }}
         >
-          <Text fontWeight={"bold"} fontSize={'33px'}>{t("users")}</Text>
+          <Text fontWeight={"800"} fontSize={'33px'} fontFamily={'morabba'} >{t("users")}</Text>
           <HStack w={"100%"} alignItems={"end"} justifyContent={"end"}>
             <HStack justifyContent={{ base: "start" }}>
               <Button
@@ -98,10 +98,11 @@ const Index = () => {
             </Button>
           </HStack> */}
           </HStack>
-          <InputGroup width={"290px"} height={"46px"} bgColor={'#F3F3F3'} color={'#3646B3'}>
+          <InputGroup width={"290px"} height={"40px"} bgColor={'#F3F3F3'} color={'#3646B3'} borderRadius={'13px'}>
             <Input
+              borderRadius={'13px'}
               width={"290px"}
-              height={"46px"}
+              height={"40px"}
               placeholder={t("search_user")}
             />
             <InputRightElement h="100%">

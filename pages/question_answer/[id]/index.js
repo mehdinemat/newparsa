@@ -5,7 +5,6 @@ import QuestionAnswerCard from "@/components/questionAnswerCard";
 import { useUser } from "@/context/UserContext";
 import {
   Avatar,
-  AvatarGroup,
   Badge,
   Box,
   Button,
@@ -480,7 +479,7 @@ const Index = () => {
                                   dataQuestion?.data?.result?.[0]?.created_at
                                 ).format("jYYYY/jMM/jDD")}
                               </Text>
-                                {/* <AvatarGroup size='md' max={3} >
+                              {/* <AvatarGroup size='md' max={3} >
                                   <Avatar name='Ryan Florence' src='https://bit.ly/ryan-florence' w={"28px"}
                                     h={"28px"} />
                                   <Avatar name='Segun Adebayo' src='https://bit.ly/sage-adebayo' w={"28px"}
@@ -684,7 +683,7 @@ const Index = () => {
                       <VStack w={'100%'}>
                         <HStack w={'100%'} justifyContent={'space-between'}>
                           <HStack>
-                            <Text fontSize={'33px'} fontWeight={'extrabold'} color={'#333333'}>پاسخ ها</Text>
+                            <Text fontSize={'33px'} fontWeight={'800'} color={'#333333'} fontFamily={'morabba'}>پاسخ ها</Text>
                             <Text fontSize={'14px'} color={'#999999'}>5 پاسخ</Text>
                           </HStack>
                           <Text
@@ -701,7 +700,7 @@ const Index = () => {
                       </VStack>
                     )}
                     <HStack w={'100%'} justifyContent={'space-between'}>
-                      <Text fontSize={'33px'} fontWeight={'extrabold'} color={'#333333'}>دیدگاه ها</Text>
+                      <Text fontSize={'33px'} fontWeight={'800'} color={'#333333'} fontFamily={'morabba'}>دیدگاه ها</Text>
                       <Text
                         fontWeight={"700"}
                         fontSize={"12px"}

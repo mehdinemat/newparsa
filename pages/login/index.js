@@ -112,14 +112,17 @@ const Index = () => {
               width={{ base: "120px", md: "165px" }}
               height={{ base: "50px", md: "68px" }}
             />
-            <Image
+            <Text fontFamily={'morabba'} fontSize={'24px'} fontWeight={'800'}>
+              شـبکه اجتماعی پرسش و پاسخ دیـنی
+            </Text>
+            {/* <Image
               cursor={"pointer"}
               onClick={(e) => router.push("/")}
               src="/loginsubtitle.png"
               width={{ base: "220px", md: "465px" }}
               height={{ base: "30px", md: "38px" }}
               mt={'21px'}
-            />
+            /> */}
             {/* <Text
               fontSize={{ base: "20px", md: "23px" }}
               color={"#333333"}
@@ -130,7 +133,7 @@ const Index = () => {
               {t("religious")}
             </Text> */}
             <Divider w={"350px"} h={"2px"} bgColor={"#ADADAD"} my={'10px'} />
-            <Text fontSize={{ base: "20px", md: "18px" }} mt={"20px"} fontWeight={'extrabold'} color={'#979797'} letterSpacing={'-2%'} alignItems={'start'} w={'100%'}>
+            <Text fontSize={{ base: "20px", md: "18px" }} mb={"10px"} fontWeight={'extrabold'} color={'#979797'} letterSpacing={'-2%'} alignItems={'start'} w={'100%'}>
               {t("log_in_to_your_account")}
             </Text>
             <PhoneInput setFullNumber={setFullNumber} fullNumber={fullNumber} />
@@ -156,7 +159,7 @@ const Index = () => {
               borderRadius={'10px'}
               type="password"
               placeholder={t("password")}
-              mb={"0px"}
+              mt={"10px"}
               {...register("password")}
               sx={{
                 "::placeholder": {

@@ -1,5 +1,5 @@
 // theme.ts or theme.js
-import { extendTheme, withDefaultColorScheme, defineStyleConfig } from "@chakra-ui/react";
+import { defineStyleConfig, extendTheme, withDefaultColorScheme } from "@chakra-ui/react";
 
 export const getTheme = (language) => {
   const isFa = language === "fa";
@@ -18,8 +18,8 @@ export const getTheme = (language) => {
         },
       },
       fonts: {
-        heading: isFa ? "Estedadfd" : "Estedad",
-        body: isFa ? "Estedadfd" : "Estedad",
+        heading: isFa ? "iransans" : "iransans",
+        body: isFa ? "iransans" : "iransans",
       },
       components: {
         FormLabel: defineStyleConfig({
