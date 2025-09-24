@@ -105,8 +105,11 @@ const menuList = [
 //   },
 // ];
 
-const MainLayout = ({ children }) => {
+const MainLayout = ({ children, questionsRef }) => {
   const { t } = useTranslation();
+
+  const [showMenu, setShowMenu] = useState(false);
+
 
   const router = useRouter();
   const { locale, asPath } = router;
@@ -221,10 +224,26 @@ const MainLayout = ({ children }) => {
     router.push('/dashboard/profile')
   };
 
+  useEffect(() => {
+    if (!questionsRef?.current) return;
+
+    console.log('salammm')
+
+    const observer = new IntersectionObserver(
+      (entries) => setShowMenu(!entries[0].isIntersecting),
+      { threshold: 0 }
+    );
+
+    observer.observe(questionsRef.current);
+
+    return () => observer.disconnect();
+  }, [questionsRef]);
+
+
   return (
     <VStack minHeight="100vh" w={"100%"} alignItems={"start"} gap={0}>
       {/* header */}
-      {/* <Box
+      {showMenu && <Box
         as={Stack}
         position="fixed" // 👈 Make it fixed
         top={0}
@@ -451,7 +470,7 @@ const MainLayout = ({ children }) => {
             )}
           </HStack>
         </HStack>
-      </Box> */}
+      </Box>}
       {/* header */}
       <HStack
         height={"calc( 100vh )"}

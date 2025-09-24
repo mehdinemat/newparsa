@@ -6,13 +6,17 @@ import {
   Flex,
   HStack,
   IconButton,
-  Input,
+  Image,
   InputGroup,
   InputLeftElement,
-  InputRightElement,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Spinner,
   Stack,
   Text,
+  Textarea,
   useBreakpoint,
   VStack
 } from "@chakra-ui/react";
@@ -20,7 +24,7 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import CountUp from "react-countup";
-import { BiSupport } from "react-icons/bi";
+import { IoIosArrowDown } from "react-icons/io";
 import {
   IoClose,
   IoMic,
@@ -29,7 +33,6 @@ import {
   IoSendOutline,
 } from "react-icons/io5";
 import { PiDiamondThin } from "react-icons/pi";
-import { RiTelegram2Line, RiThreadsFill } from "react-icons/ri";
 import Recorder from "recorder-js";
 import useSWRMutation from "swr/mutation";
 import { baseUrl } from "../lib/api";
@@ -91,6 +94,9 @@ const Header = ({
   handleVoiceSearch,
 }) => {
   const router = useRouter();
+
+  const { locale, asPath } = router;
+
 
   const inputRef = useRef(null);
   const mediaRecorderRef = useRef(null);
@@ -216,13 +222,58 @@ const Header = ({
       bgPosition="center"
       position={'relative'}
     >
-        <VStack height={"100vh"} position={'absolute'} right={0} top={0} alignItems={'center'} justifyContent={'center'} pr={'25px'}>
-          <IconButton icon={<BiSupport />} bgColor={'#3646B3'} borderRadius={'8px'} />
-          <IconButton icon={<RiTelegram2Line />} bgColor={'#3646B3'} borderRadius={'8px'} />
-          <IconButton icon={<RiThreadsFill />} bgColor={'#3646B3'} borderRadius={'8px'} />
-        
-        </VStack>
-      <HStack
+      <HStack maxW="container.xl" justifyContent={'space-between'} w={'100%'} mt={'20px'}>
+        <HStack>
+          <Image src="./headerquestionlogo.png" width={'29px'} height={'42px'} ml={'5px'} />
+          <Image src="./headerparsalogo.png" width={'100px'} height={'41px'} />
+          <Menu >
+            <MenuButton px={4} py={2} marginRight={'20px'} transition="all 0.2s">
+              <HStack color={'white'}>
+                <Text fontSize={"20px"}>
+                  {locale == "en"
+                    ? t("header_english")
+                    : locale == "fa"
+                      ? t("header_persian")
+                      : locale == "ar" && t("header_arabic")}
+                </Text>
+                <IoIosArrowDown width={'12px'} fontSize={'12px'} />
+              </HStack>
+            </MenuButton>
+            <MenuList>
+              <MenuItem
+                value={"en"}
+                onClick={(e) => router.push("/", "/", { locale: "en" })}
+              >
+                {t("header_english")}
+              </MenuItem>
+              <MenuItem
+                value={"ar"}
+                onClick={(e) => router.push("/", "/", { locale: "ar" })}
+              >
+                {t("header_arabic")}
+              </MenuItem>
+              <MenuItem
+                value={"fa"}
+                onClick={(e) => router.push("/", "/", { locale: "fa" })}
+              >
+                {t("header_persian")}
+              </MenuItem>
+            </MenuList>
+          </Menu>
+        </HStack>
+        <HStack>
+          <Text fontFamily={'iransans'} fontWeight={'500px'} fontSize={'20px'} color={'white'}>ورود/ثبت‌نام</Text>
+          <Image src="./adduserheader.png" height={'29px'} width={'28px'} />
+          <Image src="./menuheader.png" height={'29px'} width={'28px'} mr={'20px'} />
+        </HStack>
+      </HStack>
+      {/* <VStack height={"100vh"} position={'absolute'} right={0} top={0} alignItems={'center'} mt={'-30px'} justifyContent={'center'} pr={'25px'}>
+        <IconButton icon={<BiSupport />} bgColor={'#3646B3'} borderRadius={'8px'} />
+        <IconButton icon={<RiTelegram2Line />} bgColor={'#3646B3'} borderRadius={'8px'} />
+        <IconButton icon={<RiThreadsFill />} bgColor={'#3646B3'} borderRadius={'8px'} />
+
+      </VStack> */}
+      <VStack
         height={"100vh"}
         as={Container}
         maxW="5xl"
@@ -235,44 +286,48 @@ const Header = ({
           alignItems={"center"}
           justifyContent={"center"}
           height={"100%"}
+          mt={'-50px'}
         >
           <Text fontFamily="morabba"
-            fontSize={{ base: "35px", md: "45px" }}
+            fontSize={{ base: "35px", md: "50px" }}
             color={"white"}
             textAlign={{ base: "center", md: "center" }}
             fontWeight={'700'}
+            mb={'40px'}
           >
             {t("home_parsa_header_title")}
           </Text>
           <VStack
-          alignItems={'end'}
-  position="relative"
-  borderRadius="20px"
-  p={'12px'}
-  sx={{
-    backdropFilter: "blur(23.3px)",
-    WebkitBackdropFilter: "blur(23.3px)",
-    overflow: "hidden", // for rounded corners
-    _before: {
-      content: '""',
-      position: "absolute",
-      inset: 0,
-      borderRadius: "20px",
-      padding: "1.5px", // thickness of border
-      background:
-        "linear-gradient(360deg, rgba(255, 255, 255, 0.55) -32.14%, rgba(255, 255, 255, 0) 19.32%, rgba(255, 255, 255, 0) 53.62%, rgba(255, 255, 255, 0.33) 100%)",
-      WebkitMask:
-        "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-      WebkitMaskComposite: "xor",
-      maskComposite: "exclude",
-      pointerEvents: "none",
-    },
-  }}
->
+            mb={'80px'}
+            alignItems={'end'}
+            position="relative"
+            borderRadius="20px"
+            p={'12px'}
+            bgColor={'#00000040'}
+            sx={{
+              backdropFilter: "blur(23.3px)",
+              WebkitBackdropFilter: "blur(23.3px)",
+              overflow: "hidden", // for rounded corners
+              _before: {
+                content: '""',
+                position: "absolute",
+                inset: 0,
+                borderRadius: "20px",
+                padding: "1.5px", // thickness of border
+                background:
+                  "linear-gradient(360deg, rgba(255, 255, 255, 0.55) -32.14%, rgba(255, 255, 255, 0) 19.32%, rgba(255, 255, 255, 0) 53.62%, rgba(255, 255, 255, 0.33) 100%)",
+                WebkitMask:
+                  "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                WebkitMaskComposite: "xor",
+                maskComposite: "exclude",
+                pointerEvents: "none",
+              },
+            }}
+          >
             <InputGroup
               height="89px"
-              width={{ base: "381px", md: "1050px" }}
-              // my="20px"
+              width={{ base: "381px", md: "874px" }}
+            // my="20px"
             >
               {isRecording ? (
                 <InputLeftElement height="100%" mr="10px">
@@ -323,7 +378,7 @@ const Header = ({
                 </InputLeftElement>
               ) : null}
 
-              <Input
+              <Textarea
                 ref={inputRef}
                 width={{ base: "381px", md: "100%" }}
                 bgColor="#00000059"
@@ -343,61 +398,90 @@ const Header = ({
                 }}
               />
             </InputGroup>
-         <HStack w={'100%'} justifyContent={'space-between'}>
-         <Flex align="center" gap="2">
-                  {isRecording ? (
-                    <HStack>
-                      <IoClose
-                        fontSize="16px"
-                        color="white"
-                        style={{ cursor: "pointer" }}
-                        onClick={handleStopRecording}
-                      />
-                      <IoSendOutline
-                        style={{ transform: "rotate(180deg)" }}
-                        onClick={async () => {
-                          handleStopRecording();
-                          // setTimeout(handleUpload, 500);
-                        }}
-                        fontSize={"25px"}
-                        color="white"
-                        cursor={"pointer"}
-                      />
-                    </HStack>
-                  ) : isMutating ? (
-                    <Spinner color="white" />
-                  ) : (
-                    <>
-                      {/* <IoSearch
+            <HStack w={'100%'} justifyContent={'space-between'}>
+              <Flex align="center" gap="2">
+                {isRecording ? (
+                  <HStack>
+                    <IoClose
+                      fontSize="16px"
+                      color="white"
+                      style={{ cursor: "pointer" }}
+                      onClick={handleStopRecording}
+                    />
+                    <IoSendOutline
+                      style={{ transform: "rotate(180deg)" }}
+                      onClick={async () => {
+                        handleStopRecording();
+                        // setTimeout(handleUpload, 500);
+                      }}
+                      fontSize={"25px"}
+                      color="white"
+                      cursor={"pointer"}
+                    />
+                  </HStack>
+                ) : isMutating ? (
+                  <Spinner color="white" />
+                ) : (
+                  <>
+                    {/* <IoSearch
                         fontSize={'30px'}
                         color="#29CCCC"
                         cursor="pointer"
                         onClick={(e) => handleClickSearch()}
                       /> */}
-                      {/* <PiDiamondThin
+                    {/* <PiDiamondThin
                         fontSize="20px"
                         color="#29CCCC"
                         cursor="pointer"
                         onClick={(e) => handleClickSemanticSearch()}
                       /> */}
-                      <IoMic
-                        fontSize={'30px'}
-                        color="#29CCCC"
-                        style={{ cursor: "pointer" }}
-                        onClick={handleMicClick}
-                      />
-                    </>
-                  )}
-                </Flex>
-            <HStack>
-            <Button   w={'109px'} height={'40px'} color={'#29CCCC'} borderRadius="13px" rightIcon={<IoSearch fontSize={'25px'} />}
-              onClick={(e) => handleClickSemanticSearch()} variant={'outline'}>جستجو</Button>
-            <Button bgColor={'#29CCCC'} w={'179px'} height={'40px'} color={'#3646B3'} borderRadius="13px" rightIcon={<PiDiamondThin fontSize={'40px'} />}
-              onClick={(e) => handleClickSemanticSearch()}>جستجوی معنایی</Button>
+                    <IoMic
+                      fontSize={'25px'}
+                      color="#29CCCC"
+                      style={{ cursor: "pointer", marginRight: '10px' }}
+                      onClick={handleMicClick}
+
+                    />
+                  </>
+                )}
+              </Flex>
+              <HStack>
+                <Button w={'109px'} height={'40px'} color={'#29CCCC'} borderRadius="10px" rightIcon={<IoSearch fontSize={'25px'} />}
+                  onClick={(e) => handleClickSemanticSearch()} variant={'outline'}>جستجو</Button>
+                <Button bgColor={'#29CCCC'} w={'179px'} height={'40px'} color={'#3646B3'} borderRadius="10px" rightIcon={<PiDiamondThin fontSize={'40px'} />}
+                  onClick={(e) => handleClickSemanticSearch()}>جستجوی معنایی</Button>
+              </HStack>
             </HStack>
-         </HStack>
           </VStack>
-          <HStack as={Center} justifyContent="center" w="50%">
+          <Box
+            w="545px"
+            h="127px"
+            borderRadius="13px"
+            position="relative"
+            bg="#2A378C4D"
+            backdropFilter="blur(5px)"
+            padding={'15px'}
+            sx={{
+              overflow: "hidden", // ensures rounded corners
+              _before: {
+                content: '""',
+                position: "absolute",
+                inset: 0,
+                borderRadius: "13px",
+                padding: "0.7px", // border thickness
+                background:
+                  "linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 36.54%, rgba(255, 255, 255, 0) 72.12%, rgba(255, 255, 255, 0.33) 100%)",
+                WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                WebkitMaskComposite: "xor",
+                maskComposite: "exclude",
+                pointerEvents: "none",
+              },
+            }}
+          >
+
+            <Text color={'#76FFFF'}>اَحْبِبْ حَبیبَکَ هَوْنًا ما عَسی اَنْ یَعْصِیَکَ یَوْمًا ما. وَ اَبْغِضْ بَغیضَکَ هَوْنًا ما عَسی اَنْ یَکُونَ حَبیبَکَ یَوْمًا ما.</Text>
+          </Box>
+          <HStack as={Center} justifyContent="center" w="50%" mt={'20px'}>
             {siteData?.map((item, index) => (
               <React.Fragment key={index}>
                 <VStack
@@ -455,7 +539,24 @@ const Header = ({
             ))}
           </HStack>
         </VStack>
-      </HStack >
+        <Box as={VStack} alignItems="center" role="group" cursor="pointer" position={'relative'} mb={'30px'} bottom={'0px'} onClick={() => {
+          const el = document.querySelector(".questions");
+          if (el) {
+            el.scrollIntoView({ behavior: "smooth" });
+          }
+        }}>
+          <Image
+            src="./navigate2.png"
+            transition="all 0.3s ease"
+            height="7px"
+            w={'2px'}
+            _groupHover={{ height: "40px" }}
+            position={'absolute'}
+            bottom={'12px'}
+          />
+          <Image src="./navigate.png" w={'36px'} />
+        </Box>
+      </VStack >
     </Box >
   );
 };

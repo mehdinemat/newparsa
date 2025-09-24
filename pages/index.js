@@ -119,6 +119,9 @@ export default function Home({ children }) {
 
   const { t } = useTranslation();
 
+  const [showMenu, setShowMenu] = useState(false);
+  const questionsRef = useRef(null);
+
   const {
     register: registerSearch,
     getValues: getValuesSearch,
@@ -256,8 +259,9 @@ export default function Home({ children }) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [setHoveredIndex]);
 
+
   return (
-    <MainLayout>
+    <MainLayout questionsRef={questionsRef}>
       <Head>
         <title>
           {t("parsa")} | {t("main_page")}
@@ -281,6 +285,8 @@ export default function Home({ children }) {
         maxW="container.xl"
         mx="auto"
         p={"20px"}
+        className="questions"
+        ref={questionsRef}
       >
         {isUserLogin && <ChatBot />}
         <HStack
