@@ -224,7 +224,7 @@ const MainLayout = ({ children }) => {
   return (
     <VStack minHeight="100vh" w={"100%"} alignItems={"start"} gap={0}>
       {/* header */}
-      <Box
+      {/* <Box
         as={Stack}
         position="fixed" // 👈 Make it fixed
         top={0}
@@ -451,7 +451,7 @@ const MainLayout = ({ children }) => {
             )}
           </HStack>
         </HStack>
-      </Box>
+      </Box> */}
       {/* header */}
       <HStack
         height={"calc( 100vh )"}

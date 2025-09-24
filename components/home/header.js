@@ -199,12 +199,12 @@ const Header = ({
 
   return (
     <Box
-      marginTop={{ base: "60px", md: "100px" }}
+      // marginTop={{ base: "60px", md: "100px" }}
       as={Stack}
       justifyContent={"center"}
       alignItems={"center"}
       width="100%"
-      height={"350px"}
+      height={"100vh"}
       bg={"#3646B3"}
       p={2}
       px={4}
@@ -216,16 +216,14 @@ const Header = ({
       bgPosition="center"
       position={'relative'}
     >
-      <VStack height={"350px"} position={'absolute'} right={0} top={0} alignItems={'center'} justifyContent={'center'} pr={'25px'}>
-        <IconButton icon={<BiSupport />} bgColor={'#3646B3'} borderRadius={'8px'} />
-        <IconButton icon={<RiTelegram2Line />} bgColor={'#3646B3'} borderRadius={'8px'} />
-        <IconButton icon={<RiThreadsFill />} bgColor={'#3646B3'} borderRadius={'8px'} />
-        {/* <Box bgColor={'white'} borderRadius={'20px'}>
-          <svg fill="#3646B3" width="25px" height="25px" color="white" viewBox="0 0 24 24" role="img" xmlns="http://www.w3.org/2000/svg" stroke="#3646B3"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M5.968 23.942a6.624 6.624 0 0 1-2.332-.83c-1.62-.929-2.829-2.593-3.217-4.426-.151-.717-.17-1.623-.15-7.207C.288 5.47.274 5.78.56 4.79c.142-.493.537-1.34.823-1.767C2.438 1.453 3.99.445 5.913.08c.384-.073.94-.08 6.056-.08 6.251 0 6.045-.009 7.066.314a6.807 6.807 0 0 1 4.314 4.184c.33.937.346 1.087.369 3.555l.02 2.23-.391.268c-.558.381-1.29 1.06-2.316 2.15-1.182 1.256-2.376 2.42-2.982 2.907-1.309 1.051-2.508 1.651-3.726 1.864-.634.11-1.682.067-2.302-.095-.553-.144-.517-.168-.726.464a6.355 6.355 0 0 0-.318 1.546l-.031.407-.146-.03c-1.215-.241-2.419-1.285-2.884-2.5a3.583 3.583 0 0 1-.26-1.219l-.016-.34-.309-.284c-.644-.59-1.063-1.312-1.195-2.061-.212-1.193.34-2.542 1.538-3.756 1.264-1.283 3.127-2.29 4.953-2.68.658-.14 1.818-.177 2.403-.075 1.138.198 2.067.773 2.645 1.639.182.271.195.31.177.555a.812.812 0 0 1-.183.493c-.465.651-1.848 1.348-3.336 1.68-2.625.585-4.294-.142-4.033-1.759.026-.163.04-.304.031-.313-.032-.032-.293.104-.575.3-.479.334-.903.984-1.05 1.607-.036.156-.05.406-.034.65.02.331.053.454.192.736.092.186.275.45.408.589l.24.251-.096.122a4.845 4.845 0 0 0-.677 1.217 3.635 3.635 0 0 0-.105 1.815c.103.461.421 1.095.739 1.468.242.285.797.764.886.764.024 0 .044-.048.044-.106.001-.23.184-.973.326-1.327.423-1.058 1.351-1.96 2.82-2.74.245-.13.952-.47 1.572-.757 1.36-.63 2.103-1.015 2.511-1.305 1.176-.833 1.903-2.065 2.14-3.625.086-.57.086-1.634 0-2.207-.368-2.438-2.195-4.096-4.818-4.37-2.925-.307-6.648 1.953-8.942 5.427-1.116 1.69-1.87 3.565-2.187 5.443-.123.728-.169 2.08-.093 2.75.193 1.704.822 3.078 1.903 4.156a6.531 6.531 0 0 0 1.87 1.313c2.368 1.13 4.99 1.155 7.295.071.996-.469 1.974-1.196 3.023-2.25 1.02-1.025 1.71-1.88 3.592-4.458 1.04-1.423 1.864-2.368 2.272-2.605l.15-.086-.019 3.091c-.018 2.993-.022 3.107-.123 3.561-.6 2.678-2.54 4.636-5.195 5.242l-.468.107-5.775.01c-4.734.008-5.85-.002-6.19-.056z"></path></g></svg>
-        </Box> */}
-      </VStack>
+        <VStack height={"100vh"} position={'absolute'} right={0} top={0} alignItems={'center'} justifyContent={'center'} pr={'25px'}>
+          <IconButton icon={<BiSupport />} bgColor={'#3646B3'} borderRadius={'8px'} />
+          <IconButton icon={<RiTelegram2Line />} bgColor={'#3646B3'} borderRadius={'8px'} />
+          <IconButton icon={<RiThreadsFill />} bgColor={'#3646B3'} borderRadius={'8px'} />
+        
+        </VStack>
       <HStack
-        height={"500px"}
+        height={"100vh"}
         as={Container}
         maxW="5xl"
         w={"100%"}
@@ -246,11 +244,35 @@ const Header = ({
           >
             {t("home_parsa_header_title")}
           </Text>
-          <HStack>
+          <VStack
+          alignItems={'end'}
+  position="relative"
+  borderRadius="20px"
+  p={'12px'}
+  sx={{
+    backdropFilter: "blur(23.3px)",
+    WebkitBackdropFilter: "blur(23.3px)",
+    overflow: "hidden", // for rounded corners
+    _before: {
+      content: '""',
+      position: "absolute",
+      inset: 0,
+      borderRadius: "20px",
+      padding: "1.5px", // thickness of border
+      background:
+        "linear-gradient(360deg, rgba(255, 255, 255, 0.55) -32.14%, rgba(255, 255, 255, 0) 19.32%, rgba(255, 255, 255, 0) 53.62%, rgba(255, 255, 255, 0.33) 100%)",
+      WebkitMask:
+        "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+      WebkitMaskComposite: "xor",
+      maskComposite: "exclude",
+      pointerEvents: "none",
+    },
+  }}
+>
             <InputGroup
-              height="74px"
+              height="89px"
               width={{ base: "381px", md: "1050px" }}
-              my="20px"
+              // my="20px"
             >
               {isRecording ? (
                 <InputLeftElement height="100%" mr="10px">
@@ -303,17 +325,14 @@ const Header = ({
 
               <Input
                 ref={inputRef}
-                borderRadius="13px"
                 width={{ base: "381px", md: "100%" }}
-                bgColor="#00000059" // your background
-                backdropFilter="blur(9px)" // blur effect
-                height="74px"
+                bgColor="#00000059"
+                backdropFilter="blur(9px)"
+                height="89px"
                 textIndent="20px"
                 placeholder={isRecording ? t("listening") : t("search_among")}
                 color="white"
-                border="0.7px solid" // border width
-                borderImageSource="linear-gradient(360deg, rgba(255, 255, 255, 0.55) -32.14%, rgba(255, 255, 255, 0) 19.32%, rgba(255, 255, 255, 0) 53.62%, rgba(255, 255, 255, 0.33) 100%)"
-                borderImageSlice={1} // necessary for gradient borders
+                border="none" // removes the border completely
                 pl={isRecording ? "50px" : "12px"}
                 _placeholder={{ color: "gray.300" }}
                 {...register("search")}
@@ -323,9 +342,9 @@ const Header = ({
                   }
                 }}
               />
-
-              <InputRightElement height="100%" ml="30px">
-                <Flex align="center" gap="2">
+            </InputGroup>
+         <HStack w={'100%'} justifyContent={'space-between'}>
+         <Flex align="center" gap="2">
                   {isRecording ? (
                     <HStack>
                       <IoClose
@@ -349,12 +368,12 @@ const Header = ({
                     <Spinner color="white" />
                   ) : (
                     <>
-                      <IoSearch
+                      {/* <IoSearch
                         fontSize={'30px'}
                         color="#29CCCC"
                         cursor="pointer"
                         onClick={(e) => handleClickSearch()}
-                      />
+                      /> */}
                       {/* <PiDiamondThin
                         fontSize="20px"
                         color="#29CCCC"
@@ -370,11 +389,14 @@ const Header = ({
                     </>
                   )}
                 </Flex>
-              </InputRightElement>
-            </InputGroup>
-            <Button bgColor={'#29CCCC'} w={'206px'} height={'74px'} color={'white'} borderRadius="13px" rightIcon={<PiDiamondThin fontSize={'40px'} />}
+            <HStack>
+            <Button   w={'109px'} height={'40px'} color={'#29CCCC'} borderRadius="13px" rightIcon={<IoSearch fontSize={'25px'} />}
+              onClick={(e) => handleClickSemanticSearch()} variant={'outline'}>جستجو</Button>
+            <Button bgColor={'#29CCCC'} w={'179px'} height={'40px'} color={'#3646B3'} borderRadius="13px" rightIcon={<PiDiamondThin fontSize={'40px'} />}
               onClick={(e) => handleClickSemanticSearch()}>جستجوی معنایی</Button>
-          </HStack>
+            </HStack>
+         </HStack>
+          </VStack>
           <HStack as={Center} justifyContent="center" w="50%">
             {siteData?.map((item, index) => (
               <React.Fragment key={index}>
