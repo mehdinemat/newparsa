@@ -31,7 +31,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 
-import LeftSidebar from "@/components/home/leftsidebar";
 import QuestionMCard from "@/components/home/mobile/questionMCard";
 import Pagination from "@/components/pagination";
 import QuestionCard from "@/components/questionCars";
@@ -312,6 +311,7 @@ export default function Home({ children }) {
             letterSpacing={0}
             borderRadius={"10px"}
             onClick={(e) => handleNewQuestionButton()}
+
           >
             {t("ask_your_question")}
           </Button>
@@ -434,7 +434,7 @@ export default function Home({ children }) {
         >
           {/* Right Sidebar */}
 
-          <GridItem colSpan={1}>
+          {/* <GridItem colSpan={1}>
 
             <Box
               mb={"20px"}
@@ -503,14 +503,14 @@ export default function Home({ children }) {
                 </VStack>
               </Box>
             </Box>
-          </GridItem>
+          </GridItem> */}
 
           {/* Main Content */}
           <GridItem
             p={{ base: 0, md: "0" }}
             order={{ base: 1, md: 2 }}
             as={GridItem}
-            colSpan={{ md: 3 }}
+            colSpan={{ md: 4 }}
             w="100%"
             overflowWrap="break-word"
             wordBreak="break-word"
@@ -537,7 +537,12 @@ export default function Home({ children }) {
                   w={"100%"}
                   justifyContent={"center"}
                   alignItems={"center"}
+                  mt={'45px'}
                 >
+                  <HStack>
+                    <Button height={'32px'} width={'178px'} bgColor={'#3646B3'} borderRadius={'15px'} fontSize={'16px'}>مشاهده بیشتر</Button>
+                    <Button height={'32px'} width={'178px'} bgColor={'#3646B31A'} color={'#3646B3'} variant={'outline'} borderRadius={'15px'} fontSize={'16px'}>سوال خود را بپرسید</Button>
+                  </HStack>
                   <Pagination
                     totalPages={dataQuestion?.data?.total_count}
                     currentPage={page}
@@ -552,6 +557,7 @@ export default function Home({ children }) {
               {dataQuestion?.data?.result?.map((item, index) => (
                 <QuestionMCard key={index} data={item} t={t} />
               ))}
+
               <Stack w={"100%"} justifyContent={"center"} alignItems={"center"}>
                 <Pagination
                   totalPages={dataQuestion?.data?.total_count}

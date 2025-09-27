@@ -1,5 +1,4 @@
-import { Avatar, Badge, Divider, HStack, Image, Text, VStack, Wrap } from "@chakra-ui/react";
-import moment from "moment-jalaali";
+import { Badge, Divider, HStack, Text, VStack, Wrap } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { GiBigDiamondRing } from "react-icons/gi";
 import { IoCheckmark, IoEyeOutline } from "react-icons/io5";
@@ -33,8 +32,8 @@ const QuestionCard = ({ data, t, type = "question", bgColor }) => {
       }
 
     >
-      <Image src="/minquestion.png" w={'23px'} height={'32px'} mt={'10px'} mr={'10px'} />
-      <VStack w={"100%"} alignItems={"start"} gap={"15px"} paddingBottom={'16px'}>
+      {/* <Image src="/minquestion.png" w={'23px'} height={'32px'} mt={'10px'} mr={'10px'} /> */}
+      <VStack w={"100%"} alignItems={"start"} gap={"15px"} >
         <Text
 
           fontSize={"18px"}
@@ -45,8 +44,10 @@ const QuestionCard = ({ data, t, type = "question", bgColor }) => {
         >
           {data?.content}
         </Text>
-        <HStack w={'100%'} justifyContent={'space-between'}>
-          <Wrap spacing="8px">
+
+        <Divider borderColor={'#00000017'} />
+        <HStack w={"100%"} justifyContent={'space-between'}>
+          <Wrap spacing="8px" w={"100%"}>
             {data?.tags?.map((item, index) => (
               <Badge
                 onClick={(e) => handleClickTags(item)}
@@ -61,61 +62,57 @@ const QuestionCard = ({ data, t, type = "question", bgColor }) => {
                 justifyContent="center"
                 fontSize={"14px"}
                 fontWeight={"100"}
+                borderRadius={'5px'}
+                fontStyle={'light'}
                 px="8px" // optional: add some horizontal padding
               >
                 {item?.name}
               </Badge>
             ))}
           </Wrap>
-          {data?.source && (
-            <HStack>
-              <Avatar size={"sm"} />
-              <Text color={"#999999"} w={"140px"}>
-                {data?.source}
-              </Text>
-            </HStack>
-          )}
-        </HStack>
-        <Divider borderColor={'#00000017'} />
-        <HStack w={"100%"} justifyContent={'space-between'}>
-          <HStack w={"min-content"} alignItems={"start"}>
-            <HStack color={"gray.600"}>
+
+          <HStack w={'100%'} justifyContent={'center'}>
+
+            {data?.source && (
+              <HStack>
+                {/* <Avatar size={"sm"} /> */}
+                <Text color={"#999999"} w={"140px"}>
+                  {data?.source}
+                </Text>
+              </HStack>
+            )}
+          </HStack>
+
+          <HStack justifyContent={"end"} w={"100%"} >
+            <HStack color={'#999999'}>
               <GiBigDiamondRing fontSize={"20px"} />
-              <Text fontSize={"16px"} w={"max-content"}>
+              <Text fontSize={"12px"} w={"max-content"}>
                 {data?.like_count}
                 {t("like")}
               </Text>
             </HStack>
-            <HStack color={"gray.600"}>
+            <HStack color={'#999999'}>
               <IoCheckmark fontSize={"20px"} />
-              <Text fontSize={"16px"} w={"max-content"}>
+              <Text fontSize={"12px"} w={"max-content"}>
                 {data?.answer_count} {t("answer")}
               </Text>
             </HStack>
-            <HStack color={"gray.600"}>
+            <HStack color={'#999999'}>
               <IoEyeOutline fontSize={"20px"} />
-              <Text fontSize={"16px"} w={"max-content"}>
+              <Text fontSize={"12px"} w={"max-content"}>
                 {data?.view_count} {t("view")}
               </Text>
             </HStack>
             <HStack></HStack>
           </HStack>
 
-          <HStack w={"100%"} justifyContent={"end"}>
+
+
+          {/* <HStack w={"100%"} justifyContent={"end"}>
             <Text w={"150px"} color={"gray.400"}>
               {moment(data?.created_at).format("hh:mm:ss jYYYY/jMM/jDD")}
             </Text>
-            {/* <AvatarGroup size="sm" max={2}>
-              <Avatar name="Ryan Florence" src="https://bit.ly/ryan-florence" />
-              <Avatar name="Segun Adebayo" src="https://bit.ly/sage-adebayo" />
-              <Avatar name="Kent Dodds" src="https://bit.ly/kent-c-dodds" />
-              <Avatar
-                name="Prosper Otemuyiwa"
-                src="https://bit.ly/prosper-baba"
-              />
-              <Avatar name="Christian Nwamba" src="https://bit.ly/code-beast" />
-            </AvatarGroup> */}
-          </HStack>
+          </HStack> */}
         </HStack>
       </VStack>
     </HStack>

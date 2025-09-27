@@ -1,19 +1,11 @@
 import {
-  Avatar,
   Box,
   Button,
-  Collapse,
-  Container,
-  Fade,
-  Flex,
   Grid,
   GridItem,
   HStack,
   IconButton,
   Image,
-  Input,
-  InputGroup,
-  InputRightElement,
   ListItem,
   Menu,
   MenuButton,
@@ -35,23 +27,18 @@ import _ from "lodash";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { CiSearch } from "react-icons/ci";
 import { FaTelegram } from "react-icons/fa";
-import { GiDiamondRing } from "react-icons/gi";
 import {
   IoIosArrowDown,
-  IoIosNotificationsOutline,
   IoLogoInstagram,
   IoLogoLinkedin,
   IoLogoTwitter,
-  IoLogoYoutube,
+  IoLogoYoutube
 } from "react-icons/io";
-import { IoCall, IoExitOutline, IoLocation, IoPersonOutline, IoSearch } from "react-icons/io5";
-import { PiDiamondThin } from "react-icons/pi";
+import { IoCall, IoLocation } from "react-icons/io5";
 import useSWR from "swr";
 import { StringParam, useQueryParams, withDefault } from "use-query-params";
-import AdminMenuBar from "./admin_dashboard/adminMenuBar";
-import UserMenuBar from "./mobile/dashboard/userMenuBar";
-import MenuBar from "./mobile/menuBar";
 
 const menuList = [
   // {
@@ -149,6 +136,7 @@ const MainLayout = ({ children, questionsRef }) => {
 
     if (scrollTop >= sidebarOffsetTop) {
       setIsSticky(true);
+
     } else {
       setIsSticky(false);
     }
@@ -205,6 +193,7 @@ const MainLayout = ({ children, questionsRef }) => {
     const handleScroll = () => {
       const scrollY = container.scrollTop;
       setHideHeaderButton(scrollY >= 350); // you can use scrollY >= 500 to toggle button
+      setShowMenu(scrollY >= 900)
     };
 
     container.addEventListener("scroll", handleScroll);
@@ -224,21 +213,26 @@ const MainLayout = ({ children, questionsRef }) => {
     router.push('/dashboard/profile')
   };
 
-  useEffect(() => {
-    if (!questionsRef?.current) return;
+  // useEffect(() => {
+  //   // find the element by class or fallback to the ref
+  //   const el = document.querySelector(".questions") || questionsRef.current;
+  //   if (!el) return;
 
-    console.log('salammm')
+  //   const observer = new IntersectionObserver(
+  //     ([entry]) => {
+  //       // show menu when .questions is visible
+  //       setShowMenu(entry.isIntersecting);
+  //     },
+  //     {
+  //       root: null,         // viewport
+  //       threshold: 0.1,     // fire when 10% visible
+  //       rootMargin: "0px"   // adjust to trigger earlier/later
+  //     }
+  //   );
 
-    const observer = new IntersectionObserver(
-      (entries) => setShowMenu(!entries[0].isIntersecting),
-      { threshold: 0 }
-    );
-
-    observer.observe(questionsRef.current);
-
-    return () => observer.disconnect();
-  }, [questionsRef]);
-
+  //   observer.observe(el);
+  //   return () => observer.disconnect();
+  // }, []);
 
   return (
     <VStack minHeight="100vh" w={"100%"} alignItems={"start"} gap={0}>
@@ -250,16 +244,63 @@ const MainLayout = ({ children, questionsRef }) => {
         left={0}
         zIndex={999} // 👈 Ensure it stays on top
         width="100%"
-        height={{ base: "60px", md: "100px" }}
+        height={{ base: "60px", md: "80px" }}
         alignItems={"center"}
         justifyContent={"center"}
-        bg="white"
+        bg="#FFFFFF80"           // 👈 semi-transparent background
+        backdropFilter="blur(38.2px)" // 👈 blur effect
         p={2}
         px={{ base: 0, mode: 4 }}
-        borderBottom="1px"
-        borderBottomColor="gray.200"
       >
-        <HStack
+
+        <HStack maxW="container.xl" justifyContent={'space-between'} w={'100%'} >
+          <HStack>
+            <Image src="./headerparsalogo2.png" width={'29px'} height={'42px'} ml={'5px'} />
+            <Image src="./headerlogo2.png" width={'100px'} height={'41px'} />
+            <Menu >
+              <MenuButton px={4} py={2} marginRight={'20px'} transition="all 0.2s">
+                <HStack color={'#3646B3'}>
+                  <Text fontSize={"20px"}>
+                    {locale == "en"
+                      ? t("header_english")
+                      : locale == "fa"
+                        ? t("header_persian")
+                        : locale == "ar" && t("header_arabic")}
+                  </Text>
+                  <IoIosArrowDown width={'12px'} fontSize={'12px'} />
+                </HStack>
+              </MenuButton>
+              <MenuList>
+                <MenuItem
+                  value={"en"}
+                  onClick={(e) => router.push("/", "/", { locale: "en" })}
+                >
+                  {t("header_english")}
+                </MenuItem>
+                <MenuItem
+                  value={"ar"}
+                  onClick={(e) => router.push("/", "/", { locale: "ar" })}
+                >
+                  {t("header_arabic")}
+                </MenuItem>
+                <MenuItem
+                  value={"fa"}
+                  onClick={(e) => router.push("/", "/", { locale: "fa" })}
+                >
+                  {t("header_persian")}
+                </MenuItem>
+              </MenuList>
+            </Menu>
+          </HStack>
+          <HStack>
+            <CiSearch color={'#3646B3'} fontSize={'30px'} />
+            {/* <Text fontFamily={'iransans'} fontWeight={'500px'} fontSize={'20px'} color={'#3646B3'}>ورود/ثبت‌نام</Text> */}
+            <Image src="./headerpersonlogo.png" height={'29px'} width={'28px'} mr={'20px'} />
+            <Image src="./headermenu.png" height={'39px'} width={'35px'} mr={'20px'} />
+          </HStack>
+        </HStack>
+
+        {/* <HStack
           as={Container}
           maxW="container.xl"
           w={"100%"}
@@ -469,7 +510,7 @@ const MainLayout = ({ children, questionsRef }) => {
               </HStack>
             )}
           </HStack>
-        </HStack>
+        </HStack> */}
       </Box>}
       {/* header */}
       <HStack

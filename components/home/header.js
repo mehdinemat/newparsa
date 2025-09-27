@@ -221,6 +221,7 @@ const Header = ({
       bgRepeat="no-repeat"
       bgPosition="center"
       position={'relative'}
+
     >
       <HStack maxW="container.xl" justifyContent={'space-between'} w={'100%'} mt={'20px'}>
         <HStack>
