@@ -29,6 +29,30 @@ export const Fonts = ({ lang }) => (
         font-display: swap;
       }
       
+           @font-face {
+        font-family: 'iransans';
+        src: url('/fonts/iransans/IRANSansXFaNum-UltraLight.otf') format('opentype');
+        font-weight: 200;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'iransans';
+        src: url('/fonts/iransans/IRANSansXFaNum-Thin.otf') format('opentype');
+        font-weight: 100;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'iransans';
+        src: url('/fonts/iransans/IRANSansXFaNum-Light.otf') format('opentype');
+        font-weight: 300;
+        font-style: normal;
+        font-display: swap;
+      }
+
       @font-face {
         font-family: 'iransans';
         src: url('/fonts/iransans/IRANSansXFaNum-Regular.otf') format('opentype');
@@ -36,6 +60,47 @@ export const Fonts = ({ lang }) => (
         font-style: normal;
         font-display: swap;
       }
+
+      @font-face {
+        font-family: 'iransans';
+        src: url('/fonts/iransans/IRANSansXFaNum-Medium.otf') format('opentype');
+        font-weight: 500;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'iransans';
+        src: url('/fonts/iransans/IRANSansXFaNum-DemiBold.otf') format('opentype');
+        font-weight: 600;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'iransans';
+        src: url('/fonts/iransans/IRANSansXFaNum-Bold.otf') format('opentype');
+        font-weight: 700;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'iransans';
+        src: url('/fonts/iransans/IRANSansXFaNum-ExtraBold.otf') format('opentype');
+        font-weight: 800;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'iransans';
+        src: url('/fonts/iransans/IRANSansXFaNum-Black.otf') format('opentype');
+        font-weight: 900;
+        font-style: normal;
+        font-display: swap;
+      }
+
 
 
       html {

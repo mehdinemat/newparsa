@@ -26,7 +26,7 @@ const SliderCommnet = ({ height, borderRadius, width = "auto" }) => {
   const slidesToShow = useBreakpointValue({ base: 1, md: 2, lg: 4 }); // responsive value
 
   const sliderSettings = {
-    dots: true,
+    dots: false,
     infinite: true,
     speed: 500,
     slidesToShow: slidesToShow == 1 ? 2 : 2, // or 1 or 2

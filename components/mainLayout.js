@@ -32,9 +32,7 @@ import { FaTelegram } from "react-icons/fa";
 import {
   IoIosArrowDown,
   IoLogoInstagram,
-  IoLogoLinkedin,
-  IoLogoTwitter,
-  IoLogoYoutube
+  IoLogoTwitter
 } from "react-icons/io";
 import { IoCall, IoLocation } from "react-icons/io5";
 import useSWR from "swr";
@@ -92,7 +90,7 @@ const menuList = [
 //   },
 // ];
 
-const MainLayout = ({ children, questionsRef }) => {
+const MainLayout = ({ children, questionsRef, menuDefault = false }) => {
   const { t } = useTranslation();
 
   const [showMenu, setShowMenu] = useState(false);
@@ -237,7 +235,7 @@ const MainLayout = ({ children, questionsRef }) => {
   return (
     <VStack minHeight="100vh" w={"100%"} alignItems={"start"} gap={0}>
       {/* header */}
-      {showMenu && <Box
+      {(showMenu || menuDefault) && <Box
         as={Stack}
         position="fixed" // 👈 Make it fixed
         top={0}
@@ -255,8 +253,8 @@ const MainLayout = ({ children, questionsRef }) => {
 
         <HStack maxW="container.xl" justifyContent={'space-between'} w={'100%'} >
           <HStack>
-            <Image src="./headerparsalogo2.png" width={'29px'} height={'42px'} ml={'5px'} />
-            <Image src="./headerlogo2.png" width={'100px'} height={'41px'} />
+            <Image src="/headerparsalogo2.png" width={'29px'} height={'42px'} ml={'5px'} />
+            <Image src="/headerlogo2.png" width={'100px'} height={'41px'} />
             <Menu >
               <MenuButton px={4} py={2} marginRight={'20px'} transition="all 0.2s">
                 <HStack color={'#3646B3'}>
@@ -295,8 +293,8 @@ const MainLayout = ({ children, questionsRef }) => {
           <HStack>
             <CiSearch color={'#3646B3'} fontSize={'30px'} />
             {/* <Text fontFamily={'iransans'} fontWeight={'500px'} fontSize={'20px'} color={'#3646B3'}>ورود/ثبت‌نام</Text> */}
-            <Image src="./headerpersonlogo.png" height={'29px'} width={'28px'} mr={'20px'} />
-            <Image src="./headermenu.png" height={'39px'} width={'35px'} mr={'20px'} />
+            <Image src="/headerpersonlogo.png" height={'29px'} width={'28px'} mr={'20px'} />
+            <Image src="/headermenu.png" height={'39px'} width={'35px'} mr={'20px'} />
           </HStack>
         </HStack>
 
@@ -566,52 +564,52 @@ const MainLayout = ({ children, questionsRef }) => {
                   </Text>
                 </VStack>
 
-                <VStack  w={'100%'}  height={"100%"}>
-                <VStack
-                  alignItems={"start"}
-                  gap={"20px"}
-                  height={"100%"}
-                  w={"100%"}
-                >
-                  <Text color={"#3646B3"} fontSize={"22px"} fontWeight={"bold"} fontFamily={'morabba'}>
-                    {t("parsa")}
-                  </Text>
-                  <UnorderedList
-                  width={'100%'}
-  display="grid"
-  gridTemplateColumns="repeat(2, 1fr)"  // 🔥 two columns
-  gap="10px"                             // spacing between items
-  textAlign="start"
-  sx={{
-    li: {
-      color: "black",
-      "::marker": {
-        color: "#29CCCC", // custom bullet color
-      },
-    },
-  }}
->
-  <ListItem cursor="pointer" onClick={() => handleFooterLink("/")}>
-    {t("home")}
-  </ListItem>
-  <ListItem cursor="pointer" onClick={() => handleFooterLink("/")}>
-  کاربران
-  </ListItem>
-  <ListItem cursor="pointer" onClick={() => handleFooterLink("/")}>
-  منابع و مراجع
-  </ListItem>
-  <ListItem cursor="pointer" onClick={() => handleFooterLink("/")}>
-  اخبار  
-  </ListItem>
-  <ListItem cursor="pointer" onClick={() => handleFooterLink("/aboutus")}>
-    {t("about_us")}
-  </ListItem>
-  {/* add more items */}
-</UnorderedList>
+                <VStack w={'100%'} height={"100%"}>
+                  <VStack
+                    alignItems={"start"}
+                    gap={"20px"}
+                    height={"100%"}
+                    w={"100%"}
+                  >
+                    <Text color={"#3646B3"} fontSize={"22px"} fontWeight={"bold"} fontFamily={'morabba'}>
+                      {t("parsa")}
+                    </Text>
+                    <UnorderedList
+                      width={'100%'}
+                      display="grid"
+                      gridTemplateColumns="repeat(2, 1fr)"  // 🔥 two columns
+                      gap="10px"                             // spacing between items
+                      textAlign="start"
+                      sx={{
+                        li: {
+                          color: "black",
+                          "::marker": {
+                            color: "#29CCCC", // custom bullet color
+                          },
+                        },
+                      }}
+                    >
+                      <ListItem cursor="pointer" onClick={() => handleFooterLink("/")}>
+                        {t("home")}
+                      </ListItem>
+                      <ListItem cursor="pointer" onClick={() => handleFooterLink("/")}>
+                        کاربران
+                      </ListItem>
+                      <ListItem cursor="pointer" onClick={() => handleFooterLink("/")}>
+                        منابع و مراجع
+                      </ListItem>
+                      <ListItem cursor="pointer" onClick={() => handleFooterLink("/")}>
+                        اخبار
+                      </ListItem>
+                      <ListItem cursor="pointer" onClick={() => handleFooterLink("/aboutus")}>
+                        {t("about_us")}
+                      </ListItem>
+                      {/* add more items */}
+                    </UnorderedList>
 
 
-                </VStack>
-                <HStack alignItems={"start"} justifyContent={'start'} w={'100%'}>
+                  </VStack>
+                  <HStack alignItems={"start"} justifyContent={'start'} w={'100%'}>
                     <Text
                       color={"#3646B3"}
                       fontSize={"22px"}
@@ -625,7 +623,7 @@ const MainLayout = ({ children, questionsRef }) => {
                       <IconButton
                         icon={
                           <IoLogoTwitter color="#29CCCC" fontSize={"20px"} />
-                        }  boxShadow={`
+                        } boxShadow={`
                         0px 2px 4px 0px #0000000D,
                         0px 8px 8px 0px #0000000A,
                         0px 18px 11px 0px #00000008,
@@ -636,7 +634,7 @@ const MainLayout = ({ children, questionsRef }) => {
                       <IconButton
                         icon={
                           <IoLogoInstagram color="#29CCCC" fontSize={"20px"} />
-                        }  boxShadow={`
+                        } boxShadow={`
                         0px 2px 4px 0px #0000000D,
                         0px 8px 8px 0px #0000000A,
                         0px 18px 11px 0px #00000008,
@@ -654,11 +652,11 @@ const MainLayout = ({ children, questionsRef }) => {
                         0px 50px 14px 0px #00000000
                       `}
                       />
-                      
+
                     </HStack>
                   </HStack>
                 </VStack>
-                
+
                 <VStack
                   alignItems={"start"}
                   gap={"20px"}
@@ -672,13 +670,13 @@ const MainLayout = ({ children, questionsRef }) => {
                   padding={'20px'}
                 >
                   <Text color={"#3646B3"} bgColor={'#F7F7F7'} px={'10px'} fontSize={"22px"} fontWeight={"700"} fontFamily={'morabba'} position={'absolute'} top={'-20px'} right={'12px'}>
-                  پشتیبانی و راه ارتباطی
+                    پشتیبانی و راه ارتباطی
                   </Text>
                   <HStack alignItems={"center"} textAlign={"start"} mt={'20px'}>
                     <IconButton
                       icon={<IoLocation color="#29CCCC" fontSize={"20px"} />}
                     />
-                    <Text  fontSize={'18px'}>0253 222 33 44</Text>
+                    <Text fontSize={'18px'}>0253 222 33 44</Text>
                   </HStack>
                   <HStack>
                     <IconButton
@@ -686,7 +684,7 @@ const MainLayout = ({ children, questionsRef }) => {
                     />
                     <Text fontSize={'18px'}>ParsaQa@info.com</Text>
                   </HStack>
-                 
+
                 </VStack>
               </Stack>
             </Box>

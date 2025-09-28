@@ -1,18 +1,21 @@
 import CommentCard from "@/components/commentCard";
 import { baseUrl } from "@/components/lib/api";
 import MainLayout from "@/components/mainLayout";
-import QuestionAnswerCard from "@/components/questionAnswerCard";
 import { useUser } from "@/context/UserContext";
 import {
   Avatar,
   Badge,
   Box,
   Button,
+  Collapse,
   Divider,
   Grid,
   GridItem,
   HStack,
   IconButton,
+  Input,
+  InputGroup,
+  InputRightElement,
   Spinner,
   Stack,
   Text,
@@ -26,16 +29,18 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import {
   IoArrowDown,
   IoArrowUp,
-  IoBookmark,
-  IoBookmarkOutline,
-  IoChevronDown,
-  IoChevronUpOutline
+  IoBookmarkOutline
 } from "react-icons/io5";
+import { TbBookmark } from "react-icons/tb";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
+
+const answer =
+  ['لورم ایپسوم متن ساختگی با تولید سادگی از صنعت چاپ، و  متن از صنعت چاپ، و با استفاده از طراحان گرافیــک اســت، لورم ایپسوم ساختگی با تولید سادگی از', 'لورم ایپسوم متن ساختگی با تولید سادگی از صنعت چاپ، و  متن  تولید سادگی از صنعت چاپ، و با استفاده از طراحان گرافیــک اســت، لورم ایپسوم ساختگی با تولید سادگی از', 'لورم ایپسوم متن ساختگی با تولید سادگی از صنعت چاپ، و با استفاده از  گرافیــک اســت، لورم ایپسوم ساختگی با تولید سادگی از لورم ایپسوم متن ساختگی با تولید سادگی از صنعت چاپ، و با استفاده از طراحان گرافیــک اســت، لورم ایپسوم ساختگی با تولید سادگی از', 'لورم ایپسوم متن ساختگی با تولید سادگی از صنعت چاپ، و  متن ساختگی با تولید سادگی از صنعت چاپ، و  متن ساختگی با تولید سادگی از صنعت چاپ، و با استفاده از طراحان گرافیــک اســت، لورم ایپسوم ساختگی با تولید سادگی از']
 
 const postRequest = (url, { arg: { id, ...data } }) => {
   return axios.post(baseUrl + url + `?question_id=${id}`, data, {
@@ -84,7 +89,9 @@ const Index = () => {
   const [isInputOpen, setIsInputOpen] = useState(false);
   const [comment, setComment] = useState("");
 
-  const [ showMore, setShowMore ] = useState(false)
+  const [showMore, setShowMore] = useState(false)
+
+  const [contentTest, setContentTest] = useState('لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز شامل حروفچینی ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرن گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی،')
 
   const { dataMe, isLoadingMe } = useUser();
 
@@ -241,7 +248,7 @@ const Index = () => {
   }, [dataMe])
 
   return (
-    <MainLayout>
+    <MainLayout menuDefault={true}>
       <Head>
         <title>
           {dataQuestion?.data?.result?.[0]?.title ||
@@ -332,7 +339,7 @@ const Index = () => {
                 as={Stack}
                 position={"relative"}
                 direction={{ base: "row", md: "column" }}
-                colSpan={"2"}
+                colSpan={"3"}
                 w={"100%"}
               >
                 {slidesToShow == 1 && (
@@ -370,7 +377,7 @@ const Index = () => {
 
 
                   <VStack w={"100%"} alignItems={"start"}>
-                    <HStack alignItems={'start'}>
+                    <HStack alignItems={'start'} w={'100%'}>
                       {/* {slidesToShow != 1 && (
                         <VStack>
                           <IconButton
@@ -411,12 +418,13 @@ const Index = () => {
 
                         </VStack>
                       )} */}
-                      <HStack alignItems={'start'}
+                      <HStack alignItems={'center'}
                         bgColor={'#3646B31A'}
                         padding={'8px'}
-                        borderRadius={'10px'}>
-                      
-                        <VStack w={'100%'} alignItems={'start'}>
+                        borderRadius={'10px'} w={'100%'}>
+
+                        <IoIosArrowForward cursor={'pointer'} style={{ marginRight: '10px' }} />
+                        <VStack w={'100%'} alignItems={'start'} mr={'10px'}>
                           <Text
                             lineHeight={"taller"}
                             textAlign={"justify"}
@@ -459,12 +467,13 @@ const Index = () => {
                           </HStack> */}
 
                         </VStack>
+                        <Text whiteSpace={'nowrap'} fontWeight={'400'} color={'#999999'} fontSize={'16px'}>3 پاسخ</Text>
 
                         <IconButton
                           minWidth={'none'}
                           icon={
                             dataQuestion?.data?.result?.[0]?.is_user_saved ? (
-                              <IoBookmark color="orange" onClick={(e) => {
+                              <TbBookmark color="orange" strokeWidth={2} onClick={(e) => {
                                 if (dataQuestion?.data?.result?.[0]?.is_user_saved) {
                                   // handleUpdateAction("question", "save_message", dataQuestionLike?.data?.result?.find((user) => (user?.user__username == dataMe?.data?.[0]?.username))?.id)
                                 } else {
@@ -473,8 +482,10 @@ const Index = () => {
                               }
                               } />
                             ) : (
-                              <IoBookmarkOutline
-                                color="gray"
+                              <TbBookmark
+                                fontSize={'20px'}
+                                strokeWidth={2}
+                                color="black"
                                 onClick={(e) => {
                                   if (dataQuestion?.data?.result?.[0]?.is_user_saved) {
                                     // handleUpdateAction("question", "save_message", dataQuestionLike?.data?.result?.find((user) => (user?.user__username == dataMe?.data?.[0]?.username))?.id)
@@ -586,20 +597,32 @@ const Index = () => {
                                 size={"lg"}
                               />
                             </VStack> */}
-                            <VStack w={"100%"} alignItems={"start"}>
-                              <HStack>
-                                <Text fontSize={'16px'} color={'#999999'}>{answer?.source}</Text>
+                            <VStack w={"100%"} alignItems={"start"} px={'2px'} pt={'25px'}>
+                              <HStack w={'100%'} justifyContent={'space-between'}>
+                                <HStack>
+                                  <Avatar w={'28px'} h={'28px'} />
+                                  <Text fontSize={'16px'} color={'#999999'}>{answer?.source}</Text>
+                                </HStack>
+                                <Text fontSize={"16px"} color={"#999999"} fontWeight={'100'}>
+                                  {moment(
+                                    answer?.created_at
+                                  ).format("jYYYY/jMM/jDD")}
+                                </Text>
                               </HStack>
-                              <Text
-                                lineHeight={"taller"}
-                                w={"fit-content"}
-                                textAlign={"justify"}
-                                fontSize={"18px"}
-                                whiteSpace="pre-wrap"
-                                mt={'20px'}
-                              >
-                                {answer?.content}
-                              </Text>
+                              <Collapse startingHeight={80} in={showMore}>
+                                <Text
+                                  lineHeight="190%"
+                                  w="fit-content"
+                                  textAlign="justify"
+                                  fontSize="17px"
+                                  fontWeight="400"
+                                  whiteSpace="pre-wrap"
+                                  mt="20px"
+                                  color="#333333"
+                                >
+                                  {contentTest}
+                                </Text>
+                              </Collapse>
                               <HStack
                                 w={"100%"}
                                 justifyContent={{
@@ -626,16 +649,13 @@ const Index = () => {
                                       </Badge>
                                     ))}
                                   </HStack>
-                                  <Text fontSize={"sm"} color={"gray.500"}>
-                                    {moment(
-                                      answer?.created_at
-                                    ).format("jYYYY/jMM/jDD")}
-                                  </Text>
+
                                 </HStack>
                               </HStack>
-                              <Stack>
-                              <Text color={'#3646B3'} fontWeight={'500'} fontSize={'14px'} mt={'10px'}>مشاهده کامل</Text>
-                              </Stack>
+                              {!showMore && <Stack flexDir={'row'} color={'#3646B3'} alignItems={'center'} cursor={'pointer'} onClick={e => setShowMore(true)} mt={'13px'}>
+                                <Text fontWeight={'500'} fontSize={'14px'} lineHeight={'176%'}>مشاهده کامل</Text>
+                                <IoIosArrowBack />
+                              </Stack>}
                             </VStack>
                           </HStack>
                         ))
@@ -679,12 +699,36 @@ const Index = () => {
                         </HStack>
                       </Box>
                     ) : (
-                      <VStack w={'100%'}>
-                        <HStack w={'100%'} justifyContent={'space-between'}>
-                          <HStack>
-                            <Text fontSize={'33px'} fontWeight={'800'} color={'#333333'} fontFamily={'morabba'}>پاسخ ها</Text>
-                            <Text fontSize={'14px'} color={'#999999'}>5 پاسخ</Text>
-                          </HStack>
+                      <VStack w={'100%'} alignItems={'start'} mt={'40px'} px={'20px'}>
+                        <Text fontSize={'22px'} fontWeight={'600'}>شما میتوانید به این سوال پاسخ دهید</Text>
+                        <HStack w={'100%'}>
+                          <Input w={'100%'} borderRadius={'10px'} height={'61px'} placeholder="نوشتن متن..." border={'1px'} borderColor={'#A3A3A3'} bgColor={'#FBFBFB'} />
+                          <Button bgColor={'#F9C96D'} borderRadius={'10px'} color={'black'} width={'220px'} height={'61px'} fontWeight={'700'} fontSize={'18px'}>ثبت پاسخ</Button>
+                        </HStack>
+                      </VStack>
+                      // <VStack w={'100%'}>
+                      //   <HStack w={'100%'} justifyContent={'space-between'}>
+                      //     <HStack>
+                      //       <Text fontSize={'33px'} fontWeight={'800'} color={'#333333'} fontFamily={'morabba'}>پاسخ ها</Text>
+                      //       <Text fontSize={'14px'} color={'#999999'}>5 پاسخ</Text>
+                      //     </HStack>
+                      //     <Text
+                      //       fontWeight={"700"}
+                      //       fontSize={"12px"}
+                      //       color="#3646B3"
+                      //       cursor={"pointer"}
+                      //       onClick={(e) => router.push("/references")}
+                      //     >
+                      //       {t("show_all")}
+                      //     </Text>
+                      //   </HStack>
+                      //   <QuestionAnswerCard handleSubmitAnswer={handleSubmitAnswer} handleAddAnswer={handleAddAnswer} isMutatingQuestionAnswer={isMutatingQuestionAnswer} registerAnswer={registerAnswer} t={t} />
+                      // </VStack>
+                    )}
+                    <Grid templateColumns='repeat(5, 1fr)' mt={'90px'} gap={'25px'}>
+                      <GridItem colSpan={'3'} height={'456px'}>
+                        <HStack w={'100%'} justifyContent={'space-between'} >
+                          <Text fontSize={'33px'} fontWeight={'800'} color={'#333333'} fontFamily={'morabba'}>دیدگاه ها</Text>
                           <Text
                             fontWeight={"700"}
                             fontSize={"12px"}
@@ -695,28 +739,92 @@ const Index = () => {
                             {t("show_all")}
                           </Text>
                         </HStack>
-                        <QuestionAnswerCard handleSubmitAnswer={handleSubmitAnswer} handleAddAnswer={handleAddAnswer} isMutatingQuestionAnswer={isMutatingQuestionAnswer} registerAnswer={registerAnswer} t={t} />
-                      </VStack>
-                    )}
-                    <HStack w={'100%'} justifyContent={'space-between'}>
-                      <Text fontSize={'33px'} fontWeight={'800'} color={'#333333'} fontFamily={'morabba'}>دیدگاه ها</Text>
-                      <Text
-                        fontWeight={"700"}
-                        fontSize={"12px"}
-                        color="#3646B3"
-                        cursor={"pointer"}
-                        onClick={(e) => router.push("/references")}
-                      >
-                        {t("show_all")}
-                      </Text>
-                    </HStack>
-                    <CommentCard t={t} />
+                        <CommentCard t={t} />
+                      </GridItem>
+                      <GridItem colSpan={'2'} height={'456px'}>
+
+                        <VStack w={'100%'}>
+                          <HStack w={'100%'} justifyContent={'space-between'}>
+                            <HStack>
+                              <Text fontSize={'33px'} fontWeight={'800'} color={'#333333'} fontFamily={'morabba'}>پاسخ ها</Text>
+                              <Text fontSize={'14px'} color={'#999999'}>5 پاسخ</Text>
+                            </HStack>
+                            <Text
+                              fontWeight={"700"}
+                              fontSize={"12px"}
+                              color="#3646B3"
+                              cursor={"pointer"}
+                              onClick={(e) => router.push("/references")}
+                            >
+                              {t("show_all")}
+                            </Text>
+                          </HStack>
+
+                          <Box
+                            w={{ base: "full", md: "100%" }}
+                            padding={"20px"}
+                            bgColor={"#F7F7F7"}
+                            border={"1px"}
+                            borderColor={"gray.200"}
+                            borderRadius={"10px"}
+                            my={"10px"}
+                            mr={{ base: "-40px", md: "0px" }}
+                            as="form"
+                            onSubmit={handleSubmitAnswer(handleAddAnswer)}
+
+                          >
+                            <VStack w={'100%'} gap={'30px'} height={'452px'}
+                              overflowY={'auto'}>
+                              {
+                                answer?.map((item) => (
+                                  <VStack bgColor={'white'} padding={'10px'} borderRadius={'10px'}>
+                                    <HStack w={'100%'} alignItems={'start'}>
+                                      <Avatar w={'35px'} h={'35px'} />
+                                      <Text fontSize={'14px'}>
+                                        {item}
+                                      </Text>
+                                    </HStack>
+                                    <Divider />
+                                    <HStack w={'100%'} justifyContent={'end'} color={'#3646B3'}>
+                                      <Text>1404/01/27</Text>
+                                      <Text>15:30</Text>
+                                    </HStack>
+                                  </VStack>
+                                ))
+                              }
+                            </VStack>
+                            <VStack w={"100%"} alignItems={"start"} mt={'35px'}>
+                              <Text
+                                fontWeight={"bold"}
+                                fontSize={"22px"}
+                                mb={"4px"}
+                              >
+                                {t("your_answer")}
+                              </Text>
+                              <Text fontSize={"14px"}>{t("AI-generated")}</Text>
+                            </VStack>
+
+                            <InputGroup height={'61px'} mt={'14px'}>
+                              <Input height={'inherit'} bgColor={'white'} placeholder="نوشتن متن..." borderRadius={'10px'}  {...registerAnswer("content")}
+                              />
+                              <InputRightElement w={'150px'} height={'inherit'}>
+                                <Button bgColor={'#F9C96D'} padding={'20px'} w={'150px'} h={'inherit'} color={'black'} isLoading={isMutatingQuestionAnswer} type="submit">
+                                  {t("submit_answer")}
+                                </Button>
+                              </InputRightElement>
+                            </InputGroup>
+                          </Box>
+
+                          {/* <QuestionAnswerCard handleSubmitAnswer={handleSubmitAnswer} handleAddAnswer={handleAddAnswer} isMutatingQuestionAnswer={isMutatingQuestionAnswer} registerAnswer={registerAnswer} t={t} /> */}
+                        </VStack>
+                      </GridItem>
+                    </Grid>
 
                   </VStack>
                 )}
               </GridItem>
 
-              <GridItem>
+              {/* <GridItem>
                 <Box
                   as={VStack}
                   alignItems={"start"}
@@ -775,7 +883,7 @@ const Index = () => {
                       </VStack>
                     ))}
                 </Box>
-              </GridItem>
+              </GridItem> */}
             </Grid>
           </VStack>
         </HStack>

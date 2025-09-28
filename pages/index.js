@@ -1,28 +1,14 @@
 import Header from "@/components/home/header";
 import MainLayout from "@/components/mainLayout";
 import {
-  Badge,
   Box,
   Button,
-  Center,
   chakra,
   Grid,
   GridItem,
   HStack,
-  IconButton,
-  Popover,
-  PopoverBody,
-  PopoverContent,
-  PopoverTrigger,
-  Portal,
-  SimpleGrid,
   Spinner,
   Stack,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
   Text,
   useBreakpointValue,
   VStack
@@ -37,16 +23,16 @@ import QuestionCard from "@/components/questionCars";
 import { useRouter } from "next/router";
 
 import ChatBot from "@/components/chatbot";
+import SliderCom from "@/components/slider";
+import SliderSource from "@/components/sliderSource";
 import Head from "next/head";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { IoIosArrowBack, IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
+import { IoIosArrowDown } from "react-icons/io";
+import { IoSearch } from "react-icons/io5";
 import useSWR from "swr";
 import { StringParam, useQueryParams, withDefault } from "use-query-params";
-import SliderCom from "@/components/slider";
-import SliderSource from "@/components/sliderSource";
-import { IoSearch } from "react-icons/io5";
 
 
 const geistSans = Geist({
@@ -524,17 +510,17 @@ export default function Home({ children }) {
             <VStack mb={'80px'} alignItems={'start'}>
               <Text fontSize={'16px'} color={'#C2C2C2'}>نماز آیات چه موقع واجب میشود؟</Text>
               <HStack w={'100%'} alignItems={'center'}>
-              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M15.7422 0L17.1554 6.14379C18.1138 10.3056 21.2586 13.5519 25.2904 14.5412L31.2422 16L25.2904 17.4588C21.2586 18.4481 18.1138 21.6944 17.1554 25.8562L15.7422 32L14.329 25.8562C13.3706 21.6944 10.2257 18.4481 6.19398 17.4588L0.242188 16L6.19398 14.5412C10.2257 13.5519 13.3706 10.3056 14.329 6.14379L15.7422 0Z" fill="#3646B3"/>
-</svg>
-              <Text fontSize={'30px'} color={'#3646B3'}>
-              نتایج جستجو هوشمند
-              </Text>
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M15.7422 0L17.1554 6.14379C18.1138 10.3056 21.2586 13.5519 25.2904 14.5412L31.2422 16L25.2904 17.4588C21.2586 18.4481 18.1138 21.6944 17.1554 25.8562L15.7422 32L14.329 25.8562C13.3706 21.6944 10.2257 18.4481 6.19398 17.4588L0.242188 16L6.19398 14.5412C10.2257 13.5519 13.3706 10.3056 14.329 6.14379L15.7422 0Z" fill="#3646B3" />
+                </svg>
+                <Text fontSize={'30px'} color={'#3646B3'}>
+                  نتایج جستجو هوشمند
+                </Text>
               </HStack>
               <Box bgColor={'#F7F7F7'} padding={'17px'} borderRadius={'30px'}>
-              <Text fontSize={'20px'} fontWeight={'400'}>
-              نماز آیات هنگام وقوع پدیده‌های طبیعی ترسناک مانند کسوف (خورشید گرفتگی)، خسوف (ماه گرفتگی)، زلزله، رعد و برق، بادهای سیاه و سرخ، صیحه آسمانی، یا فرو رفتن زمین واجب می‌شود. در مواردی مانند زلزله، رعد و برق و صیحه آسمانی، این نماز باید بلافاصله خوانده شود و اگر خوانده نشود تا آخر عمر بر گردن فرد باقی می‌ماند و هر وقت خوانده شود، به صورت ادا محسوب می‌شود.  
-              </Text>
+                <Text fontSize={'20px'} fontWeight={'400'}>
+                  نماز آیات هنگام وقوع پدیده‌های طبیعی ترسناک مانند کسوف (خورشید گرفتگی)، خسوف (ماه گرفتگی)، زلزله، رعد و برق، بادهای سیاه و سرخ، صیحه آسمانی، یا فرو رفتن زمین واجب می‌شود. در مواردی مانند زلزله، رعد و برق و صیحه آسمانی، این نماز باید بلافاصله خوانده شود و اگر خوانده نشود تا آخر عمر بر گردن فرد باقی می‌ماند و هر وقت خوانده شود، به صورت ادا محسوب می‌شود.
+                </Text>
               </Box>
               <VStack w={'100%'} justifyContent={'center'}>
                 <Text fontSize={'14px'} color={'#3646B3'} cursor={'pointer'}>مشاهده کامل</Text>
@@ -542,9 +528,9 @@ export default function Home({ children }) {
             </VStack>
 
             <HStack mb={'30px'}>
-              <IoSearch color={'#3646B3'} fontSize={'22px'}/>
+              <IoSearch color={'#3646B3'} fontSize={'22px'} />
               <Text fontSize={'30px'} color={'#3646B3'}>
-              نتایج جستجو بین سوالات
+                نتایج جستجو بین سوالات
               </Text>
               <Text color={'#C2C2C2'} fontSize={'16px'}>323 سوال</Text>
             </HStack>
@@ -599,7 +585,7 @@ export default function Home({ children }) {
           </GridItem>
 
           {/* Left Sidebar */}
-          
+
           <GridItem
             order={4}
             colSpan={{ md: 4 }}
@@ -622,25 +608,25 @@ export default function Home({ children }) {
               />
             )}
 
-              <Box
-                w={"100%"}
-                height={"min-content"}
-              >
-                <VStack mt={"20px"} w={"100%"} alignItems={"start"}>
-                      <SliderSource
-                      items={dataSource?.data?.map((val) => ({
-                        title: val?.fa_source_name,
-                        image: val?.logo_link,
-                        id: val?.id,
-                      count:val?.question_count,
-                        buttoh: "اطلاعات بیشتر",
-                      }))}
-                      height={"133px"}
-                      borderRadius={"5px"}
-                      title={"منابع"}
-                    />
-                </VStack>
-              </Box>
+            <Box
+              w={"100%"}
+              height={"min-content"}
+            >
+              <VStack mt={"20px"} w={"100%"} alignItems={"start"}>
+                {dataSource?.data && <SliderSource
+                  items={dataSource?.data?.map((val) => ({
+                    title: val?.fa_source_name,
+                    image: val?.logo_link,
+                    id: val?.id,
+                    count: val?.question_count,
+                    buttoh: "اطلاعات بیشتر",
+                  }))}
+                  height={"133px"}
+                  borderRadius={"5px"}
+                  title={"منابع"}
+                />}
+              </VStack>
+            </Box>
             {/* <SliderCom
               items={items2}
               height={"270px"}
