@@ -18,12 +18,13 @@ const SliderCom = ({ items, height, borderRadius, width = "auto", title }) => {
   const slidesToShow = useBreakpointValue({ base: 1, md: 2, lg: 4 }); // responsive value
 
   const sliderSettings = {
-    dots: true,
+    dots: false,
     infinite: true,
     speed: 500,
     slidesToShow: slidesToShow == 1 ? 2 : 5, // or 1 or 2
     slidesToScroll: 1,
     rtl: false, // for RTL support
+
   };
 
   const handlePublicFiqure = (item) => {
@@ -37,18 +38,19 @@ const SliderCom = ({ items, height, borderRadius, width = "auto", title }) => {
     <VStack
       w={"100%"}
       border={"1px"}
-      borderColor={"gray.200"}
+      borderColor={"#3646B3"}
       borderRadius={"16px"}
-      p={"40px"}
+      px={"40px"}
       alignItems={"start"}
       height={height}
       my={"20px"}
+      position={'relative'}
     >
-      <HStack w={"100%"} justifyContent={"space-between"}>
-        <Text fontWeight={"700"} fontSize={"22px"}>
+      <HStack w={"100%"} justifyContent={"space-between"} >
+        <Text fontWeight={"700"} color={'#3646B3'} fontSize={"22px"} fontFamily={'morabba'} bgColor={'white'} position={'absolute'} top={'-20px'} px={'10px'} right={'20px'}>
           {title}
         </Text>
-        <Text
+        {/* <Text
           fontWeight={"700"}
           fontSize={"16px"}
           color="blue.400"
@@ -56,7 +58,7 @@ const SliderCom = ({ items, height, borderRadius, width = "auto", title }) => {
           onClick={(e) => router.push("/references")}
         >
           {t("show_all")}
-        </Text>
+        </Text> */}
       </HStack>
       <Box w="100%" alignItems={"center"} justifyContent={"center"} mx="auto">
         <Slider {...sliderSettings}>
@@ -64,7 +66,6 @@ const SliderCom = ({ items, height, borderRadius, width = "auto", title }) => {
             <Flex
               cursor={"pointer"}
               textAlign={"center"}
-              w="100%"
               h="100%"
               key={index}
               p={"10px"}
@@ -72,6 +73,9 @@ const SliderCom = ({ items, height, borderRadius, width = "auto", title }) => {
               justifyContent="space-between"
               alignItems="center"
               onClick={(e) => handlePublicFiqure(item)}
+              padding={'6px'}
+              mx={'6px'}
+              w={'50px'}
             >
               <Avatar
                 w="128px"
@@ -80,7 +84,7 @@ const SliderCom = ({ items, height, borderRadius, width = "auto", title }) => {
                 src={item?.image}
               />
               {item.title && (
-                <Text fontWeight="bold" my={"20px"}>
+                <Text fontWeight="bold" my={"20px"} fontSize={'8px'}>
                   {item.title}
                 </Text>
               )}

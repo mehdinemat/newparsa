@@ -44,6 +44,9 @@ import { useTranslation } from "react-i18next";
 import { IoIosArrowBack, IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import useSWR from "swr";
 import { StringParam, useQueryParams, withDefault } from "use-query-params";
+import SliderCom from "@/components/slider";
+import SliderSource from "@/components/sliderSource";
+import { IoSearch } from "react-icons/io5";
 
 
 const geistSans = Geist({
@@ -288,7 +291,7 @@ export default function Home({ children }) {
         ref={questionsRef}
       >
         {isUserLogin && <ChatBot />}
-        <HStack
+        {/* <HStack
           w="100%"
           whiteSpace="normal"
           justifyContent={"space-between"}
@@ -315,8 +318,8 @@ export default function Home({ children }) {
           >
             {t("ask_your_question")}
           </Button>
-        </HStack>
-        <Tabs>
+        </HStack> */}
+        {/* <Tabs>
           <Box display="flex" alignItems="center">
             <IconButton
               colorScheme="gray"
@@ -393,7 +396,6 @@ export default function Home({ children }) {
                         />
                       }
                       >{val?.name}</Button>
-                      {/* <Badge colorScheme="gray" borderRadius={'7px'} py={'8px'} textAlign={'center'} cursor={'pointer'} color={'#3646B3'}>{val?.name}</Badge> */}
                     </PopoverTrigger>
                     <Portal>
                       <PopoverContent bg="gray.100" // match your badge's color if needed
@@ -401,7 +403,6 @@ export default function Home({ children }) {
                         borderRadius="7px"
                         mt="-8px" width={'none'} borderTopRightRadius={0} borderTopLeftRadius={0} boxShadow="0px 10px 22px 0px #00000040"
                       >
-                        {/* <PopoverHeader>{val?.name}</PopoverHeader> */}
                         <PopoverBody padding={0} width={'200px'} >
                           {
                             !mutateCategory2 ? <Spinner /> : dataCategoryChild2?.data?.map((item) => (
@@ -423,7 +424,7 @@ export default function Home({ children }) {
               </TabPanel>
             ))}
           </TabPanels>
-        </Tabs>
+        </Tabs> */}
         <Grid
           templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(4, 1fr)" }}
           templateAreas={{
@@ -520,6 +521,34 @@ export default function Home({ children }) {
             area={{ base: "main", md: "auto" }}
           >
 
+            <VStack mb={'80px'} alignItems={'start'}>
+              <Text fontSize={'16px'} color={'#C2C2C2'}>نماز آیات چه موقع واجب میشود؟</Text>
+              <HStack w={'100%'} alignItems={'center'}>
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M15.7422 0L17.1554 6.14379C18.1138 10.3056 21.2586 13.5519 25.2904 14.5412L31.2422 16L25.2904 17.4588C21.2586 18.4481 18.1138 21.6944 17.1554 25.8562L15.7422 32L14.329 25.8562C13.3706 21.6944 10.2257 18.4481 6.19398 17.4588L0.242188 16L6.19398 14.5412C10.2257 13.5519 13.3706 10.3056 14.329 6.14379L15.7422 0Z" fill="#3646B3"/>
+</svg>
+              <Text fontSize={'30px'} color={'#3646B3'}>
+              نتایج جستجو هوشمند
+              </Text>
+              </HStack>
+              <Box bgColor={'#F7F7F7'} padding={'17px'} borderRadius={'30px'}>
+              <Text fontSize={'20px'} fontWeight={'400'}>
+              نماز آیات هنگام وقوع پدیده‌های طبیعی ترسناک مانند کسوف (خورشید گرفتگی)، خسوف (ماه گرفتگی)، زلزله، رعد و برق، بادهای سیاه و سرخ، صیحه آسمانی، یا فرو رفتن زمین واجب می‌شود. در مواردی مانند زلزله، رعد و برق و صیحه آسمانی، این نماز باید بلافاصله خوانده شود و اگر خوانده نشود تا آخر عمر بر گردن فرد باقی می‌ماند و هر وقت خوانده شود، به صورت ادا محسوب می‌شود.  
+              </Text>
+              </Box>
+              <VStack w={'100%'} justifyContent={'center'}>
+                <Text fontSize={'14px'} color={'#3646B3'} cursor={'pointer'}>مشاهده کامل</Text>
+              </VStack>
+            </VStack>
+
+            <HStack mb={'30px'}>
+              <IoSearch color={'#3646B3'} fontSize={'22px'}/>
+              <Text fontSize={'30px'} color={'#3646B3'}>
+              نتایج جستجو بین سوالات
+              </Text>
+              <Text color={'#C2C2C2'} fontSize={'16px'}>323 سوال</Text>
+            </HStack>
+
             {isLoadingQuestion ? (
               <HStack
                 w={"100%"}
@@ -570,7 +599,7 @@ export default function Home({ children }) {
           </GridItem>
 
           {/* Left Sidebar */}
-          {/* 
+          
           <GridItem
             order={4}
             colSpan={{ md: 4 }}
@@ -587,19 +616,39 @@ export default function Home({ children }) {
                   id: val?.id,
                   buttoh: "اطلاعات بیشتر",
                 }))}
-                height={"380px"}
-                borderRadius={"100%"}
+                height={"fit-content"}
+                borderRadius={"5px"}
                 title={t("sources")}
               />
             )}
-            <SliderCom
+
+              <Box
+                w={"100%"}
+                height={"min-content"}
+              >
+                <VStack mt={"20px"} w={"100%"} alignItems={"start"}>
+                      <SliderSource
+                      items={dataSource?.data?.map((val) => ({
+                        title: val?.fa_source_name,
+                        image: val?.logo_link,
+                        id: val?.id,
+                      count:val?.question_count,
+                        buttoh: "اطلاعات بیشتر",
+                      }))}
+                      height={"133px"}
+                      borderRadius={"5px"}
+                      title={"منابع"}
+                    />
+                </VStack>
+              </Box>
+            {/* <SliderCom
               items={items2}
               height={"270px"}
               width="350px"
               borderRadius={"0px"}
               title={t("parsa_supporters")}
-            />
-          </GridItem> */}
+            /> */}
+          </GridItem>
         </Grid>
       </Box>
     </MainLayout >

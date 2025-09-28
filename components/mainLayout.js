@@ -535,6 +535,8 @@ const MainLayout = ({ children, questionsRef }) => {
               justifyContent={"center"}
               mx="auto"
               p={"20px"}
+              pt={'50px'}
+              pb={'30px'}
             >
               <Stack
                 direction={{ base: "column", md: "row" }}
@@ -544,7 +546,7 @@ const MainLayout = ({ children, questionsRef }) => {
                 gap={"40px"}
               >
                 <VStack
-                  alignItems={"center"}
+                  alignItems={"start"}
                   gap={"20px"}
                   height={"100%"}
                   w={"100%"}
@@ -559,131 +561,132 @@ const MainLayout = ({ children, questionsRef }) => {
                     width={"118px"}
                     height={"48px"}
                   />
-                  <Text w={"326px"} fontSize={"16px"}>
+                  <Text w={"326px"} fontSize={"16px"} textAlign={'start'} align={'justify'} color={'#333333'} letterSpacing={'-3%'}>
                     {t("footer_parsa_info")}
                   </Text>
                 </VStack>
+
+                <VStack  w={'100%'}  height={"100%"}>
                 <VStack
                   alignItems={"start"}
                   gap={"20px"}
                   height={"100%"}
                   w={"100%"}
                 >
-                  <Text color={"#3646B3"} fontSize={"20px"} fontWeight={"bold"}>
+                  <Text color={"#3646B3"} fontSize={"22px"} fontWeight={"bold"} fontFamily={'morabba'}>
                     {t("parsa")}
                   </Text>
                   <UnorderedList
-                    textAlign={"start"}
-                    spacing={"10px"}
-                    sx={{
-                      li: {
-                        color: "black", // text color
-                        "::marker": {
-                          color: "#29CCCC", // 🔵 your custom bullet color
-                        },
-                      },
-                    }}
-                  >
-                    <ListItem cursor={"pointer"}
-                      onClick={(e) => handleFooterLink("/")}>{t("home")}</ListItem>
-                    {/* <ListItem>{t("questions")}</ListItem>
-                    <ListItem>{t("tags")}</ListItem>
-                    <ListItem>{t("users")}</ListItem> */}
-                    <ListItem
-                      cursor={"pointer"}
-                      onClick={(e) => handleFooterLink("/aboutus")}
+                  width={'100%'}
+  display="grid"
+  gridTemplateColumns="repeat(2, 1fr)"  // 🔥 two columns
+  gap="10px"                             // spacing between items
+  textAlign="start"
+  sx={{
+    li: {
+      color: "black",
+      "::marker": {
+        color: "#29CCCC", // custom bullet color
+      },
+    },
+  }}
+>
+  <ListItem cursor="pointer" onClick={() => handleFooterLink("/")}>
+    {t("home")}
+  </ListItem>
+  <ListItem cursor="pointer" onClick={() => handleFooterLink("/")}>
+  کاربران
+  </ListItem>
+  <ListItem cursor="pointer" onClick={() => handleFooterLink("/")}>
+  منابع و مراجع
+  </ListItem>
+  <ListItem cursor="pointer" onClick={() => handleFooterLink("/")}>
+  اخبار  
+  </ListItem>
+  <ListItem cursor="pointer" onClick={() => handleFooterLink("/aboutus")}>
+    {t("about_us")}
+  </ListItem>
+  {/* add more items */}
+</UnorderedList>
+
+
+                </VStack>
+                <HStack alignItems={"start"} justifyContent={'start'} w={'100%'}>
+                    <Text
+                      color={"#3646B3"}
+                      fontSize={"22px"}
+                      fontWeight={"bold"}
+                      fontFamily={'morabba'}
+                      width={'fit-content'}
                     >
-                      {t("about_us")}
-                    </ListItem>
-                    {/* <ListItem>{t("terms_of_use")}</ListItem> */}
-                  </UnorderedList>
+                      {t("social_media")}
+                    </Text>
+                    <HStack gap={'20px'}>
+                      <IconButton
+                        icon={
+                          <IoLogoTwitter color="#29CCCC" fontSize={"20px"} />
+                        }  boxShadow={`
+                        0px 2px 4px 0px #0000000D,
+                        0px 8px 8px 0px #0000000A,
+                        0px 18px 11px 0px #00000008,
+                        0px 32px 13px 0px #00000003,
+                        0px 50px 14px 0px #00000000
+                      `}
+                      />
+                      <IconButton
+                        icon={
+                          <IoLogoInstagram color="#29CCCC" fontSize={"20px"} />
+                        }  boxShadow={`
+                        0px 2px 4px 0px #0000000D,
+                        0px 8px 8px 0px #0000000A,
+                        0px 18px 11px 0px #00000008,
+                        0px 32px 13px 0px #00000003,
+                        0px 50px 14px 0px #00000000
+                      `}
+                      />
+                      <IconButton
+                        icon={<FaTelegram color="#29CCCC" fontSize={"20px"} />}
+                        boxShadow={`
+                        0px 2px 4px 0px #0000000D,
+                        0px 8px 8px 0px #0000000A,
+                        0px 18px 11px 0px #00000008,
+                        0px 32px 13px 0px #00000003,
+                        0px 50px 14px 0px #00000000
+                      `}
+                      />
+                      
+                    </HStack>
+                  </HStack>
                 </VStack>
+                
                 <VStack
-                  w={"100%"}
                   alignItems={"start"}
                   gap={"20px"}
-                  height={"100%"}
+                  height={"fit-content"}
+                  w={"fit-content"}
+                  minW={'348px'}
+                  border={'1px'}
+                  borderColor={'#3646B3'}
+                  borderRadius={'15px'}
+                  position={'relative'}
+                  padding={'20px'}
                 >
-                  <Text color={"#3646B3"} fontSize={"20px"} fontWeight={"bold"}>
-                    {t("products")}
+                  <Text color={"#3646B3"} bgColor={'#F7F7F7'} px={'10px'} fontSize={"22px"} fontWeight={"700"} fontFamily={'morabba'} position={'absolute'} top={'-20px'} right={'12px'}>
+                  پشتیبانی و راه ارتباطی
                   </Text>
-                  <UnorderedList
-                    textAlign={"start"}
-                    spacing={"10px"}
-                    sx={{
-                      li: {
-                        color: "black", // text color
-                        "::marker": {
-                          color: "#29CCCC", // 🔵 your custom bullet color
-                        },
-                      },
-                    }}
-                  >
-                    <ListItem>{t("intelligent_question")}</ListItem>
-                    <ListItem>{t("similar_question")}</ListItem>
-                    <ListItem>{t("spelling_correction")}</ListItem>
-                    <ListItem>{t("question_recommendation")}</ListItem>
-                    <ListItem>{t("keyword_extraction")}</ListItem>
-                    <ListItem>{t("question_text_summarization")}</ListItem>
-                    <ListItem>{t("question_text_classification")}</ListItem>
-                    <ListItem>{t("open_domain_question")}</ListItem>
-                  </UnorderedList>
-                </VStack>
-                <VStack
-                  alignItems={"start"}
-                  gap={"20px"}
-                  height={"100%"}
-                  w={"100%"}
-                >
-                  <Text color={"#3646B3"} fontSize={"20px"} fontWeight={"bold"}>
-                    {t("contact_us")}
-                  </Text>
-                  <HStack w={"100%"} alignItems={"start"} textAlign={"start"}>
+                  <HStack alignItems={"center"} textAlign={"start"} mt={'20px'}>
                     <IconButton
                       icon={<IoLocation color="#29CCCC" fontSize={"20px"} />}
                     />
-                    <Text width={"auto"}>{t("address")}</Text>
+                    <Text  fontSize={'18px'}>0253 222 33 44</Text>
                   </HStack>
                   <HStack>
                     <IconButton
                       icon={<IoCall color="#29CCCC" fontSize={"20px"} />}
                     />
-                    <Text>09127468103</Text>
+                    <Text fontSize={'18px'}>ParsaQa@info.com</Text>
                   </HStack>
-                  <VStack alignItems={"start"}>
-                    <Text
-                      color={"#3646B3"}
-                      fontSize={"20px"}
-                      fontWeight={"bold"}
-                    >
-                      {t("social_media")}
-                    </Text>
-                    <HStack>
-                      <IconButton
-                        icon={
-                          <IoLogoTwitter color="#29CCCC" fontSize={"20px"} />
-                        }
-                      />
-                      <IconButton
-                        icon={
-                          <IoLogoInstagram color="#29CCCC" fontSize={"20px"} />
-                        }
-                      />
-                      <IconButton
-                        icon={<FaTelegram color="#29CCCC" fontSize={"20px"} />}
-                      />
-                      <IconButton
-                        icon={
-                          <IoLogoYoutube color="#29CCCC" fontSize={"20px"} />
-                        }
-                      />
-                      <IconButton
-                        icon={
-                          <IoLogoLinkedin color="#29CCCC" fontSize={"20px"} />
-                        }
-                      />
-                    </HStack>
-                  </VStack>
+                 
                 </VStack>
               </Stack>
             </Box>

@@ -84,6 +84,8 @@ const Index = () => {
   const [isInputOpen, setIsInputOpen] = useState(false);
   const [comment, setComment] = useState("");
 
+  const [ showMore, setShowMore ] = useState(false)
+
   const { dataMe, isLoadingMe } = useUser();
 
   const [isUserLogin, setIsUserLogin] = useState("");
@@ -369,7 +371,7 @@ const Index = () => {
 
                   <VStack w={"100%"} alignItems={"start"}>
                     <HStack alignItems={'start'}>
-                      {slidesToShow != 1 && (
+                      {/* {slidesToShow != 1 && (
                         <VStack>
                           <IconButton
                             icon={
@@ -408,11 +410,56 @@ const Index = () => {
                           />
 
                         </VStack>
-                      )}
+                      )} */}
                       <HStack alignItems={'start'}
-                        bgColor={'#F7F7F7'}
+                        bgColor={'#3646B31A'}
                         padding={'8px'}
                         borderRadius={'10px'}>
+                      
+                        <VStack w={'100%'} alignItems={'start'}>
+                          <Text
+                            lineHeight={"taller"}
+                            textAlign={"justify"}
+                            fontSize={'21px'}
+                            fontWeight={'700'}
+                          >
+                            {dataQuestion?.data?.result?.[0]?.content}
+                          </Text>
+
+                          {/* <HStack w={'100%'} justifyContent={'space-between'}>
+                            <HStack
+                              cursor={"pointer"}
+                              onClick={(e) =>
+                                handleClickSource(
+                                  dataQuestion?.data?.result?.[0]?.source
+                                )
+                              }
+                            >
+                              <Avatar
+                                w={"28px"}
+                                h={"28px"}
+                                display={{ base: "none", md: "flex" }}
+                              />
+                              <Text
+                                minW={"150px"}
+                                color={"gray.400"}
+                                fontSize={"16px"}
+                              >
+                                {dataQuestion?.data?.result?.[0]?.source}
+                              </Text>
+                            </HStack>
+                            <HStack>
+                              <Text fontSize={"sm"} color={"gray.400"}>
+                                {moment(
+                                  dataQuestion?.data?.result?.[0]?.created_at
+                                ).format("jYYYY/jMM/jDD")}
+                              </Text>
+                            </HStack>
+
+                          </HStack> */}
+
+                        </VStack>
+
                         <IconButton
                           minWidth={'none'}
                           icon={
@@ -441,61 +488,6 @@ const Index = () => {
                           }
                           size={"lg"}
                         />
-                        <VStack w={'100%'} alignItems={'start'}>
-                          <Text
-                            lineHeight={"taller"}
-                            textAlign={"justify"}
-                            fontSize={'21px'}
-                            fontWeight={'bold'}
-                          >
-                            {dataQuestion?.data?.result?.[0]?.content}
-                          </Text>
-
-                          <HStack w={'100%'} justifyContent={'space-between'}>
-                            <HStack
-                              cursor={"pointer"}
-                              onClick={(e) =>
-                                handleClickSource(
-                                  dataQuestion?.data?.result?.[0]?.source
-                                )
-                              }
-                            >
-                              <Avatar
-                                w={"28px"}
-                                h={"28px"}
-                                display={{ base: "none", md: "flex" }}
-                              />
-                              <Text
-                                minW={"150px"}
-                                color={"gray.400"}
-                                fontSize={"16px"}
-                              >
-                                {dataQuestion?.data?.result?.[0]?.source}
-                              </Text>
-                            </HStack>
-                            <HStack>
-                              <Text fontSize={"sm"} color={"gray.400"}>
-                                {moment(
-                                  dataQuestion?.data?.result?.[0]?.created_at
-                                ).format("jYYYY/jMM/jDD")}
-                              </Text>
-                              {/* <AvatarGroup size='md' max={3} >
-                                  <Avatar name='Ryan Florence' src='https://bit.ly/ryan-florence' w={"28px"}
-                                    h={"28px"} />
-                                  <Avatar name='Segun Adebayo' src='https://bit.ly/sage-adebayo' w={"28px"}
-                                    h={"28px"} />
-                                  <Avatar name='Kent Dodds' src='https://bit.ly/kent-c-dodds' w={"28px"}
-                                    h={"28px"} />
-                                  <Avatar name='Prosper Otemuyiwa' src='https://bit.ly/prosper-baba' w={"28px"}
-                                    h={"28px"} />
-                                  <Avatar name='Christian Nwamba' src='https://bit.ly/code-beast' w={"28px"}
-                                    h={"28px"} />
-                                </AvatarGroup> */}
-                            </HStack>
-
-                          </HStack>
-
-                        </VStack>
 
                       </HStack>
                     </HStack>
@@ -595,12 +587,16 @@ const Index = () => {
                               />
                             </VStack> */}
                             <VStack w={"100%"} alignItems={"start"}>
+                              <HStack>
+                                <Text fontSize={'16px'} color={'#999999'}>{answer?.source}</Text>
+                              </HStack>
                               <Text
                                 lineHeight={"taller"}
                                 w={"fit-content"}
                                 textAlign={"justify"}
                                 fontSize={"18px"}
                                 whiteSpace="pre-wrap"
+                                mt={'20px'}
                               >
                                 {answer?.content}
                               </Text>
@@ -637,6 +633,9 @@ const Index = () => {
                                   </Text>
                                 </HStack>
                               </HStack>
+                              <Stack>
+                              <Text color={'#3646B3'} fontWeight={'500'} fontSize={'14px'} mt={'10px'}>مشاهده کامل</Text>
+                              </Stack>
                             </VStack>
                           </HStack>
                         ))
