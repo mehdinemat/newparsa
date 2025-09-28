@@ -21,7 +21,7 @@ import {
   Text,
   UnorderedList,
   useDisclosure,
-  VStack
+  VStack,
 } from "@chakra-ui/react";
 import _ from "lodash";
 import { useRouter } from "next/router";
@@ -29,11 +29,7 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { CiSearch } from "react-icons/ci";
 import { FaTelegram } from "react-icons/fa";
-import {
-  IoIosArrowDown,
-  IoLogoInstagram,
-  IoLogoTwitter
-} from "react-icons/io";
+import { IoIosArrowDown, IoLogoInstagram, IoLogoTwitter } from "react-icons/io";
 import { IoCall, IoLocation } from "react-icons/io5";
 import useSWR from "swr";
 import { StringParam, useQueryParams, withDefault } from "use-query-params";
@@ -95,7 +91,6 @@ const MainLayout = ({ children, questionsRef, menuDefault = false }) => {
 
   const [showMenu, setShowMenu] = useState(false);
 
-
   const router = useRouter();
   const { locale, asPath } = router;
 
@@ -134,7 +129,6 @@ const MainLayout = ({ children, questionsRef, menuDefault = false }) => {
 
     if (scrollTop >= sidebarOffsetTop) {
       setIsSticky(true);
-
     } else {
       setIsSticky(false);
     }
@@ -167,8 +161,8 @@ const MainLayout = ({ children, questionsRef, menuDefault = false }) => {
       _.includes(router.asPath.toLowerCase(), "admin_dashboard")
         ? 2
         : _.includes(router.asPath.toLowerCase(), "dashboard")
-          ? 1
-          : 0
+        ? 1
+        : 0
     );
   }, [router]);
 
@@ -191,7 +185,7 @@ const MainLayout = ({ children, questionsRef, menuDefault = false }) => {
     const handleScroll = () => {
       const scrollY = container.scrollTop;
       setHideHeaderButton(scrollY >= 350); // you can use scrollY >= 500 to toggle button
-      setShowMenu(scrollY >= 900)
+      setShowMenu(scrollY >= 900);
     };
 
     container.addEventListener("scroll", handleScroll);
@@ -208,7 +202,7 @@ const MainLayout = ({ children, questionsRef, menuDefault = false }) => {
   }, [filters?.search]);
 
   const handleProfileLink = () => {
-    router.push('/dashboard/profile')
+    router.push("/dashboard/profile");
   };
 
   // useEffect(() => {
@@ -235,70 +229,94 @@ const MainLayout = ({ children, questionsRef, menuDefault = false }) => {
   return (
     <VStack minHeight="100vh" w={"100%"} alignItems={"start"} gap={0}>
       {/* header */}
-      {(showMenu || menuDefault) && <Box
-        as={Stack}
-        position="fixed" // 👈 Make it fixed
-        top={0}
-        left={0}
-        zIndex={999} // 👈 Ensure it stays on top
-        width="100%"
-        height={{ base: "60px", md: "80px" }}
-        alignItems={"center"}
-        justifyContent={"center"}
-        bg="#FFFFFF80"           // 👈 semi-transparent background
-        backdropFilter="blur(38.2px)" // 👈 blur effect
-        p={2}
-        px={{ base: 0, mode: 4 }}
-      >
-
-        <HStack maxW="container.xl" justifyContent={'space-between'} w={'100%'} >
-          <HStack>
-            <Image src="/headerparsalogo2.png" width={'29px'} height={'42px'} ml={'5px'} />
-            <Image src="/headerlogo2.png" width={'100px'} height={'41px'} />
-            <Menu >
-              <MenuButton px={4} py={2} marginRight={'20px'} transition="all 0.2s">
-                <HStack color={'#3646B3'}>
-                  <Text fontSize={"20px"}>
-                    {locale == "en"
-                      ? t("header_english")
-                      : locale == "fa"
+      {(showMenu || menuDefault) && (
+        <Box
+          as={Stack}
+          position="fixed" // 👈 Make it fixed
+          top={0}
+          left={0}
+          zIndex={999} // 👈 Ensure it stays on top
+          width="100%"
+          height={{ base: "60px", md: "80px" }}
+          alignItems={"center"}
+          justifyContent={"center"}
+          bg="#FFFFFF80" // 👈 semi-transparent background
+          backdropFilter="blur(38.2px)" // 👈 blur effect
+          p={2}
+          px={{ base: 0, mode: 4 }}
+        >
+          <HStack
+            maxW="container.xl"
+            justifyContent={"space-between"}
+            w={"100%"}
+          >
+            <HStack>
+              <Image
+                src="/headerparsalogo2.png"
+                width={"29px"}
+                height={"42px"}
+                ml={"5px"}
+              />
+              <Image src="/headerlogo2.png" width={"100px"} height={"41px"} />
+              <Menu>
+                <MenuButton
+                  px={4}
+                  py={2}
+                  marginRight={"20px"}
+                  transition="all 0.2s"
+                >
+                  <HStack color={"#3646B3"}>
+                    <Text fontSize={"20px"}>
+                      {locale == "en"
+                        ? t("header_english")
+                        : locale == "fa"
                         ? t("header_persian")
                         : locale == "ar" && t("header_arabic")}
-                  </Text>
-                  <IoIosArrowDown width={'12px'} fontSize={'12px'} />
-                </HStack>
-              </MenuButton>
-              <MenuList>
-                <MenuItem
-                  value={"en"}
-                  onClick={(e) => router.push("/", "/", { locale: "en" })}
-                >
-                  {t("header_english")}
-                </MenuItem>
-                <MenuItem
-                  value={"ar"}
-                  onClick={(e) => router.push("/", "/", { locale: "ar" })}
-                >
-                  {t("header_arabic")}
-                </MenuItem>
-                <MenuItem
-                  value={"fa"}
-                  onClick={(e) => router.push("/", "/", { locale: "fa" })}
-                >
-                  {t("header_persian")}
-                </MenuItem>
-              </MenuList>
-            </Menu>
+                    </Text>
+                    <IoIosArrowDown width={"12px"} fontSize={"12px"} />
+                  </HStack>
+                </MenuButton>
+                <MenuList>
+                  <MenuItem
+                    value={"en"}
+                    onClick={(e) => router.push("/", "/", { locale: "en" })}
+                  >
+                    {t("header_english")}
+                  </MenuItem>
+                  <MenuItem
+                    value={"ar"}
+                    onClick={(e) => router.push("/", "/", { locale: "ar" })}
+                  >
+                    {t("header_arabic")}
+                  </MenuItem>
+                  <MenuItem
+                    value={"fa"}
+                    onClick={(e) => router.push("/", "/", { locale: "fa" })}
+                  >
+                    {t("header_persian")}
+                  </MenuItem>
+                </MenuList>
+              </Menu>
+            </HStack>
+            <HStack>
+              <CiSearch color={"#3646B3"} fontSize={"30px"} />
+              {/* <Text fontFamily={'iransans'} fontWeight={'500px'} fontSize={'20px'} color={'#3646B3'}>ورود/ثبت‌نام</Text> */}
+              <Image
+                src="/headerpersonlogo.png"
+                height={"29px"}
+                width={"28px"}
+                mr={"20px"}
+              />
+              <Image
+                src="/headermenu.png"
+                height={"39px"}
+                width={"35px"}
+                mr={"20px"}
+              />
+            </HStack>
           </HStack>
-          <HStack>
-            <CiSearch color={'#3646B3'} fontSize={'30px'} />
-            {/* <Text fontFamily={'iransans'} fontWeight={'500px'} fontSize={'20px'} color={'#3646B3'}>ورود/ثبت‌نام</Text> */}
-            <Image src="/headerpersonlogo.png" height={'29px'} width={'28px'} mr={'20px'} />
-            <Image src="/headermenu.png" height={'39px'} width={'35px'} mr={'20px'} />
-          </HStack>
-        </HStack>
 
-        {/* <HStack
+          {/* <HStack
           as={Container}
           maxW="container.xl"
           w={"100%"}
@@ -509,7 +527,8 @@ const MainLayout = ({ children, questionsRef, menuDefault = false }) => {
             )}
           </HStack>
         </HStack> */}
-      </Box>}
+        </Box>
+      )}
       {/* header */}
       <HStack
         height={"calc( 100vh )"}
@@ -533,8 +552,8 @@ const MainLayout = ({ children, questionsRef, menuDefault = false }) => {
               justifyContent={"center"}
               mx="auto"
               p={"20px"}
-              pt={'50px'}
-              pb={'30px'}
+              pt={"50px"}
+              pb={"30px"}
             >
               <Stack
                 direction={{ base: "column", md: "row" }}
@@ -559,26 +578,38 @@ const MainLayout = ({ children, questionsRef, menuDefault = false }) => {
                     width={"118px"}
                     height={"48px"}
                   />
-                  <Text w={"326px"} fontSize={"16px"} textAlign={'start'} align={'justify'} color={'#333333'} letterSpacing={'-3%'}>
+                  <Text
+                    w={"326px"}
+                    fontSize={"16px"}
+                    textAlign={"start"}
+                    align={"justify"}
+                    color={"#333333"}
+                    letterSpacing={"-3%"}
+                  >
                     {t("footer_parsa_info")}
                   </Text>
                 </VStack>
 
-                <VStack w={'100%'} height={"100%"}>
+                <VStack w={"100%"} height={"100%"}>
                   <VStack
                     alignItems={"start"}
                     gap={"20px"}
                     height={"100%"}
                     w={"100%"}
                   >
-                    <Text color={"#3646B3"} fontSize={"22px"} fontWeight={"bold"} fontFamily={'morabba'}>
+                    <Text
+                      color={"#3646B3"}
+                      fontSize={"22px"}
+                      fontWeight={"bold"}
+                      fontFamily={"morabba"}
+                    >
                       {t("parsa")}
                     </Text>
                     <UnorderedList
-                      width={'100%'}
+                      width={"100%"}
                       display="grid"
-                      gridTemplateColumns="repeat(2, 1fr)"  // 🔥 two columns
-                      gap="10px"                             // spacing between items
+                      gridTemplateColumns="repeat(2, 1fr)" // 🔥 two columns
+                      gap="10px" // spacing between items
                       textAlign="start"
                       sx={{
                         li: {
@@ -589,41 +620,59 @@ const MainLayout = ({ children, questionsRef, menuDefault = false }) => {
                         },
                       }}
                     >
-                      <ListItem cursor="pointer" onClick={() => handleFooterLink("/")}>
+                      <ListItem
+                        cursor="pointer"
+                        onClick={() => handleFooterLink("/")}
+                      >
                         {t("home")}
                       </ListItem>
-                      <ListItem cursor="pointer" onClick={() => handleFooterLink("/")}>
+                      <ListItem
+                        cursor="pointer"
+                        onClick={() => handleFooterLink("/")}
+                      >
                         کاربران
                       </ListItem>
-                      <ListItem cursor="pointer" onClick={() => handleFooterLink("/")}>
+                      <ListItem
+                        cursor="pointer"
+                        onClick={() => handleFooterLink("/")}
+                      >
                         منابع و مراجع
                       </ListItem>
-                      <ListItem cursor="pointer" onClick={() => handleFooterLink("/")}>
+                      <ListItem
+                        cursor="pointer"
+                        onClick={() => handleFooterLink("/")}
+                      >
                         اخبار
                       </ListItem>
-                      <ListItem cursor="pointer" onClick={() => handleFooterLink("/aboutus")}>
+                      <ListItem
+                        cursor="pointer"
+                        onClick={() => handleFooterLink("/aboutus")}
+                      >
                         {t("about_us")}
                       </ListItem>
                       {/* add more items */}
                     </UnorderedList>
-
-
                   </VStack>
-                  <HStack alignItems={"start"} justifyContent={'start'} w={'100%'}>
+                  <HStack
+                    alignItems={"start"}
+                    justifyContent={"start"}
+                    w={"100%"}
+                  >
                     <Text
                       color={"#3646B3"}
                       fontSize={"22px"}
                       fontWeight={"bold"}
-                      fontFamily={'morabba'}
-                      width={'fit-content'}
+                      fontFamily={"morabba"}
+                      width={"fit-content"}
                     >
                       {t("social_media")}
                     </Text>
-                    <HStack gap={'20px'}>
+                    <HStack gap={"20px"}>
                       <IconButton
                         icon={
                           <IoLogoTwitter color="#29CCCC" fontSize={"20px"} />
-                        } boxShadow={`
+                        }
+                        boxShadow={`
                         0px 2px 4px 0px #0000000D,
                         0px 8px 8px 0px #0000000A,
                         0px 18px 11px 0px #00000008,
@@ -634,7 +683,8 @@ const MainLayout = ({ children, questionsRef, menuDefault = false }) => {
                       <IconButton
                         icon={
                           <IoLogoInstagram color="#29CCCC" fontSize={"20px"} />
-                        } boxShadow={`
+                        }
+                        boxShadow={`
                         0px 2px 4px 0px #0000000D,
                         0px 8px 8px 0px #0000000A,
                         0px 18px 11px 0px #00000008,
@@ -652,7 +702,6 @@ const MainLayout = ({ children, questionsRef, menuDefault = false }) => {
                         0px 50px 14px 0px #00000000
                       `}
                       />
-
                     </HStack>
                   </HStack>
                 </VStack>
@@ -662,29 +711,56 @@ const MainLayout = ({ children, questionsRef, menuDefault = false }) => {
                   gap={"20px"}
                   height={"fit-content"}
                   w={"fit-content"}
-                  minW={'348px'}
-                  border={'1px'}
-                  borderColor={'#3646B3'}
-                  borderRadius={'15px'}
-                  position={'relative'}
-                  padding={'20px'}
+                  minW={"348px"}
+                  border={"1px"}
+                  borderColor={"#3646B3"}
+                  borderRadius={"15px"}
+                  position={"relative"}
+                  padding={"20px"}
                 >
-                  <Text color={"#3646B3"} bgColor={'#F7F7F7'} px={'10px'} fontSize={"22px"} fontWeight={"700"} fontFamily={'morabba'} position={'absolute'} top={'-20px'} right={'12px'}>
+                  <Text
+                    color={"#3646B3"}
+                    bgColor={"#F7F7F7"}
+                    px={"10px"}
+                    fontSize={"22px"}
+                    fontWeight={"700"}
+                    fontFamily={"morabba"}
+                    position={"absolute"}
+                    top={"-20px"}
+                    right={"12px"}
+                  >
                     پشتیبانی و راه ارتباطی
                   </Text>
-                  <HStack alignItems={"center"} textAlign={"start"} mt={'20px'}>
+                  <HStack alignItems={"center"} textAlign={"start"} mt={"20px"}>
                     <IconButton
                       icon={<IoLocation color="#29CCCC" fontSize={"20px"} />}
                     />
-                    <Text fontSize={'18px'}>0253 222 33 44</Text>
+                    <Text fontSize={"18px"}>0253 222 33 44</Text>
                   </HStack>
                   <HStack>
                     <IconButton
                       icon={<IoCall color="#29CCCC" fontSize={"20px"} />}
                     />
-                    <Text fontSize={'18px'}>ParsaQa@info.com</Text>
+                    <Text fontSize={"18px"}>ParsaQa@info.com</Text>
                   </HStack>
 
+                  <Grid
+                    templateColumns={{ base: "repeat(2, 1fr)" }}
+                    bgColor={"#3646B333"}
+                    height={'46px'}
+                    borderRadius={'9px'}
+                    alignItems={'center'}
+                    justifyContent={'center'}
+                    width={'308px'}
+                    padding={'8px'}
+                  >
+                    <GridItem>
+                      <Text fontWeight={'600'} fontSize={'14px'}>پشتیبانی و رفع مشکلات</Text>
+                    </GridItem>
+                    <GridItem padding={'5px'} bgColor={'#3646B3'} borderRadius={'4px'}>
+                      <Text color={'white'} fontWeight={'600'} fontSize={'14px'}>ثبت تیکت</Text>
+                    </GridItem>
+                  </Grid>
                 </VStack>
               </Stack>
             </Box>

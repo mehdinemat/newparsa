@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   chakra,
+  Collapse,
   Grid,
   GridItem,
   HStack,
@@ -11,7 +12,7 @@ import {
   Stack,
   Text,
   useBreakpointValue,
-  VStack
+  VStack,
 } from "@chakra-ui/react";
 import { Geist, Geist_Mono } from "next/font/google";
 import "slick-carousel/slick/slick-theme.css";
@@ -33,7 +34,6 @@ import { IoIosArrowDown } from "react-icons/io";
 import { IoSearch } from "react-icons/io5";
 import useSWR from "swr";
 import { StringParam, useQueryParams, withDefault } from "use-query-params";
-
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -76,23 +76,27 @@ const items2 = [
 
 const RotatingIcon = chakra(IoIosArrowDown, {
   baseStyle: {
-    transition: 'transform 0.3s ease',
+    transition: "transform 0.3s ease",
   },
 });
 
 export default function Home({ children }) {
-
-  const [hoveredIndex, setHoveredIndex] = useState({ selected: '', val: '' });
+  const [hoveredIndex, setHoveredIndex] = useState({ selected: "", val: "" });
   const [isUserLogin, setIsUserLogin] = useState("");
 
-  const [filters, setFilters] = useQueryParams({
-    category_id: withDefault(StringParam, '28')
-  })
+  const [test, setTest] = useState(
+    "نماز آیات هنگام وقوع پدیده‌های طبیعی ترسناک مانند کسوف (خورشید گرفتگی)، خسوف (ماه گرفتگی)، زلزله، رعد و برق، بادهای سیاه و سرخ، صیحه آسمانی، یا فرو رفتن زمین واجب می‌شود. در مواردی مانند زلزله، رعد و برق و صیحه آسمانی، این نماز باید بلافاصله خوانده شود و اگر خوانده نشود تا آخر عمر بر گردن فرد باقی می‌ماند و هر وقت خوانده شود، به صورت ادا محسوب می‌شود. نماز آیات هنگام وقوع پدیده‌های طبیعی ترسناک مانند کسوف (خورشید گرفتگی)، خسوف (ماه گرفتگی)، زلزله، رعد و برق، بادهای سیاه و سرخ، صیحه آسمانی، یا فرو رفتن زمین واجب می‌شود. در مواردی مانند زلزله، رعد و برق و صیحه آسمانی، این نماز باید بلافاصله خوانده شود و اگر خوانده نشود تا آخر عمر بر گردن فرد باقی می‌ماند و هر وقت خوانده شود، به صورت ادا محسوب می‌شود نماز آیات هنگام وقوع پدیده‌های طبیعی ترسناک مانند کسوف (خورشید گرفتگی)، خسوف (ماه گرفتگی)، زلزله، رعد و برق، بادهای سیاه و سرخ، صیحه آسمانی، یا فرو رفتن زمین واجب می‌شود. در مواردی مانند زلزله، رعد و برق و صیحه آسمانی، این نماز باید بلافاصله خوانده شود و اگر خوانده نشود تا آخر عمر بر گردن فرد باقی می‌ماند و هر وقت خوانده شود، به صورت ادا محسوب می‌شو"
+  );
+  const [showMore, setShowMore] = useState(false);
 
-  const scrollRef = useRef(null)
-  const [isDragging, setIsDragging] = useState(false)
-  const [startX, setStartX] = useState(0)
-  const [scrollLeft, setScrollLeft] = useState(0)
+  const [filters, setFilters] = useQueryParams({
+    category_id: withDefault(StringParam, "28"),
+  });
+
+  const scrollRef = useRef(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
 
   const router = useRouter();
   const { locale } = useRouter();
@@ -124,7 +128,8 @@ export default function Home({ children }) {
     error: errorQuestion,
     isLoading: isLoadingQuestion,
   } = useSWR(
-    `user/question?lang=${locale}&page=${page}${categoryId && `&categories__id=${categoryId}`
+    `user/question?lang=${locale}&page=${page}${
+      categoryId && `&categories__id=${categoryId}`
     }`
   );
   // const {
@@ -140,8 +145,21 @@ export default function Home({ children }) {
 
   const { data: dataGeneral, error: errorGeneral } = useSWR("user/general");
 
-  const { data: dataCategoryChild, error: errorCategoryChild, mutate: mutateCategory, isLoading: isLoadingChildCategory } = useSWR(`user/category?parent_id=${filters?.category_id}&type=question`);
-  const { data: dataCategoryChild2, error: errorCategoryChild2, mutate: mutateCategory2, isLoading: isLoadingChildCategory2 } = useSWR(hoveredIndex?.val && `user/category?parent_id=${hoveredIndex?.val}&type=question`);
+  const {
+    data: dataCategoryChild,
+    error: errorCategoryChild,
+    mutate: mutateCategory,
+    isLoading: isLoadingChildCategory,
+  } = useSWR(`user/category?parent_id=${filters?.category_id}&type=question`);
+  const {
+    data: dataCategoryChild2,
+    error: errorCategoryChild2,
+    mutate: mutateCategory2,
+    isLoading: isLoadingChildCategory2,
+  } = useSWR(
+    hoveredIndex?.val &&
+      `user/category?parent_id=${hoveredIndex?.val}&type=question`
+  );
 
   const { data: dataHadith, error: errorHadith } = useSWR("user/general/hadis");
   const { data: dataSource, error: errorSource } = useSWR(
@@ -153,7 +171,7 @@ export default function Home({ children }) {
   const { data: dataCategory, isLoading: isLoadingCategory } = useSWR(
     `user/category?type=question`,
     {
-      onSuccess: (res) => { },
+      onSuccess: (res) => {},
     }
   );
 
@@ -173,33 +191,33 @@ export default function Home({ children }) {
 
   const scroll = (direction) => {
     if (scrollRef.current) {
-      const scrollAmount = direction === 'left' ? -150 : 150
-      scrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' })
+      const scrollAmount = direction === "left" ? -150 : 150;
+      scrollRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
     }
-  }
+  };
 
   const handleMouseDown = (e) => {
-    if (!scrollRef.current) return
-    setIsDragging(true)
-    setStartX(e.pageX - scrollRef.current.offsetLeft)
-    setScrollLeft(scrollRef.current.scrollLeft)
-  }
+    if (!scrollRef.current) return;
+    setIsDragging(true);
+    setStartX(e.pageX - scrollRef.current.offsetLeft);
+    setScrollLeft(scrollRef.current.scrollLeft);
+  };
 
   const handleMouseLeave = () => {
-    setIsDragging(false)
-  }
+    setIsDragging(false);
+  };
 
   const handleMouseUp = () => {
-    setIsDragging(false)
-  }
+    setIsDragging(false);
+  };
 
   const handleMouseMove = (e) => {
-    if (!isDragging || !scrollRef.current) return
-    e.preventDefault()
-    const x = e.pageX - scrollRef.current.offsetLeft
-    const walk = x - startX
-    scrollRef.current.scrollLeft = scrollLeft - walk
-  }
+    if (!isDragging || !scrollRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - scrollRef.current.offsetLeft;
+    const walk = x - startX;
+    scrollRef.current.scrollLeft = scrollLeft - walk;
+  };
   const handleNewQuestionButton = () => {
     router.push("/new_question");
   };
@@ -224,14 +242,13 @@ export default function Home({ children }) {
     router.push(`/questions/category/${id}/${title}`);
   };
   const handleCategoryClick = (index, val) => {
-    console.log(index, val, hoveredIndex)
+    console.log(index, val, hoveredIndex);
     if (hoveredIndex?.selected == index && hoveredIndex?.val == val) {
-      setHoveredIndex({ selected: '', val: '' })
+      setHoveredIndex({ selected: "", val: "" });
     } else {
-
-      setHoveredIndex({ selected: index, val: val })
+      setHoveredIndex({ selected: index, val: val });
     }
-  }
+  };
 
   useEffect(() => {
     setIsUserLogin(!!localStorage.getItem("token"));
@@ -246,7 +263,6 @@ export default function Home({ children }) {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [setHoveredIndex]);
-
 
   return (
     <MainLayout questionsRef={questionsRef}>
@@ -506,33 +522,56 @@ export default function Home({ children }) {
             pr={{ base: 0, md: "21px" }}
             area={{ base: "main", md: "auto" }}
           >
-
-            <VStack mb={'80px'} alignItems={'start'}>
-              <Text fontSize={'16px'} color={'#C2C2C2'}>نماز آیات چه موقع واجب میشود؟</Text>
-              <HStack w={'100%'} alignItems={'center'}>
-                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M15.7422 0L17.1554 6.14379C18.1138 10.3056 21.2586 13.5519 25.2904 14.5412L31.2422 16L25.2904 17.4588C21.2586 18.4481 18.1138 21.6944 17.1554 25.8562L15.7422 32L14.329 25.8562C13.3706 21.6944 10.2257 18.4481 6.19398 17.4588L0.242188 16L6.19398 14.5412C10.2257 13.5519 13.3706 10.3056 14.329 6.14379L15.7422 0Z" fill="#3646B3" />
+            <VStack mb={"80px"} alignItems={"start"}>
+              <Text fontSize={"16px"} color={"#C2C2C2"}>
+                نماز آیات چه موقع واجب میشود؟
+              </Text>
+              <HStack w={"100%"} alignItems={"center"}>
+                <svg
+                  width="32"
+                  height="32"
+                  viewBox="0 0 32 32"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M15.7422 0L17.1554 6.14379C18.1138 10.3056 21.2586 13.5519 25.2904 14.5412L31.2422 16L25.2904 17.4588C21.2586 18.4481 18.1138 21.6944 17.1554 25.8562L15.7422 32L14.329 25.8562C13.3706 21.6944 10.2257 18.4481 6.19398 17.4588L0.242188 16L6.19398 14.5412C10.2257 13.5519 13.3706 10.3056 14.329 6.14379L15.7422 0Z"
+                    fill="#3646B3"
+                  />
                 </svg>
-                <Text fontSize={'30px'} color={'#3646B3'}>
+                <Text fontSize={"30px"} color={"#3646B3"}>
                   نتایج جستجو هوشمند
                 </Text>
               </HStack>
-              <Box bgColor={'#F7F7F7'} padding={'17px'} borderRadius={'30px'}>
-                <Text fontSize={'20px'} fontWeight={'400'}>
-                  نماز آیات هنگام وقوع پدیده‌های طبیعی ترسناک مانند کسوف (خورشید گرفتگی)، خسوف (ماه گرفتگی)، زلزله، رعد و برق، بادهای سیاه و سرخ، صیحه آسمانی، یا فرو رفتن زمین واجب می‌شود. در مواردی مانند زلزله، رعد و برق و صیحه آسمانی، این نماز باید بلافاصله خوانده شود و اگر خوانده نشود تا آخر عمر بر گردن فرد باقی می‌ماند و هر وقت خوانده شود، به صورت ادا محسوب می‌شود.
-                </Text>
-              </Box>
-              <VStack w={'100%'} justifyContent={'center'}>
-                <Text fontSize={'14px'} color={'#3646B3'} cursor={'pointer'}>مشاهده کامل</Text>
-              </VStack>
+              <Collapse startingHeight={80} in={showMore}>
+                <Box bgColor={"#F7F7F7"} padding={"17px"} borderRadius={"30px"}>
+                  <Text fontSize={"20px"} fontWeight={"400"}>
+                    {test?.substring(0, showMore ? test?.length : 200)}
+                  </Text>
+                </Box>
+              </Collapse>
+              {!showMore && (
+                <VStack w={"100%"} justifyContent={"center"}>
+                  <Text
+                    fontSize={"14px"}
+                    color={"#3646B3"}
+                    cursor={"pointer"}
+                    onClick={(e) => setShowMore(true)}
+                  >
+                    مشاهده کامل
+                  </Text>
+                </VStack>
+              )}
             </VStack>
 
-            <HStack mb={'30px'}>
-              <IoSearch color={'#3646B3'} fontSize={'22px'} />
-              <Text fontSize={'30px'} color={'#3646B3'}>
+            <HStack mb={"30px"}>
+              <IoSearch color={"#3646B3"} fontSize={"22px"} />
+              <Text fontSize={"30px"} color={"#3646B3"}>
                 نتایج جستجو بین سوالات
               </Text>
-              <Text color={'#C2C2C2'} fontSize={'16px'}>323 سوال</Text>
+              <Text color={"#C2C2C2"} fontSize={"16px"}>
+                323 سوال
+              </Text>
             </HStack>
 
             {isLoadingQuestion ? (
@@ -552,11 +591,29 @@ export default function Home({ children }) {
                   w={"100%"}
                   justifyContent={"center"}
                   alignItems={"center"}
-                  mt={'45px'}
+                  mt={"45px"}
                 >
                   <HStack>
-                    <Button height={'32px'} width={'178px'} bgColor={'#3646B3'} borderRadius={'15px'} fontSize={'16px'}>مشاهده بیشتر</Button>
-                    <Button height={'32px'} width={'178px'} bgColor={'#3646B31A'} color={'#3646B3'} variant={'outline'} borderRadius={'15px'} fontSize={'16px'}>سوال خود را بپرسید</Button>
+                    <Button
+                      height={"32px"}
+                      width={"178px"}
+                      bgColor={"#3646B3"}
+                      borderRadius={"15px"}
+                      fontSize={"16px"}
+                    >
+                      مشاهده بیشتر
+                    </Button>
+                    <Button
+                      height={"32px"}
+                      width={"178px"}
+                      bgColor={"#3646B31A"}
+                      color={"#3646B3"}
+                      variant={"outline"}
+                      borderRadius={"15px"}
+                      fontSize={"16px"}
+                    >
+                      سوال خود را بپرسید
+                    </Button>
                   </HStack>
                   <Pagination
                     totalPages={dataQuestion?.data?.total_count}
@@ -608,23 +665,22 @@ export default function Home({ children }) {
               />
             )}
 
-            <Box
-              w={"100%"}
-              height={"min-content"}
-            >
+            <Box w={"100%"} height={"min-content"}>
               <VStack mt={"20px"} w={"100%"} alignItems={"start"}>
-                {dataSource?.data && <SliderSource
-                  items={dataSource?.data?.map((val) => ({
-                    title: val?.fa_source_name,
-                    image: val?.logo_link,
-                    id: val?.id,
-                    count: val?.question_count,
-                    buttoh: "اطلاعات بیشتر",
-                  }))}
-                  height={"133px"}
-                  borderRadius={"5px"}
-                  title={"منابع"}
-                />}
+                {dataSource?.data && (
+                  <SliderSource
+                    items={dataSource?.data?.map((val) => ({
+                      title: val?.fa_source_name,
+                      image: val?.logo_link,
+                      id: val?.id,
+                      count: val?.question_count,
+                      buttoh: "اطلاعات بیشتر",
+                    }))}
+                    height={"133px"}
+                    borderRadius={"5px"}
+                    title={"منابع"}
+                  />
+                )}
               </VStack>
             </Box>
             {/* <SliderCom
@@ -637,6 +693,6 @@ export default function Home({ children }) {
           </GridItem>
         </Grid>
       </Box>
-    </MainLayout >
+    </MainLayout>
   );
 }

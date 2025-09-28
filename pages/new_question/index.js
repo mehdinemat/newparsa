@@ -18,7 +18,8 @@ import {
   ListItem,
   Spinner,
   Text,
-  VStack
+  UnorderedList,
+  VStack,
 } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
@@ -27,6 +28,7 @@ import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { GoArrowLeft } from "react-icons/go";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 import * as Yup from "yup";
@@ -66,8 +68,12 @@ const options = [
   { value: "tailwind", label: "Tailwind" },
 ];
 
-const answer =
-  ['لورم ایپسوم متن ساختگی با تولید سادگی از صنعت چاپ، و  متن از صنعت چاپ، و با استفاده از طراحان گرافیــک اســت، لورم ایپسوم ساختگی با تولید سادگی از', 'لورم ایپسوم متن ساختگی با تولید سادگی از صنعت چاپ، و  متن  تولید سادگی از صنعت چاپ، و با استفاده از طراحان گرافیــک اســت، لورم ایپسوم ساختگی با تولید سادگی از', 'لورم ایپسوم متن ساختگی با تولید سادگی از صنعت چاپ، و با استفاده از  گرافیــک اســت، لورم ایپسوم ساختگی با تولید سادگی از لورم ایپسوم متن ساختگی با تولید سادگی از صنعت چاپ، و با استفاده از طراحان گرافیــک اســت، لورم ایپسوم ساختگی با تولید سادگی از', 'لورم ایپسوم متن ساختگی با تولید سادگی از صنعت چاپ، و  متن ساختگی با تولید سادگی از صنعت چاپ، و  متن ساختگی با تولید سادگی از صنعت چاپ، و با استفاده از طراحان گرافیــک اســت، لورم ایپسوم ساختگی با تولید سادگی از']
+const answer = [
+  "لورم ایپسوم متن ساختگی با تولید سادگی از صنعت چاپ، و  متن از صنعت چاپ، و با استفاده از طراحان گرافیــک اســت، لورم ایپسوم ساختگی با تولید سادگی از",
+  "لورم ایپسوم متن ساختگی با تولید سادگی از صنعت چاپ، و  متن  تولید سادگی از صنعت چاپ، و با استفاده از طراحان گرافیــک اســت، لورم ایپسوم ساختگی با تولید سادگی از",
+  "لورم ایپسوم متن ساختگی با تولید سادگی از صنعت چاپ، و با استفاده از  گرافیــک اســت، لورم ایپسوم ساختگی با تولید سادگی از لورم ایپسوم متن ساختگی با تولید سادگی از صنعت چاپ، و با استفاده از طراحان گرافیــک اســت، لورم ایپسوم ساختگی با تولید سادگی از",
+  "لورم ایپسوم متن ساختگی با تولید سادگی از صنعت چاپ، و  متن ساختگی با تولید سادگی از صنعت چاپ، و  متن ساختگی با تولید سادگی از صنعت چاپ، و با استفاده از طراحان گرافیــک اســت، لورم ایپسوم ساختگی با تولید سادگی از",
+];
 
 const postRequest = (url, { arg }) => {
   return axios.post(`${baseUrl}${url}`, arg, {
@@ -161,7 +167,17 @@ const Index = () => {
         <IsLogin type="question" />
       ) : (
         <VStack>
-          <Grid templateColumns='repeat(7, 1fr)' gap={6} w={'100%'} maxW="container.xl" bgColor={'#F3F3F3'} borderRadius={"15px"} mx="auto" mt={{ base: "80px", md: "120px" }} mb={'20px'}>
+          <Grid
+            templateColumns="repeat(7, 1fr)"
+            gap={6}
+            w={"100%"}
+            maxW="container.xl"
+            bgColor={"#F3F3F3"}
+            borderRadius={"15px"}
+            mx="auto"
+            mt={{ base: "80px", md: "120px" }}
+            mb={"20px"}
+          >
             <Box
               as={GridItem}
               colSpan={4}
@@ -170,11 +186,9 @@ const Index = () => {
               alignItems={"center"}
               justifyContent={"center"}
               onSubmit={handleSubmitQuestion(handleAddNewQuestion)}
-
             >
               <form>
-
-                <Text fontWeight={"800"} fontSize={"22px"} mb={"15px"} >
+                <Text fontWeight={"800"} fontSize={"22px"} mb={"15px"}>
                   سوال خود را بنویسید
                 </Text>
                 {/* <Masonry
@@ -196,9 +210,9 @@ const Index = () => {
                     <Box position="relative" w="100%">
                       <Input
                         placeholder="نوشتن عنوان ..."
-                        bgColor={'#FBFBFB'}
-                        border={'1px'}
-                        borderColor={'#B7B7B7'}
+                        bgColor={"#FBFBFB"}
+                        border={"1px"}
+                        borderColor={"#B7B7B7"}
                         {...registerQuestion("title")}
                         onBlur={(e) => {
                           setQueryToSearch(e?.target.value);
@@ -346,8 +360,16 @@ const Index = () => {
                       {/* {t("question_content")} */}
                       مرجع مورد نظر خود را انتخاب کنید
                     </Text>
-                    <Input {...registerQuestion("content")} bgColor={'#FBFBFB'} border={'1px'} borderColor={'#B7B7B7'} placeholder="انتخاب مرجع" />
-                    <FormErrorMessage>{errors.content?.message}</FormErrorMessage>
+                    <Input
+                      {...registerQuestion("content")}
+                      bgColor={"#FBFBFB"}
+                      border={"1px"}
+                      borderColor={"#B7B7B7"}
+                      placeholder="انتخاب مرجع"
+                    />
+                    <FormErrorMessage>
+                      {errors.content?.message}
+                    </FormErrorMessage>
                   </FormControl>
                 </VStack>
                 {/* <VStack
@@ -473,7 +495,7 @@ const Index = () => {
                   />
 
                   <HStack w={"100%"} justifyContent={"end"} mt={"20px"}>
-                    <Button bgColor={"#3646B3"} type={"submit"}>
+                    <Button bgColor={"#3646B3"} type={"submit"} leftIcon={<GoArrowLeft />}>
                       {t("submit_your_question")}
                     </Button>
                   </HStack>
@@ -481,9 +503,16 @@ const Index = () => {
                 {/* </Masonry> */}
               </form>
             </Box>
-            <GridItem colSpan={3} paddingTop={"20px"} mb={'10px'} height="456px">
+            <GridItem
+              colSpan={3}
+              paddingTop={"20px"}
+              mb={"10px"}
+              height="456px"
+            >
               <VStack w="100%" h="100%" spacing="0" align="stretch">
-                <Text fontSize={'22px'} fontWeight={'800'}>پرسش‌های مرتبط</Text>
+                <Text fontSize={"22px"} fontWeight={"800"}>
+                  پرسش‌های مرتبط
+                </Text>
                 <Box
                   w="100%"
                   h="100%"
@@ -498,7 +527,6 @@ const Index = () => {
                   <VStack
                     w="100%"
                     gap="10px"
-
                     flex="1"
                     minH="0" // important for scroll inside flex container
                     pb="10px"
@@ -511,28 +539,111 @@ const Index = () => {
                         borderRadius="10px"
                         w="100%"
                       >
-                        <HStack w="100%" alignItems="start" >
-                          <Text fontSize="14px" fontWeight={'400'}>{item}</Text>
+                        <HStack w="100%" alignItems="start">
+                          <Text fontSize="14px" fontWeight={"400"}>
+                            {item}
+                          </Text>
                         </HStack>
                         <Divider orientation="vertical" />
-                        <VStack w="100%" justifyContent="end" flex={1} alignItems={'start'} fontSize={'12px'} fontWeight={'400'}>
-                          <Text whiteSpace={'nowrap'} color="#999999" lineHeight={'192%'}>5 پاسخ</Text>
-                          <Text whiteSpace={'nowrap'} color="#999999" lineHeight={'192%'}>اسلام کوئست</Text>
+                        <VStack
+                          w="100%"
+                          justifyContent="end"
+                          flex={1}
+                          alignItems={"start"}
+                          fontSize={"12px"}
+                          fontWeight={"400"}
+                        >
+                          <Text
+                            whiteSpace={"nowrap"}
+                            color="#999999"
+                            lineHeight={"192%"}
+                          >
+                            5 پاسخ
+                          </Text>
+                          <Text
+                            whiteSpace={"nowrap"}
+                            color="#999999"
+                            lineHeight={"192%"}
+                          >
+                            اسلام کوئست
+                          </Text>
                         </VStack>
                       </HStack>
                     ))}
                   </VStack>
-
                 </Box>
-
               </VStack>
             </GridItem>
           </Grid>
-          <Box as={Grid} templateColumns='repeat(6, 1fr)' height={'255px'} w={'100%'} bgColor={'#3646B31A'} mb={'20px'} borderRadius={'15px'} padding={'20px'}>
-            <GridItem colSpan={3}
-            ></GridItem>
-            <GridItem colSpan={3} bgColor={'white'} borderRadius={'15px'}>
-
+          <Box
+            as={Grid}
+            maxW="container.xl"
+            templateColumns="repeat(6, 1fr)"
+            height={"255px"}
+            w={"100%"}
+            bgColor={"#3646B31A"}
+            mb={"20px"}
+            borderRadius={"15px"}
+            padding={"20px"}
+          >
+            <GridItem
+              colSpan={3}
+              as={VStack}
+              alignItems={"start"}
+              px={"20px"}
+              justifyContent={'space-between'}
+              pb={'20px'}
+            >
+              <Text
+                fontWeight={"800"}
+                fontFamily={"morabba"}
+                fontSize={"30px"}
+                w={"100%"}
+                alignItems={"start"}
+                color={"#3646B3"}
+              >
+                چگونه سؤال مؤثرتری بپرسیم؟
+              </Text>
+              <Text fontWeight={"400"} fontSize={"18px"}>
+                شما آماده هستید که یک سوال مرتبط با برنامه نویسی بپرسید و این
+                فرم به شما در این فرآیند کمک می کند.
+              </Text>
+              <Text fontWeight={"400"} fontSize={"18px"}>
+                به دنبال پرسیدن یک سوال غیر برنامه نویسی هستید؟ برای یافتن یک
+                سایت مرتبط به موضوعات اینجا مراجعه کنید.
+              </Text>
+            </GridItem>
+            <GridItem
+              colSpan={3}
+              bgColor={"white"}
+              borderRadius={"15px"}
+              padding={"20px"}
+            >
+              <Text color={'#171E4D'} fontSize={'14px'} fontWeight={'400'}>مراحل</Text>
+              <UnorderedList
+                width={"100%"}
+                display="grid"
+                gridTemplateColumns="repeat(1, 1fr)" // 🔥 two columns
+                gap="10px" // spacing between items
+                textAlign="start"
+                mt={'10px'}
+                sx={{
+                  li: {
+                    color: "black",
+                    "::marker": {
+                      color: "#29CCCC", // custom bullet color
+                    },
+                  },
+                }}
+              >
+                <ListItem cursor="pointer" fontSize={'15px'} fontWeight={'400'}>مشکل خود را در یک عنوان یک خطی خلاصه کنید.</ListItem>
+                <ListItem cursor="pointer" fontSize={'15px'} fontWeight={'400'}>مشکل خود را با جزئیات بیشتر توضیح دهید</ListItem>
+                <ListItem cursor="pointer" fontSize={'15px'} fontWeight={'400'}>آنچه را که تلاش کردید و انتظار داشتید چه اتفاقی بیفتد را توصیف کنید.</ListItem>
+                <ListItem cursor="pointer" fontSize={'15px'} fontWeight={'400'}>«برچسب‌هایی» را اضافه کنید که به نمایان شدن سؤال شما برای اعضای انجمن کمک می‌کند.</ListItem>
+                <ListItem cursor="pointer" fontSize={'15px'} fontWeight={'400'}>
+سوال خود را بررسی کنید و آن را در سایت ارسال کنید.</ListItem>
+                {/* add more items */}
+              </UnorderedList>
             </GridItem>
           </Box>
         </VStack>
