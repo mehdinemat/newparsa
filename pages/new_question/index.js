@@ -6,17 +6,19 @@ import {
   Box,
   Button,
   CloseButton,
+  Divider,
   Flex,
   FormControl,
   FormErrorMessage,
+  Grid,
+  GridItem,
   HStack,
   Input,
   List,
   ListItem,
   Spinner,
   Text,
-  Textarea,
-  VStack,
+  VStack
 } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
@@ -63,6 +65,9 @@ const options = [
   { value: "chakra", label: "Chakra UI" },
   { value: "tailwind", label: "Tailwind" },
 ];
+
+const answer =
+  ['لورم ایپسوم متن ساختگی با تولید سادگی از صنعت چاپ، و  متن از صنعت چاپ، و با استفاده از طراحان گرافیــک اســت، لورم ایپسوم ساختگی با تولید سادگی از', 'لورم ایپسوم متن ساختگی با تولید سادگی از صنعت چاپ، و  متن  تولید سادگی از صنعت چاپ، و با استفاده از طراحان گرافیــک اســت، لورم ایپسوم ساختگی با تولید سادگی از', 'لورم ایپسوم متن ساختگی با تولید سادگی از صنعت چاپ، و با استفاده از  گرافیــک اســت، لورم ایپسوم ساختگی با تولید سادگی از لورم ایپسوم متن ساختگی با تولید سادگی از صنعت چاپ، و با استفاده از طراحان گرافیــک اســت، لورم ایپسوم ساختگی با تولید سادگی از', 'لورم ایپسوم متن ساختگی با تولید سادگی از صنعت چاپ، و  متن ساختگی با تولید سادگی از صنعت چاپ، و  متن ساختگی با تولید سادگی از صنعت چاپ، و با استفاده از طراحان گرافیــک اســت، لورم ایپسوم ساختگی با تولید سادگی از']
 
 const postRequest = (url, { arg }) => {
   return axios.post(`${baseUrl}${url}`, arg, {
@@ -146,7 +151,7 @@ const Index = () => {
   }, [dataSearchQuestion]);
 
   return (
-    <MainLayout>
+    <MainLayout menuDefault={true}>
       <Head>
         <title>{t("submit_your_question")}</title>
         <link rel="icon" href="/porsyab_header.png" />
@@ -155,117 +160,120 @@ const Index = () => {
       {!isUserLogin ? (
         <IsLogin type="question" />
       ) : (
-        <Box
-          as={"form"}
-          border={"1px"}
-          borderColor={"gray.200"}
-          borderRadius={"10px"}
-          padding={"20px"}
-          w="100%"
-          alignItems={"center"}
-          justifyContent={"center"}
-          maxW="container.xl"
-          mx="auto"
-          mt={{ base: "80px", md: "120px" }}
-          onSubmit={handleSubmitQuestion(handleAddNewQuestion)}
-          mb={'20px'}
-        >
-          <Text fontWeight={"800"} fontSize={"33px"} mb={"30px"} fontFamily={'morabba'}>
-            {t("ask_your_question")}...
-          </Text>
-          {/* <Masonry
+        <VStack>
+          <Grid templateColumns='repeat(7, 1fr)' gap={6} w={'100%'} maxW="container.xl" bgColor={'#F3F3F3'} borderRadius={"15px"} mx="auto" mt={{ base: "80px", md: "120px" }} mb={'20px'}>
+            <Box
+              as={GridItem}
+              colSpan={4}
+              padding={"20px"}
+              w="100%"
+              alignItems={"center"}
+              justifyContent={"center"}
+              onSubmit={handleSubmitQuestion(handleAddNewQuestion)}
+
+            >
+              <form>
+
+                <Text fontWeight={"800"} fontSize={"22px"} mb={"15px"} >
+                  سوال خود را بنویسید
+                </Text>
+                {/* <Masonry
           width={"100%"}
           breakpointCols={breakpointColumnsObj}
           className="masonry-grid"
           columnClassName="masonry-grid_column"
         > */}
-          <VStack
-            w={"calc( 100% - 20px )"}
-            alignItems={"start"}
-            paddingX={"20px"}
-            color={"black"}
-          >
-            <FormControl isInvalid={!!errors.title} mb="10px">
-              <Text fontWeight={"bold"} fontSize={"16px"} mb={"10px"}>
+                <VStack
+                  w={"calc( 100% - 20px )"}
+                  alignItems={"start"}
+                  paddingX={"20px"}
+                  color={"black"}
+                >
+                  <FormControl isInvalid={!!errors.title} mb="10px">
+                    {/* <Text fontWeight={"bold"} fontSize={"16px"} mb={"10px"}>
                 {t("question_title")}
-              </Text>
-              <Box position="relative" w="100%">
-                <Input
-                  {...registerQuestion("title")}
-                  onBlur={(e) => {
-                    setQueryToSearch(e?.target.value);
-                    setTimeout(() => setShowSuggestions(true), 200); // delay to allow click
-                  }}
-                  onFocus={(e) => {
-                    if (e?.target.value) {
-                      setQueryToSearch(e?.target.value);
-                      setShowSuggestions(false);
-                    }
-                  }}
-                />
-                {showSuggestions &&
-                  dataSearchQuestion?.data?.result?.length > 0 && (
-                    <Box
-                      position="absolute"
-                      top="100%"
-                      left={0}
-                      right={0}
-                      bg="white"
-                      shadow="md"
-                      borderRadius="md"
-                      mt={1}
-                      zIndex={10}
-                      maxH="200px"
-                      overflowY="auto"
-                    >
-                      <Flex
-                        justify="flex-end"
-                        p={2}
-                        borderBottom="1px solid #eee"
-                      >
-                        <CloseButton
-                          size="sm"
-                          onClick={() => setShowSuggestions(false)}
-                        />
-                      </Flex>
-                      <List spacing={1}>
-                        {dataSearchQuestion?.data?.result?.map((q) => (
-                          <ListItem
-                            minHeight={"50px"}
-                            key={q.id}
-                            px={3}
-                            py={2}
-                            _hover={{ bg: "gray.100", cursor: "pointer" }}
-                            onMouseDown={() => {
-                              // use onMouseDown instead of onClick to prevent blur
-                              setQueryToSearch(q.title);
-                              setShowSuggestions(false);
-                              router.push(`/question_answer?id=${q?.id}`);
-                            }}
+              </Text> */}
+                    <Box position="relative" w="100%">
+                      <Input
+                        placeholder="نوشتن عنوان ..."
+                        bgColor={'#FBFBFB'}
+                        border={'1px'}
+                        borderColor={'#B7B7B7'}
+                        {...registerQuestion("title")}
+                        onBlur={(e) => {
+                          setQueryToSearch(e?.target.value);
+                          setTimeout(() => setShowSuggestions(true), 200); // delay to allow click
+                        }}
+                        onFocus={(e) => {
+                          if (e?.target.value) {
+                            setQueryToSearch(e?.target.value);
+                            setShowSuggestions(false);
+                          }
+                        }}
+                      />
+                      {showSuggestions &&
+                        dataSearchQuestion?.data?.result?.length > 0 && (
+                          <Box
+                            position="absolute"
+                            top="100%"
+                            left={0}
+                            right={0}
+                            bg="white"
+                            shadow="md"
+                            borderRadius="md"
+                            mt={1}
+                            zIndex={10}
+                            maxH="200px"
+                            overflowY="auto"
                           >
-                            <Text mb={"10px"}>{q.title}</Text>
-                            <Text fontSize={"xs"} color={"gray.600"}>
-                              {q?.content}
-                            </Text>
-                          </ListItem>
-                        ))}
-                      </List>
+                            <Flex
+                              justify="flex-end"
+                              p={2}
+                              borderBottom="1px solid #eee"
+                            >
+                              <CloseButton
+                                size="sm"
+                                onClick={() => setShowSuggestions(false)}
+                              />
+                            </Flex>
+                            <List spacing={1}>
+                              {dataSearchQuestion?.data?.result?.map((q) => (
+                                <ListItem
+                                  minHeight={"50px"}
+                                  key={q.id}
+                                  px={3}
+                                  py={2}
+                                  _hover={{ bg: "gray.100", cursor: "pointer" }}
+                                  onMouseDown={() => {
+                                    // use onMouseDown instead of onClick to prevent blur
+                                    setQueryToSearch(q.title);
+                                    setShowSuggestions(false);
+                                    router.push(`/question_answer?id=${q?.id}`);
+                                  }}
+                                >
+                                  <Text mb={"10px"}>{q.title}</Text>
+                                  <Text fontSize={"xs"} color={"gray.600"}>
+                                    {q?.content}
+                                  </Text>
+                                </ListItem>
+                              ))}
+                            </List>
+                          </Box>
+                        )}
+                      {isLoadingSearchQuestion && (
+                        <Box position="absolute" top="100%" left={0} mt={1}>
+                          <Spinner size="sm" />
+                        </Box>
+                      )}
+                      <FormErrorMessage colorScheme="blue">
+                        {errors.title?.message}
+                      </FormErrorMessage>
                     </Box>
-                  )}
-                {isLoadingSearchQuestion && (
-                  <Box position="absolute" top="100%" left={0} mt={1}>
-                    <Spinner size="sm" />
-                  </Box>
-                )}
-                <FormErrorMessage colorScheme="blue">
-                  {errors.title?.message}
-                </FormErrorMessage>
-              </Box>
-            </FormControl>
-            {/* <Text fontWeight={"bold"} mt={"20px"}>
+                  </FormControl>
+                  {/* <Text fontWeight={"bold"} mt={"20px"}>
               {t("related_questions")}
             </Text> */}
-            {/* <HStack>
+                  {/* <HStack>
               <Text>{t("question_title")}</Text>
               <Badge
                 bgColor={"#23D9D7"}
@@ -276,11 +284,11 @@ const Index = () => {
                 3 {t("answer")}
               </Badge>
             </HStack> */}
-            {/* <HStack w={"100%"} justifyContent={"end"} mt={"20px"}> */}
-            {/* <Button bgColor={"#23D9D7"}>{t("next_step")}</Button> */}
-            {/* </HStack> */}
-          </VStack>
-          {/* <VStack
+                  {/* <HStack w={"100%"} justifyContent={"end"} mt={"20px"}> */}
+                  {/* <Button bgColor={"#23D9D7"}>{t("next_step")}</Button> */}
+                  {/* </HStack> */}
+                </VStack>
+                {/* <VStack
             w={"calc( 100% - 20px )"}
             alignItems={"start"}
             borderRadius={"15px"}
@@ -326,22 +334,23 @@ const Index = () => {
               </ListItem>
             </UnorderedList>
           </VStack> */}
-          <VStack
-            w={"calc( 100% - 20px )"}
-            alignItems={"start"}
-            paddingX={"20px"}
-            mt={"20px"}
-            color={"black"}
-          >
-            <FormControl mt={4} isInvalid={!!errors.content}>
-              <Text fontWeight={"bold"} fontSize={"16px"} mb={"10px"}>
-                {t("question_content")}
-              </Text>
-              <Textarea {...registerQuestion("content")}></Textarea>
-              <FormErrorMessage>{errors.content?.message}</FormErrorMessage>
-            </FormControl>
-          </VStack>
-          {/* <VStack
+                <VStack
+                  w={"calc( 100% - 20px )"}
+                  alignItems={"start"}
+                  paddingX={"20px"}
+                  mt={"0px"}
+                  color={"black"}
+                >
+                  <FormControl mt={4} isInvalid={!!errors.content}>
+                    <Text fontWeight={"bold"} fontSize={"16px"} mb={"10px"}>
+                      {/* {t("question_content")} */}
+                      مرجع مورد نظر خود را انتخاب کنید
+                    </Text>
+                    <Input {...registerQuestion("content")} bgColor={'#FBFBFB'} border={'1px'} borderColor={'#B7B7B7'} placeholder="انتخاب مرجع" />
+                    <FormErrorMessage>{errors.content?.message}</FormErrorMessage>
+                  </FormControl>
+                </VStack>
+                {/* <VStack
             w={"calc( 100% - 20px )"}
             alignItems={"start"}
             borderRadius={"15px"}
@@ -438,38 +447,95 @@ const Index = () => {
             </HStack>
           </VStack> */}
 
-          <VStack
-            w={"calc( 100% - 20px )"}
-            alignItems={"start"}
-            paddingX={"20px"}
-            color={"black"}
-            mt={"20px"}
-          >
-            <Text fontWeight={"bold"} fontSize={"16px"} mb={"0px"}>
-              {t("question_tags")}
-            </Text>
+                <VStack
+                  w={"calc( 100% - 20px )"}
+                  alignItems={"start"}
+                  paddingX={"20px"}
+                  color={"black"}
+                  mt={"20px"}
+                >
+                  <Text fontWeight={"bold"} fontSize={"16px"} mb={"0px"}>
+                    موضوع خود را وارد کنید
+                    {/* {t("question_tags")} */}
+                  </Text>
 
-            <MultiSelectComboBox
-              selectedOptions={selectedOptions}
-              setSelectedOptions={setSelectedOptions}
-              optionsList={
-                dataTag?.data?.result?.map((it) => ({
-                  value: it?.id,
-                  label: it?.name,
-                })) || []
-              }
-              setInputValue={setInputValue}
-              inputValue={inputValue}
-            />
+                  <MultiSelectComboBox
+                    selectedOptions={selectedOptions}
+                    setSelectedOptions={setSelectedOptions}
+                    optionsList={
+                      dataTag?.data?.result?.map((it) => ({
+                        value: it?.id,
+                        label: it?.name,
+                      })) || []
+                    }
+                    setInputValue={setInputValue}
+                    inputValue={inputValue}
+                  />
 
-            <HStack w={"100%"} justifyContent={"end"} mt={"20px"}>
-              <Button bgColor={"#23D9D7"} type={"submit"}>
-                {t("submit_your_question")}
-              </Button>
-            </HStack>
-          </VStack>
-          {/* </Masonry> */}
-        </Box>
+                  <HStack w={"100%"} justifyContent={"end"} mt={"20px"}>
+                    <Button bgColor={"#3646B3"} type={"submit"}>
+                      {t("submit_your_question")}
+                    </Button>
+                  </HStack>
+                </VStack>
+                {/* </Masonry> */}
+              </form>
+            </Box>
+            <GridItem colSpan={3} paddingTop={"20px"} mb={'10px'} height="456px">
+              <VStack w="100%" h="100%" spacing="0" align="stretch">
+                <Text fontSize={'22px'} fontWeight={'800'}>پرسش‌های مرتبط</Text>
+                <Box
+                  w="100%"
+                  h="100%"
+                  p="20px"
+                  borderRadius="10px"
+                  as="form"
+                  display="flex"
+                  flexDirection="column"
+                  overflowY="auto"
+                >
+                  {/* Scrollable area: calculate height dynamically */}
+                  <VStack
+                    w="100%"
+                    gap="10px"
+
+                    flex="1"
+                    minH="0" // important for scroll inside flex container
+                    pb="10px"
+                  >
+                    {answer?.map((item, idx) => (
+                      <HStack
+                        key={idx}
+                        bgColor="white"
+                        padding="10px"
+                        borderRadius="10px"
+                        w="100%"
+                      >
+                        <HStack w="100%" alignItems="start" >
+                          <Text fontSize="14px" fontWeight={'400'}>{item}</Text>
+                        </HStack>
+                        <Divider orientation="vertical" />
+                        <VStack w="100%" justifyContent="end" flex={1} alignItems={'start'} fontSize={'12px'} fontWeight={'400'}>
+                          <Text whiteSpace={'nowrap'} color="#999999" lineHeight={'192%'}>5 پاسخ</Text>
+                          <Text whiteSpace={'nowrap'} color="#999999" lineHeight={'192%'}>اسلام کوئست</Text>
+                        </VStack>
+                      </HStack>
+                    ))}
+                  </VStack>
+
+                </Box>
+
+              </VStack>
+            </GridItem>
+          </Grid>
+          <Box as={Grid} templateColumns='repeat(6, 1fr)' height={'255px'} w={'100%'} bgColor={'#3646B31A'} mb={'20px'} borderRadius={'15px'} padding={'20px'}>
+            <GridItem colSpan={3}
+            ></GridItem>
+            <GridItem colSpan={3} bgColor={'white'} borderRadius={'15px'}>
+
+            </GridItem>
+          </Box>
+        </VStack>
       )}
     </MainLayout>
   );

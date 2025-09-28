@@ -35,7 +35,7 @@ const customStyles = (bgColor, textColor) => ({
 
 export default function MultiSelectComboBox({ selectedOptions, setSelectedOptions, optionsList, setInputValue, inputValue }) {
   const [options, setOptions] = useState(optionsList || initialOptions);
-  const bgColor = useColorModeValue("white", "#2D3748");
+  const bgColor = useColorModeValue("#FBFBFB", "#2D3748");
   const textColor = useColorModeValue("black", "white");
   console.log(optionsList)
   const handleInputChange = async (newValue) => {
@@ -62,13 +62,13 @@ export default function MultiSelectComboBox({ selectedOptions, setSelectedOption
   };
 
   return (
-    <Box width="100%" maxW="100%" mt={4}>
+    <Box width="100%" maxW="100%" mt={2}>
       <Select
         isMulti
         options={options}
         value={selectedOptions} // controlled
         onChange={handleChange} // track selection
-        placeholder="جستجو یا انتخاب ..."
+        placeholder="موضوع خود را وارد کنید"
         styles={customStyles(bgColor, textColor)}
         onInputChange={handleInputChange}
         inputValue={inputValue}

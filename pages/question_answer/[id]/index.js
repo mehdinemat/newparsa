@@ -14,8 +14,6 @@ import {
   HStack,
   IconButton,
   Input,
-  InputGroup,
-  InputRightElement,
   Spinner,
   Stack,
   Text,
@@ -29,7 +27,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { IoIosArrowBack, IoIosArrowForward, IoMdCheckmarkCircleOutline } from "react-icons/io";
 import {
   IoArrowDown,
   IoArrowUp,
@@ -631,7 +629,7 @@ const Index = () => {
                                 }}
                                 mt={"10px"}
                               >
-                                <HStack order={{ base: 1 }} w={'100%'} justifyContent={'space-between'}>
+                                {showMore && <HStack order={{ base: 1 }} w={'100%'} justifyContent={'space-between'}>
                                   <HStack
                                     w={{ base: "100%" }}
                                     justifyContent={{ base: "start" }}
@@ -649,8 +647,8 @@ const Index = () => {
                                       </Badge>
                                     ))}
                                   </HStack>
-
-                                </HStack>
+                                  <Button bgColor={'white'} color={'#CCCCCC'} fontWeight={'500'} fontSize={'16px'} borderRadius={'18px'} leftIcon={<IoMdCheckmarkCircleOutline fontSize={'25px'} />}>پسند</Button>
+                                </HStack>}
                               </HStack>
                               {!showMore && <Stack flexDir={'row'} color={'#3646B3'} alignItems={'center'} cursor={'pointer'} onClick={e => setShowMore(true)} mt={'13px'}>
                                 <Text fontWeight={'500'} fontSize={'14px'} lineHeight={'176%'}>مشاهده کامل</Text>
@@ -741,83 +739,75 @@ const Index = () => {
                         </HStack>
                         <CommentCard t={t} />
                       </GridItem>
-                      <GridItem colSpan={'2'} height={'456px'}>
-
-                        <VStack w={'100%'}>
-                          <HStack w={'100%'} justifyContent={'space-between'}>
+                      <GridItem colSpan={2} height="456px">
+                        <VStack w="100%" h="100%" spacing="0" align="stretch">
+                          {/* Header */}
+                          <HStack
+                            w="100%"
+                            justifyContent="space-between"
+                            id="answers-header"
+                          >
                             <HStack>
-                              <Text fontSize={'33px'} fontWeight={'800'} color={'#333333'} fontFamily={'morabba'}>پاسخ ها</Text>
-                              <Text fontSize={'14px'} color={'#999999'}>5 پاسخ</Text>
+                              <Text fontSize="33px" fontWeight="800" color="#333333" fontFamily="morabba">پرسش‌های مرتبط</Text>
                             </HStack>
                             <Text
-                              fontWeight={"700"}
-                              fontSize={"12px"}
+                              fontWeight="700"
+                              fontSize="12px"
                               color="#3646B3"
-                              cursor={"pointer"}
-                              onClick={(e) => router.push("/references")}
+                              cursor="pointer"
+                              onClick={() => router.push("/references")}
                             >
                               {t("show_all")}
                             </Text>
                           </HStack>
 
+                          {/* Box with scrollable answers */}
                           <Box
-                            w={{ base: "full", md: "100%" }}
-                            padding={"20px"}
-                            bgColor={"#F7F7F7"}
-                            border={"1px"}
-                            borderColor={"gray.200"}
-                            borderRadius={"10px"}
-                            my={"10px"}
-                            mr={{ base: "-40px", md: "0px" }}
+                            w="100%"
+                            h="100%"
+                            p="20px"
+                            bgColor="#F7F7F7"
+                            borderRadius="10px"
                             as="form"
+                            display="flex"
+                            flexDirection="column"
+                            overflowY="auto"
                             onSubmit={handleSubmitAnswer(handleAddAnswer)}
-
                           >
-                            <VStack w={'100%'} gap={'30px'} height={'452px'}
-                              overflowY={'auto'}>
-                              {
-                                answer?.map((item) => (
-                                  <VStack bgColor={'white'} padding={'10px'} borderRadius={'10px'}>
-                                    <HStack w={'100%'} alignItems={'start'}>
-                                      <Avatar w={'35px'} h={'35px'} />
-                                      <Text fontSize={'14px'}>
-                                        {item}
-                                      </Text>
-                                    </HStack>
-                                    <Divider />
-                                    <HStack w={'100%'} justifyContent={'end'} color={'#3646B3'}>
-                                      <Text>1404/01/27</Text>
-                                      <Text>15:30</Text>
-                                    </HStack>
+                            {/* Scrollable area: calculate height dynamically */}
+                            <VStack
+                              w="100%"
+                              gap="10px"
+
+                              flex="1"
+                              minH="0" // important for scroll inside flex container
+                              pb="10px"
+                            >
+                              {answer?.map((item, idx) => (
+                                <HStack
+                                  key={idx}
+                                  bgColor="white"
+                                  padding="10px"
+                                  borderRadius="10px"
+                                  w="100%"
+                                >
+                                  <HStack w="100%" alignItems="start" >
+                                    <Text fontSize="14px" fontWeight={'400'}>{item}</Text>
+                                  </HStack>
+                                  <Divider orientation="vertical" />
+                                  <VStack w="100%" justifyContent="end" flex={1} alignItems={'start'} fontSize={'12px'} fontWeight={'400'}>
+                                    <Text whiteSpace={'nowrap'} color="#999999" lineHeight={'192%'}>5 پاسخ</Text>
+                                    <Text whiteSpace={'nowrap'} color="#999999" lineHeight={'192%'}>اسلام کوئست</Text>
                                   </VStack>
-                                ))
-                              }
-                            </VStack>
-                            <VStack w={"100%"} alignItems={"start"} mt={'35px'}>
-                              <Text
-                                fontWeight={"bold"}
-                                fontSize={"22px"}
-                                mb={"4px"}
-                              >
-                                {t("your_answer")}
-                              </Text>
-                              <Text fontSize={"14px"}>{t("AI-generated")}</Text>
+                                </HStack>
+                              ))}
                             </VStack>
 
-                            <InputGroup height={'61px'} mt={'14px'}>
-                              <Input height={'inherit'} bgColor={'white'} placeholder="نوشتن متن..." borderRadius={'10px'}  {...registerAnswer("content")}
-                              />
-                              <InputRightElement w={'150px'} height={'inherit'}>
-                                <Button bgColor={'#F9C96D'} padding={'20px'} w={'150px'} h={'inherit'} color={'black'} isLoading={isMutatingQuestionAnswer} type="submit">
-                                  {t("submit_answer")}
-                                </Button>
-                              </InputRightElement>
-                            </InputGroup>
                           </Box>
-
-                          {/* <QuestionAnswerCard handleSubmitAnswer={handleSubmitAnswer} handleAddAnswer={handleAddAnswer} isMutatingQuestionAnswer={isMutatingQuestionAnswer} registerAnswer={registerAnswer} t={t} /> */}
                         </VStack>
                       </GridItem>
+
+
                     </Grid>
 
                   </VStack>
