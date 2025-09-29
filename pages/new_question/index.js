@@ -641,7 +641,7 @@ const Index = () => {
                 <ListItem cursor="pointer" fontSize={'15px'} fontWeight={'400'}>آنچه را که تلاش کردید و انتظار داشتید چه اتفاقی بیفتد را توصیف کنید.</ListItem>
                 <ListItem cursor="pointer" fontSize={'15px'} fontWeight={'400'}>«برچسب‌هایی» را اضافه کنید که به نمایان شدن سؤال شما برای اعضای انجمن کمک می‌کند.</ListItem>
                 <ListItem cursor="pointer" fontSize={'15px'} fontWeight={'400'}>
-سوال خود را بررسی کنید و آن را در سایت ارسال کنید.</ListItem>
+                  سوال خود را بررسی کنید و آن را در سایت ارسال کنید.</ListItem>
                 {/* add more items */}
               </UnorderedList>
             </GridItem>

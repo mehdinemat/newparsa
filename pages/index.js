@@ -4,22 +4,19 @@ import {
   Box,
   Button,
   chakra,
-  Collapse,
   Grid,
   GridItem,
   HStack,
   Spinner,
   Stack,
-  Text,
   useBreakpointValue,
-  VStack,
+  VStack
 } from "@chakra-ui/react";
 import { Geist, Geist_Mono } from "next/font/google";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 
 import QuestionMCard from "@/components/home/mobile/questionMCard";
-import Pagination from "@/components/pagination";
 import QuestionCard from "@/components/questionCars";
 import { useRouter } from "next/router";
 
@@ -31,8 +28,8 @@ import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { IoIosArrowDown } from "react-icons/io";
-import { IoSearch } from "react-icons/io5";
 import useSWR from "swr";
+import useSWRInfinite from "swr/infinite";
 import { StringParam, useQueryParams, withDefault } from "use-query-params";
 
 const geistSans = Geist({
@@ -84,9 +81,7 @@ export default function Home({ children }) {
   const [hoveredIndex, setHoveredIndex] = useState({ selected: "", val: "" });
   const [isUserLogin, setIsUserLogin] = useState("");
 
-  const [test, setTest] = useState(
-    "نماز آیات هنگام وقوع پدیده‌های طبیعی ترسناک مانند کسوف (خورشید گرفتگی)، خسوف (ماه گرفتگی)، زلزله، رعد و برق، بادهای سیاه و سرخ، صیحه آسمانی، یا فرو رفتن زمین واجب می‌شود. در مواردی مانند زلزله، رعد و برق و صیحه آسمانی، این نماز باید بلافاصله خوانده شود و اگر خوانده نشود تا آخر عمر بر گردن فرد باقی می‌ماند و هر وقت خوانده شود، به صورت ادا محسوب می‌شود. نماز آیات هنگام وقوع پدیده‌های طبیعی ترسناک مانند کسوف (خورشید گرفتگی)، خسوف (ماه گرفتگی)، زلزله، رعد و برق، بادهای سیاه و سرخ، صیحه آسمانی، یا فرو رفتن زمین واجب می‌شود. در مواردی مانند زلزله، رعد و برق و صیحه آسمانی، این نماز باید بلافاصله خوانده شود و اگر خوانده نشود تا آخر عمر بر گردن فرد باقی می‌ماند و هر وقت خوانده شود، به صورت ادا محسوب می‌شود نماز آیات هنگام وقوع پدیده‌های طبیعی ترسناک مانند کسوف (خورشید گرفتگی)، خسوف (ماه گرفتگی)، زلزله، رعد و برق، بادهای سیاه و سرخ، صیحه آسمانی، یا فرو رفتن زمین واجب می‌شود. در مواردی مانند زلزله، رعد و برق و صیحه آسمانی، این نماز باید بلافاصله خوانده شود و اگر خوانده نشود تا آخر عمر بر گردن فرد باقی می‌ماند و هر وقت خوانده شود، به صورت ادا محسوب می‌شو"
-  );
+
   const [showMore, setShowMore] = useState(false);
 
   const [filters, setFilters] = useQueryParams({
@@ -123,15 +118,23 @@ export default function Home({ children }) {
     reset: resetSearch,
   } = useForm();
 
+  const getKey = (pageIndex, previousPageData) => {
+    // stop if no more data
+    console.log(previousPageData)
+    if (previousPageData && !previousPageData?.data?.result.length) return null;
+
+    return `user/question?lang=${locale}&page=${pageIndex + 1}${categoryId ? `&categories__id=${categoryId}` : ""
+      }`;
+  };
+
   const {
-    data: dataQuestion,
-    error: errorQuestion,
-    isLoading: isLoadingQuestion,
-  } = useSWR(
-    `user/question?lang=${locale}&page=${page}${
-      categoryId && `&categories__id=${categoryId}`
-    }`
-  );
+    data,
+    size,
+    setSize,
+    error,
+    isLoading,
+    isValidating
+  } = useSWRInfinite(getKey);
   // const {
   //   data: dataQuestionSearch,
   //   error: errorQuestionSearch,
@@ -142,6 +145,10 @@ export default function Home({ children }) {
   //     "selected_search"
   //   )}${categoryId && `&categories__id=${categoryId}`}`
   // );
+
+  const questions = data
+    ? data?.flatMap((page) => page?.data?.result)
+    : [];
 
   const { data: dataGeneral, error: errorGeneral } = useSWR("user/general");
 
@@ -158,7 +165,7 @@ export default function Home({ children }) {
     isLoading: isLoadingChildCategory2,
   } = useSWR(
     hoveredIndex?.val &&
-      `user/category?parent_id=${hoveredIndex?.val}&type=question`
+    `user/category?parent_id=${hoveredIndex?.val}&type=question`
   );
 
   const { data: dataHadith, error: errorHadith } = useSWR("user/general/hadis");
@@ -171,7 +178,7 @@ export default function Home({ children }) {
   const { data: dataCategory, isLoading: isLoadingCategory } = useSWR(
     `user/category?type=question`,
     {
-      onSuccess: (res) => {},
+      onSuccess: (res) => { },
     }
   );
 
@@ -265,7 +272,7 @@ export default function Home({ children }) {
   }, [setHoveredIndex]);
 
   return (
-    <MainLayout questionsRef={questionsRef}>
+    <MainLayout questionsRef={questionsRef} register={registerSearch} watchSearch={watchSearch}>
       <Head>
         <title>
           {t("parsa")} | {t("main_page")}
@@ -274,6 +281,7 @@ export default function Home({ children }) {
       </Head>
       <Header
         data={dataGeneral?.data}
+        hadith={dataHadith?.data}
         t={t}
         register={registerSearch}
         watchSearch={watchSearch}
@@ -522,59 +530,9 @@ export default function Home({ children }) {
             pr={{ base: 0, md: "21px" }}
             area={{ base: "main", md: "auto" }}
           >
-            <VStack mb={"80px"} alignItems={"start"}>
-              <Text fontSize={"16px"} color={"#C2C2C2"}>
-                نماز آیات چه موقع واجب میشود؟
-              </Text>
-              <HStack w={"100%"} alignItems={"center"}>
-                <svg
-                  width="32"
-                  height="32"
-                  viewBox="0 0 32 32"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M15.7422 0L17.1554 6.14379C18.1138 10.3056 21.2586 13.5519 25.2904 14.5412L31.2422 16L25.2904 17.4588C21.2586 18.4481 18.1138 21.6944 17.1554 25.8562L15.7422 32L14.329 25.8562C13.3706 21.6944 10.2257 18.4481 6.19398 17.4588L0.242188 16L6.19398 14.5412C10.2257 13.5519 13.3706 10.3056 14.329 6.14379L15.7422 0Z"
-                    fill="#3646B3"
-                  />
-                </svg>
-                <Text fontSize={"30px"} color={"#3646B3"}>
-                  نتایج جستجو هوشمند
-                </Text>
-              </HStack>
-              <Collapse startingHeight={80} in={showMore}>
-                <Box bgColor={"#F7F7F7"} padding={"17px"} borderRadius={"30px"}>
-                  <Text fontSize={"20px"} fontWeight={"400"}>
-                    {test?.substring(0, showMore ? test?.length : 200)}
-                  </Text>
-                </Box>
-              </Collapse>
-              {!showMore && (
-                <VStack w={"100%"} justifyContent={"center"}>
-                  <Text
-                    fontSize={"14px"}
-                    color={"#3646B3"}
-                    cursor={"pointer"}
-                    onClick={(e) => setShowMore(true)}
-                  >
-                    مشاهده کامل
-                  </Text>
-                </VStack>
-              )}
-            </VStack>
 
-            <HStack mb={"30px"}>
-              <IoSearch color={"#3646B3"} fontSize={"22px"} />
-              <Text fontSize={"30px"} color={"#3646B3"}>
-                نتایج جستجو بین سوالات
-              </Text>
-              <Text color={"#C2C2C2"} fontSize={"16px"}>
-                323 سوال
-              </Text>
-            </HStack>
 
-            {isLoadingQuestion ? (
+            {isValidating ? (
               <HStack
                 w={"100%"}
                 alignItems={"center"}
@@ -584,7 +542,7 @@ export default function Home({ children }) {
               </HStack>
             ) : (
               <VStack display={{ base: "none", md: "flex" }}>
-                {dataQuestion?.data?.result?.map((item, index) => (
+                {questions?.map((item, index) => (
                   <QuestionCard key={index} data={item} t={t} />
                 ))}
                 <Stack
@@ -593,6 +551,7 @@ export default function Home({ children }) {
                   alignItems={"center"}
                   mt={"45px"}
                 >
+                  {isValidating && <Text>Loading...</Text>}
                   <HStack>
                     <Button
                       height={"32px"}
@@ -600,6 +559,7 @@ export default function Home({ children }) {
                       bgColor={"#3646B3"}
                       borderRadius={"15px"}
                       fontSize={"16px"}
+                      onClick={() => setSize(size + 1)}
                     >
                       مشاهده بیشتر
                     </Button>
@@ -611,32 +571,34 @@ export default function Home({ children }) {
                       variant={"outline"}
                       borderRadius={"15px"}
                       fontSize={"16px"}
+
+                      isDisabled={isValidating}
                     >
                       سوال خود را بپرسید
                     </Button>
                   </HStack>
-                  <Pagination
+                  {/* <Pagination
                     totalPages={dataQuestion?.data?.total_count}
                     currentPage={page}
                     onPageChange={setPage}
                     t={t}
-                  />
+                  /> */}
                 </Stack>
               </VStack>
             )}
 
             <VStack display={{ base: "flex", md: "none" }}>
-              {dataQuestion?.data?.result?.map((item, index) => (
+              {questions?.map((item, index) => (
                 <QuestionMCard key={index} data={item} t={t} />
               ))}
 
               <Stack w={"100%"} justifyContent={"center"} alignItems={"center"}>
-                <Pagination
+                {/* <Pagination
                   totalPages={dataQuestion?.data?.total_count}
                   currentPage={page}
                   onPageChange={setPage}
                   t={t}
-                />
+                /> */}
               </Stack>
             </VStack>
           </GridItem>

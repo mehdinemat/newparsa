@@ -1,13 +1,6 @@
 import MainLayout from "@/components/mainLayout";
 import {
-  Accordion,
-  AccordionButton,
-  AccordionItem,
   Box,
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  Button,
   Grid,
   GridItem,
   HStack,
@@ -15,12 +8,11 @@ import {
   Stack,
   Text,
   useBreakpointValue,
-  VStack,
+  VStack
 } from "@chakra-ui/react";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 
-import LeftSidebar from "@/components/home/leftsidebar";
 import QuestionMCard from "@/components/home/mobile/questionMCard";
 import Pagination from "@/components/pagination";
 import QuestionCard from "@/components/questionCars";
@@ -143,7 +135,7 @@ export default function Home({ children }) {
   };
 
   return (
-    <MainLayout>
+    <MainLayout menuDefault={true}>
       <Head>
         <title>{`${t("parsa")} | ${t("resources")} : ${slug}`}</title>
         <link rel="icon" href="/question.png" />
@@ -164,34 +156,22 @@ export default function Home({ children }) {
         justifyContent={"center"}
         maxW="container.xl"
         mx="auto"
-        marginTop={{ base: "60px", md: "100px" }}
+        marginTop={{ base: "60px", md: "60px" }}
         p={"20px"}
       >
-        <Stack pb={"20px"} mr={"10px"}>
+        {/* <Stack pb={"20px"} mr={"10px"}>
           <Breadcrumb>
             <BreadcrumbItem>
               <BreadcrumbLink fontWeight={"bold"} href="/">
                 {t("main_page")}
               </BreadcrumbLink>
             </BreadcrumbItem>
-            {/* {dataCategoryParent?.data
-              ?.slice()
-              .reverse()
-              .map((item) => (
-                <BreadcrumbItem>
-                  <BreadcrumbLink
-                    href={`/questions/category/${item?.id}?category_title=${item?.name}`}
-                    fontWeight={"bold"}
-                  >
-                    {item?.name}
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-              ))} */}
+          
             <BreadcrumbItem isCurrentPage>
               <BreadcrumbLink>{slug}</BreadcrumbLink>
             </BreadcrumbItem>
           </Breadcrumb>
-        </Stack>
+        </Stack> */}
         <Grid
           templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(4, 1fr)" }}
           templateAreas={{
@@ -203,7 +183,7 @@ export default function Home({ children }) {
           {/* Right Sidebar */}
 
           <GridItem colSpan={1}>
-            <Box
+            {/* <Box
               w="100%"
               maxW={{ base: "calc(100vw - 50px)", md: "100vw" }}
               overflow="hidden"
@@ -249,7 +229,7 @@ export default function Home({ children }) {
                     </AccordionItem>
                   </Accordion>
                 ))}
-            </Box>
+            </Box> */}
 
             {/* <SidebarTree
               treeData={treeData}
@@ -257,7 +237,7 @@ export default function Home({ children }) {
               t={t}
               setCategoryId={setCategoryId}
             /> */}
-            <Box
+            {/* <Box
               my={"20px"}
               order={3}
               as={GridItem}
@@ -306,7 +286,7 @@ export default function Home({ children }) {
                   ))}
                 </VStack>
               </Box>
-            </Box>
+            </Box> */}
           </GridItem>
 
           {/* Main Content */}
@@ -314,7 +294,7 @@ export default function Home({ children }) {
             p={{ base: 0, md: "6" }}
             order={{ base: 1, md: 2 }}
             as={GridItem}
-            colSpan={{ md: 3 }}
+            colSpan={{ md: 4 }}
             w="100%"
             overflowWrap="break-word"
             wordBreak="break-word"
@@ -336,7 +316,7 @@ export default function Home({ children }) {
                 </Text>
               )}
 
-              <Button
+              {/* <Button
                 width={{ base: "152px", md: "189px" }}
                 height={"50px"}
                 bgColor={"#F9C96D"}
@@ -349,7 +329,7 @@ export default function Home({ children }) {
                 onClick={(e) => handleNewQuestionButton()}
               >
                 {t("ask_your_question")}
-              </Button>
+              </Button> */}
             </HStack>
 
             {isLoadingQuestion ? (

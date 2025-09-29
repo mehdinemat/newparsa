@@ -1,32 +1,13 @@
 import MainLayout from "@/components/mainLayout";
 import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  Badge,
   Box,
-  Button,
-  Center,
   chakra,
-  Checkbox,
+  Collapse,
   Grid,
   GridItem,
   HStack,
-  IconButton,
-  Popover,
-  PopoverBody,
-  PopoverContent,
-  PopoverTrigger,
-  Portal,
-  SimpleGrid,
   Spinner,
   Stack,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
   Tabs,
   Text,
   VStack
@@ -42,9 +23,10 @@ import QuestionCard from "@/components/questionCars";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { IoIosArrowBack, IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
-import { TbArrowsSort } from "react-icons/tb";
+import { IoIosArrowDown } from "react-icons/io";
+import { IoSearch } from "react-icons/io5";
 import useSWR from "swr";
 import { StringParam, useQueryParams, withDefault } from "use-query-params";
 
@@ -86,6 +68,12 @@ const Index = ({ children }) => {
   const [isDragging, setIsDragging] = useState(false)
   const [startX, setStartX] = useState(0)
   const [scrollLeft, setScrollLeft] = useState(0)
+  const [showMore, setShowMore] = useState(false)
+
+  const [test, setTest] = useState(
+    "نماز آیات هنگام وقوع پدیده‌های طبیعی ترسناک مانند کسوف (خورشید گرفتگی)، خسوف (ماه گرفتگی)، زلزله، رعد و برق، بادهای سیاه و سرخ، صیحه آسمانی، یا فرو رفتن زمین واجب می‌شود. در مواردی مانند زلزله، رعد و برق و صیحه آسمانی، این نماز باید بلافاصله خوانده شود و اگر خوانده نشود تا آخر عمر بر گردن فرد باقی می‌ماند و هر وقت خوانده شود، به صورت ادا محسوب می‌شود. نماز آیات هنگام وقوع پدیده‌های طبیعی ترسناک مانند کسوف (خورشید گرفتگی)، خسوف (ماه گرفتگی)، زلزله، رعد و برق، بادهای سیاه و سرخ، صیحه آسمانی، یا فرو رفتن زمین واجب می‌شود. در مواردی مانند زلزله، رعد و برق و صیحه آسمانی، این نماز باید بلافاصله خوانده شود و اگر خوانده نشود تا آخر عمر بر گردن فرد باقی می‌ماند و هر وقت خوانده شود، به صورت ادا محسوب می‌شود نماز آیات هنگام وقوع پدیده‌های طبیعی ترسناک مانند کسوف (خورشید گرفتگی)، خسوف (ماه گرفتگی)، زلزله، رعد و برق، بادهای سیاه و سرخ، صیحه آسمانی، یا فرو رفتن زمین واجب می‌شود. در مواردی مانند زلزله، رعد و برق و صیحه آسمانی، این نماز باید بلافاصله خوانده شود و اگر خوانده نشود تا آخر عمر بر گردن فرد باقی می‌ماند و هر وقت خوانده شود، به صورت ادا محسوب می‌شو"
+  );
+
   const [hoveredIndex, setHoveredIndex] = useState({ selected: '', val: '' });
 
   const [filters, setFilters] = useQueryParams({
@@ -96,6 +84,15 @@ const Index = ({ children }) => {
     source: withDefault(StringParam, ""),
     category_id: withDefault(StringParam, '28')
   });
+
+  const {
+    register: registerSearch,
+    getValues: getValuesSearch,
+    setValue: setValueSearch,
+    handleSubmit: handleSubmitSearch,
+    watch: watchSearch,
+    reset: resetSearch,
+  } = useForm();
 
   const { data: dataCategory, isLoading: isLoadingCategory } = useSWR(
     `user/category?type=question`,
@@ -132,6 +129,12 @@ const Index = ({ children }) => {
   const handleCurrectClick = (currect) => {
     router.push(
       `/ result_search?search=${currect}&search_type=${filters?.search_type}`
+    );
+  };
+
+  const handleClickSearch = () => {
+    router.push(
+      `/result_search?search=${watchSearch("search")}&search_type=search`
     );
   };
 
@@ -189,10 +192,10 @@ const Index = ({ children }) => {
   });
 
   return (
-    <MainLayout>
+    <MainLayout menuDefault={true} register={registerSearch} watchSearch={watchSearch}>
       <Tabs w={'100%'}>
 
-        <Box
+        {/* <Box
           height="230px"
           w="100%"
           position="fixed"
@@ -346,7 +349,7 @@ const Index = ({ children }) => {
 
           </VStack>
 
-        </Box>
+        </Box> */}
 
 
         <Head>
@@ -368,9 +371,9 @@ const Index = ({ children }) => {
           maxW="container.xl"
           mx="auto"
           p={"20px"}
-          mt={{ base: "60px", md: "320px" }}
+          mt={{ base: "60px", md: "80px" }}
         >
-          <TabPanels>
+          {/* <TabPanels>
             {[...Array(20)].map((_, i) => (
               <TabPanel key={i}>
                 {!isLoadingChildCategory ? <SimpleGrid
@@ -386,7 +389,6 @@ const Index = ({ children }) => {
                         />
                       }
                       >{val?.name}</Button>
-                      {/* <Badge colorScheme="gray" borderRadius={'7px'} py={'8px'} textAlign={'center'} cursor={'pointer'} color={'#3646B3'}>{val?.name}</Badge> */}
                     </PopoverTrigger>
                     <Portal>
                       <PopoverContent bg="gray.100" // match your badge's color if needed
@@ -394,7 +396,6 @@ const Index = ({ children }) => {
                         borderRadius="7px"
                         mt="-8px" width={'none'} borderTopRightRadius={0} borderTopLeftRadius={0} boxShadow="0px 10px 22px 0px #00000040"
                       >
-                        {/* <PopoverHeader>{val?.name}</PopoverHeader> */}
                         <PopoverBody padding={0} width={'200px'} >
                           {
                             !mutateCategory2 ? <Spinner /> : dataCategoryChild2?.data?.map((item) => (
@@ -415,7 +416,7 @@ const Index = ({ children }) => {
                 </SimpleGrid> : <Center><Spinner /></Center>}
               </TabPanel>
             ))}
-          </TabPanels>
+          </TabPanels> */}
           <Grid
             templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(4, 1fr)" }}
             templateAreas={{
@@ -425,7 +426,7 @@ const Index = ({ children }) => {
             w={"100%"}
           >
             {/* Right Sidebar */}
-            <Box
+            {/* <Box
               w="100%"
               maxW={{ base: "calc( 100vw - 50px )", md: "100vw" }}
               overflow="hidden"
@@ -458,12 +459,6 @@ const Index = ({ children }) => {
                     </h2>
                     <AccordionPanel pb={4}>
                       <VStack gap={"20px"}>
-                        {/* <InputGroup>
-                      <Input placeholder="جستجوی عبارت" />
-                      <InputRightElement>
-                        <IoSearch />
-                      </InputRightElement>
-                    </InputGroup> */}
                         {dataResource?.data?.map((source) => (
                           <HStack
                             w={"100%"}
@@ -494,14 +489,14 @@ const Index = ({ children }) => {
                   </AccordionItem>
                 )}
               </Accordion>
-            </Box>
+            </Box> */}
 
             {/* Main Content */}
             <Box
               p={{ base: 0, md: "6" }}
               order={{ base: 1, md: 2 }}
               as={GridItem}
-              colSpan={{ md: 3 }}
+              colSpan={{ md: 4 }}
               w="100%"
               overflowWrap="break-word"
               wordBreak="break-word"
@@ -510,9 +505,61 @@ const Index = ({ children }) => {
               pr={{ base: 0, md: "21px" }}
             >
 
-              <VStack w={'100%'} bgColor={'#F7F7F7'} padding={'14px'} borderRadius={'15px'}>
-                <HStack w={"100%"} justifyContent={"space-between"} mb={"20px"} >
-                  <Text w={"full"}>
+              <VStack mb={"80px"} alignItems={"start"}>
+                <Text fontSize={"16px"} color={"#C2C2C2"}>
+                  {filters?.search}
+                </Text>
+                <HStack w={"100%"} alignItems={"center"}>
+                  <svg
+                    width="32"
+                    height="32"
+                    viewBox="0 0 32 32"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M15.7422 0L17.1554 6.14379C18.1138 10.3056 21.2586 13.5519 25.2904 14.5412L31.2422 16L25.2904 17.4588C21.2586 18.4481 18.1138 21.6944 17.1554 25.8562L15.7422 32L14.329 25.8562C13.3706 21.6944 10.2257 18.4481 6.19398 17.4588L0.242188 16L6.19398 14.5412C10.2257 13.5519 13.3706 10.3056 14.329 6.14379L15.7422 0Z"
+                      fill="#3646B3"
+                    />
+                  </svg>
+                  <Text fontSize={"30px"} color={"#3646B3"}>
+                    نتایج جستجو هوشمند
+                  </Text>
+                </HStack>
+                <Collapse startingHeight={80} in={showMore}>
+                  <Box bgColor={"#F7F7F7"} padding={"17px"} borderRadius={"30px"}>
+                    <Text fontSize={"20px"} fontWeight={"400"}>
+                      {test?.substring(0, showMore ? test?.length : 200)}
+                    </Text>
+                  </Box>
+                </Collapse>
+                {!showMore && (
+                  <VStack w={"100%"} justifyContent={"center"}>
+                    <Text
+                      fontSize={"14px"}
+                      color={"#3646B3"}
+                      cursor={"pointer"}
+                      onClick={(e) => setShowMore(true)}
+                    >
+                      مشاهده کامل
+                    </Text>
+                  </VStack>
+                )}
+              </VStack>
+
+              <HStack mb={"10px"}>
+                <IoSearch color={"#3646B3"} fontSize={"22px"} />
+                <Text fontSize={"30px"} color={"#3646B3"}>
+                  نتایج جستجو بین سوالات
+                </Text>
+                <Text color={"#C2C2C2"} fontSize={"16px"}>
+                  {dataQuestionSearch?.data?.data?.total_count} سوال
+                </Text>
+              </HStack>
+
+              <VStack w={'100%'} bgColor={'white'} padding={'14px'} borderRadius={'15px'}>
+                <HStack w={"100%"} justifyContent={"space-between"}  >
+                  {/* <Text w={"full"}>
                     {dataQuestionSearch?.data?.data?.total_count} نتیجه (
                     {(dataQuestionSearch?.duration / 1000).toFixed(3) || 0} ثانیه)
                   </Text>
@@ -541,7 +588,7 @@ const Index = ({ children }) => {
                     >
                       محبوبترین‌ها
                     </Button>
-                  </HStack>
+                  </HStack> */}
                 </HStack>
                 {isLoadingQuestionSearch ? (
                   <HStack
@@ -554,7 +601,7 @@ const Index = ({ children }) => {
                 ) : (
                   <VStack display={{ base: "none", md: "flex" }} w={'100%'}>
                     {dataQuestionSearch?.data?.data?.result?.map((item, index) => (
-                      <QuestionCard key={index} data={item} t={t} bgColor={'white'} />
+                      <QuestionCard key={index} data={item} t={t} bgColor={'#F7F7F7'} />
                     ))}
                     <Stack
                       w={"100%"}

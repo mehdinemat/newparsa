@@ -6,6 +6,9 @@ import {
   HStack,
   IconButton,
   Image,
+  Input,
+  InputGroup,
+  InputRightElement,
   ListItem,
   Menu,
   MenuButton,
@@ -86,7 +89,7 @@ const menuList = [
 //   },
 // ];
 
-const MainLayout = ({ children, questionsRef, menuDefault = false }) => {
+const MainLayout = ({ children, questionsRef, menuDefault = false, register, watchSearch }) => {
   const { t } = useTranslation();
 
   const [showMenu, setShowMenu] = useState(false);
@@ -135,7 +138,9 @@ const MainLayout = ({ children, questionsRef, menuDefault = false }) => {
   };
 
   const handleClickSearch = () => {
-    router.push(`/result_search?search=${search}&search_type=search`);
+    router.push(
+      `/result_search?search=${watchSearch("search")}&search_type=search`
+    );
   };
   const handleClickSemanticSearch = () => {
     router.push(`/result_search?search=${search}&search_type=semantic_search`);
@@ -161,8 +166,8 @@ const MainLayout = ({ children, questionsRef, menuDefault = false }) => {
       _.includes(router.asPath.toLowerCase(), "admin_dashboard")
         ? 2
         : _.includes(router.asPath.toLowerCase(), "dashboard")
-        ? 1
-        : 0
+          ? 1
+          : 0
     );
   }, [router]);
 
@@ -182,10 +187,13 @@ const MainLayout = ({ children, questionsRef, menuDefault = false }) => {
     const container = scrollContainerRef.current;
     if (!container) return;
 
+    const screenHeight = window.innerHeight; // 👈 user’s screen height
     const handleScroll = () => {
       const scrollY = container.scrollTop;
-      setHideHeaderButton(scrollY >= 350); // you can use scrollY >= 500 to toggle button
-      setShowMenu(scrollY >= 900);
+
+      setHideHeaderButton(scrollY >= screenHeight * 0.4);
+
+      setShowMenu(scrollY >= screenHeight);
     };
 
     container.addEventListener("scroll", handleScroll);
@@ -256,8 +264,10 @@ const MainLayout = ({ children, questionsRef, menuDefault = false }) => {
                 width={"29px"}
                 height={"42px"}
                 ml={"5px"}
+                onClick={e => router.push('/')}
+                cursor={'pointer'}
               />
-              <Image src="/headerlogo2.png" width={"100px"} height={"41px"} />
+              <Image src="/headerlogo2.png" width={"100px"} height={"41px"} onClick={e => router.push('/')} cursor={'pointer'} />
               <Menu>
                 <MenuButton
                   px={4}
@@ -270,8 +280,8 @@ const MainLayout = ({ children, questionsRef, menuDefault = false }) => {
                       {locale == "en"
                         ? t("header_english")
                         : locale == "fa"
-                        ? t("header_persian")
-                        : locale == "ar" && t("header_arabic")}
+                          ? t("header_persian")
+                          : locale == "ar" && t("header_arabic")}
                     </Text>
                     <IoIosArrowDown width={"12px"} fontSize={"12px"} />
                   </HStack>
@@ -299,14 +309,77 @@ const MainLayout = ({ children, questionsRef, menuDefault = false }) => {
               </Menu>
             </HStack>
             <HStack>
-              <CiSearch color={"#3646B3"} fontSize={"30px"} />
-              {/* <Text fontFamily={'iransans'} fontWeight={'500px'} fontSize={'20px'} color={'#3646B3'}>ورود/ثبت‌نام</Text> */}
-              <Image
-                src="/headerpersonlogo.png"
-                height={"29px"}
-                width={"28px"}
-                mr={"20px"}
-              />
+              {!isUserLogin ? (
+                <HStack
+                  cursor="pointer"
+                  onClick={() => router.push("/login")}
+                  role="group" // 👈 important: allows child hover detection
+                >
+                  <Text
+                    fontFamily="iransans"
+                    fontWeight="500"
+                    fontSize="20px"
+                    color="#3646B3"
+                    opacity={0} // hidden initially
+                    transform="translateX(-10px)" // slight left offset
+                    transition="all 0.3s ease"
+                    _groupHover={{
+                      opacity: 1,
+                      transform: "translateX(0)", // slide in
+                    }}
+                  >
+                    {t("log_sub")}
+                  </Text>
+
+                  <Image
+                    src="/headerpersonlogo.png"
+                    height="29px"
+                    width="28px"
+                  />
+                </HStack>
+
+              ) :
+                <Box height="60px" display="flex" alignItems="center" ml={'30px'}>
+                  {!showInput ? (
+                    // Just the search icon initially
+                    <CiSearch
+                      color={"#3646B3"} fontSize={"30px"}
+                      style={{ marginLeft: "20px", cursor: "pointer" }}
+                      onClick={() => setShowInput(true)}
+                    />
+                  ) : (
+                    // When clicked, show input with icon inside
+                    <InputGroup
+                      width="490px"
+                      height="60px"
+                    >
+                      <Input
+                        border="1px"
+                        borderColor="#3646B366"
+                        height="60px"
+                        width="490px"
+                        placeholder="جستجو..."
+                        bg="white"
+                        borderRadius="10px"
+                        {...register("search")}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            handleClickSearch();
+                          }
+                        }}
+                        _focus={{ borderColor: "blue.400" }}
+                      />
+                      <InputRightElement height="60px" ml={'16px'}>
+                        <CiSearch
+                          cursor="pointer"
+                          onClick={handleClickSearch}
+                          fontSize="30px"
+                          color="#3646B3"
+                        />
+                      </InputRightElement>
+                    </InputGroup>
+                  )}
+                </Box>}
               <Image
                 src="/headermenu.png"
                 height={"39px"}
@@ -569,12 +642,12 @@ const MainLayout = ({ children, questionsRef, menuDefault = false }) => {
                   w={"100%"}
                 >
                   <Image
-                    src="../../question.png"
+                    src="/question.png"
                     width={"51px"}
                     height={"72px"}
                   />
                   <Image
-                    src="../../parsaheader.png"
+                    src="/parsaheader.png"
                     width={"118px"}
                     height={"48px"}
                   />

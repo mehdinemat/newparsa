@@ -117,6 +117,15 @@ const Index = () => {
   } = useForm();
 
   const {
+    register: registerSearch,
+    getValues: getValuesSearch,
+    setValue: setValueSearch,
+    handleSubmit: handleSubmitSearch,
+    watch: watchSearch,
+    reset: resetSearch,
+  } = useForm();
+
+  const {
     data: dataQuestion,
     isLoading: isLoadingQuestion,
     mutate: mutateQuestion,
@@ -179,6 +188,13 @@ const Index = () => {
       resetComment();
     },
   });
+
+  const handleClickSearch = () => {
+    router.push(
+      `/result_search?search=${watchSearch("search")}&search_type=search`
+    );
+  };
+
 
   const handleAddAnswer = (e) => {
     triggerAnswer({ ...e, id: query?.id, lang: "fa" });
@@ -245,8 +261,10 @@ const Index = () => {
     console.log(dataMe?.data?.[0]?.username)
   }, [dataMe])
 
+
+
   return (
-    <MainLayout menuDefault={true}>
+    <MainLayout menuDefault={true} register={registerSearch} watchSearch={watchSearch}>
       <Head>
         <title>
           {dataQuestion?.data?.result?.[0]?.title ||
@@ -421,7 +439,7 @@ const Index = () => {
                         padding={'8px'}
                         borderRadius={'10px'} w={'100%'}>
 
-                        <IoIosArrowForward cursor={'pointer'} style={{ marginRight: '10px' }} />
+                        <IoIosArrowForward cursor={'pointer'} style={{ marginRight: '10px' }} onClick={e => router.back()} />
                         <VStack w={'100%'} alignItems={'start'} mr={'10px'}>
                           <Text
                             lineHeight={"taller"}
@@ -471,7 +489,7 @@ const Index = () => {
                           minWidth={'none'}
                           icon={
                             dataQuestion?.data?.result?.[0]?.is_user_saved ? (
-                              <TbBookmark color="orange" strokeWidth={2} onClick={(e) => {
+                              <TbBookmark color="orange" fontSize={'20px'} strokeWidth={2} onClick={(e) => {
                                 if (dataQuestion?.data?.result?.[0]?.is_user_saved) {
                                   // handleUpdateAction("question", "save_message", dataQuestionLike?.data?.result?.find((user) => (user?.user__username == dataMe?.data?.[0]?.username))?.id)
                                 } else {
@@ -618,7 +636,7 @@ const Index = () => {
                                   mt="20px"
                                   color="#333333"
                                 >
-                                  {contentTest}
+                                  {answer?.content}
                                 </Text>
                               </Collapse>
                               <HStack
@@ -650,7 +668,7 @@ const Index = () => {
                                   <Button bgColor={'white'} color={'#CCCCCC'} fontWeight={'500'} fontSize={'16px'} borderRadius={'18px'} leftIcon={<IoMdCheckmarkCircleOutline fontSize={'25px'} />}>پسند</Button>
                                 </HStack>}
                               </HStack>
-                              {!showMore && <Stack flexDir={'row'} color={'#3646B3'} alignItems={'center'} cursor={'pointer'} onClick={e => setShowMore(true)} mt={'13px'}>
+                              {(!showMore && answer?.content?.length > 200) && <Stack flexDir={'row'} color={'#3646B3'} alignItems={'center'} cursor={'pointer'} onClick={e => setShowMore(true)} mt={'13px'}>
                                 <Text fontWeight={'500'} fontSize={'14px'} lineHeight={'176%'}>مشاهده کامل</Text>
                                 <IoIosArrowBack />
                               </Stack>}
@@ -699,10 +717,12 @@ const Index = () => {
                     ) : (
                       <VStack w={'100%'} alignItems={'start'} mt={'40px'} px={'20px'}>
                         <Text fontSize={'22px'} fontWeight={'600'}>شما میتوانید به این سوال پاسخ دهید</Text>
-                        <HStack w={'100%'}>
-                          <Input w={'100%'} borderRadius={'10px'} height={'61px'} placeholder="نوشتن متن..." border={'1px'} borderColor={'#A3A3A3'} bgColor={'#FBFBFB'} />
-                          <Button bgColor={'#F9C96D'} borderRadius={'10px'} color={'black'} width={'220px'} height={'61px'} fontWeight={'700'} fontSize={'18px'}>ثبت پاسخ</Button>
+                        <HStack w={'100%'} as="form"
+                          onSubmit={handleSubmitAnswer(handleAddAnswer)}>
+                          <Input w={'100%'} borderRadius={'10px'} height={'61px'} placeholder="نوشتن متن..." border={'1px'} borderColor={'#A3A3A3'} bgColor={'#FBFBFB'}  {...registerAnswer("content")} />
+                          <Button isLoading={isMutatingQuestionAnswer} bgColor={'#F9C96D'} borderRadius={'10px'} color={'black'} width={'220px'} height={'61px'} fontWeight={'700'} fontSize={'18px'} type="submit"> {t("submit_answer")}</Button>
                         </HStack>
+                        {/* <QuestionAnswerCard handleSubmitAnswer={handleSubmitAnswer} handleAddAnswer={handleAddAnswer} isMutatingQuestionAnswer={isMutatingQuestionAnswer} registerAnswer={registerAnswer} t={t} /> */}
                       </VStack>
                       // <VStack w={'100%'}>
                       //   <HStack w={'100%'} justifyContent={'space-between'}>
@@ -720,7 +740,7 @@ const Index = () => {
                       //       {t("show_all")}
                       //     </Text>
                       //   </HStack>
-                      //   <QuestionAnswerCard handleSubmitAnswer={handleSubmitAnswer} handleAddAnswer={handleAddAnswer} isMutatingQuestionAnswer={isMutatingQuestionAnswer} registerAnswer={registerAnswer} t={t} />
+                      //  
                       // </VStack>
                     )}
                     <Grid templateColumns='repeat(5, 1fr)' mt={'90px'} gap={'25px'}>
@@ -783,24 +803,28 @@ const Index = () => {
                               minH="0" // important for scroll inside flex container
                               pb="10px"
                             >
-                              {answer?.map((item, idx) => (
-                                <HStack
-                                  key={idx}
-                                  bgColor="white"
-                                  padding="10px"
-                                  borderRadius="10px"
-                                  w="100%"
-                                >
-                                  <HStack w="100%" alignItems="start" >
-                                    <Text fontSize="14px" fontWeight={'400'}>{item}</Text>
+                              {dataQuestionSimilar?.data
+                                ?.slice(5, 10)
+                                ?.map((item, idx) => (
+                                  <HStack
+                                    cursor={'pointer'}
+                                    onClick={(e) => handleSimilarClick(item?.id)}
+                                    key={idx}
+                                    bgColor="white"
+                                    padding="10px"
+                                    borderRadius="10px"
+                                    w="100%"
+                                  >
+                                    <HStack w="100%" alignItems="start" >
+                                      <Text fontSize="14px" fontWeight={'400'}>{item?.content}</Text>
+                                    </HStack>
+                                    {/* <Divider orientation="vertical" />
+                                    <VStack w="100%" justifyContent="end" flex={1} alignItems={'start'} fontSize={'12px'} fontWeight={'400'}>
+                                      <Text whiteSpace={'nowrap'} color="#999999" lineHeight={'192%'}>5 پاسخ</Text>
+                                      <Text whiteSpace={'nowrap'} color="#999999" lineHeight={'192%'}>اسلام کوئست</Text>
+                                    </VStack> */}
                                   </HStack>
-                                  <Divider orientation="vertical" />
-                                  <VStack w="100%" justifyContent="end" flex={1} alignItems={'start'} fontSize={'12px'} fontWeight={'400'}>
-                                    <Text whiteSpace={'nowrap'} color="#999999" lineHeight={'192%'}>5 پاسخ</Text>
-                                    <Text whiteSpace={'nowrap'} color="#999999" lineHeight={'192%'}>اسلام کوئست</Text>
-                                  </VStack>
-                                </HStack>
-                              ))}
+                                ))}
                             </VStack>
 
                           </Box>

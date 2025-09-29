@@ -7,8 +7,10 @@ import {
   HStack,
   IconButton,
   Image,
+  Input,
   InputGroup,
   InputLeftElement,
+  InputRightElement,
   Menu,
   MenuButton,
   MenuItem,
@@ -24,6 +26,7 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import CountUp from "react-countup";
+import { CiSearch } from "react-icons/ci";
 import { IoIosArrowDown } from "react-icons/io";
 import {
   IoClose,
@@ -32,7 +35,6 @@ import {
   IoSearch,
   IoSendOutline,
 } from "react-icons/io5";
-import { PiDiamondThin } from "react-icons/pi";
 import Recorder from "recorder-js";
 import useSWRMutation from "swr/mutation";
 import { baseUrl } from "../lib/api";
@@ -92,6 +94,7 @@ const Header = ({
   watchSearch,
   resetSearch,
   handleVoiceSearch,
+  hadith
 }) => {
   const router = useRouter();
 
@@ -109,6 +112,10 @@ const Header = ({
   const [voiceText, setVoiceText] = useState("");
   const [searchActive, setSearchActive] = useState(false);
   const [recordingActive, setRecordingActive] = useState(false);
+  const [isUserLogin, setIsUserLogin] = useState(false);
+  const [showInput, setShowInput] = useState(false);
+
+
   const audioContextRef = useRef(null);
   const streamRef = useRef(null);
   const recorderRef = useRef(null);
@@ -208,6 +215,10 @@ const Header = ({
     }
   };
 
+  useEffect(() => {
+    setIsUserLogin(!!localStorage.getItem("token"));
+  }, []);
+
   return (
     <Box
       // marginTop={{ base: "60px", md: "100px" }}
@@ -229,76 +240,122 @@ const Header = ({
     >
       <HStack
         maxW="container.xl"
-        justifyContent={"space-between"}
-        w={"100%"}
-        mt={"20px"}
+        justifyContent="space-between"
+        w="100%"
+        mt="10px"
+        alignItems="center" // make sure children align properly
       >
         <HStack>
-          <Image
-            src="./headerquestionlogo.png"
-            width={"29px"}
-            height={"42px"}
-            ml={"5px"}
-          />
-          <Image src="./headerparsalogo.png" width={"100px"} height={"41px"} />
+          <Image src="./headerquestionlogo.png" width="29px" height="42px" ml="5px" onClick={e => router.push('/')} cursor={'pointer'} />
+          <Image src="./headerparsalogo.png" width="100px" height="41px" onClick={e => router.push('/')} cursor={'pointer'} />
           <Menu>
-            <MenuButton
-              px={4}
-              py={2}
-              marginRight={"20px"}
-              transition="all 0.2s"
-            >
-              <HStack color={"white"}>
-                <Text fontSize={"20px"}>
+            <MenuButton px={4} py={2} marginRight="20px" transition="all 0.2s">
+              <HStack color="white">
+                <Text fontSize="20px">
                   {locale == "en"
                     ? t("header_english")
                     : locale == "fa"
-                    ? t("header_persian")
-                    : locale == "ar" && t("header_arabic")}
+                      ? t("header_persian")
+                      : locale == "ar" && t("header_arabic")}
                 </Text>
-                <IoIosArrowDown width={"12px"} fontSize={"12px"} />
+                <IoIosArrowDown width="12px" fontSize="12px" />
               </HStack>
             </MenuButton>
             <MenuList>
-              <MenuItem
-                value={"en"}
-                onClick={(e) => router.push("/", "/", { locale: "en" })}
-              >
+              <MenuItem onClick={() => router.push("/", "/", { locale: "en" })}>
                 {t("header_english")}
               </MenuItem>
-              <MenuItem
-                value={"ar"}
-                onClick={(e) => router.push("/", "/", { locale: "ar" })}
-              >
+              <MenuItem onClick={() => router.push("/", "/", { locale: "ar" })}>
                 {t("header_arabic")}
               </MenuItem>
-              <MenuItem
-                value={"fa"}
-                onClick={(e) => router.push("/", "/", { locale: "fa" })}
-              >
+              <MenuItem onClick={() => router.push("/", "/", { locale: "fa" })}>
                 {t("header_persian")}
               </MenuItem>
             </MenuList>
           </Menu>
         </HStack>
-        <HStack>
-          <Text
-            fontFamily={"iransans"}
-            fontWeight={"500px"}
-            fontSize={"20px"}
-            color={"white"}
-          >
-            ورود/ثبت‌نام
-          </Text>
-          <Image src="./adduserheader.png" height={"29px"} width={"28px"} />
-          <Image
-            src="./menuheader.png"
-            height={"29px"}
-            width={"28px"}
-            mr={"20px"}
-          />
+
+        <HStack align="center">
+          {!isUserLogin ? (
+            <HStack
+              cursor="pointer"
+              onClick={() => router.push("/login")}
+              role="group" // 👈 important: allows child hover detection
+            >
+              <Text
+                fontFamily="iransans"
+                fontWeight="500"
+                fontSize="20px"
+                color="white"
+                opacity={0} // hidden initially
+                transform="translateX(-10px)" // slight left offset
+                transition="all 0.3s ease"
+                _groupHover={{
+                  opacity: 1,
+                  transform: "translateX(0)", // slide in
+                }}
+              >
+                {t("log_sub")}
+              </Text>
+
+              <Image
+                src="/adduserheader.png"
+                height="29px"
+                width="28px"
+              />
+            </HStack>
+
+          ) : (
+            <Box height="60px" display="flex" alignItems="center" ml={'30px'}>
+              {!showInput ? (
+                // Just the search icon initially
+                <CiSearch
+                  color="white"
+                  fontSize="30px"
+                  style={{ marginLeft: "20px", cursor: "pointer" }}
+                  onClick={() => setShowInput(true)}
+                />
+              ) : (
+                // When clicked, show input with icon inside
+                <InputGroup
+                  width="490px"
+                  border="1px"
+                  borderColor="#3646B366"
+                  height="60px"
+                >
+                  <Input
+                    border="1px"
+                    borderColor="#3646B366"
+                    height="60px"
+                    width="490px"
+                    placeholder="جستجو..."
+                    bg="white"
+                    borderRadius="10px"
+                    {...register("search")}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        handleClickSearch();
+                      }
+                    }}
+                    _focus={{ borderColor: "blue.400" }}
+                  />
+                  <InputRightElement height="60px" ml={'16px'}>
+                    <CiSearch
+                      cursor="pointer"
+                      onClick={handleClickSearch}
+                      fontSize="30px"
+                      color="#3646B3"
+                    />
+                  </InputRightElement>
+                </InputGroup>
+              )}
+            </Box>
+          )}
+
+          <Image src="/menuheader.png" height="29px" width="28px" mr="20px" />
         </HStack>
       </HStack>
+
       {/* <VStack height={"100vh"} position={'absolute'} right={0} top={0} alignItems={'center'} mt={'-30px'} justifyContent={'center'} pr={'25px'}>
         <IconButton icon={<BiSupport />} bgColor={'#3646B3'} borderRadius={'8px'} />
         <IconButton icon={<RiTelegram2Line />} bgColor={'#3646B3'} borderRadius={'8px'} />
@@ -326,18 +383,26 @@ const Header = ({
             color={"white"}
             textAlign={{ base: "center", md: "center" }}
             fontWeight={"700"}
-            mb={"40px"}
+            mb={{ base: "20px" }}
+            sx={{
+              "@media (min-width: 120em)": {
+                marginBottom: "40px",
+              },
+            }}
           >
             {t("home_parsa_header_title")}
           </Text>
           <VStack
-            mb={"80px"}
+            mb={{ base: "15px" }}
             alignItems={"end"}
             position="relative"
             borderRadius="20px"
             p={"12px"}
             bgColor={"#00000040"}
             sx={{
+              "@media (min-width: 120em)": {
+                marginBottom: "80px",
+              },
               backdropFilter: "blur(23.3px)",
               WebkitBackdropFilter: "blur(23.3px)",
               overflow: "hidden", // for rounded corners
@@ -360,7 +425,7 @@ const Header = ({
             <InputGroup
               height="89px"
               width={{ base: "381px", md: "874px" }}
-              // my="20px"
+            // my="20px"
             >
               {isRecording ? (
                 <InputLeftElement height="100%" mr="10px">
@@ -478,7 +543,7 @@ const Header = ({
                     ) : (
                       <HStack gap={0}>
                         <svg
-                        cursor={'pointer'}
+                          cursor={'pointer'}
                           width="38"
                           height="38"
                           viewBox="0 0 38 38"
@@ -537,7 +602,7 @@ const Header = ({
                             </filter>
                           </defs>
                         </svg>
-                        <Image src="/Device.png" height={'40px'}/>
+                        <Image src="/Device.png" height={'40px'} />
                       </HStack>
                     )}
                   </>
@@ -561,12 +626,13 @@ const Header = ({
                       border={"1px"}
                       borderColor={"#29CCCC"}
                       color={"#29CCCC"}
-                      onClick={(e) => handleClickSemanticSearch()}
+                      onClick={e => handleClickSearch()}
                       height={'30px'}
                     >
                       معمولی
                     </Button>
                     <Button
+                      onClick={(e) => handleClickSemanticSearch()}
                       leftIcon={
                         <svg
                           width="17"
@@ -679,10 +745,8 @@ const Header = ({
               },
             }}
           >
-            <Text color={"#76FFFF"}>
-              اَحْبِبْ حَبیبَکَ هَوْنًا ما عَسی اَنْ یَعْصِیَکَ یَوْمًا ما. وَ
-              اَبْغِضْ بَغیضَکَ هَوْنًا ما عَسی اَنْ یَکُونَ حَبیبَکَ یَوْمًا
-              ما.
+            <Text color={"#76FFFF"} wordBreak="break-word" align={'justify'}>
+              {hadith}
             </Text>
           </Box>
           <HStack as={Center} justifyContent="center" w="50%" mt={"20px"}>
@@ -772,7 +836,7 @@ const Header = ({
           <Image src="./navigate.png" w={"36px"} />
         </Box>
       </VStack>
-    </Box>
+    </Box >
   );
 };
 
