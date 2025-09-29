@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Box,
   Button,
   Center,
@@ -7,10 +8,8 @@ import {
   HStack,
   IconButton,
   Image,
-  Input,
   InputGroup,
   InputLeftElement,
-  InputRightElement,
   Menu,
   MenuButton,
   MenuItem,
@@ -20,13 +19,12 @@ import {
   Text,
   Textarea,
   useBreakpoint,
-  VStack,
+  VStack
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import CountUp from "react-countup";
-import { CiSearch } from "react-icons/ci";
 import { IoIosArrowDown } from "react-icons/io";
 import {
   IoClose,
@@ -227,6 +225,7 @@ const Header = ({
       alignItems={"center"}
       width="100%"
       height={"100vh"}
+      scrollSnapAlign="start"
       bg={"#3646B3"}
       p={2}
       px={4}
@@ -276,81 +275,86 @@ const Header = ({
         </HStack>
 
         <HStack align="center">
-          {!isUserLogin ? (
-            <HStack
-              cursor="pointer"
-              onClick={() => router.push("/login")}
-              role="group" // 👈 important: allows child hover detection
-            >
-              <Text
-                fontFamily="iransans"
-                fontWeight="500"
-                fontSize="20px"
+          {/* <Box height="60px" display="flex" alignItems="center" ml={'0px'}>
+            {!showInput ? (
+              <CiSearch
                 color="white"
-                opacity={0} // hidden initially
-                transform="translateX(-10px)" // slight left offset
-                transition="all 0.3s ease"
-                _groupHover={{
-                  opacity: 1,
-                  transform: "translateX(0)", // slide in
-                }}
-              >
-                {t("log_sub")}
-              </Text>
-
-              <Image
-                src="/adduserheader.png"
-                height="29px"
-                width="28px"
+                fontSize="30px"
+                style={{ marginLeft: "20px", cursor: "pointer" }}
+                onClick={() => setShowInput(true)}
               />
-            </HStack>
-
-          ) : (
-            <Box height="60px" display="flex" alignItems="center" ml={'30px'}>
-              {!showInput ? (
-                // Just the search icon initially
-                <CiSearch
-                  color="white"
-                  fontSize="30px"
-                  style={{ marginLeft: "20px", cursor: "pointer" }}
-                  onClick={() => setShowInput(true)}
-                />
-              ) : (
-                // When clicked, show input with icon inside
-                <InputGroup
-                  width="490px"
+            ) : (
+              <InputGroup
+                width="490px"
+                border="1px"
+                borderColor="#3646B366"
+                height="60px"
+              >
+                <Input
                   border="1px"
                   borderColor="#3646B366"
                   height="60px"
-                >
-                  <Input
-                    border="1px"
-                    borderColor="#3646B366"
-                    height="60px"
-                    width="490px"
-                    placeholder="جستجو..."
-                    bg="white"
-                    borderRadius="10px"
-                    {...register("search")}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        handleClickSearch();
-                      }
-                    }}
-                    _focus={{ borderColor: "blue.400" }}
+                  width="490px"
+                  placeholder="جستجو..."
+                  bg="white"
+                  borderRadius="10px"
+                  {...register("search")}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      handleClickSearch();
+                    }
+                  }}
+                  _focus={{ borderColor: "blue.400" }}
+                />
+                <InputRightElement height="60px" ml={'16px'}>
+                  <CiSearch
+                    cursor="pointer"
+                    onClick={handleClickSearch}
+                    fontSize="30px"
+                    color="#3646B3"
                   />
-                  <InputRightElement height="60px" ml={'16px'}>
-                    <CiSearch
-                      cursor="pointer"
-                      onClick={handleClickSearch}
-                      fontSize="30px"
-                      color="#3646B3"
-                    />
-                  </InputRightElement>
-                </InputGroup>
-              )}
-            </Box>
-          )}
+                </InputRightElement>
+              </InputGroup>
+            )}
+          </Box> */}
+
+          {!isUserLogin ? <HStack
+            height={'60px'}
+            width={'173px'}
+            cursor="pointer"
+            onClick={() => router.push("/login")}
+            role="group" // 👈 important: allows child hover detection
+            alignItems={'center'}
+            justifyContent={'center'}
+            transition="all 0.3s ease" // smooth hover
+            _hover={{
+              backdropFilter: "blur(12.8px)",
+              boxShadow: `
+      0px 3px 7px 0px #0000000D,
+      0px 12px 12px 0px #0000000A,
+      0px 28px 17px 0px #00000008,
+      0px 50px 20px 0px #00000003,
+      0px 77px 22px 0px #00000000
+    `,
+            }}
+            borderRadius={'15px'}
+          >
+            <Text
+              fontFamily="iransans"
+              fontWeight="500"
+              fontSize="20px"
+              color="white"
+
+            >
+              {t("log_sub")}
+            </Text>
+
+            <Image
+              src="/adduserheader.png"
+              height="29px"
+              width="28px"
+            />
+          </HStack> : <Avatar fontSize={'46px'} />}
 
           <Image src="/menuheader.png" height="29px" width="28px" mr="20px" />
         </HStack>
@@ -478,6 +482,8 @@ const Header = ({
 
               <Textarea
                 ref={inputRef}
+                fontSize={'20px'}
+                fontWeight={'500'}
                 width={{ base: "381px", md: "100%" }}
                 bgColor="#00000059"
                 backdropFilter="blur(9px)"
@@ -749,23 +755,36 @@ const Header = ({
               {hadith}
             </Text>
           </Box>
-          <HStack as={Center} justifyContent="center" w="50%" mt={"20px"}>
+          <HStack as={Center} justifyContent="center" w="fit-content" mt={"20px"}>
             {siteData?.map((item, index) => (
               <React.Fragment key={index}>
                 <VStack
+                  position="relative"
                   bgColor="#2A378C4D"
                   borderRadius="13px"
                   spacing={0}
                   w="132px"
-                  height="65px"
+                  h="65px"
                   textAlign="center"
                   display={item?.size != breakpoint ? "flex" : "none"}
                   justifyContent="space-between"
-                  padding="5px"
+                  p="5px"
                   backdropFilter="blur(4px)"
-                  boxShadow="0px 7px 7px 0px #0000001A"
-                  borderImageSource="linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 36.54%, rgba(255, 255, 255, 0) 72.12%, rgba(255, 255, 255, 0.33) 100%)"
-                  borderImageSlice={1}
+                  overflow="hidden"
+                  _before={{
+                    content: '""',
+                    position: "absolute",
+                    inset: 0,
+                    borderRadius: "13px",
+                    padding: "0.7px", // stroke thickness
+                    background:
+                      "linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 36.54%, rgba(255, 255, 255, 0) 72.12%, rgba(255, 255, 255, 0.33) 100%)",
+                    WebkitMask:
+                      "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                    WebkitMaskComposite: "xor",
+                    maskComposite: "exclude",
+                    pointerEvents: "none",
+                  }}
                 >
                   <CountUp
                     start={0}

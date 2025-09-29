@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Box,
   Button,
   Grid,
@@ -309,22 +310,67 @@ const MainLayout = ({ children, questionsRef, menuDefault = false, register, wat
               </Menu>
             </HStack>
             <HStack>
-              {!isUserLogin ? (
+              < Box height="60px" display="flex" alignItems="center" ml={'0px'}>
+                {!showInput ? (
+                  <CiSearch
+                    color={"#3646B3"} fontSize={"30px"}
+                    style={{ marginLeft: "20px", cursor: "pointer" }}
+                    onClick={() => setShowInput(true)}
+                  />
+                ) : (
+                  <InputGroup
+                    width="490px"
+                    height="60px"
+                  >
+                    <Input
+                      border="1px"
+                      borderColor="#3646B366"
+                      height="60px"
+                      width="490px"
+                      placeholder="جستجو..."
+                      bg="white"
+                      borderRadius="10px"
+                      {...register("search")}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          handleClickSearch();
+                        }
+                      }}
+                      _focus={{ borderColor: "blue.400" }}
+                    />
+                    <InputRightElement height="60px" ml={'16px'}>
+                      <CiSearch
+                        cursor="pointer"
+                        onClick={handleClickSearch}
+                        fontSize="30px"
+                        color="#3646B3"
+                      />
+                    </InputRightElement>
+                  </InputGroup>
+                )}
+              </Box>
+              {!isUserLogin ?
                 <HStack
                   cursor="pointer"
                   onClick={() => router.push("/login")}
                   role="group" // 👈 important: allows child hover detection
+                  _hover={{ bgColor: '#3646B31A', width: '173px' }}
+                  alignItems={'center'}
+                  justifyContent={'center'}
+                  height={'60px'}
+                  width={'fit-content'}
+                  borderRadius={'15px'}
                 >
                   <Text
                     fontFamily="iransans"
                     fontWeight="500"
                     fontSize="20px"
                     color="#3646B3"
-                    opacity={0} // hidden initially
+                    display={'none'} // hidden initially
                     transform="translateX(-10px)" // slight left offset
                     transition="all 0.3s ease"
                     _groupHover={{
-                      opacity: 1,
+                      display: 'flex',
                       transform: "translateX(0)", // slide in
                     }}
                   >
@@ -336,50 +382,10 @@ const MainLayout = ({ children, questionsRef, menuDefault = false, register, wat
                     height="29px"
                     width="28px"
                   />
-                </HStack>
+                </HStack> : <Avatar fontSize={'46px'} />}
 
-              ) :
-                <Box height="60px" display="flex" alignItems="center" ml={'30px'}>
-                  {!showInput ? (
-                    // Just the search icon initially
-                    <CiSearch
-                      color={"#3646B3"} fontSize={"30px"}
-                      style={{ marginLeft: "20px", cursor: "pointer" }}
-                      onClick={() => setShowInput(true)}
-                    />
-                  ) : (
-                    // When clicked, show input with icon inside
-                    <InputGroup
-                      width="490px"
-                      height="60px"
-                    >
-                      <Input
-                        border="1px"
-                        borderColor="#3646B366"
-                        height="60px"
-                        width="490px"
-                        placeholder="جستجو..."
-                        bg="white"
-                        borderRadius="10px"
-                        {...register("search")}
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter") {
-                            handleClickSearch();
-                          }
-                        }}
-                        _focus={{ borderColor: "blue.400" }}
-                      />
-                      <InputRightElement height="60px" ml={'16px'}>
-                        <CiSearch
-                          cursor="pointer"
-                          onClick={handleClickSearch}
-                          fontSize="30px"
-                          color="#3646B3"
-                        />
-                      </InputRightElement>
-                    </InputGroup>
-                  )}
-                </Box>}
+
+
               <Image
                 src="/headermenu.png"
                 height={"39px"}
@@ -601,7 +607,8 @@ const MainLayout = ({ children, questionsRef, menuDefault = false, register, wat
           </HStack>
         </HStack> */}
         </Box>
-      )}
+      )
+      }
       {/* header */}
       <HStack
         height={"calc( 100vh )"}
@@ -612,9 +619,10 @@ const MainLayout = ({ children, questionsRef, menuDefault = false, register, wat
         ref={scrollContainerRef}
       >
         {/* Main content area */}
-        <VStack height={"calc( 100vh - 76px )"} w={"100%"} gap={0}>
+        <VStack height={"calc( 100vh )"} w={"100%"} gap={0} scrollSnapType="y mandatory"
+          overflowY="scroll">
           {children}
-          <Stack w={"100%"} bg="#F7F7F7" alignItems={"center"}>
+          <Stack w={"100%"} bg="#F7F7F7" alignItems={"center"} scrollSnapAlign="start">
             <Box
               maxW="container.xl"
               as="footer"
@@ -878,7 +886,7 @@ const MainLayout = ({ children, questionsRef, menuDefault = false, register, wat
           </ModalFooter>
         </ModalContent>
       </Modal>
-    </VStack>
+    </VStack >
   );
 };
 

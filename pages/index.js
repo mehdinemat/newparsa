@@ -291,6 +291,7 @@ export default function Home({ children }) {
         handleVoiceSearch={handleVoiceSearch}
       />
       <Box
+        scrollSnapAlign="start"
         w="100%"
         alignItems={"center"}
         justifyContent={"center"}
