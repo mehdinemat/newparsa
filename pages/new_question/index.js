@@ -166,7 +166,7 @@ const Index = () => {
       {!isUserLogin ? (
         <IsLogin type="question" />
       ) : (
-        <VStack>
+        <VStack scrollSnapAlign="start">
           <Grid
             templateColumns="repeat(7, 1fr)"
             gap={6}

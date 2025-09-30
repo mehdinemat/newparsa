@@ -582,7 +582,7 @@ export default function Home({ children }) {
                       variant={"outline"}
                       borderRadius={"15px"}
                       fontSize={"16px"}
-
+                      onClick={e => router.push('/new_question')}
                       isDisabled={isValidating}
                     >
                       سوال خود را بپرسید
