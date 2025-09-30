@@ -30,7 +30,7 @@ const Index = () => {
   }, [dataQuestion])
 
   return (
-    <MainLayout>
+    <MainLayout menuDefault={true}>
       <Box
         w="100%"
         alignItems={"center"}
@@ -42,7 +42,7 @@ const Index = () => {
         my={"34px"}
         mt={{ base: "40px", md: "120px" }}
       >
-        <Grid mt={'40px'}
+        <Grid mt={'80px'}
           templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(8, 1fr)" }}
           w={"100%"}
           gap={2}

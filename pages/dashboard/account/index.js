@@ -6,7 +6,7 @@ import RightSidebar from "../rightSidebar";
 
 const Index = () => {
   return (
-    <MainLayout>
+    <MainLayout menuDefault={true}>
       <Box
         w="100%"
         alignItems={"center"}
@@ -18,7 +18,7 @@ const Index = () => {
         mt={'60px'}
         scrollSnapAlign="start"
       >
-        <Grid templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(4, 1fr)" }} gap={'32px'} w={'100%'} mt={'40px'}>
+        <Grid templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(4, 1fr)" }} gap={'32px'} w={'100%'} mt={'80px'}>
           <GridItem colSpan={1} display={{ base: 'none', md: 'flex' }}>
             <RightSidebar />
           </GridItem>

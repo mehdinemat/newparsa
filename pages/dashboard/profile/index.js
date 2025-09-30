@@ -42,9 +42,9 @@ const Index = () => {
   }
 
   return (
-    <MainLayout>
+    <MainLayout menuDefault={true}>
       <Box
-      
+
         w="100%"
         alignItems={"center"}
         justifyContent={"center"}
@@ -58,7 +58,7 @@ const Index = () => {
         <Grid
           templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(8, 1fr)" }}
           w={"100%"}
-          mt={'40px'}
+          mt={'80px'}
         >
           <GridItem colSpan={1} display={{ base: "none", md: "flex" }}>
             <RightSidebar />

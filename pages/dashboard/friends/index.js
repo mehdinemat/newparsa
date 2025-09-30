@@ -32,7 +32,7 @@ const Index = () => {
   };
 
   return (
-    <MainLayout>
+    <MainLayout menuDefault={true}>
       <Box
       scrollSnapAlign="start"
         w="100%"
@@ -44,7 +44,7 @@ const Index = () => {
         my={"20px"}
         mt={{ base: "40px", md: "60px" }}
       >
-        <Grid mt={'40px'}
+        <Grid mt={'80px'}
           templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(4, 1fr)" }}
           gap={"32px"}
           w={"100%"}
