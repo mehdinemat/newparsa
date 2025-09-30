@@ -90,7 +90,13 @@ const menuList = [
 //   },
 // ];
 
-const MainLayout = ({ children, questionsRef, menuDefault = false, register, watchSearch }) => {
+const MainLayout = ({
+  children,
+  questionsRef,
+  menuDefault = false,
+  register,
+  watchSearch,
+}) => {
   const { t } = useTranslation();
 
   const [showMenu, setShowMenu] = useState(false);
@@ -167,8 +173,8 @@ const MainLayout = ({ children, questionsRef, menuDefault = false, register, wat
       _.includes(router.asPath.toLowerCase(), "admin_dashboard")
         ? 2
         : _.includes(router.asPath.toLowerCase(), "dashboard")
-          ? 1
-          : 0
+        ? 1
+        : 0
     );
   }, [router]);
 
@@ -236,7 +242,13 @@ const MainLayout = ({ children, questionsRef, menuDefault = false, register, wat
   // }, []);
 
   return (
-    <VStack minHeight="100vh" w={"100%"} alignItems={"start"} gap={0}>
+    <VStack
+      minHeight="100vh"
+      w={"100%"}
+      alignItems={"start"}
+      gap={0}
+      position={"relative"}
+    >
       {/* header */}
       {(showMenu || menuDefault) && (
         <Box
@@ -265,10 +277,16 @@ const MainLayout = ({ children, questionsRef, menuDefault = false, register, wat
                 width={"29px"}
                 height={"42px"}
                 ml={"5px"}
-                onClick={e => router.push('/')}
-                cursor={'pointer'}
+                onClick={(e) => router.push("/")}
+                cursor={"pointer"}
               />
-              <Image src="/headerlogo2.png" width={"100px"} height={"41px"} onClick={e => router.push('/')} cursor={'pointer'} />
+              <Image
+                src="/headerlogo2.png"
+                width={"100px"}
+                height={"41px"}
+                onClick={(e) => router.push("/")}
+                cursor={"pointer"}
+              />
               <Menu>
                 <MenuButton
                   px={4}
@@ -281,8 +299,8 @@ const MainLayout = ({ children, questionsRef, menuDefault = false, register, wat
                       {locale == "en"
                         ? t("header_english")
                         : locale == "fa"
-                          ? t("header_persian")
-                          : locale == "ar" && t("header_arabic")}
+                        ? t("header_persian")
+                        : locale == "ar" && t("header_arabic")}
                     </Text>
                     <IoIosArrowDown width={"12px"} fontSize={"12px"} />
                   </HStack>
@@ -310,18 +328,16 @@ const MainLayout = ({ children, questionsRef, menuDefault = false, register, wat
               </Menu>
             </HStack>
             <HStack>
-              < Box height="60px" display="flex" alignItems="center" ml={'0px'}>
+              <Box height="60px" display="flex" alignItems="center" ml={"0px"}>
                 {!showInput ? (
                   <CiSearch
-                    color={"#3646B3"} fontSize={"30px"}
+                    color={"#3646B3"}
+                    fontSize={"30px"}
                     style={{ marginLeft: "20px", cursor: "pointer" }}
                     onClick={() => setShowInput(true)}
                   />
                 ) : (
-                  <InputGroup
-                    width="490px"
-                    height="60px"
-                  >
+                  <InputGroup width="490px" height="60px">
                     <Input
                       border="1px"
                       borderColor="#3646B366"
@@ -338,7 +354,7 @@ const MainLayout = ({ children, questionsRef, menuDefault = false, register, wat
                       }}
                       _focus={{ borderColor: "blue.400" }}
                     />
-                    <InputRightElement height="60px" ml={'16px'}>
+                    <InputRightElement height="60px" ml={"16px"}>
                       <CiSearch
                         cursor="pointer"
                         onClick={handleClickSearch}
@@ -349,28 +365,28 @@ const MainLayout = ({ children, questionsRef, menuDefault = false, register, wat
                   </InputGroup>
                 )}
               </Box>
-              {!isUserLogin ?
+              {!isUserLogin ? (
                 <HStack
                   cursor="pointer"
                   onClick={() => router.push("/login")}
                   role="group" // 👈 important: allows child hover detection
-                  _hover={{ bgColor: '#3646B31A', width: '173px' }}
-                  alignItems={'center'}
-                  justifyContent={'center'}
-                  height={'60px'}
-                  width={'fit-content'}
-                  borderRadius={'15px'}
+                  _hover={{ bgColor: "#3646B31A", width: "173px" }}
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                  height={"60px"}
+                  width={"fit-content"}
+                  borderRadius={"15px"}
                 >
                   <Text
                     fontFamily="iransans"
                     fontWeight="500"
                     fontSize="20px"
                     color="#3646B3"
-                    display={'none'} // hidden initially
+                    display={"none"} // hidden initially
                     transform="translateX(-10px)" // slight left offset
                     transition="all 0.3s ease"
                     _groupHover={{
-                      display: 'flex',
+                      display: "flex",
                       transform: "translateX(0)", // slide in
                     }}
                   >
@@ -382,9 +398,10 @@ const MainLayout = ({ children, questionsRef, menuDefault = false, register, wat
                     height="29px"
                     width="28px"
                   />
-                </HStack> : <Avatar fontSize={'46px'} />}
-
-
+                </HStack>
+              ) : (
+                <Avatar fontSize={"46px"} />
+              )}
 
               <Image
                 src="/headermenu.png"
@@ -607,8 +624,7 @@ const MainLayout = ({ children, questionsRef, menuDefault = false, register, wat
           </HStack>
         </HStack> */}
         </Box>
-      )
-      }
+      )}
       {/* header */}
       <HStack
         height={"calc( 100vh )"}
@@ -617,12 +633,17 @@ const MainLayout = ({ children, questionsRef, menuDefault = false, register, wat
         alignItems={"start"}
         overflowY={"scroll"}
         ref={scrollContainerRef}
+        scrollSnapType="y mandatory"
       >
         {/* Main content area */}
-        <VStack height={"calc( 100vh )"} w={"100%"} gap={0} scrollSnapType="y mandatory"
-          overflowY="scroll">
+        <VStack height={"calc( 100vh )"} w={"100%"} gap={0}>
           {children}
-          <Stack w={"100%"} bg="#F7F7F7" alignItems={"center"} scrollSnapAlign="start">
+          <Stack
+            w={"100%"}
+            bg="#F7F7F7"
+            alignItems={"center"}
+            scrollSnapAlign="start"
+          >
             <Box
               maxW="container.xl"
               as="footer"
@@ -649,11 +670,7 @@ const MainLayout = ({ children, questionsRef, menuDefault = false, register, wat
                   height={"100%"}
                   w={"100%"}
                 >
-                  <Image
-                    src="/question.png"
-                    width={"51px"}
-                    height={"72px"}
-                  />
+                  <Image src="/question.png" width={"51px"} height={"72px"} />
                   <Image
                     src="/parsaheader.png"
                     width={"118px"}
@@ -828,18 +845,30 @@ const MainLayout = ({ children, questionsRef, menuDefault = false, register, wat
                   <Grid
                     templateColumns={{ base: "repeat(2, 1fr)" }}
                     bgColor={"#3646B333"}
-                    height={'46px'}
-                    borderRadius={'9px'}
-                    alignItems={'center'}
-                    justifyContent={'center'}
-                    width={'308px'}
-                    padding={'8px'}
+                    height={"46px"}
+                    borderRadius={"9px"}
+                    alignItems={"center"}
+                    justifyContent={"center"}
+                    width={"308px"}
+                    padding={"8px"}
                   >
                     <GridItem>
-                      <Text fontWeight={'600'} fontSize={'14px'}>پشتیبانی و رفع مشکلات</Text>
+                      <Text fontWeight={"600"} fontSize={"14px"}>
+                        پشتیبانی و رفع مشکلات
+                      </Text>
                     </GridItem>
-                    <GridItem padding={'5px'} bgColor={'#3646B3'} borderRadius={'4px'}>
-                      <Text color={'white'} fontWeight={'600'} fontSize={'14px'}>ثبت تیکت</Text>
+                    <GridItem
+                      padding={"5px"}
+                      bgColor={"#3646B3"}
+                      borderRadius={"4px"}
+                    >
+                      <Text
+                        color={"white"}
+                        fontWeight={"600"}
+                        fontSize={"14px"}
+                      >
+                        ثبت تیکت
+                      </Text>
                     </GridItem>
                   </Grid>
                 </VStack>
@@ -886,7 +915,7 @@ const MainLayout = ({ children, questionsRef, menuDefault = false, register, wat
           </ModalFooter>
         </ModalContent>
       </Modal>
-    </VStack >
+    </VStack>
   );
 };
 
