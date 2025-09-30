@@ -647,6 +647,7 @@ const Index = ({ children }) => {
                       bgColor={"#F7F7F7"}
                       padding={"17px"}
                       borderRadius={"30px"}
+                      minW={'100%'}
                     >
                       <ReactMarkdown
                         remarkPlugins={[remarkBreaks]}
@@ -664,7 +665,7 @@ const Index = ({ children }) => {
                       </ReactMarkdown>
                     </Box>
                   </Collapse>
-                  {!showMore && (
+                  {(!showMore && aiMessage?.length > 200) && (
                     <VStack w={"100%"} justifyContent={"center"}>
                       <Text
                         fontSize={"14px"}
