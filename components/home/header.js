@@ -6,10 +6,8 @@ import {
   Container,
   Flex,
   HStack,
-  IconButton,
   Image,
   InputGroup,
-  InputLeftElement,
   Menu,
   MenuButton,
   MenuItem,
@@ -18,25 +16,23 @@ import {
   Stack,
   Text,
   Textarea,
+  Tooltip,
   useBreakpoint,
-  VStack,
+  VStack
 } from "@chakra-ui/react";
+import axios from "axios";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import CountUp from "react-countup";
 import { IoIosArrowDown } from "react-icons/io";
 import {
-  IoClose,
   IoMic,
-  IoMicOutline,
-  IoSearch,
-  IoSendOutline,
+  IoSearch
 } from "react-icons/io5";
 import Recorder from "recorder-js";
 import useSWRMutation from "swr/mutation";
 import { baseUrl } from "../lib/api";
-import axios from "axios";
 
 const siteData = [
   {
@@ -229,7 +225,7 @@ const Header = ({
     handleClickAiSearch();
   };
 
-   const handleProfileLink = () => {
+  const handleProfileLink = () => {
     router.push("/dashboard/profile");
   };
 
@@ -284,8 +280,8 @@ const Header = ({
                   {locale == "en"
                     ? t("header_english")
                     : locale == "fa"
-                    ? t("header_persian")
-                    : locale == "ar" && t("header_arabic")}
+                      ? t("header_persian")
+                      : locale == "ar" && t("header_arabic")}
                 </Text>
                 <IoIosArrowDown width="12px" fontSize="12px" />
               </HStack>
@@ -409,7 +405,7 @@ const Header = ({
               borderRadius={"30px"}
             >
               <MenuItem
-              _hover={{bgColor:'#3646B333'}}
+                _hover={{ bgColor: '#3646B333' }}
                 borderRadius={"15px"}
                 bgColor={"#3646B30D"}
                 my={"5px"}
@@ -419,7 +415,7 @@ const Header = ({
                 پروفایل(ورود؟ثبت‌نام)
               </MenuItem>
               <MenuItem
-              _hover={{bgColor:'#3646B333'}}
+                _hover={{ bgColor: '#3646B333' }}
                 borderRadius={"15px"}
                 bgColor={"#3646B30D"}
                 my={"5px"}
@@ -428,7 +424,7 @@ const Header = ({
                 منابع و مراجع
               </MenuItem>
               <MenuItem
-              _hover={{bgColor:'#3646B333'}}
+                _hover={{ bgColor: '#3646B333' }}
                 borderRadius={"15px"}
                 bgColor={"#3646B30D"}
                 my={"5px"}
@@ -437,7 +433,7 @@ const Header = ({
                 اخبار
               </MenuItem>
               <MenuItem
-              _hover={{bgColor:'#3646B333'}}
+                _hover={{ bgColor: '#3646B333' }}
                 borderRadius={"15px"}
                 bgColor={"#3646B30D"}
                 my={"5px"}
@@ -446,7 +442,7 @@ const Header = ({
                 کاربران
               </MenuItem>
               <MenuItem
-              _hover={{bgColor:'#3646B333'}}
+                _hover={{ bgColor: '#3646B333' }}
                 borderRadius={"15px"}
                 bgColor={"#3646B30D"}
                 my={"5px"}
@@ -455,7 +451,7 @@ const Header = ({
                 پشتیبانی و راه ارتباطی
               </MenuItem>
               <MenuItem
-              _hover={{bgColor:'#3646B333'}}
+                _hover={{ bgColor: '#3646B333' }}
                 borderRadius={"15px"}
                 bgColor={"#3646B30D"}
                 my={"5px"}
@@ -537,7 +533,7 @@ const Header = ({
             <InputGroup
               height="89px"
               width={{ base: "381px", md: "874px" }}
-              // my="20px"
+            // my="20px"
             >
               {/* {isRecording ? (
                 <InputLeftElement height="100%" mr="10px">
@@ -808,34 +804,44 @@ const Header = ({
                     جستجو
                   </Button>
                 )}
-                <Button
-                  bgColor={"#29CCCC"}
-                  w={"179px"}
-                  height={"40px"}
-                  color={"#3646B3"}
-                  borderRadius="10px"
-                  rightIcon={
-                    <svg
-                      width="22"
-                      height="24"
-                      viewBox="0 0 22 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M12.1575 4.09766L13.0549 7.91879C13.6635 10.5072 15.6603 12.5263 18.2204 13.1416L21.9996 14.0489L18.2204 14.9562C15.6603 15.5715 13.6635 17.5905 13.0549 20.179L12.1575 24.0001L11.2602 20.179C10.6516 17.5905 8.65473 15.5715 6.09467 14.9562L2.31543 14.0489L6.09467 13.1416C8.65473 12.5263 10.6516 10.5072 11.2602 7.91879L12.1575 4.09766Z"
-                        fill="#3646B3"
-                      />
-                      <path
-                        d="M4.05263 0L4.42213 1.57341C4.67272 2.63924 5.49496 3.4706 6.54911 3.72396L8.10526 4.09756L6.54911 4.47116C5.49496 4.72452 4.67272 5.55588 4.42213 6.62171L4.05263 8.19512L3.68313 6.62171C3.43255 5.55588 2.6103 4.72452 1.55616 4.47116L0 4.09756L1.55616 3.72396C2.6103 3.4706 3.43255 2.63924 3.68313 1.57341L4.05263 0Z"
-                        fill="#3646B3"
-                      />
-                    </svg>
-                  }
-                  onClick={(e) => handleAiResponse()}
-                >
-                  پاسخ هوش‌مصنوعی
-                </Button>
+                <Tooltip label='پاسخ معنایی با استفاده از هوش مصنوعی' bgColor={'#D9D9D9'} color={'#333333'} sx={{
+                  boxShadow: `
+          0px 20px 45px 0px #00000033,
+          0px 82px 82px 0px #0000002B,
+          0px 184px 111px 0px #0000001A,
+          0px 328px 131px 0px #00000008,
+          0px 512px 143px 0px #00000000
+        `
+                }} hasArrow>
+                  <Button
+                    bgColor={"#29CCCC"}
+                    w={"179px"}
+                    height={"40px"}
+                    color={"#3646B3"}
+                    borderRadius="10px"
+                    rightIcon={
+                      <svg
+                        width="22"
+                        height="24"
+                        viewBox="0 0 22 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M12.1575 4.09766L13.0549 7.91879C13.6635 10.5072 15.6603 12.5263 18.2204 13.1416L21.9996 14.0489L18.2204 14.9562C15.6603 15.5715 13.6635 17.5905 13.0549 20.179L12.1575 24.0001L11.2602 20.179C10.6516 17.5905 8.65473 15.5715 6.09467 14.9562L2.31543 14.0489L6.09467 13.1416C8.65473 12.5263 10.6516 10.5072 11.2602 7.91879L12.1575 4.09766Z"
+                          fill="#3646B3"
+                        />
+                        <path
+                          d="M4.05263 0L4.42213 1.57341C4.67272 2.63924 5.49496 3.4706 6.54911 3.72396L8.10526 4.09756L6.54911 4.47116C5.49496 4.72452 4.67272 5.55588 4.42213 6.62171L4.05263 8.19512L3.68313 6.62171C3.43255 5.55588 2.6103 4.72452 1.55616 4.47116L0 4.09756L1.55616 3.72396C2.6103 3.4706 3.43255 2.63924 3.68313 1.57341L4.05263 0Z"
+                          fill="#3646B3"
+                        />
+                      </svg>
+                    }
+                    onClick={(e) => handleAiResponse()}
+                  >
+                    پاسخ هوش‌مصنوعی
+                  </Button>
+                </Tooltip>
               </HStack>
             </HStack>
           </VStack>
