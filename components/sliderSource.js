@@ -36,8 +36,6 @@ const SliderSource = ({ items, height, borderRadius, width = "auto", title }) =>
   return (
     <HStack
       w={"100%"}
-      border={"1px"}
-      borderColor={"gray.200"}
       borderRadius={"16px"}
       px={"40px"}
       alignItems={"center"}
@@ -92,7 +90,7 @@ const SliderSource = ({ items, height, borderRadius, width = "auto", title }) =>
                       {item.title?.substring(0, 12)}
                     </Text>
                   )}
-                  <Text fontWeight="400" fontSize={'15px'} color={'#999999'} >
+                  <Text fontWeight="300" fontSize={'15px'} color={'#999999'} >
                     {item.count}پرسش
                   </Text>
                 </VStack>

@@ -40,7 +40,7 @@ const SliderCom = ({ items, height, borderRadius, width = "auto", title }) => {
       border={"1px"}
       borderColor={"#3646B3"}
       borderRadius={"16px"}
-      px={"40px"}
+      p={'30px'}
       alignItems={"start"}
       height={height}
       my={"20px"}
@@ -68,29 +68,28 @@ const SliderCom = ({ items, height, borderRadius, width = "auto", title }) => {
               textAlign={"center"}
               h="100%"
               key={index}
-              p={"10px"}
               direction="column"
               justifyContent="space-between"
               alignItems="center"
               onClick={(e) => handlePublicFiqure(item)}
-              padding={'6px'}
-              mx={'6px'}
               w={'50px'}
             >
-              <Avatar
-                w="128px"
-                h="128px"
-                borderRadius={borderRadius}
-                src={item?.image}
-              />
-              {item.title && (
-                <Text fontWeight="bold" my={"20px"} fontSize={'8px'}>
-                  {item.title}
-                </Text>
-              )}
-              {item.button && (
-                <Button bgColor={"#29CCCC"}>{item.button}</Button>
-              )}
+              <Box bgColor={'#EBEBEB4D'} padding={'6px'} w={'min-content'} borderRadius={'10px'}>
+                <Avatar
+                  w="128px"
+                  h="128px"
+                  borderRadius={borderRadius}
+                  src={item?.image}
+                />
+                {item.title && (
+                  <Text fontWeight="bold" my={"20px"} fontSize={'8px'}>
+                    {item.title}
+                  </Text>
+                )}
+                {item.button && (
+                  <Button bgColor={"#29CCCC"}>{item.button}</Button>
+                )}
+              </Box>
             </Flex>
           ))}
         </Slider>
