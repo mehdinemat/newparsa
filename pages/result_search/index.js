@@ -5,6 +5,7 @@ import {
   Collapse,
   Grid,
   GridItem,
+  Heading,
   HStack,
   Spinner,
   Stack,
@@ -20,6 +21,7 @@ import QuestionMCard from "@/components/home/mobile/questionMCard";
 import { baseUrl } from "@/components/lib/api";
 import Pagination from "@/components/pagination";
 import QuestionCard from "@/components/questionCars";
+import axios from "axios";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
@@ -27,10 +29,11 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { IoIosArrowDown } from "react-icons/io";
 import { IoSearch } from "react-icons/io5";
+import ReactMarkdown from "react-markdown";
+import remarkBreaks from "remark-breaks";
 import useSWR from "swr";
-import { StringParam, useQueryParams, withDefault } from "use-query-params";
-import axios from "axios";
 import useSWRMutation from "swr/mutation";
+import { StringParam, useQueryParams, withDefault } from "use-query-params";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -105,7 +108,7 @@ const Index = ({ children }) => {
   const { data: dataCategory, isLoading: isLoadingCategory } = useSWR(
     `user/category?type=question`,
     {
-      onSuccess: (res) => {},
+      onSuccess: (res) => { },
     }
   );
   const {
@@ -121,7 +124,7 @@ const Index = ({ children }) => {
     isLoading: isLoadingChildCategory2,
   } = useSWR(
     hoveredIndex?.val &&
-      `user/category?parent_id=${hoveredIndex?.val}&type=question`
+    `user/category?parent_id=${hoveredIndex?.val}&type=question`
   );
 
   const { data: dataResource, isLoading: isLoadingResource } =
@@ -132,10 +135,8 @@ const Index = ({ children }) => {
     error: errorQuestionSearch,
     isLoading: isLoadingQuestionSearch,
   } = useSWR(
-    `user/question/search?page=${(page - 1) * 10}&search_type=${
-      filters?.search_type
-    }&content=${filters?.search}&lang=${locale}${
-      filters?.order_by && `&order_by=${filters?.order_by}`
+    `user/question/search?page=${(page - 1) * 10}&search_type=${filters?.search_type
+    }&content=${filters?.search}&lang=${locale}${filters?.order_by && `&order_by=${filters?.order_by}`
     }&model_name=${filters?.model}&source_name=${filters?.source}`,
     fetcherWithTiming
   );
@@ -171,7 +172,6 @@ const Index = ({ children }) => {
         );
 
         if (!res.body) {
-          setIsStreaming(false);
           console.error("No streaming body in response");
           return;
         }
@@ -201,7 +201,6 @@ const Index = ({ children }) => {
 
             try {
               const parsed = JSON.parse(jsonStr);
-
               if (parsed.error) {
                 console.error("Stream error:", parsed.error);
                 done = true;
@@ -209,10 +208,10 @@ const Index = ({ children }) => {
               }
 
               if (parsed.chunk) {
-                setIsStreaming(false);
                 botMessage += parsed.chunk;
                 console.log(parsed);
                 // update assistant message in history
+                console.log(botMessage)
                 setAiMessage(botMessage);
               }
 
@@ -649,12 +648,20 @@ const Index = ({ children }) => {
                       padding={"17px"}
                       borderRadius={"30px"}
                     >
-                      <Text fontSize={"20px"} fontWeight={"400"}>
+                      <ReactMarkdown
+                        remarkPlugins={[remarkBreaks]}
+                        components={{
+                          h1: (props) => <Heading as="h1" size="xl" my={2} {...props} />,
+                          h2: (props) => <Heading as="h2" size="lg" my={2} {...props} />,
+                          h3: (props) => <Heading as="h3" size="md" my={2} {...props} />,
+                          p: (props) => <Text fontSize={"20px"} fontWeight={"400"} my={1} {...props} />,
+                        }}
+                      >
                         {aiMessage?.substring(
                           0,
                           showMore ? aiMessage?.length : 200
                         )}
-                      </Text>
+                      </ReactMarkdown>
                     </Box>
                   </Collapse>
                   {!showMore && (
