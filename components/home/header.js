@@ -424,7 +424,7 @@ const Header = ({
                     h="35px"
                     onClick={() => handleProfileLink()}
                   >
-                    پروفایل(ورود؟ثبت‌نام)
+                    {isUserLogin ? 'پروفایل' : 'ورود؟ثبت‌نام'}
                   </MenuItem>
                   <MenuItem
                     _hover={{ bgColor: "#3646B333" }}
@@ -462,7 +462,7 @@ const Header = ({
                   >
                     پشتیبانی و راه ارتباطی
                   </MenuItem>
-                  <MenuItem
+                  {isUserLogin && <MenuItem
                     _hover={{ bgColor: "#3646B333" }}
                     borderRadius="15px"
                     bgColor="#3646B30D"
@@ -471,7 +471,7 @@ const Header = ({
                     onClick={() => handleExit()}
                   >
                     خروج از حساب کاربری
-                  </MenuItem>
+                  </MenuItem>}
                 </MotionMenuList>
               )}
             </AnimatePresence>
