@@ -436,12 +436,13 @@ const Index = () => {
 
                         </VStack>
                       )} */}
-                      <HStack alignItems={'center'}
+                      <HStack alignItems={'baseline'}
                         bgColor={'#3646B31A'}
                         padding={'8px'}
-                        borderRadius={'10px'} w={'100%'}>
+                        borderRadius={'10px'} w={'100%'} >
 
                         <IoIosArrowForward cursor={'pointer'} style={{ marginRight: '10px' }} onClick={e => router.back()} />
+
                         <VStack w={'100%'} alignItems={'start'} mr={'10px'}>
                           <Text
                             lineHeight={"taller"}
@@ -485,7 +486,7 @@ const Index = () => {
                           </HStack> */}
 
                         </VStack>
-                        <Text whiteSpace={'nowrap'} fontWeight={'400'} color={'#999999'} fontSize={'16px'}>3 پاسخ</Text>
+                        <Text whiteSpace={'nowrap'} fontWeight={'400'} color={'#999999'} fontSize={'16px'}>{dataQuestionAnswer?.data && dataQuestionAnswer?.data?.length} پاسخ</Text>
 
                         <IconButton
                           minWidth={'none'}
