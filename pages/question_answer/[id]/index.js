@@ -280,6 +280,7 @@ const Index = () => {
         maxW="container.xl"
         mx="auto"
         p={"20px"}
+        scrollSnapAlign="start"
       >
         <HStack w={"100%"} alignItems={"start"} gap={"20px"}>
 
@@ -350,6 +351,7 @@ const Index = () => {
               templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(3, 1fr)" }}
               gap={{ base: "10px", md: "20px" }}
               w={"100%"}
+              mt={'80px'}
             >
               <GridItem
                 as={Stack}

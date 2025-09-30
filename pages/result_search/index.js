@@ -193,7 +193,7 @@ const Index = ({ children }) => {
 
   return (
     <MainLayout menuDefault={true} register={registerSearch} watchSearch={watchSearch}>
-      <Tabs w={'100%'}>
+      <Tabs w={'100%'} scrollSnapAlign="start">
 
         {/* <Box
           height="230px"

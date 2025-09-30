@@ -542,7 +542,7 @@ export default function Home({ children }) {
                 <Spinner />
               </HStack>
             ) : (
-              <VStack display={{ base: "none", md: "flex" }}>
+              <VStack display={{ base: "none", md: "flex" }} mt={'70px'}>
                 {questions?.map((item, index) => (
                   <QuestionCard key={index} data={item} t={t} />
                 ))}

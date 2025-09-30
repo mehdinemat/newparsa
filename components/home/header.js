@@ -19,7 +19,7 @@ import {
   Text,
   Textarea,
   useBreakpoint,
-  VStack
+  VStack,
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
@@ -92,7 +92,7 @@ const Header = ({
   watchSearch,
   resetSearch,
   handleVoiceSearch,
-  hadith
+  hadith,
 }) => {
   const router = useRouter();
 
@@ -112,7 +112,6 @@ const Header = ({
   const [recordingActive, setRecordingActive] = useState(false);
   const [isUserLogin, setIsUserLogin] = useState(false);
   const [showInput, setShowInput] = useState(false);
-
 
   const audioContextRef = useRef(null);
   const streamRef = useRef(null);
@@ -153,8 +152,6 @@ const Header = ({
 
   const handleMicClick = async () => {
     setRecordingActive(true);
-
-    return;
 
     if (isRecording) return;
 
@@ -245,8 +242,21 @@ const Header = ({
         alignItems="center" // make sure children align properly
       >
         <HStack>
-          <Image src="./headerquestionlogo.png" width="29px" height="42px" ml="5px" onClick={e => router.push('/')} cursor={'pointer'} />
-          <Image src="./headerparsalogo.png" width="100px" height="41px" onClick={e => router.push('/')} cursor={'pointer'} />
+          <Image
+            src="./headerquestionlogo.png"
+            width="29px"
+            height="42px"
+            ml="5px"
+            onClick={(e) => router.push("/")}
+            cursor={"pointer"}
+          />
+          <Image
+            src="./headerparsalogo.png"
+            width="100px"
+            height="41px"
+            onClick={(e) => router.push("/")}
+            cursor={"pointer"}
+          />
           <Menu>
             <MenuButton px={4} py={2} marginRight="20px" transition="all 0.2s">
               <HStack color="white">
@@ -254,8 +264,8 @@ const Header = ({
                   {locale == "en"
                     ? t("header_english")
                     : locale == "fa"
-                      ? t("header_persian")
-                      : locale == "ar" && t("header_arabic")}
+                    ? t("header_persian")
+                    : locale == "ar" && t("header_arabic")}
                 </Text>
                 <IoIosArrowDown width="12px" fontSize="12px" />
               </HStack>
@@ -318,43 +328,42 @@ const Header = ({
             )}
           </Box> */}
 
-          {!isUserLogin ? <HStack
-            height={'60px'}
-            width={'173px'}
-            cursor="pointer"
-            onClick={() => router.push("/login")}
-            role="group" // 👈 important: allows child hover detection
-            alignItems={'center'}
-            justifyContent={'center'}
-            transition="all 0.3s ease" // smooth hover
-            _hover={{
-              backdropFilter: "blur(12.8px)",
-              boxShadow: `
+          {!isUserLogin ? (
+            <HStack
+              height={"60px"}
+              width={"173px"}
+              cursor="pointer"
+              onClick={() => router.push("/login")}
+              role="group" // 👈 important: allows child hover detection
+              alignItems={"center"}
+              justifyContent={"center"}
+              transition="all 0.3s ease" // smooth hover
+              _hover={{
+                backdropFilter: "blur(12.8px)",
+                boxShadow: `
       0px 3px 7px 0px #0000000D,
       0px 12px 12px 0px #0000000A,
       0px 28px 17px 0px #00000008,
       0px 50px 20px 0px #00000003,
       0px 77px 22px 0px #00000000
     `,
-            }}
-            borderRadius={'15px'}
-          >
-            <Text
-              fontFamily="iransans"
-              fontWeight="500"
-              fontSize="20px"
-              color="white"
-
+              }}
+              borderRadius={"15px"}
             >
-              {t("log_sub")}
-            </Text>
+              <Text
+                fontFamily="iransans"
+                fontWeight="500"
+                fontSize="20px"
+                color="white"
+              >
+                {t("log_sub")}
+              </Text>
 
-            <Image
-              src="/adduserheader.png"
-              height="29px"
-              width="28px"
-            />
-          </HStack> : <Avatar fontSize={'46px'} />}
+              <Image src="/adduserheader.png" height="29px" width="28px" />
+            </HStack>
+          ) : (
+            <Avatar fontSize={"46px"} />
+          )}
 
           <Image src="/menuheader.png" height="29px" width="28px" mr="20px" />
         </HStack>
@@ -429,9 +438,9 @@ const Header = ({
             <InputGroup
               height="89px"
               width={{ base: "381px", md: "874px" }}
-            // my="20px"
+              // my="20px"
             >
-              {isRecording ? (
+              {/* {isRecording ? (
                 <InputLeftElement height="100%" mr="10px">
                   <Flex
                     position="relative"
@@ -440,9 +449,6 @@ const Header = ({
                     w="50px"
                     h="50px"
                   >
-                    {/* First Wave */}
-
-                    {/* Second Wave (delayed) */}
                     <MotionBox
                       position="absolute"
                       width="32px"
@@ -462,7 +468,6 @@ const Header = ({
                       }}
                     />
 
-                    {/* Mic Icon Button */}
                     <IconButton
                       aria-label="Record"
                       bgColor="white"
@@ -478,12 +483,12 @@ const Header = ({
                     />
                   </Flex>
                 </InputLeftElement>
-              ) : null}
+              ) : null} */}
 
               <Textarea
                 ref={inputRef}
-                fontSize={'20px'}
-                fontWeight={'500'}
+                fontSize={"20px"}
+                fontWeight={"500"}
                 width={{ base: "381px", md: "100%" }}
                 bgColor="#00000059"
                 backdropFilter="blur(9px)"
@@ -504,7 +509,7 @@ const Header = ({
             </InputGroup>
             <HStack w={"100%"} justifyContent={"space-between"}>
               <Flex align="center" gap="2">
-                {isRecording ? (
+                {/* {isRecording ? (
                   <HStack>
                     <IoClose
                       fontSize="16px"
@@ -523,9 +528,11 @@ const Header = ({
                       cursor={"pointer"}
                     />
                   </HStack>
-                ) : isMutating ? (
+                ) : isMutating ?  */}
+                {/* (
                   <Spinner color="white" />
-                ) : (
+                ) :  */}
+                
                   <>
                     {/* <IoSearch
                         fontSize={'30px'}
@@ -539,23 +546,26 @@ const Header = ({
                         cursor="pointer"
                         onClick={(e) => handleClickSemanticSearch()}
                       /> */}
-                    {!recordingActive ? (
+                    {!isRecording ? (
                       <IoMic
                         fontSize={"25px"}
                         color="#29CCCC"
                         style={{ cursor: "pointer", marginRight: "10px" }}
                         onClick={handleMicClick}
                       />
-                    ) : (
+                    ) : 
                       <HStack gap={0}>
                         <svg
-                          cursor={'pointer'}
+                          cursor={"pointer"}
                           width="38"
                           height="38"
                           viewBox="0 0 38 38"
                           fill="none"
                           xmlns="http://www.w3.org/2000/svg"
-                          onClick={(e) => setRecordingActive(false)}
+                          onClick={async () => {
+                            handleStopRecording();
+                            // setTimeout(handleUpload, 500);
+                          }}
                         >
                           <g filter="url(#filter0_d_832_10734)">
                             <rect
@@ -608,11 +618,12 @@ const Header = ({
                             </filter>
                           </defs>
                         </svg>
-                        <Image src="/Device.png" height={'40px'} />
+                        <Image src="/Device.png" height={"40px"} />
                       </HStack>
-                    )}
+                    }
                   </>
-                )}
+                
+                {/* } */}
               </Flex>
               <HStack>
                 {searchActive && (
@@ -632,8 +643,8 @@ const Header = ({
                       border={"1px"}
                       borderColor={"#29CCCC"}
                       color={"#29CCCC"}
-                      onClick={e => handleClickSearch()}
-                      height={'30px'}
+                      onClick={(e) => handleClickSearch()}
+                      height={"30px"}
                     >
                       معمولی
                     </Button>
@@ -671,7 +682,7 @@ const Header = ({
                           />
                         </svg>
                       }
-                      height={'30px'}
+                      height={"30px"}
                       bgColor={"#29CCCC4D"}
                       border={"1px"}
                       borderColor={"#29CCCC"}
@@ -751,11 +762,16 @@ const Header = ({
               },
             }}
           >
-            <Text color={"#76FFFF"} wordBreak="break-word" align={'justify'}>
+            <Text color={"#76FFFF"} wordBreak="break-word" align={"justify"}>
               {hadith}
             </Text>
           </Box>
-          <HStack as={Center} justifyContent="center" w="fit-content" mt={"20px"}>
+          <HStack
+            as={Center}
+            justifyContent="center"
+            w="fit-content"
+            mt={"20px"}
+          >
             {siteData?.map((item, index) => (
               <React.Fragment key={index}>
                 <VStack
@@ -855,7 +871,7 @@ const Header = ({
           <Image src="./navigate.png" w={"36px"} />
         </Box>
       </VStack>
-    </Box >
+    </Box>
   );
 };
 
