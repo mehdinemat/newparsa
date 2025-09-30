@@ -2,6 +2,7 @@ import {
   Avatar,
   Box,
   Button,
+  chakra,
   Grid,
   GridItem,
   HStack,
@@ -27,6 +28,7 @@ import {
   useDisclosure,
   VStack,
 } from "@chakra-ui/react";
+import { AnimatePresence, motion } from "framer-motion";
 import _ from "lodash";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
@@ -90,6 +92,9 @@ const menuList = [
 //   },
 // ];
 
+const MotionMenuList = chakra(motion(MenuList));
+
+
 const MainLayout = ({
   children,
   questionsRef,
@@ -98,6 +103,7 @@ const MainLayout = ({
   watchSearch,
 }) => {
   const { t } = useTranslation();
+  const [isOpen2, setIsOpen2] = useState(false);
 
   const [showMenu, setShowMenu] = useState(false);
 
@@ -364,87 +370,94 @@ const MainLayout = ({
                 <Avatar fontSize={"46px"} />
               )}
 
-              <Menu>
+              <Menu isOpen={isOpen2} onOpen={() => setIsOpen2(true)} onClose={() => setIsOpen2(false)}>
                 <MenuButton as={Button}>
-                  <Image
-                    src="/headermenu.png"
-                    height={"39px"}
-                    width={"35px"}
-                    mr="20px"
-                  />
+                  <Image src="/headermenu.png" height={"39px"}
+                    width={"35px"} mr="20px" />
                 </MenuButton>
-                <MenuList
-                  bgColor={"#EBEDF8E5"}
-                  padding={"12px"}
-                  w={"237px"}
-                  h={"289px"}
-                  backdropFilter="blur(27.6px)"
-                  boxShadow={`
-                 0px 14px 30px 0px #0000001A,
-                 0px 54px 54px 0px #00000017,
-                 0px 122px 73px 0px #0000000D,
-                 0px 216px 86px 0px #00000003,
-                 0px 338px 95px 0px #00000000
-               `}
-                  borderRadius={"30px"}
-                >
-                  <MenuItem
-                    _hover={{ bgColor: "#3646B333" }}
-                    borderRadius={"15px"}
-                    bgColor={"#3646B30D"}
-                    my={"5px"}
-                    h={"35px"}
-                    onClick={(e) => handleProfileLink()}
-                  >
-                    پروفایل(ورود؟ثبت‌نام)
-                  </MenuItem>
-                  <MenuItem
-                    _hover={{ bgColor: "#3646B333" }}
-                    borderRadius={"15px"}
-                    bgColor={"#3646B30D"}
-                    my={"5px"}
-                    h={"35px"}
-                  >
-                    منابع و مراجع
-                  </MenuItem>
-                  <MenuItem
-                    _hover={{ bgColor: "#3646B333" }}
-                    borderRadius={"15px"}
-                    bgColor={"#3646B30D"}
-                    my={"5px"}
-                    h={"35px"}
-                  >
-                    اخبار
-                  </MenuItem>
-                  <MenuItem
-                    _hover={{ bgColor: "#3646B333" }}
-                    borderRadius={"15px"}
-                    bgColor={"#3646B30D"}
-                    my={"5px"}
-                    h={"35px"}
-                  >
-                    کاربران
-                  </MenuItem>
-                  <MenuItem
-                    _hover={{ bgColor: "#3646B333" }}
-                    borderRadius={"15px"}
-                    bgColor={"#3646B30D"}
-                    my={"5px"}
-                    h={"35px"}
-                  >
-                    پشتیبانی و راه ارتباطی
-                  </MenuItem>
-                  <MenuItem
-                    onClick={(e) => handleExit()}
-                    _hover={{ bgColor: "#3646B333" }}
-                    borderRadius={"15px"}
-                    bgColor={"#3646B30D"}
-                    my={"5px"}
-                    h={"35px"}
-                  >
-                    خروج از حساب کاربری
-                  </MenuItem>
-                </MenuList>
+
+                <AnimatePresence>
+                  {isOpen2 && (
+                    <MotionMenuList
+                      // 👇 animation
+                      initial={{ opacity: 0, height: '0px' }}
+                      animate={{ opacity: 1, height: 'fit-content' }}
+                      exit={{ opacity: 0, height: '0px' }}
+                      transition={{ duration: 1.6, ease: "easeInOut" }}
+                      // 👇 your original Chakra UI props
+                      bgColor={"#EBEDF8E5"}
+                      padding={"12px"}
+                      w={"237px"}
+                      h={"289px"}
+                      backdropFilter="blur(27.6px)"
+                      boxShadow={`
+              0px 14px 30px 0px #0000001A,
+              0px 54px 54px 0px #00000017,
+              0px 122px 73px 0px #0000000D,
+              0px 216px 86px 0px #00000003,
+              0px 338px 95px 0px #00000000
+            `}
+                      borderRadius={"30px"}
+                    >
+                      <MenuItem
+                        _hover={{ bgColor: "#3646B333" }}
+                        borderRadius="15px"
+                        bgColor="#3646B30D"
+                        my="5px"
+                        h="35px"
+                        onClick={() => handleProfileLink()}
+                      >
+                        پروفایل(ورود؟ثبت‌نام)
+                      </MenuItem>
+                      <MenuItem
+                        _hover={{ bgColor: "#3646B333" }}
+                        borderRadius="15px"
+                        bgColor="#3646B30D"
+                        my="5px"
+                        h="35px"
+                      >
+                        منابع و مراجع
+                      </MenuItem>
+                      <MenuItem
+                        _hover={{ bgColor: "#3646B333" }}
+                        borderRadius="15px"
+                        bgColor="#3646B30D"
+                        my="5px"
+                        h="35px"
+                      >
+                        اخبار
+                      </MenuItem>
+                      <MenuItem
+                        _hover={{ bgColor: "#3646B333" }}
+                        borderRadius="15px"
+                        bgColor="#3646B30D"
+                        my="5px"
+                        h="35px"
+                      >
+                        کاربران
+                      </MenuItem>
+                      <MenuItem
+                        _hover={{ bgColor: "#3646B333" }}
+                        borderRadius="15px"
+                        bgColor="#3646B30D"
+                        my="5px"
+                        h="35px"
+                      >
+                        پشتیبانی و راه ارتباطی
+                      </MenuItem>
+                      <MenuItem
+                        _hover={{ bgColor: "#3646B333" }}
+                        borderRadius="15px"
+                        bgColor="#3646B30D"
+                        my="5px"
+                        h="35px"
+                        onClick={() => handleExit()}
+                      >
+                        خروج از حساب کاربری
+                      </MenuItem>
+                    </MotionMenuList>
+                  )}
+                </AnimatePresence>
               </Menu>
             </HStack>
           </HStack>
