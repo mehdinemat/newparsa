@@ -33,7 +33,7 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { CiSearch } from "react-icons/ci";
 import { FaTelegram } from "react-icons/fa";
-import { IoIosArrowDown, IoLogoInstagram, IoLogoTwitter } from "react-icons/io";
+import { IoLogoInstagram, IoLogoTwitter } from "react-icons/io";
 import { IoCall, IoLocation } from "react-icons/io5";
 import useSWR from "swr";
 import { StringParam, useQueryParams, withDefault } from "use-query-params";
@@ -173,8 +173,8 @@ const MainLayout = ({
       _.includes(router.asPath.toLowerCase(), "admin_dashboard")
         ? 2
         : _.includes(router.asPath.toLowerCase(), "dashboard")
-        ? 1
-        : 0
+          ? 1
+          : 0
     );
   }, [router]);
 
@@ -435,6 +435,7 @@ const MainLayout = ({
                     پشتیبانی و راه ارتباطی
                   </MenuItem>
                   <MenuItem
+                    onClick={(e) => handleExit()}
                     _hover={{ bgColor: "#3646B333" }}
                     borderRadius={"15px"}
                     bgColor={"#3646B30D"}
@@ -679,6 +680,7 @@ const MainLayout = ({
             bg="#F7F7F7"
             alignItems={"center"}
             scrollSnapAlign="start"
+            mt={'100px'}
           >
             <Box
               maxW="container.xl"

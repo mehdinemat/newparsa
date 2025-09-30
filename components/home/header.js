@@ -229,7 +229,10 @@ const Header = ({
     router.push("/dashboard/profile");
   };
 
-
+  const handleExit = () => {
+    localStorage.removeItem("token");
+    router.replace("/");
+  };
   return (
     <Box
       // marginTop={{ base: "60px", md: "100px" }}
@@ -456,6 +459,7 @@ const Header = ({
                 bgColor={"#3646B30D"}
                 my={"5px"}
                 h={"35px"}
+                onClick={(e) => handleExit()}
               >
                 خروج از حساب کاربری
               </MenuItem>

@@ -757,7 +757,7 @@ const Index = () => {
                             cursor={"pointer"}
                             onClick={(e) => router.push("/references")}
                           >
-                            {t("show_all")}
+                            {/* {t("show_all")} */}
                           </Text>
                         </HStack>
                         <CommentCard t={t} />
@@ -780,7 +780,7 @@ const Index = () => {
                               cursor="pointer"
                               onClick={() => router.push("/references")}
                             >
-                              {t("show_all")}
+                              {/* {t("show_all")} */}
                             </Text>
                           </HStack>
 
