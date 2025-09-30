@@ -34,6 +34,7 @@ const Index = () => {
   return (
     <MainLayout>
       <Box
+      scrollSnapAlign="start"
         w="100%"
         alignItems={"center"}
         justifyContent={"center"}
@@ -43,7 +44,7 @@ const Index = () => {
         my={"34px"}
         mt={{ base: "40px", md: "120px" }}
       >
-        <Grid
+        <Grid mt={'40px'}
           templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(8, 1fr)" }}
           w={"100%"}
         >

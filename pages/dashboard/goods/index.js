@@ -8,6 +8,7 @@ const Index = () => {
   return (
     <MainLayout>
       <Box
+      scrollSnapAlign="start"
         w="100%"
         alignItems={"center"}
         justifyContent={"center"}
@@ -17,7 +18,7 @@ const Index = () => {
         my={"20px"}
         mt={{ base: '40px', md: '60px' }}
       >
-        <Grid templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(4, 1fr)" }} gap={'32px'} w={'100%'}>
+        <Grid templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(4, 1fr)" }} gap={'32px'} w={'100%'} mt={'40px'}>
           <GridItem colSpan={1} display={{ base: 'none', md: 'flex' }}>
             <RightSidebar />
           </GridItem>

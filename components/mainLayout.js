@@ -394,6 +394,7 @@ const MainLayout = ({
                     bgColor={"#3646B30D"}
                     my={"5px"}
                     h={"35px"}
+                    onClick={(e) => handleProfileLink()}
                   >
                     پروفایل(ورود؟ثبت‌نام)
                   </MenuItem>

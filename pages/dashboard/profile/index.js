@@ -44,9 +44,11 @@ const Index = () => {
   return (
     <MainLayout>
       <Box
+      
         w="100%"
         alignItems={"center"}
         justifyContent={"center"}
+        scrollSnapAlign="start"
         // maxW="container.xl"
         px="34px"
         // p={{ base: "20px", md: "60px" }}
@@ -56,6 +58,7 @@ const Index = () => {
         <Grid
           templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(8, 1fr)" }}
           w={"100%"}
+          mt={'40px'}
         >
           <GridItem colSpan={1} display={{ base: "none", md: "flex" }}>
             <RightSidebar />

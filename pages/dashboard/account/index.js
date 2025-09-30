@@ -16,8 +16,9 @@ const Index = () => {
         p={{ base: '20px', md: "60px" }}
         my={"20px"}
         mt={'60px'}
+        scrollSnapAlign="start"
       >
-        <Grid templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(4, 1fr)" }} gap={'32px'} w={'100%'}>
+        <Grid templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(4, 1fr)" }} gap={'32px'} w={'100%'} mt={'40px'}>
           <GridItem colSpan={1} display={{ base: 'none', md: 'flex' }}>
             <RightSidebar />
           </GridItem>

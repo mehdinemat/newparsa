@@ -30,10 +30,11 @@ const Index = () => {
         // p={{ base: "20px", md: "60px" }}
         my={"34px"}
         mt={{ base: "40px", md: "120px" }}
+        scrollSnapAlign="start"
       >
         <Grid
           templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(8, 1fr)" }}
-          w={"100%"}
+          w={"100%"} mt={'40px'}
         >
           <GridItem colSpan={1} display={{ base: "none", md: "flex" }}>
             <RightSidebar />

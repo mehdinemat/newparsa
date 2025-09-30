@@ -229,6 +229,11 @@ const Header = ({
     handleClickAiSearch();
   };
 
+   const handleProfileLink = () => {
+    router.push("/dashboard/profile");
+  };
+
+
   return (
     <Box
       // marginTop={{ base: "60px", md: "100px" }}
@@ -409,6 +414,7 @@ const Header = ({
                 bgColor={"#3646B30D"}
                 my={"5px"}
                 h={"35px"}
+                onClick={(e) => handleProfileLink()}
               >
                 پروفایل(ورود؟ثبت‌نام)
               </MenuItem>
