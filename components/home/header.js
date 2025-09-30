@@ -98,7 +98,7 @@ const Header = ({
   resetSearch,
   handleVoiceSearch,
   hadith,
-  handleClickAiSearch
+  handleClickAiSearch,
 }) => {
   const router = useRouter();
 
@@ -119,7 +119,6 @@ const Header = ({
   const [isUserLogin, setIsUserLogin] = useState(false);
   const [showInput, setShowInput] = useState(false);
   const [loadingRecording, setLoadingRecording] = useState(false);
-  
 
   const audioContextRef = useRef(null);
   const streamRef = useRef(null);
@@ -134,8 +133,6 @@ const Header = ({
       },
     }
   );
-
- 
 
   // const handleMicClick = async () => {
   //   try {
@@ -229,10 +226,7 @@ const Header = ({
   }, []);
 
   const handleAiResponse = () => {
-
-   handleClickAiSearch()
-
-    
+    handleClickAiSearch();
   };
 
   return (
@@ -385,8 +379,86 @@ const Header = ({
           ) : (
             <Avatar fontSize={"46px"} />
           )}
-
-          <Image src="/menuheader.png" height="29px" width="28px" mr="20px" />
+          <Menu>
+            <MenuButton as={Button}>
+              <Image
+                src="/menuheader.png"
+                height="29px"
+                width="28px"
+                mr="20px"
+              />
+            </MenuButton>
+            <MenuList
+              bgColor={"#EBEDF8E5"}
+              padding={"12px"}
+              w={"237px"}
+              h={"289px"}
+              backdropFilter="blur(27.6px)"
+              boxShadow={`
+    0px 14px 30px 0px #0000001A,
+    0px 54px 54px 0px #00000017,
+    0px 122px 73px 0px #0000000D,
+    0px 216px 86px 0px #00000003,
+    0px 338px 95px 0px #00000000
+  `}
+              borderRadius={"30px"}
+            >
+              <MenuItem
+              _hover={{bgColor:'#3646B333'}}
+                borderRadius={"15px"}
+                bgColor={"#3646B30D"}
+                my={"5px"}
+                h={"35px"}
+              >
+                پروفایل(ورود؟ثبت‌نام)
+              </MenuItem>
+              <MenuItem
+              _hover={{bgColor:'#3646B333'}}
+                borderRadius={"15px"}
+                bgColor={"#3646B30D"}
+                my={"5px"}
+                h={"35px"}
+              >
+                منابع و مراجع
+              </MenuItem>
+              <MenuItem
+              _hover={{bgColor:'#3646B333'}}
+                borderRadius={"15px"}
+                bgColor={"#3646B30D"}
+                my={"5px"}
+                h={"35px"}
+              >
+                اخبار
+              </MenuItem>
+              <MenuItem
+              _hover={{bgColor:'#3646B333'}}
+                borderRadius={"15px"}
+                bgColor={"#3646B30D"}
+                my={"5px"}
+                h={"35px"}
+              >
+                کاربران
+              </MenuItem>
+              <MenuItem
+              _hover={{bgColor:'#3646B333'}}
+                borderRadius={"15px"}
+                bgColor={"#3646B30D"}
+                my={"5px"}
+                h={"35px"}
+              >
+                پشتیبانی و راه ارتباطی
+              </MenuItem>
+              <MenuItem
+              _hover={{bgColor:'#3646B333'}}
+                borderRadius={"15px"}
+                bgColor={"#3646B30D"}
+                my={"5px"}
+                h={"35px"}
+              >
+                خروج از حساب کاربری
+              </MenuItem>
+            </MenuList>
+          </Menu>
         </HStack>
       </HStack>
 

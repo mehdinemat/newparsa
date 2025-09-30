@@ -287,45 +287,6 @@ const MainLayout = ({
                 onClick={(e) => router.push("/")}
                 cursor={"pointer"}
               />
-              <Menu>
-                <MenuButton
-                  px={4}
-                  py={2}
-                  marginRight={"20px"}
-                  transition="all 0.2s"
-                >
-                  <HStack color={"#3646B3"}>
-                    <Text fontSize={"20px"}>
-                      {locale == "en"
-                        ? t("header_english")
-                        : locale == "fa"
-                        ? t("header_persian")
-                        : locale == "ar" && t("header_arabic")}
-                    </Text>
-                    <IoIosArrowDown width={"12px"} fontSize={"12px"} />
-                  </HStack>
-                </MenuButton>
-                <MenuList>
-                  <MenuItem
-                    value={"en"}
-                    onClick={(e) => router.push("/", "/", { locale: "en" })}
-                  >
-                    {t("header_english")}
-                  </MenuItem>
-                  <MenuItem
-                    value={"ar"}
-                    onClick={(e) => router.push("/", "/", { locale: "ar" })}
-                  >
-                    {t("header_arabic")}
-                  </MenuItem>
-                  <MenuItem
-                    value={"fa"}
-                    onClick={(e) => router.push("/", "/", { locale: "fa" })}
-                  >
-                    {t("header_persian")}
-                  </MenuItem>
-                </MenuList>
-              </Menu>
             </HStack>
             <HStack>
               <Box height="60px" display="flex" alignItems="center" ml={"0px"}>
@@ -403,12 +364,86 @@ const MainLayout = ({
                 <Avatar fontSize={"46px"} />
               )}
 
-              <Image
-                src="/headermenu.png"
-                height={"39px"}
-                width={"35px"}
-                mr={"20px"}
-              />
+              <Menu>
+                <MenuButton as={Button}>
+                  <Image
+                    src="/headermenu.png"
+                    height={"39px"}
+                    width={"35px"}
+                    mr="20px"
+                  />
+                </MenuButton>
+                <MenuList
+                  bgColor={"#EBEDF8E5"}
+                  padding={"12px"}
+                  w={"237px"}
+                  h={"289px"}
+                  backdropFilter="blur(27.6px)"
+                  boxShadow={`
+                 0px 14px 30px 0px #0000001A,
+                 0px 54px 54px 0px #00000017,
+                 0px 122px 73px 0px #0000000D,
+                 0px 216px 86px 0px #00000003,
+                 0px 338px 95px 0px #00000000
+               `}
+                  borderRadius={"30px"}
+                >
+                  <MenuItem
+                    _hover={{ bgColor: "#3646B333" }}
+                    borderRadius={"15px"}
+                    bgColor={"#3646B30D"}
+                    my={"5px"}
+                    h={"35px"}
+                  >
+                    پروفایل(ورود؟ثبت‌نام)
+                  </MenuItem>
+                  <MenuItem
+                    _hover={{ bgColor: "#3646B333" }}
+                    borderRadius={"15px"}
+                    bgColor={"#3646B30D"}
+                    my={"5px"}
+                    h={"35px"}
+                  >
+                    منابع و مراجع
+                  </MenuItem>
+                  <MenuItem
+                    _hover={{ bgColor: "#3646B333" }}
+                    borderRadius={"15px"}
+                    bgColor={"#3646B30D"}
+                    my={"5px"}
+                    h={"35px"}
+                  >
+                    اخبار
+                  </MenuItem>
+                  <MenuItem
+                    _hover={{ bgColor: "#3646B333" }}
+                    borderRadius={"15px"}
+                    bgColor={"#3646B30D"}
+                    my={"5px"}
+                    h={"35px"}
+                  >
+                    کاربران
+                  </MenuItem>
+                  <MenuItem
+                    _hover={{ bgColor: "#3646B333" }}
+                    borderRadius={"15px"}
+                    bgColor={"#3646B30D"}
+                    my={"5px"}
+                    h={"35px"}
+                  >
+                    پشتیبانی و راه ارتباطی
+                  </MenuItem>
+                  <MenuItem
+                    _hover={{ bgColor: "#3646B333" }}
+                    borderRadius={"15px"}
+                    bgColor={"#3646B30D"}
+                    my={"5px"}
+                    h={"35px"}
+                  >
+                    خروج از حساب کاربری
+                  </MenuItem>
+                </MenuList>
+              </Menu>
             </HStack>
           </HStack>
 
