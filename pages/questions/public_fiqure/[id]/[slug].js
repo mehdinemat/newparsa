@@ -158,6 +158,7 @@ export default function Home({ children }) {
         mx="auto"
         marginTop={{ base: "60px", md: "60px" }}
         p={"20px"}
+        scrollSnapAlign="start"
       >
         {/* <Stack pb={"20px"} mr={"10px"}>
           <Breadcrumb>
@@ -179,6 +180,7 @@ export default function Home({ children }) {
           }}
           gap={"20px"}
           w={"100%"}
+          mt={'60px'}
         >
           {/* Right Sidebar */}
 

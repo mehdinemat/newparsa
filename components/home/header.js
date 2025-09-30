@@ -36,6 +36,7 @@ import {
 import Recorder from "recorder-js";
 import useSWRMutation from "swr/mutation";
 import { baseUrl } from "../lib/api";
+import axios from "axios";
 
 const siteData = [
   {
@@ -83,6 +84,10 @@ const sendAudio = async (url, { arg }) => {
   return res.json();
 };
 
+const postRequest = (url, { arg }) => {
+  return axios.post(baseUrl + url, arg);
+};
+
 const Header = ({
   data,
   t,
@@ -93,6 +98,7 @@ const Header = ({
   resetSearch,
   handleVoiceSearch,
   hadith,
+  handleClickAiSearch
 }) => {
   const router = useRouter();
 
@@ -112,6 +118,8 @@ const Header = ({
   const [recordingActive, setRecordingActive] = useState(false);
   const [isUserLogin, setIsUserLogin] = useState(false);
   const [showInput, setShowInput] = useState(false);
+  const [loadingRecording, setLoadingRecording] = useState(false);
+  
 
   const audioContextRef = useRef(null);
   const streamRef = useRef(null);
@@ -126,6 +134,8 @@ const Header = ({
       },
     }
   );
+
+ 
 
   // const handleMicClick = async () => {
   //   try {
@@ -173,6 +183,8 @@ const Header = ({
   const handleStopRecording = async () => {
     if (!recorderRef.current || !isRecording) return;
 
+    setLoadingRecording(true);
+
     const { blob } = await recorderRef.current.stop();
     setRecordedBlob(blob);
 
@@ -183,9 +195,11 @@ const Header = ({
       const response = await uploadAudio(blob); // this sends it
       console.log("Upload response:", response); // use this data in UI
     } catch (err) {
+      setLoadingRecording(false);
       console.error("Upload failed:", err);
     }
 
+    setLoadingRecording(false);
     // Optionally clear the blob
     setRecordedBlob(null);
   };
@@ -213,6 +227,13 @@ const Header = ({
   useEffect(() => {
     setIsUserLogin(!!localStorage.getItem("token"));
   }, []);
+
+  const handleAiResponse = () => {
+
+   handleClickAiSearch()
+
+    
+  };
 
   return (
     <Box
@@ -532,97 +553,101 @@ const Header = ({
                 {/* (
                   <Spinner color="white" />
                 ) :  */}
-                
-                  <>
-                    {/* <IoSearch
+
+                <>
+                  {/* <IoSearch
                         fontSize={'30px'}
                         color="#29CCCC"
                         cursor="pointer"
                         onClick={(e) => handleClickSearch()}
                       /> */}
-                    {/* <PiDiamondThin
+                  {/* <PiDiamondThin
                         fontSize="20px"
                         color="#29CCCC"
                         cursor="pointer"
                         onClick={(e) => handleClickSemanticSearch()}
                       /> */}
-                    {!isRecording ? (
+                  {!isRecording ? (
+                    loadingRecording ? (
+                      <Spinner color="white" />
+                    ) : (
                       <IoMic
                         fontSize={"25px"}
                         color="#29CCCC"
                         style={{ cursor: "pointer", marginRight: "10px" }}
                         onClick={handleMicClick}
                       />
-                    ) : 
-                      <HStack gap={0}>
-                        <svg
-                          cursor={"pointer"}
-                          width="38"
-                          height="38"
-                          viewBox="0 0 38 38"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                          onClick={async () => {
-                            handleStopRecording();
-                            // setTimeout(handleUpload, 500);
-                          }}
-                        >
-                          <g filter="url(#filter0_d_832_10734)">
-                            <rect
-                              x="11.5"
-                              y="11.5"
-                              width="15"
-                              height="15"
-                              rx="2"
-                              fill="#FF0000"
+                    )
+                  ) : (
+                    <HStack gap={0}>
+                      <svg
+                        cursor={"pointer"}
+                        width="38"
+                        height="38"
+                        viewBox="0 0 38 38"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        onClick={async () => {
+                          handleStopRecording();
+                          // setTimeout(handleUpload, 500);
+                        }}
+                      >
+                        <g filter="url(#filter0_d_832_10734)">
+                          <rect
+                            x="11.5"
+                            y="11.5"
+                            width="15"
+                            height="15"
+                            rx="2"
+                            fill="#FF0000"
+                          />
+                        </g>
+                        <defs>
+                          <filter
+                            id="filter0_d_832_10734"
+                            x="0.7"
+                            y="0.7"
+                            width="36.6"
+                            height="36.6"
+                            filterUnits="userSpaceOnUse"
+                            color-interpolation-filters="sRGB"
+                          >
+                            <feFlood
+                              flood-opacity="0"
+                              result="BackgroundImageFix"
                             />
-                          </g>
-                          <defs>
-                            <filter
-                              id="filter0_d_832_10734"
-                              x="0.7"
-                              y="0.7"
-                              width="36.6"
-                              height="36.6"
-                              filterUnits="userSpaceOnUse"
-                              color-interpolation-filters="sRGB"
-                            >
-                              <feFlood
-                                flood-opacity="0"
-                                result="BackgroundImageFix"
-                              />
-                              <feColorMatrix
-                                in="SourceAlpha"
-                                type="matrix"
-                                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                                result="hardAlpha"
-                              />
-                              <feOffset />
-                              <feGaussianBlur stdDeviation="5.4" />
-                              <feComposite in2="hardAlpha" operator="out" />
-                              <feColorMatrix
-                                type="matrix"
-                                values="0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0"
-                              />
-                              <feBlend
-                                mode="normal"
-                                in2="BackgroundImageFix"
-                                result="effect1_dropShadow_832_10734"
-                              />
-                              <feBlend
-                                mode="normal"
-                                in="SourceGraphic"
-                                in2="effect1_dropShadow_832_10734"
-                                result="shape"
-                              />
-                            </filter>
-                          </defs>
-                        </svg>
-                        <Image src="/Device.png" height={"40px"} />
-                      </HStack>
-                    }
-                  </>
-                
+                            <feColorMatrix
+                              in="SourceAlpha"
+                              type="matrix"
+                              values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                              result="hardAlpha"
+                            />
+                            <feOffset />
+                            <feGaussianBlur stdDeviation="5.4" />
+                            <feComposite in2="hardAlpha" operator="out" />
+                            <feColorMatrix
+                              type="matrix"
+                              values="0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0"
+                            />
+                            <feBlend
+                              mode="normal"
+                              in2="BackgroundImageFix"
+                              result="effect1_dropShadow_832_10734"
+                            />
+                            <feBlend
+                              mode="normal"
+                              in="SourceGraphic"
+                              in2="effect1_dropShadow_832_10734"
+                              result="shape"
+                            />
+                          </filter>
+                        </defs>
+                      </svg>
+                      <Image src="/Device.png" height={"40px"} />
+                    </HStack>
+                  )}
+                </>
+
                 {/* } */}
               </Flex>
               <HStack>
@@ -729,7 +754,7 @@ const Header = ({
                       />
                     </svg>
                   }
-                  onClick={(e) => handleClickSemanticSearch()}
+                  onClick={(e) => handleAiResponse()}
                 >
                   پاسخ هوش‌مصنوعی
                 </Button>

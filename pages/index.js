@@ -241,6 +241,15 @@ export default function Home({ children }) {
       )}&search_type=semantic_search`
     );
   };
+  const handleClickAiSearch = () => {
+    router.push(
+      `/result_search?search=${watchSearch(
+        "search"
+      )}&search_type=search&type=ai`
+    );
+  };
+
+
   const handleVoiceSearch = (text) => {
     router.push(`/result_search?search=${text}&search_type=semantic_search`);
   };
@@ -288,6 +297,7 @@ export default function Home({ children }) {
         resetSearch={resetSearch}
         handleClickSearch={handleClickSearch}
         handleClickSemanticSearch={handleClickSemanticSearch}
+        handleClickAiSearch={handleClickAiSearch}
         handleVoiceSearch={handleVoiceSearch}
       />
       <Box

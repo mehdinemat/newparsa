@@ -10,7 +10,7 @@ import {
   Stack,
   Tabs,
   Text,
-  VStack
+  VStack,
 } from "@chakra-ui/react";
 import { Geist, Geist_Mono } from "next/font/google";
 import "slick-carousel/slick/slick-theme.css";
@@ -29,6 +29,8 @@ import { IoIosArrowDown } from "react-icons/io";
 import { IoSearch } from "react-icons/io5";
 import useSWR from "swr";
 import { StringParam, useQueryParams, withDefault } from "use-query-params";
+import axios from "axios";
+import useSWRMutation from "swr/mutation";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -53,9 +55,12 @@ export const fetcherWithTiming = async (url) => {
   return { data, duration };
 };
 
+const postRequest = (url, { arg }) => {
+  console.log("slam");
+  return axios.post(baseUrl + url, arg);
+};
+
 const Index = ({ children }) => {
-
-
   const { t } = useTranslation();
 
   const router = useRouter();
@@ -64,25 +69,28 @@ const Index = ({ children }) => {
 
   const [page, setPage] = useState(1);
 
-  const scrollRef = useRef(null)
-  const [isDragging, setIsDragging] = useState(false)
-  const [startX, setStartX] = useState(0)
-  const [scrollLeft, setScrollLeft] = useState(0)
-  const [showMore, setShowMore] = useState(false)
-
+  const scrollRef = useRef(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
+  const [showMore, setShowMore] = useState(false);
+  const [chatSession, setChatSession] = useState("");
+  const [botStream, setBotStream] = useState("");
+  const [aiMessage, setAiMessage] = useState("");
   const [test, setTest] = useState(
     "نماز آیات هنگام وقوع پدیده‌های طبیعی ترسناک مانند کسوف (خورشید گرفتگی)، خسوف (ماه گرفتگی)، زلزله، رعد و برق، بادهای سیاه و سرخ، صیحه آسمانی، یا فرو رفتن زمین واجب می‌شود. در مواردی مانند زلزله، رعد و برق و صیحه آسمانی، این نماز باید بلافاصله خوانده شود و اگر خوانده نشود تا آخر عمر بر گردن فرد باقی می‌ماند و هر وقت خوانده شود، به صورت ادا محسوب می‌شود. نماز آیات هنگام وقوع پدیده‌های طبیعی ترسناک مانند کسوف (خورشید گرفتگی)، خسوف (ماه گرفتگی)، زلزله، رعد و برق، بادهای سیاه و سرخ، صیحه آسمانی، یا فرو رفتن زمین واجب می‌شود. در مواردی مانند زلزله، رعد و برق و صیحه آسمانی، این نماز باید بلافاصله خوانده شود و اگر خوانده نشود تا آخر عمر بر گردن فرد باقی می‌ماند و هر وقت خوانده شود، به صورت ادا محسوب می‌شود نماز آیات هنگام وقوع پدیده‌های طبیعی ترسناک مانند کسوف (خورشید گرفتگی)، خسوف (ماه گرفتگی)، زلزله، رعد و برق، بادهای سیاه و سرخ، صیحه آسمانی، یا فرو رفتن زمین واجب می‌شود. در مواردی مانند زلزله، رعد و برق و صیحه آسمانی، این نماز باید بلافاصله خوانده شود و اگر خوانده نشود تا آخر عمر بر گردن فرد باقی می‌ماند و هر وقت خوانده شود، به صورت ادا محسوب می‌شو"
   );
 
-  const [hoveredIndex, setHoveredIndex] = useState({ selected: '', val: '' });
+  const [hoveredIndex, setHoveredIndex] = useState({ selected: "", val: "" });
 
   const [filters, setFilters] = useQueryParams({
     search: withDefault(StringParam, ""),
     search_type: withDefault(StringParam, ""),
+    type: withDefault(StringParam, ""),
     order_by: withDefault(StringParam, ""),
     model: withDefault(StringParam, "e5"),
     source: withDefault(StringParam, ""),
-    category_id: withDefault(StringParam, '28')
+    category_id: withDefault(StringParam, "28"),
   });
 
   const {
@@ -97,12 +105,24 @@ const Index = ({ children }) => {
   const { data: dataCategory, isLoading: isLoadingCategory } = useSWR(
     `user/category?type=question`,
     {
-      onSuccess: (res) => { },
+      onSuccess: (res) => {},
     }
   );
-  const { data: dataCategoryChild, error: errorCategoryChild, mutate: mutateCategory, isLoading: isLoadingChildCategory } = useSWR(`user/category?parent_id=${filters?.category_id}&type=question`);
-  const { data: dataCategoryChild2, error: errorCategoryChild2, mutate: mutateCategory2, isLoading: isLoadingChildCategory2 } = useSWR(hoveredIndex?.val && `user/category?parent_id=${hoveredIndex?.val}&type=question`);
-
+  const {
+    data: dataCategoryChild,
+    error: errorCategoryChild,
+    mutate: mutateCategory,
+    isLoading: isLoadingChildCategory,
+  } = useSWR(`user/category?parent_id=${filters?.category_id}&type=question`);
+  const {
+    data: dataCategoryChild2,
+    error: errorCategoryChild2,
+    mutate: mutateCategory2,
+    isLoading: isLoadingChildCategory2,
+  } = useSWR(
+    hoveredIndex?.val &&
+      `user/category?parent_id=${hoveredIndex?.val}&type=question`
+  );
 
   const { data: dataResource, isLoading: isLoadingResource } =
     useSWR(`user/source`);
@@ -112,8 +132,10 @@ const Index = ({ children }) => {
     error: errorQuestionSearch,
     isLoading: isLoadingQuestionSearch,
   } = useSWR(
-    `user/question/search?page=${(page - 1) * 10}&search_type=${filters?.search_type
-    }&content=${filters?.search}&lang=${locale}${filters?.order_by && `&order_by=${filters?.order_by}`
+    `user/question/search?page=${(page - 1) * 10}&search_type=${
+      filters?.search_type
+    }&content=${filters?.search}&lang=${locale}${
+      filters?.order_by && `&order_by=${filters?.order_by}`
     }&model_name=${filters?.model}&source_name=${filters?.source}`,
     fetcherWithTiming
   );
@@ -122,6 +144,93 @@ const Index = ({ children }) => {
     error: errorCurrection,
     isLoading: isLoadingCurrection,
   } = useSWR(`user/question/spell-correction?content=${filters?.search}`);
+
+  const { trigger: triggerSession } = useSWRMutation(
+    `user/chat/session`,
+    postRequest,
+    {
+      onSuccess: async (data) => {
+        console.log(chatSession, data);
+
+        setChatSession(data?.data?.data?.id);
+
+        const userId = Date.now();
+        let botMessage = "";
+        setBotStream("");
+
+        const res = await fetch(
+          `https://parsa.api.t.etratnet.ir/user/chat/${data?.data?.data?.id}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+            body: JSON.stringify({ content: filters?.search }),
+          }
+        );
+
+        if (!res.body) {
+          setIsStreaming(false);
+          console.error("No streaming body in response");
+          return;
+        }
+
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder("utf-8");
+        let buffer = "";
+        let done = false;
+
+        while (!done) {
+          const { value, done: doneReading } = await reader.read();
+          done = !!doneReading;
+          if (value) buffer += decoder.decode(value, { stream: true });
+
+          const lines = buffer.split(/\r?\n/);
+          buffer = lines.pop() ?? "";
+
+          for (const rawLine of lines) {
+            const line = rawLine.trim();
+            if (!line.startsWith("data:")) continue;
+
+            const jsonStr = line.replace(/^data:\s*/, "");
+            if (jsonStr === "[DONE]") {
+              done = true;
+              break;
+            }
+
+            try {
+              const parsed = JSON.parse(jsonStr);
+
+              if (parsed.error) {
+                console.error("Stream error:", parsed.error);
+                done = true;
+                break;
+              }
+
+              if (parsed.chunk) {
+                setIsStreaming(false);
+                botMessage += parsed.chunk;
+                console.log(parsed);
+                // update assistant message in history
+                setAiMessage(botMessage);
+              }
+
+              if (parsed.done) {
+                done = true;
+                break;
+              }
+            } catch (err) {
+              console.error("Could not parse stream JSON:", jsonStr, err);
+            }
+          }
+        }
+
+        // clear botStream state if you don’t need it
+        setBotStream("");
+      },
+    }
+  );
 
   const handleNewQuestionButton = () => {
     router.push("/new_question");
@@ -149,37 +258,37 @@ const Index = ({ children }) => {
 
   const scroll = (direction) => {
     if (scrollRef.current) {
-      const scrollAmount = direction === 'left' ? -150 : 150
-      scrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' })
+      const scrollAmount = direction === "left" ? -150 : 150;
+      scrollRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
     }
-  }
+  };
 
   const handleMouseDown = (e) => {
-    if (!scrollRef.current) return
-    setIsDragging(true)
-    setStartX(e.pageX - scrollRef.current.offsetLeft)
-    setScrollLeft(scrollRef.current.scrollLeft)
-  }
+    if (!scrollRef.current) return;
+    setIsDragging(true);
+    setStartX(e.pageX - scrollRef.current.offsetLeft);
+    setScrollLeft(scrollRef.current.scrollLeft);
+  };
 
   const handleMouseLeave = () => {
-    setIsDragging(false)
-  }
+    setIsDragging(false);
+  };
 
   const handleMouseUp = () => {
-    setIsDragging(false)
-  }
+    setIsDragging(false);
+  };
 
   const handleMouseMove = (e) => {
-    if (!isDragging || !scrollRef.current) return
-    e.preventDefault()
-    const x = e.pageX - scrollRef.current.offsetLeft
-    const walk = x - startX
-    scrollRef.current.scrollLeft = scrollLeft - walk
-  }
+    if (!isDragging || !scrollRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - scrollRef.current.offsetLeft;
+    const walk = x - startX;
+    scrollRef.current.scrollLeft = scrollLeft - walk;
+  };
 
   const handleCategoryClick = (index, val) => {
-    setHoveredIndex({ selected: index, val: val })
-  }
+    setHoveredIndex({ selected: index, val: val });
+  };
 
   const handleCategoryLink = ({ title, id }) => {
     router.push(`/questions/category/${id}/${title}`);
@@ -187,14 +296,23 @@ const Index = ({ children }) => {
 
   const RotatingIcon = chakra(IoIosArrowDown, {
     baseStyle: {
-      transition: 'transform 0.3s ease',
+      transition: "transform 0.3s ease",
     },
   });
 
-  return (
-    <MainLayout menuDefault={true} register={registerSearch} watchSearch={watchSearch}>
-      <Tabs w={'100%'} scrollSnapAlign="start">
+  useEffect(() => {
+    if (filters?.type == "ai") {
+      triggerSession();
+    }
+  }, []);
 
+  return (
+    <MainLayout
+      menuDefault={true}
+      register={registerSearch}
+      watchSearch={watchSearch}
+    >
+      <Tabs w={"100%"} scrollSnapAlign="start">
         {/* <Box
           height="230px"
           w="100%"
@@ -351,7 +469,6 @@ const Index = ({ children }) => {
 
         </Box> */}
 
-
         <Head>
           <title>
             {t("parsa")} :{" "}
@@ -504,48 +621,56 @@ const Index = ({ children }) => {
               whiteSpace="normal"
               pr={{ base: 0, md: "21px" }}
             >
-
-              <VStack mb={"80px"} alignItems={"start"}>
-                <Text fontSize={"16px"} color={"#C2C2C2"}>
-                  {filters?.search}
-                </Text>
-                <HStack w={"100%"} alignItems={"center"}>
-                  <svg
-                    width="32"
-                    height="32"
-                    viewBox="0 0 32 32"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M15.7422 0L17.1554 6.14379C18.1138 10.3056 21.2586 13.5519 25.2904 14.5412L31.2422 16L25.2904 17.4588C21.2586 18.4481 18.1138 21.6944 17.1554 25.8562L15.7422 32L14.329 25.8562C13.3706 21.6944 10.2257 18.4481 6.19398 17.4588L0.242188 16L6.19398 14.5412C10.2257 13.5519 13.3706 10.3056 14.329 6.14379L15.7422 0Z"
-                      fill="#3646B3"
-                    />
-                  </svg>
-                  <Text fontSize={"30px"} color={"#3646B3"}>
-                    نتایج جستجو هوشمند
+              {filters?.type == "ai" && (
+                <VStack mb={"80px"} alignItems={"start"}>
+                  <Text fontSize={"16px"} color={"#C2C2C2"}>
+                    {filters?.search}
                   </Text>
-                </HStack>
-                <Collapse startingHeight={80} in={showMore}>
-                  <Box bgColor={"#F7F7F7"} padding={"17px"} borderRadius={"30px"}>
-                    <Text fontSize={"20px"} fontWeight={"400"}>
-                      {test?.substring(0, showMore ? test?.length : 200)}
-                    </Text>
-                  </Box>
-                </Collapse>
-                {!showMore && (
-                  <VStack w={"100%"} justifyContent={"center"}>
-                    <Text
-                      fontSize={"14px"}
-                      color={"#3646B3"}
-                      cursor={"pointer"}
-                      onClick={(e) => setShowMore(true)}
+                  <HStack w={"100%"} alignItems={"center"}>
+                    <svg
+                      width="32"
+                      height="32"
+                      viewBox="0 0 32 32"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
-                      مشاهده کامل
+                      <path
+                        d="M15.7422 0L17.1554 6.14379C18.1138 10.3056 21.2586 13.5519 25.2904 14.5412L31.2422 16L25.2904 17.4588C21.2586 18.4481 18.1138 21.6944 17.1554 25.8562L15.7422 32L14.329 25.8562C13.3706 21.6944 10.2257 18.4481 6.19398 17.4588L0.242188 16L6.19398 14.5412C10.2257 13.5519 13.3706 10.3056 14.329 6.14379L15.7422 0Z"
+                        fill="#3646B3"
+                      />
+                    </svg>
+                    <Text fontSize={"30px"} color={"#3646B3"}>
+                      نتایج جستجو هوشمند
                     </Text>
-                  </VStack>
-                )}
-              </VStack>
+                  </HStack>
+                  <Collapse startingHeight={80} in={showMore}>
+                    <Box
+                      bgColor={"#F7F7F7"}
+                      padding={"17px"}
+                      borderRadius={"30px"}
+                    >
+                      <Text fontSize={"20px"} fontWeight={"400"}>
+                        {aiMessage?.substring(
+                          0,
+                          showMore ? aiMessage?.length : 200
+                        )}
+                      </Text>
+                    </Box>
+                  </Collapse>
+                  {!showMore && (
+                    <VStack w={"100%"} justifyContent={"center"}>
+                      <Text
+                        fontSize={"14px"}
+                        color={"#3646B3"}
+                        cursor={"pointer"}
+                        onClick={(e) => setShowMore(true)}
+                      >
+                        مشاهده کامل
+                      </Text>
+                    </VStack>
+                  )}
+                </VStack>
+              )}
 
               <HStack mb={"10px"}>
                 <IoSearch color={"#3646B3"} fontSize={"22px"} />
@@ -557,8 +682,13 @@ const Index = ({ children }) => {
                 </Text>
               </HStack>
 
-              <VStack w={'100%'} bgColor={'white'} padding={'14px'} borderRadius={'15px'}>
-                <HStack w={"100%"} justifyContent={"space-between"}  >
+              <VStack
+                w={"100%"}
+                bgColor={"white"}
+                padding={"14px"}
+                borderRadius={"15px"}
+              >
+                <HStack w={"100%"} justifyContent={"space-between"}>
                   {/* <Text w={"full"}>
                     {dataQuestionSearch?.data?.data?.total_count} نتیجه (
                     {(dataQuestionSearch?.duration / 1000).toFixed(3) || 0} ثانیه)
@@ -599,10 +729,17 @@ const Index = ({ children }) => {
                     <Spinner />
                   </HStack>
                 ) : (
-                  <VStack display={{ base: "none", md: "flex" }} w={'100%'}>
-                    {dataQuestionSearch?.data?.data?.result?.map((item, index) => (
-                      <QuestionCard key={index} data={item} t={t} bgColor={'#F7F7F7'} />
-                    ))}
+                  <VStack display={{ base: "none", md: "flex" }} w={"100%"}>
+                    {dataQuestionSearch?.data?.data?.result?.map(
+                      (item, index) => (
+                        <QuestionCard
+                          key={index}
+                          data={item}
+                          t={t}
+                          bgColor={"#F7F7F7"}
+                        />
+                      )
+                    )}
                     <Stack
                       w={"100%"}
                       justifyContent={"center"}
@@ -673,7 +810,6 @@ const Index = ({ children }) => {
           </Grid>
         </Box>
       </Tabs>
-
     </MainLayout>
   );
 };
