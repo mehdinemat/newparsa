@@ -7,11 +7,12 @@ import {
   GridItem,
   Heading,
   HStack,
+  IconButton,
   Spinner,
   Stack,
   Tabs,
   Text,
-  VStack,
+  VStack
 } from "@chakra-ui/react";
 import { Geist, Geist_Mono } from "next/font/google";
 import "slick-carousel/slick/slick-theme.css";
@@ -21,14 +22,15 @@ import QuestionMCard from "@/components/home/mobile/questionMCard";
 import { baseUrl } from "@/components/lib/api";
 import Pagination from "@/components/pagination";
 import QuestionCard from "@/components/questionCars";
+import TextSlider from "@/components/textSlider";
 import axios from "axios";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { IoIosArrowDown } from "react-icons/io";
-import { IoSearch } from "react-icons/io5";
+import { IoIosArrowDown, IoMdClose } from "react-icons/io";
+import { IoOptionsOutline, IoSearch } from "react-icons/io5";
 import ReactMarkdown from "react-markdown";
 import remarkBreaks from "remark-breaks";
 import useSWR from "swr";
@@ -63,6 +65,8 @@ const postRequest = (url, { arg }) => {
   return axios.post(baseUrl + url, arg);
 };
 
+const tags = ['جامعه اسلامی', 'قرآن', 'جمهوری اسلامی', 'احادیث معتبر', 'روایات', 'جامعه اسلامی',]
+
 const Index = ({ children }) => {
   const { t } = useTranslation();
 
@@ -80,9 +84,7 @@ const Index = ({ children }) => {
   const [chatSession, setChatSession] = useState("");
   const [botStream, setBotStream] = useState("");
   const [aiMessage, setAiMessage] = useState("");
-  const [test, setTest] = useState(
-    "نماز آیات هنگام وقوع پدیده‌های طبیعی ترسناک مانند کسوف (خورشید گرفتگی)، خسوف (ماه گرفتگی)، زلزله، رعد و برق، بادهای سیاه و سرخ، صیحه آسمانی، یا فرو رفتن زمین واجب می‌شود. در مواردی مانند زلزله، رعد و برق و صیحه آسمانی، این نماز باید بلافاصله خوانده شود و اگر خوانده نشود تا آخر عمر بر گردن فرد باقی می‌ماند و هر وقت خوانده شود، به صورت ادا محسوب می‌شود. نماز آیات هنگام وقوع پدیده‌های طبیعی ترسناک مانند کسوف (خورشید گرفتگی)، خسوف (ماه گرفتگی)، زلزله، رعد و برق، بادهای سیاه و سرخ، صیحه آسمانی، یا فرو رفتن زمین واجب می‌شود. در مواردی مانند زلزله، رعد و برق و صیحه آسمانی، این نماز باید بلافاصله خوانده شود و اگر خوانده نشود تا آخر عمر بر گردن فرد باقی می‌ماند و هر وقت خوانده شود، به صورت ادا محسوب می‌شود نماز آیات هنگام وقوع پدیده‌های طبیعی ترسناک مانند کسوف (خورشید گرفتگی)، خسوف (ماه گرفتگی)، زلزله، رعد و برق، بادهای سیاه و سرخ، صیحه آسمانی، یا فرو رفتن زمین واجب می‌شود. در مواردی مانند زلزله، رعد و برق و صیحه آسمانی، این نماز باید بلافاصله خوانده شود و اگر خوانده نشود تا آخر عمر بر گردن فرد باقی می‌ماند و هر وقت خوانده شود، به صورت ادا محسوب می‌شو"
-  );
+  const [filter, setFilter] = useState(false)
 
   const [hoveredIndex, setHoveredIndex] = useState({ selected: "", val: "" });
 
@@ -680,14 +682,77 @@ const Index = ({ children }) => {
                 </VStack>
               )}
 
-              <HStack mb={"10px"}>
-                <IoSearch color={"#3646B3"} fontSize={"22px"} />
-                <Text fontSize={"30px"} color={"#3646B3"}>
-                  نتایج جستجو بین سوالات
-                </Text>
-                <Text color={"#C2C2C2"} fontSize={"16px"}>
-                  {dataQuestionSearch?.data?.data?.total_count} سوال
-                </Text>
+              <HStack w={'100%'} justifyContent={'space-between'} height={'100%'}>
+                <HStack mb={"10px"} ml={'20px'}>
+                  <IoSearch color={"#3646B3"} fontSize={"22px"} />
+                  <Text fontSize={"30px"} color={"#3646B3"} whiteSpace={'nowrap'}>
+                    نتایج جستجو بین سوالات
+                  </Text>
+                  <Text color={"#C2C2C2"} fontSize={"16px"} whiteSpace={'nowrap'}>
+                    {dataQuestionSearch?.data?.data?.total_count} سوال
+                  </Text>
+                </HStack>
+                {!filter ? <Box
+                  position="relative"
+                  cursor="pointer"
+                  borderRadius="15px"
+                  overflow="hidden"
+                  role="group"
+                  onClick={() => setFilter(true)}
+                >
+                  {/* Background */}
+                  <Box
+                    position="absolute"
+                    top={0}
+                    left={0}
+                    width="0" // default: no background
+                    height="100%"
+                    bgColor="#3646B31A"
+                    transition="width 0.4s ease" // collapse smoothly on leave
+                    _groupHover={{
+                      width: "100%", // appear instantly on hover
+                      transition: "none", // no animation on hover enter
+                    }}
+                    zIndex={0}
+                  />
+
+                  {/* Content */}
+                  <HStack
+                    position="relative"
+                    alignItems="center"
+                    justifyContent="center"
+                    height="60px"
+                    px={4}
+                    spacing={2}
+                    zIndex={1}
+                  >
+                    <Text
+                      fontFamily="iransans"
+                      fontWeight="500"
+                      fontSize="20px"
+                      color="#3646B3"
+                      opacity={0} // hidden initially
+                      transition="opacity 0.4s ease" // smooth fade on leave
+                      _groupHover={{
+                        opacity: 1, // appear instantly
+                        transition: "none", // no animation on hover enter
+                      }}
+                      pointerEvents="none"
+                    >
+                      فیلترها
+                    </Text>
+
+                    <IconButton icon={<IoOptionsOutline color="#3646B3" />} fontSize="31px" />
+                  </HStack>
+                </Box>
+
+
+                  :
+                  <Box as={HStack} justifyContent={'space-between'} w={'100%'} bgColor={'#3646B31A'} overflow={'hidden'} height={'60px'} borderRadius={'10px'}>
+                    <TextSlider />
+                    <IoMdClose color="#3646B3" fontSize={'24px'} width={'fit-content'} cursor={'pointer'} style={{ width: '24px', marginLeft: '14px' }} onClick={e => setFilter(false)} />
+                  </Box>
+                }
               </HStack>
 
               <VStack
