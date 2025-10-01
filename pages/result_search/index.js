@@ -536,7 +536,7 @@ const Index = ({ children }) => {
             ))}
           </TabPanels> */}
           <Grid
-            templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(4, 1fr)" }}
+            templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(1, 1fr)" }}
             templateAreas={{
               base: `"main" "right" "left" "slider"`,
             }}
@@ -611,9 +611,12 @@ const Index = ({ children }) => {
 
             {/* Main Content */}
             <Box
+            
               p={{ base: 0, md: "6" }}
               order={{ base: 1, md: 2 }}
-              as={GridItem}
+              as={VStack}
+              width={'100%'}
+              alignItems={'start'}
               colSpan={{ md: 4 }}
               w="100%"
               overflowWrap="break-word"
@@ -682,7 +685,7 @@ const Index = ({ children }) => {
                 </VStack>
               )}
 
-              <HStack w={'100%'} justifyContent={'space-between'} height={'100%'}>
+              <HStack w={'100%'} justifyContent={'space-between'} height={'100%'} width={'100%'}>
                 <HStack mb={"10px"} ml={'20px'}>
                   <IoSearch color={"#3646B3"} fontSize={"22px"} />
                   <Text fontSize={"30px"} color={"#3646B3"} whiteSpace={'nowrap'}>
@@ -833,7 +836,7 @@ const Index = ({ children }) => {
                 )}
               </VStack>
 
-              <VStack display={{ base: "flex", md: "none" }}>
+              <VStack display={{ base: "flex", md: "none" }} width={'100%'}>
                 {dataQuestionSearch?.data?.data?.result?.map((item, index) => (
                   <QuestionMCard key={index} data={item} t={t} />
                 ))}
