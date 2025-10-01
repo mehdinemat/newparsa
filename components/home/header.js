@@ -759,6 +759,7 @@ const Header = ({
               },
             }}
           >
+
             <Text color={"#76FFFF"} wordBreak="break-word" align={"justify"}>
               {hadith?.message}
             </Text>
