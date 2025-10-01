@@ -760,7 +760,7 @@ const Header = ({
             }}
           >
             <Text color={"#76FFFF"} wordBreak="break-word" align={"justify"}>
-              {hadith}
+              {hadith?.message}
             </Text>
           </Box>
           <HStack
