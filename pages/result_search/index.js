@@ -480,7 +480,7 @@ const Index = ({ children }) => {
             )}{" "}
             :{filters?.search}
           </title>
-          <link rel="icon" href="/porsyab_header.png" />
+          <link rel="icon" href="/question.png" />
         </Head>
         <Box
           w="100%"
