@@ -309,49 +309,6 @@ const Header = ({
         </HStack>
 
         <HStack align="center">
-          {/* <Box height="60px" display="flex" alignItems="center" ml={'0px'}>
-            {!showInput ? (
-              <CiSearch
-                color="white"
-                fontSize="30px"
-                style={{ marginLeft: "20px", cursor: "pointer" }}
-                onClick={() => setShowInput(true)}
-              />
-            ) : (
-              <InputGroup
-                width="490px"
-                border="1px"
-                borderColor="#3646B366"
-                height="60px"
-              >
-                <Input
-                  border="1px"
-                  borderColor="#3646B366"
-                  height="60px"
-                  width="490px"
-                  placeholder="جستجو..."
-                  bg="white"
-                  borderRadius="10px"
-                  {...register("search")}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      handleClickSearch();
-                    }
-                  }}
-                  _focus={{ borderColor: "blue.400" }}
-                />
-                <InputRightElement height="60px" ml={'16px'}>
-                  <CiSearch
-                    cursor="pointer"
-                    onClick={handleClickSearch}
-                    fontSize="30px"
-                    color="#3646B3"
-                  />
-                </InputRightElement>
-              </InputGroup>
-            )}
-          </Box> */}
-
           {!isUserLogin ? (
             <HStack
               height={"60px"}
@@ -478,13 +435,6 @@ const Header = ({
           </Menu>
         </HStack>
       </HStack>
-
-      {/* <VStack height={"100vh"} position={'absolute'} right={0} top={0} alignItems={'center'} mt={'-30px'} justifyContent={'center'} pr={'25px'}>
-        <IconButton icon={<BiSupport />} bgColor={'#3646B3'} borderRadius={'8px'} />
-        <IconButton icon={<RiTelegram2Line />} bgColor={'#3646B3'} borderRadius={'8px'} />
-        <IconButton icon={<RiThreadsFill />} bgColor={'#3646B3'} borderRadius={'8px'} />
-
-      </VStack> */}
       <VStack
         height={"100vh"}
         as={Container}
@@ -548,54 +498,12 @@ const Header = ({
             <InputGroup
               height="89px"
               width={{ base: "381px", md: "874px" }}
+              borderRadius="20px"
             // my="20px"
             >
-              {/* {isRecording ? (
-                <InputLeftElement height="100%" mr="10px">
-                  <Flex
-                    position="relative"
-                    align="center"
-                    justify="center"
-                    w="50px"
-                    h="50px"
-                  >
-                    <MotionBox
-                      position="absolute"
-                      width="32px"
-                      height="32px"
-                      borderRadius="50%"
-                      border="3px solid #7fe0e0"
-                      animate={{
-                        scale: [1, 1.5],
-                        opacity: [1, 0],
-                      }}
-                      transition={{
-                        duration: 1.7,
-                        repeat: Infinity,
-                        repeatType: "loop",
-                        ease: "easeInOut",
-                        delay: 1, // important! delay start
-                      }}
-                    />
-
-                    <IconButton
-                      aria-label="Record"
-                      bgColor="white"
-                      borderRadius="50px"
-                      size="sm"
-                      icon={
-                        <IoMicOutline
-                          fontSize="24px"
-                          color="#29CCCC"
-                          style={{ cursor: "pointer", zIndex: 1 }}
-                        />
-                      }
-                    />
-                  </Flex>
-                </InputLeftElement>
-              ) : null} */}
 
               <Textarea
+                borderRadius="20px"
                 ref={inputRef}
                 fontSize={"20px"}
                 fontWeight={"500"}
@@ -619,43 +527,8 @@ const Header = ({
             </InputGroup>
             <HStack w={"100%"} justifyContent={"space-between"}>
               <Flex align="center" gap="2">
-                {/* {isRecording ? (
-                  <HStack>
-                    <IoClose
-                      fontSize="16px"
-                      color="white"
-                      style={{ cursor: "pointer" }}
-                      onClick={handleStopRecording}
-                    />
-                    <IoSendOutline
-                      style={{ transform: "rotate(180deg)" }}
-                      onClick={async () => {
-                        handleStopRecording();
-                        // setTimeout(handleUpload, 500);
-                      }}
-                      fontSize={"25px"}
-                      color="white"
-                      cursor={"pointer"}
-                    />
-                  </HStack>
-                ) : isMutating ?  */}
-                {/* (
-                  <Spinner color="white" />
-                ) :  */}
 
                 <>
-                  {/* <IoSearch
-                        fontSize={'30px'}
-                        color="#29CCCC"
-                        cursor="pointer"
-                        onClick={(e) => handleClickSearch()}
-                      /> */}
-                  {/* <PiDiamondThin
-                        fontSize="20px"
-                        color="#29CCCC"
-                        cursor="pointer"
-                        onClick={(e) => handleClickSemanticSearch()}
-                      /> */}
                   {!isRecording ? (
                     loadingRecording ? (
                       <Spinner color="white" />

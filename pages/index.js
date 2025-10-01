@@ -3,7 +3,6 @@ import MainLayout from "@/components/mainLayout";
 import {
   Box,
   Button,
-  chakra,
   Grid,
   GridItem,
   HStack,
@@ -12,7 +11,6 @@ import {
   useBreakpointValue,
   VStack
 } from "@chakra-ui/react";
-import { Geist, Geist_Mono } from "next/font/google";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 
@@ -27,55 +25,11 @@ import Head from "next/head";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { IoIosArrowDown } from "react-icons/io";
 import useSWR from "swr";
 import useSWRInfinite from "swr/infinite";
 import { StringParam, useQueryParams, withDefault } from "use-query-params";
+import ResultSearch from './result_search';
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-const items = [
-  {
-    image: "/img1.jpg",
-    title: "آیت الله محمدتقی بهجت فومنی",
-    button: "اطلاعات بیشتر",
-  },
-  {
-    image: "/img2.jpg",
-    title: "آیت الله جعفر سبحانی خیابانی تبریزی",
-    button: "اطلاعات بیشتر",
-  },
-  {
-    image: "/img3.jpg",
-    title: "آیت الله سید عبدالکریم موسوی اردبیلی",
-    button: "اطلاعات بیشتر",
-  },
-];
-const items2 = [
-  {
-    image: "/img1.jpg",
-  },
-  {
-    image: "/img2.jpg",
-  },
-  {
-    image: "/img3.jpg",
-  },
-];
-
-const RotatingIcon = chakra(IoIosArrowDown, {
-  baseStyle: {
-    transition: "transform 0.3s ease",
-  },
-});
 
 export default function Home({ children }) {
   const [hoveredIndex, setHoveredIndex] = useState({ selected: "", val: "" });
@@ -86,21 +40,20 @@ export default function Home({ children }) {
 
   const [filters, setFilters] = useQueryParams({
     category_id: withDefault(StringParam, "28"),
+    search: withDefault(StringParam, ""),
+    search_type: withDefault(StringParam, ""),
+    type: withDefault(StringParam, ""),
+    order_by: withDefault(StringParam, ""),
+    model: withDefault(StringParam, "e5"),
+    source: withDefault(StringParam, ""),
+    category_id: withDefault(StringParam, "28"),
   });
-
-  const scrollRef = useRef(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
 
   const router = useRouter();
   const { locale } = useRouter();
   const slidesToShow = useBreakpointValue({ base: 1, md: 2, lg: 4 }); // responsive value
 
-  const [treeData, setTreeData] = useState([]);
-  const [page, setPage] = useState(1);
   const [categoryId, setCategoryId] = useState("");
-  const [searchType, setSearchType] = useState("search");
 
   const panelsRef = useRef(null);
 
@@ -135,38 +88,12 @@ export default function Home({ children }) {
     isLoading,
     isValidating
   } = useSWRInfinite(getKey);
-  // const {
-  //   data: dataQuestionSearch,
-  //   error: errorQuestionSearch,
-  //   isLoading: isLoadingQuestionSearch,
-  // } = useSWR(
-  //   watchSearch("selected_search") &&
-  //   `user/question/search?page=${page}&search_type=${searchType}&content=${watchSearch(
-  //     "selected_search"
-  //   )}${categoryId && `&categories__id=${categoryId}`}`
-  // );
 
   const questions = data
     ? data?.flatMap((page) => page?.data?.result)
     : [];
 
   const { data: dataGeneral, error: errorGeneral } = useSWR("user/general");
-
-  const {
-    data: dataCategoryChild,
-    error: errorCategoryChild,
-    mutate: mutateCategory,
-    isLoading: isLoadingChildCategory,
-  } = useSWR(`user/category?parent_id=${filters?.category_id}&type=question`);
-  const {
-    data: dataCategoryChild2,
-    error: errorCategoryChild2,
-    mutate: mutateCategory2,
-    isLoading: isLoadingChildCategory2,
-  } = useSWR(
-    hoveredIndex?.val &&
-    `user/category?parent_id=${hoveredIndex?.val}&type=question`
-  );
 
   const { data: dataHadith, error: errorHadith } = useSWR("user/general/hadis");
   const { data: dataSource, error: errorSource } = useSWR(
@@ -175,12 +102,6 @@ export default function Home({ children }) {
   const { data: dataReferences, error: errorReferences } =
     useSWR("user/public-figure");
 
-  const { data: dataCategory, isLoading: isLoadingCategory } = useSWR(
-    `user/category?type=question`,
-    {
-      onSuccess: (res) => { },
-    }
-  );
 
   // Helper function to update treeData immutably
   const updateTreeData = (list, key, children) =>
@@ -196,74 +117,33 @@ export default function Home({ children }) {
       return node;
     });
 
-  const scroll = (direction) => {
-    if (scrollRef.current) {
-      const scrollAmount = direction === "left" ? -150 : 150;
-      scrollRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
-    }
-  };
-
-  const handleMouseDown = (e) => {
-    if (!scrollRef.current) return;
-    setIsDragging(true);
-    setStartX(e.pageX - scrollRef.current.offsetLeft);
-    setScrollLeft(scrollRef.current.scrollLeft);
-  };
-
-  const handleMouseLeave = () => {
-    setIsDragging(false);
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
-
-  const handleMouseMove = (e) => {
-    if (!isDragging || !scrollRef.current) return;
-    e.preventDefault();
-    const x = e.pageX - scrollRef.current.offsetLeft;
-    const walk = x - startX;
-    scrollRef.current.scrollLeft = scrollLeft - walk;
-  };
-  const handleNewQuestionButton = () => {
-    router.push("/new_question");
-  };
+  const moveToQuestionBox = () => {
+    setTimeout(() => {
+      const el = document.querySelector(".questions");
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      }
+    }, [500])
+  }
 
   const handleClickSearch = () => {
-    router.push(
-      `/result_search?search=${watchSearch("search")}&search_type=search`
-    );
+    setFilters({ search_type: 'search', search: watchSearch("search"), type: undefined })
+    moveToQuestionBox()
+    // router.push(
+    //   `/result_search?search=${watchSearch("search")}&search_type=search`
+    // );
   };
   const handleClickSemanticSearch = () => {
-    router.push(
-      `/result_search?search=${watchSearch(
-        "search"
-      )}&search_type=semantic_search`
-    );
+    setFilters({ search_type: 'semantic_search', search: watchSearch("search"), type: undefined })
+    moveToQuestionBox()
   };
   const handleClickAiSearch = () => {
-    router.push(
-      `/result_search?search=${watchSearch(
-        "search"
-      )}&search_type=search&type=ai`
-    );
+    setFilters({ search_type: 'semantic_search', search: watchSearch("search"), type: 'ai' })
+    moveToQuestionBox()
   };
-
 
   const handleVoiceSearch = (text) => {
     router.push(`/result_search?search=${text}&search_type=semantic_search`);
-  };
-
-  const handleCategoryLink = ({ title, id }) => {
-    router.push(`/questions/category/${id}/${title}`);
-  };
-  const handleCategoryClick = (index, val) => {
-    console.log(index, val, hoveredIndex);
-    if (hoveredIndex?.selected == index && hoveredIndex?.val == val) {
-      setHoveredIndex({ selected: "", val: "" });
-    } else {
-      setHoveredIndex({ selected: index, val: val });
-    }
   };
 
   useEffect(() => {
@@ -312,140 +192,6 @@ export default function Home({ children }) {
         ref={questionsRef}
       >
         {isUserLogin && <ChatBot />}
-        {/* <HStack
-          w="100%"
-          whiteSpace="normal"
-          justifyContent={"space-between"}
-          mb={{ base: "20px", md: "25px" }}
-          mt={{ base: "20px", md: "25px" }}
-          alignItems={{ base: "center", md: "start" }}
-        >
-          <Text fontWeight={"700"} fontSize={"22px"} letterSpacing={0}>
-            {t("suggested_questions")}
-          </Text>
-
-          <Button
-            width={{ base: "152px", md: "189px" }}
-            height={"50px"}
-            bgColor={"#F9C96D"}
-            color={"black"}
-            fontWeight={"400"}
-            fontSize={"16px"}
-            lineHeight={"100%"}
-            letterSpacing={0}
-            borderRadius={"10px"}
-            onClick={(e) => handleNewQuestionButton()}
-
-          >
-            {t("ask_your_question")}
-          </Button>
-        </HStack> */}
-        {/* <Tabs>
-          <Box display="flex" alignItems="center">
-            <IconButton
-              colorScheme="gray"
-              icon={<IoIosArrowForward />}
-              aria-label="Scroll Left"
-              onClick={() => scroll('left')}
-              size="sm"
-              mr={2}
-              borderRadius={0}
-              mb={'10px'}
-              color={'#3646B3'}
-            />
-            <IconButton
-              colorScheme="gray"
-              icon={<IoIosArrowBack />}
-              aria-label="Scroll Right"
-              onClick={() => scroll('right')}
-              size="sm"
-              ml={2}
-              mb={'10px'}
-              borderRadius={0}
-              color={'#3646B3'}
-            />
-            <Box
-              ref={scrollRef}
-              overflowX="auto"
-              whiteSpace="nowrap"
-              flex="1"
-              cursor={isDragging ? 'grabbing' : 'grab'}
-              onMouseDown={handleMouseDown}
-              onMouseLeave={handleMouseLeave}
-              onMouseUp={handleMouseUp}
-              onMouseMove={handleMouseMove}
-              css={{
-                '&::-webkit-scrollbar': { display: 'none' },
-                '-ms-overflow-style': 'none',
-                'scrollbar-width': 'none',
-              }}
-              borderBottom={'1px'}
-              borderBottomColor={'gray.200'}
-            >
-              <TabList mb={'2px'} borderBottom={'none'}>
-                {dataCategory?.data?.map((item, i) => (
-                  <Tab key={i} whiteSpace="nowrap"
-                    onClick={e => setFilters({ category_id: item?.id })}
-                    _selected={{
-                      borderBottom: '3px solid #3646B3', // custom color and width
-                      bgColor: '#F7F7F7',
-                      color: '#3646B3'
-                    }}
-                    px={4}
-                    py={2}>
-                    {item?.name}
-                  </Tab>
-                ))}
-              </TabList>
-            </Box>
-
-          </Box>
-
-          <TabPanels>
-            {[...Array(20)].map((_, i) => (
-              <TabPanel key={i} ref={panelsRef}>
-                {!isLoadingChildCategory ? <SimpleGrid
-                  columns={{ base: 1, sm: 2, md: 3, lg: 5 }}
-                  spacing={5}
-                  mb={'50px'}
-                >{dataCategoryChild?.data?.map((val, index) => (
-                  <Popover >
-                    <PopoverTrigger>
-                      <Button as={Badge} height={'35px'} width={'200px'} colorScheme="gray" bgColor={hoveredIndex?.selected === index ? 'white' : ''} borderRadius={'7px'} py={'8px'} textAlign={'center'} cursor={'pointer'} color={'#3646B3'} onClick={() => handleCategoryClick(index, val?.id)} borderBottomRightRadius={hoveredIndex?.selected === index ? 0 : ''} borderBottomLeftRadius={hoveredIndex?.selected === index ? 0 : ''} variant={hoveredIndex?.selected === index ? 'outline' : 'solid'} rightIcon={
-                        <RotatingIcon
-                          transform={hoveredIndex?.selected === index ? 'rotate(180deg)' : 'rotate(0deg)'}
-                        />
-                      }
-                      >{val?.name}</Button>
-                    </PopoverTrigger>
-                    <Portal>
-                      <PopoverContent bg="gray.100" // match your badge's color if needed
-                        borderColor="gray.200"
-                        borderRadius="7px"
-                        mt="-8px" width={'none'} borderTopRightRadius={0} borderTopLeftRadius={0} boxShadow="0px 10px 22px 0px #00000040"
-                      >
-                        <PopoverBody padding={0} width={'200px'} >
-                          {
-                            !mutateCategory2 ? <Spinner /> : dataCategoryChild2?.data?.map((item) => (
-
-                              <Badge height={'35px'} width={'200px'} colorScheme="gray" bgColor={'white'} py={'8px'} textAlign={'center'} cursor={'pointer'} color={'#3646B3'} _hover={{ bgColor: '#D9D9D9' }} borderBottom={'1px'} borderBottomColor={'gray.200'} onClick={e => {
-                                handleCategoryLink({ title: item?.name, id: item?.id })
-
-                              }}> {item?.name}</Badge>
-                            ))
-                          }
-
-                        </PopoverBody>
-                      </PopoverContent>
-                    </Portal>
-                  </Popover>
-
-                ))}
-                </SimpleGrid> : <Center><Spinner /></Center>}
-              </TabPanel>
-            ))}
-          </TabPanels>
-        </Tabs> */}
         <Grid
           templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(4, 1fr)" }}
           templateAreas={{
@@ -454,80 +200,6 @@ export default function Home({ children }) {
           gap={"20px"}
           w={"100%"}
         >
-          {/* Right Sidebar */}
-
-          {/* <GridItem colSpan={1}>
-
-            <Box
-              mb={"20px"}
-              order={3}
-              as={GridItem}
-              colSpan={"1"}
-              w="100%"
-              maxW={{ base: "calc( 100vw - 50px )", md: "100%" }}
-              whiteSpace="normal"
-              overflowWrap="break-word"
-
-            >
-              <Box
-                w="100%"
-                maxW="100%"
-                p="30px"
-                border="1px"
-                borderColor="#EBEBEB"
-                borderRadius="15px"
-                bgColor="#CFF186"
-                height="min-content"
-                mb="20px"
-                overflow="hidden"
-                bgImage={'/bghadith2.png'}
-                bgSize={'cover'}
-                position={'relative'}
-                bgPosition={'center'}
-                overflowY={'hidden'}
-
-              >
-                <Box
-                  as="img"
-                  src={'/vec1.png'}
-                  position="absolute"
-                  top="0px"
-                  left="0px"
-                  maxHeight={'585px'}
-                />
-                <VStack alignItems={'center'} paddingX={'30px'}>
-                  <Text fontSize="22px" fontWeight='extrabold' mt={'40px'}>
-                    {t("hadith_of_the_day")}
-                  </Text>
-                  <Text mt="0px" whiteSpace="pre-wrap" wordBreak="break-word" align={'justify'} fontSize={'9px'} fontWeight={'bold'}>
-                    {dataHadith?.data}
-                  </Text>
-                </VStack>
-              </Box>
-
-              <Box
-                w={"100%"}
-                p="4"
-                height={"min-content"}
-              >
-                <Text fontWeight={"extrabold"} fontSize={"16px"} lineHeight={'100%'}>
-                  {t("question_sources")}
-                </Text>
-                <VStack mt={"20px"} w={"100%"} alignItems={"start"}>
-                  {dataSource?.data?.slice(0, 14)?.map((item, index) => (
-                    <LeftSidebar
-                      key={index}
-                      data={item}
-                      t={t}
-                      last={index == 13}
-                    />
-                  ))}
-                </VStack>
-              </Box>
-            </Box>
-          </GridItem> */}
-
-          {/* Main Content */}
           <GridItem
             p={{ base: 0, md: "0" }}
             order={{ base: 1, md: 2 }}
@@ -543,7 +215,7 @@ export default function Home({ children }) {
           >
 
 
-            {isValidating ? (
+            {!filters?.search ? isValidating ? (
               <HStack
                 w={"100%"}
                 alignItems={"center"}
@@ -588,15 +260,9 @@ export default function Home({ children }) {
                       سوال خود را بپرسید
                     </Button>
                   </HStack>
-                  {/* <Pagination
-                    totalPages={dataQuestion?.data?.total_count}
-                    currentPage={page}
-                    onPageChange={setPage}
-                    t={t}
-                  /> */}
                 </Stack>
               </VStack>
-            )}
+            ) : <ResultSearch filters={filters} setFilters={setFilters} />}
 
             <VStack display={{ base: "flex", md: "none" }}>
               {questions?.map((item, index) => (
@@ -604,17 +270,9 @@ export default function Home({ children }) {
               ))}
 
               <Stack w={"100%"} justifyContent={"center"} alignItems={"center"}>
-                {/* <Pagination
-                  totalPages={dataQuestion?.data?.total_count}
-                  currentPage={page}
-                  onPageChange={setPage}
-                  t={t}
-                /> */}
               </Stack>
             </VStack>
           </GridItem>
-
-          {/* Left Sidebar */}
 
           <GridItem
             order={4}
@@ -656,13 +314,6 @@ export default function Home({ children }) {
                 )}
               </VStack>
             </Box>
-            {/* <SliderCom
-              items={items2}
-              height={"270px"}
-              width="350px"
-              borderRadius={"0px"}
-              title={t("parsa_supporters")}
-            /> */}
           </GridItem>
         </Grid>
       </Box>

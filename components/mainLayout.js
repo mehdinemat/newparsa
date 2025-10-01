@@ -37,7 +37,6 @@ import { CiSearch } from "react-icons/ci";
 import { FaTelegram } from "react-icons/fa";
 import { IoLogoInstagram, IoLogoTwitter } from "react-icons/io";
 import { IoCall, IoLocation } from "react-icons/io5";
-import useSWR from "swr";
 import { StringParam, useQueryParams, withDefault } from "use-query-params";
 
 const menuList = [
@@ -126,9 +125,6 @@ const MainLayout = ({
   const [isUserLogin, setIsUserLogin] = useState(false);
   const inputRef = useRef(null);
 
-  const { data: dataMe, isLoading: isLoadingMe } = useSWR(
-    isUserLogin && `user/client/me`
-  );
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -155,24 +151,6 @@ const MainLayout = ({
       `/result_search?search=${watchSearch("search")}&search_type=search`
     );
   };
-  const handleClickSemanticSearch = () => {
-    router.push(`/result_search?search=${search}&search_type=semantic_search`);
-  };
-
-  const handleToggle = () => {
-    setShowInput((prev) => !prev);
-    setTimeout(() => {
-      inputRef.current?.focus();
-    }, 300); // Give time for animation
-  };
-
-  const handleClickMenuLink = (link) => {
-    router.push(`/${link}`);
-  };
-
-  const handleClickHome = () => {
-    router.push("/");
-  };
 
   useEffect(() => {
     setActivePath(
@@ -187,10 +165,6 @@ const MainLayout = ({
   useEffect(() => {
     setIsUserLogin(!!localStorage.getItem("token"));
   }, []);
-
-  const handleLoginButton = () => {
-    router.push("/login");
-  };
 
   const handleFooterLink = (link) => {
     router.push(link);
@@ -225,27 +199,6 @@ const MainLayout = ({
   const handleProfileLink = () => {
     router.push("/dashboard/profile");
   };
-
-  // useEffect(() => {
-  //   // find the element by class or fallback to the ref
-  //   const el = document.querySelector(".questions") || questionsRef.current;
-  //   if (!el) return;
-
-  //   const observer = new IntersectionObserver(
-  //     ([entry]) => {
-  //       // show menu when .questions is visible
-  //       setShowMenu(entry.isIntersecting);
-  //     },
-  //     {
-  //       root: null,         // viewport
-  //       threshold: 0.1,     // fire when 10% visible
-  //       rootMargin: "0px"   // adjust to trigger earlier/later
-  //     }
-  //   );
-
-  //   observer.observe(el);
-  //   return () => observer.disconnect();
-  // }, []);
 
   return (
     <VStack
@@ -461,218 +414,6 @@ const MainLayout = ({
               </Menu>
             </HStack>
           </HStack>
-
-          {/* <HStack
-          as={Container}
-          maxW="container.xl"
-          w={"100%"}
-          alignItems={"center"}
-          pr={{ base: 0, md: "14px" }}
-          justifyContent={"space-between"}
-        >
-          <HStack
-            w={"100%"}
-            alignItems={"center"}
-            height={"100%"}
-            justifyContent={"space-between"}
-          >
-            <HStack ml={"20px"} w={"100%"}>
-              {activePath == 0 ? (
-                <MenuBar />
-              ) : activePath == 1 ? (
-                <UserMenuBar />
-              ) : (
-                <AdminMenuBar />
-              )}
-              <Image
-                src="/question.png"
-                width={{ base: "25px", md: "40px" }}
-                height={{ base: "35px", md: "56px" }}
-                onClick={handleClickHome}
-                cursor={"pointer"}
-              />
-              <Image
-                src="/parsaheader.png"
-                width={{ base: "57px", md: "91px" }}
-                height={{ base: "23px", md: "37px" }}
-                onClick={handleClickHome}
-                cursor={"pointer"}
-              />
-              {(hideHeaderButton || !(asPath == "/")) && (
-                <HStack gap={0}>
-                  <InputGroup
-                    width={"266px"}
-                    display={{ base: "none", md: "block" }}
-                  >
-                    <Input
-                      height={"46px"}
-                      placeholder={t("search")}
-                      value={search}
-                      bgColor={'#F7F7F7'}
-                      onChange={(e) => setSearch(e.target.value)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                          handleClickSearch();
-                        }
-                      }}
-                    />
-                    <InputRightElement h="100%" >
-                      <Flex align="center" gap="2">
-                        <IoSearch
-                          fontSize="20px"
-                          style={{ marginTop: "2px" }}
-                          color="#29CCCC"
-                          onClick={handleClickSearch}
-                          cursor={"pointer"}
-                        />
-
-                      </Flex>
-                    </InputRightElement>
-                  </InputGroup>
-                  <IconButton icon={<PiDiamondThin fontSize="20px" color="white" />} bgColor={'#29CCCC'} onClick={handleClickSemanticSearch} height={'46px'} width={'46px'} />
-
-                </HStack>
-              )}
-            </HStack>
-            <HStack
-              w={"100%"}
-              justifyContent={"end"}
-              alignItems={"end"}
-              display={{ base: "flex", md: "none" }}
-            >
-              <Fade in={!showInput}>
-                {!showInput && (
-                  <IconButton
-                    icon={<IoSearch color="#29CCCC" />}
-                    aria-label="Search"
-                    fontSize="20px"
-                    variant="ghost"
-                    onClick={handleToggle}
-                    transition="all 0.3s ease"
-                  />
-                )}
-              </Fade>
-
-              <Collapse in={showInput} animateOpacity style={{ marginLeft: 8 }}>
-                <InputGroup size="md" w="150px">
-                  <Input
-                    ref={inputRef}
-                    placeholder={t("search")}
-                    variant="filled"
-                    bg="white"
-                    borderRadius="md"
-                    onBlur={() => setShowInput(false)} // Optional: hide on blur
-                  />
-                  <InputRightElement>
-                    <IoSearch color="gray.500" />
-                  </InputRightElement>
-                </InputGroup>
-              </Collapse>
-              <IconButton
-                icon={<IoExitOutline color="#29CCCC" />}
-                aria-label="Search"
-                fontSize="20px"
-                variant="ghost"
-              />
-            </HStack>
-          </HStack>
-          <HStack spacing={4} display={{ base: "none", md: "flex" }}>
-            {menuList?.map((item) => (
-              <Text
-                _hover={{ bgColor: "gray.100" }}
-                borderRadius={"5px"}
-                padding={"5px"}
-                textAlign={"center"}
-                fontSize={"sm"}
-                w={"70px"}
-                onClick={(e) => handleClickMenuLink(item?.link)}
-                cursor={"pointer"}
-              >
-                {t(item?.t_title)}
-              </Text>
-            ))}
-            <Menu>
-              <MenuButton px={4} py={2} transition="all 0.2s">
-                <HStack>
-                  <Text fontSize={"sm"}>
-                    {locale == "en"
-                      ? t("header_english")
-                      : locale == "fa"
-                        ? t("header_persian")
-                        : locale == "ar" && t("header_arabic")}
-                  </Text>
-                  <IoIosArrowDown />
-                </HStack>
-              </MenuButton>
-              <MenuList>
-                <MenuItem
-                  value={"en"}
-                  onClick={(e) => router.push("/", "/", { locale: "en" })}
-                >
-                  {t("header_english")}
-                </MenuItem>
-                <MenuItem
-                  value={"ar"}
-                  onClick={(e) => router.push("/", "/", { locale: "ar" })}
-                >
-                  {t("header_arabic")}
-                </MenuItem>
-                <MenuItem
-                  value={"fa"}
-                  onClick={(e) => router.push("/", "/", { locale: "fa" })}
-                >
-                  {t("header_persian")}
-                </MenuItem>
-              </MenuList>
-            </Menu>
-            {!isUserLogin && (
-              <Button
-                w={"180px"}
-                bgColor={"#29CCCC"}
-                fontWeight={"normal"}
-                onClick={handleLoginButton}
-              >
-                {t("log_sub")}
-              </Button>
-            )}
-            {isUserLogin && (
-              <HStack>
-                <IoIosNotificationsOutline fontSize={"20px"} color="#29CCCC" />
-                <GiDiamondRing fontSize={"20px"} color="#29CCCC" />
-
-                <Menu>
-                  <MenuButton px={4} py={2} transition="all 0.2s">
-                    <HStack>
-                      <Avatar size={"sm"} />
-                    </HStack>
-                  </MenuButton>
-                  <MenuList padding={'6px'} borderRadius={'10px'}>
-                    <MenuItem
-                      fontWeight={"bold"}
-                      justifyContent={"start"}
-                      cursor={"pointer"}
-                      as={HStack}
-                      borderRadius={'10px'}
-                    >
-                      <Avatar />
-                      <VStack w={'100%'} alignItems={'baseline'} gap={0} height={'100%'} justifyContent={'start'}>
-                        <Text>{" "}
-                          {dataMe?.data?.[0]?.first_name}{" "}
-                          {dataMe?.data?.[0]?.last_name}</Text>
-                        <Text fontSize={'8px'}></Text>
-                      </VStack>
-                    </MenuItem>
-                    <MenuItem onClick={(e) => handleProfileLink()} borderRadius={'10px'} as={HStack} justifyContent={'start'} fontWeight={'bold'} cursor={'pointer'} height={'43px'}>
-                      <IoPersonOutline />
-                      <Text fontSize={'14px'} >پروفایل کاربری</Text>
-                    </MenuItem>
-                    <MenuItem onClick={(e) => handleExit()} borderRadius={'10px'} height={'43px'}>خروج</MenuItem>
-                  </MenuList>
-                </Menu>
-              </HStack>
-            )}
-          </HStack>
-        </HStack> */}
         </Box>
       )}
       {/* header */}
