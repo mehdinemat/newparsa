@@ -733,6 +733,7 @@ const Header = ({
               </HStack>
             </HStack>
           </VStack>
+
           <Box
             w="545px"
             h="127px"
