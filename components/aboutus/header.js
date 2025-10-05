@@ -57,6 +57,7 @@ const Header = ({ children }) => {
 
   return (
     <Box
+      scrollSnapAlign="start"
       marginTop={{ base: '20px', md: "100px" }}
       as={Stack}
       justifyContent={"center"}

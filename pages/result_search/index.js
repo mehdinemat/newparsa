@@ -1,6 +1,5 @@
 import {
   Box,
-  Collapse,
   Grid,
   Heading,
   HStack,
@@ -87,10 +86,7 @@ const Index = ({ children, filters, setFilters }) => {
     postRequest,
     {
       onSuccess: async (data) => {
-        console.log(chatSession, data);
-
         setChatSession(data?.data?.data?.id);
-
         const userId = Date.now();
         let botMessage = "";
         setBotStream("");
@@ -173,9 +169,10 @@ const Index = ({ children, filters, setFilters }) => {
 
   useEffect(() => {
     if (filters?.type == "ai") {
+      setAiMessage("")
       triggerSession();
     }
-  }, []);
+  }, [filters?.search]);
 
   return (
     <Tabs w={"100%"} scrollSnapAlign="start">
@@ -246,29 +243,24 @@ const Index = ({ children, filters, setFilters }) => {
                     نتایج جستجو هوشمند
                   </Text>
                 </HStack>
-                <Collapse startingHeight={80} in={showMore}>
-                  <Box
-                    bgColor={"#F7F7F7"}
-                    padding={"17px"}
-                    borderRadius={"30px"}
-                    minW={'100%'}
+                <Box
+                  bgColor={"#F7F7F7"}
+                  padding={"17px"}
+                  borderRadius={"30px"}
+
+                >
+                  <ReactMarkdown
+                    remarkPlugins={[remarkBreaks]}
+                    components={{
+                      h1: (props) => <Heading as="h1" size="xl" my={2} {...props} />,
+                      h2: (props) => <Heading as="h2" size="lg" my={2} {...props} />,
+                      h3: (props) => <Heading as="h3" size="md" my={2} {...props} />,
+                      p: (props) => <Text fontSize={"20px"} fontWeight={"400"} my={1} {...props} />,
+                    }}
                   >
-                    <ReactMarkdown
-                      remarkPlugins={[remarkBreaks]}
-                      components={{
-                        h1: (props) => <Heading as="h1" size="xl" my={2} {...props} />,
-                        h2: (props) => <Heading as="h2" size="lg" my={2} {...props} />,
-                        h3: (props) => <Heading as="h3" size="md" my={2} {...props} />,
-                        p: (props) => <Text fontSize={"20px"} fontWeight={"400"} my={1} {...props} />,
-                      }}
-                    >
-                      {aiMessage?.substring(
-                        0,
-                        showMore ? aiMessage?.length : 200
-                      )}
-                    </ReactMarkdown>
-                  </Box>
-                </Collapse>
+                    {aiMessage}
+                  </ReactMarkdown>
+                </Box>
                 {(!showMore && aiMessage?.length > 200) && (
                   <VStack w={"100%"} justifyContent={"center"}>
                     <Text

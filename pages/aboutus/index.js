@@ -31,9 +31,10 @@ const items = [
 
 const Index = () => {
   return (
-    <MainLayout>
+    <MainLayout menuDefault={true}>
       <Header />
       <Box
+        scrollSnapAlign="start"
         w="100%"
         alignItems={"center"}
         justifyContent={"center"}

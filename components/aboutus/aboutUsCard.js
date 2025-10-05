@@ -6,8 +6,8 @@ const AboutUsCard = () => {
     >
       <Avatar w={'100%'} h={'150px'} borderRadius={'inherit'} />
       <VStack padding={'5px'} gap={0}>
-        <Text fontWeight={'bold'} fontSize={'13px'}>محمدحسین الهی منش</Text>
-        <Text fontSize={'10px'}>دکتری دانشگاه صنعتی شاهرود</Text>
+        <Text fontWeight={'bold'} fontSize={'13px'}>محمد مهدی نعمت نژاد</Text>
+        <Text fontSize={'10px'}>موسسه فرهنگی همتا</Text>
       </VStack>
     </VStack >
   )
