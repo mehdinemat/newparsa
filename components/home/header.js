@@ -761,8 +761,14 @@ const Header = ({
             }}
           >
 
-            <Text color={"#76FFFF"} wordBreak="break-word" align={"justify"}>
-              {hadith?.message}
+            <Text color={"#76FFFF"} wordBreak="break-word" align={"justify"} mb={'5px'}>
+              {hadith?.Masoum?.MasoumTitle}:
+            </Text>
+            <Text color={"#76FFFF"} wordBreak="break-word" align={"justify"} mb={'15px'} fontWeight={'700'} fontSize={'14px'}>
+              {hadith?.Texts?.[0]?.HadithSimpleText}
+            </Text>
+            <Text color={"#76FFFF"} wordBreak="break-word" align={"justify"} fontSize={'12px'} fontWeight={'400'}>
+              {hadith?.Texts?.[1]?.HadithSimpleText}
             </Text>
           </Box>
           <HStack
