@@ -60,6 +60,9 @@ const Index = ({ children, filters, setFilters }) => {
 
   const [page, setPage] = useState(1);
 
+  const [isUserLogin, setIsUserLogin] = useState("");
+
+
   const scrollRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
@@ -69,6 +72,10 @@ const Index = ({ children, filters, setFilters }) => {
   const [botStream, setBotStream] = useState("");
   const [aiMessage, setAiMessage] = useState("");
   const [filter, setFilter] = useState(false)
+
+  useEffect(() => {
+    setIsUserLogin(!!localStorage.getItem("token"));
+  }, []);
 
   const {
     data: dataQuestionSearch,
@@ -101,7 +108,7 @@ const Index = ({ children, filters, setFilters }) => {
             },
             body: JSON.stringify({ content: filters?.search }),
           }
-        );
+        )
 
         if (!res.body) {
           console.error("No streaming body in response");
@@ -163,6 +170,79 @@ const Index = ({ children, filters, setFilters }) => {
     }
   );
 
+  const publicChat = async () => {
+    let botMessage = "";
+    setBotStream("");
+    console.log('jellll')
+    const res = await fetch(
+      `https://parsa.api.t.etratnet.ir/user/chat/anonymous`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ "messages": [{ content: filters?.search, role: 'user' }] }),
+      }
+    );
+
+    if (!res.body) {
+      console.error("No streaming body in response");
+      return;
+    }
+
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder("utf-8");
+    let buffer = "";
+    let done = false;
+
+    while (!done) {
+      const { value, done: doneReading } = await reader.read();
+      done = !!doneReading;
+      if (value) buffer += decoder.decode(value, { stream: true });
+
+      const lines = buffer.split(/\r?\n/);
+      buffer = lines.pop() ?? "";
+
+      for (const rawLine of lines) {
+        const line = rawLine.trim();
+        if (!line.startsWith("data:")) continue;
+
+        const jsonStr = line.replace(/^data:\s*/, "");
+        if (jsonStr === "[DONE]") {
+          done = true;
+          break;
+        }
+
+        try {
+          const parsed = JSON.parse(jsonStr);
+          if (parsed.error) {
+            console.error("Stream error:", parsed.error);
+            done = true;
+            break;
+          }
+
+          if (parsed.chunk) {
+            botMessage += parsed.chunk;
+            console.log(parsed);
+            // update assistant message in history
+            setAiMessage(botMessage);
+          }
+
+          if (parsed.done) {
+            done = true;
+            break;
+          }
+        } catch (err) {
+          console.error("Could not parse stream JSON:", jsonStr, err);
+        }
+      }
+    }
+
+    // clear botStream state if you don’t need it
+    setBotStream("");
+  }
+
   useEffect(() => {
     setPage(1);
   }, [filters?.search]);
@@ -170,7 +250,12 @@ const Index = ({ children, filters, setFilters }) => {
   useEffect(() => {
     if (filters?.type == "ai") {
       setAiMessage("")
-      triggerSession();
+      if (isUserLogin) {
+        triggerSession();
+      }
+      else {
+        publicChat()
+      }
     }
   }, [filters?.search]);
 
