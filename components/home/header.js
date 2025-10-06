@@ -450,28 +450,37 @@ const Header = ({
           height={"100%"}
           mt={"-50px"}
         >
-          <Text
-            fontFamily="morabba"
-            fontSize={{ base: "35px", md: "50px" }}
-            color={"white"}
-            textAlign={{ base: "center", md: "center" }}
-            fontWeight={"700"}
-            mb={{ base: "20px" }}
-            sx={{
-              "@media (min-width: 120em)": {
-                marginBottom: "40px",
-              },
-            }}
-          >
-            {t("home_parsa_header_title")}
-          </Text>
+       <Text
+  fontFamily="morabba"
+  fontSize={{ base: "35px", md: "50px" }}
+  color="white"
+  textAlign="center"
+  fontWeight="700"
+  mb={{ base: "20px" }}
+  sx={{
+    "@media (min-width: 120em)": {
+      marginBottom: "40px",
+    },
+  }}
+  textShadow={`
+    0px -5px 13.4px #FFFFFF9E,
+    0px 5px 11px #0000007D,
+    0px 20px 20px #0000006E,
+    0px 45px 27px #00000040,
+    0px 81px 32px #00000012,
+    0px 126px 35px #00000003
+  `}
+>
+  {t("home_parsa_header_title")}
+</Text>
+
           <VStack
             mb={{ base: "15px" }}
             alignItems={"end"}
             position="relative"
             borderRadius="20px"
             p={"12px"}
-            bgColor={"#00000040"}
+            bgColor={"#FFFFFF"}
             sx={{
               "@media (min-width: 120em)": {
                 marginBottom: "80px",
@@ -508,7 +517,7 @@ const Header = ({
                 fontSize={"20px"}
                 fontWeight={"500"}
                 width={{ base: "381px", md: "100%" }}
-                bgColor="#00000059"
+                bgColor="#EBEDF8"
                 backdropFilter="blur(9px)"
                 height="89px"
                 textIndent="20px"
@@ -516,7 +525,7 @@ const Header = ({
                 color="white"
                 border="none" // removes the border completely
                 pl={isRecording ? "50px" : "12px"}
-                _placeholder={{ color: "gray.300" }}
+                _placeholder={{ color: "#000000" }}
                 {...register("search")}
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
@@ -535,7 +544,7 @@ const Header = ({
                     ) : (
                       <IoMic
                         fontSize={"25px"}
-                        color="#29CCCC"
+                        color="#3646B3"
                         style={{ cursor: "pointer", marginRight: "10px" }}
                         onClick={handleMicClick}
                       />
@@ -683,7 +692,7 @@ const Header = ({
                   <Button
                     w={"109px"}
                     height={"40px"}
-                    color={"#29CCCC"}
+                    color={"#3646B3"}
                     borderRadius="10px"
                     rightIcon={<IoSearch fontSize={"25px"} />}
                     onClick={(e) => setSearchActive(true)}
@@ -702,28 +711,21 @@ const Header = ({
         `
                 }} hasArrow>
                   <Button
-                    bgColor={"#29CCCC"}
+                    bgColor={"#081438"}
                     w={"179px"}
                     height={"40px"}
-                    color={"#3646B3"}
+                    color={"white"}
                     borderRadius="10px"
+                    leftIcon={
+                      <svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6.5 0L7.09264 2.68791C7.49455 4.5087 8.81335 5.92895 10.5041 6.36177L13 7L10.5041 7.63823C8.81335 8.07105 7.49455 9.4913 7.09264 11.3121L6.5 14L5.90736 11.3121C5.50545 9.4913 4.18665 8.07105 2.49591 7.63823L0 7L2.49591 6.36177C4.18665 5.92895 5.50545 4.5087 5.90736 2.68791L6.5 0Z" fill="#29CCCC"/>
+</svg>
+
+                    }
                     rightIcon={
-                      <svg
-                        width="22"
-                        height="24"
-                        viewBox="0 0 22 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M12.1575 4.09766L13.0549 7.91879C13.6635 10.5072 15.6603 12.5263 18.2204 13.1416L21.9996 14.0489L18.2204 14.9562C15.6603 15.5715 13.6635 17.5905 13.0549 20.179L12.1575 24.0001L11.2602 20.179C10.6516 17.5905 8.65473 15.5715 6.09467 14.9562L2.31543 14.0489L6.09467 13.1416C8.65473 12.5263 10.6516 10.5072 11.2602 7.91879L12.1575 4.09766Z"
-                          fill="#3646B3"
-                        />
-                        <path
-                          d="M4.05263 0L4.42213 1.57341C4.67272 2.63924 5.49496 3.4706 6.54911 3.72396L8.10526 4.09756L6.54911 4.47116C5.49496 4.72452 4.67272 5.55588 4.42213 6.62171L4.05263 8.19512L3.68313 6.62171C3.43255 5.55588 2.6103 4.72452 1.55616 4.47116L0 4.09756L1.55616 3.72396C2.6103 3.4706 3.43255 2.63924 3.68313 1.57341L4.05263 0Z"
-                          fill="#3646B3"
-                        />
-                      </svg>
+                      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M0.720694 7.78459L16.2645 0.12078C17.0776 -0.28007 18 0.365831 18 1.33614V5.32419C18 6.16725 17.4516 6.89296 16.6905 7.05663L11.0017 8.28076C10.2766 8.43656 10.2766 9.56335 11.0017 9.71937L16.6905 10.9435C17.4516 11.1072 18 11.8327 18 12.676L18 16.6638C18 17.6341 17.0776 18.2802 16.2645 17.8791L0.720694 10.2155C-0.240232 9.74163 -0.240232 8.25828 0.720694 7.78459Z" fill="white"/>
+</svg>
                     }
                     onClick={(e) => handleAiResponse()}
                   >
