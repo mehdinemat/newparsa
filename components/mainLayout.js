@@ -325,8 +325,8 @@ const MainLayout = ({
 
               <Menu isOpen={isOpen2} onOpen={() => setIsOpen2(true)} onClose={() => setIsOpen2(false)}>
                 <MenuButton as={Button}>
-                  <Image src="/headermenu.png" height={"39px"}
-                    width={"35px"} mr="20px" />
+                  <Image src="/headermenu.png" height={"52px"}
+                    width={"48px"} mr="20px" />
                 </MenuButton>
 
                 <AnimatePresence>

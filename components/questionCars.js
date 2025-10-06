@@ -18,7 +18,7 @@ const QuestionCard = ({ data, t, type = "question", bgColor }) => {
     <HStack
       w={"100%"}
       alignItems={"start"}
-      mb={"10px"}
+      mb={"30px"}
       pb={"20px"}
       gap={"20px"}
       cursor={"pointer"}

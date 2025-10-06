@@ -481,6 +481,13 @@ const Header = ({
             borderRadius="20px"
             p={"12px"}
             bgColor={"#FFFFFF"}
+            boxShadow={`
+            0px 3px 6px 0px #0000000D,
+            0px 11px 11px 0px #0000000A,
+            0px 25px 15px 0px #00000008,
+            0px 44px 18px 0px #00000003,
+            0px 69px 19px 0px #00000000
+          `}
             sx={{
               "@media (min-width: 120em)": {
                 marginBottom: "80px",
@@ -519,10 +526,11 @@ const Header = ({
                 width={{ base: "381px", md: "100%" }}
                 bgColor="#EBEDF8"
                 backdropFilter="blur(9px)"
+                
                 height="89px"
                 textIndent="20px"
                 placeholder={isRecording ? t("listening") : t("search_among")}
-                color="white"
+                color="black"
                 border="none" // removes the border completely
                 pl={isRecording ? "50px" : "12px"}
                 _placeholder={{ color: "#000000" }}
