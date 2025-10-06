@@ -7,6 +7,7 @@ import {
   Container,
   Flex,
   HStack,
+  Icon,
   Image,
   InputGroup,
   Menu,
@@ -19,6 +20,7 @@ import {
   Textarea,
   Tooltip,
   useBreakpoint,
+  useBreakpointValue,
   VStack
 } from "@chakra-ui/react";
 import axios from "axios";
@@ -102,6 +104,9 @@ const Header = ({
 }) => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
+
+  const currentSize = useBreakpointValue({ base: "base", md: "md", lg: "lg" });
+
 
   const { locale, asPath } = router;
 
@@ -262,27 +267,27 @@ const Header = ({
         maxW="container.xl"
         justifyContent="space-between"
         w="100%"
-        mt="10px"
+        mt={{ base: "0px", md: "10px" }}
         alignItems="center" // make sure children align properly
       >
         <HStack>
           <Image
             src="./headerquestionlogo.png"
-            width="29px"
-            height="42px"
-            ml="5px"
+            width={{ base: "16px", md: "29px" }}
+            height={{ base: "23px", md: "42px" }}
+            ml={{ base: "0px", md: "5px" }}
             onClick={(e) => router.push("/")}
             cursor={"pointer"}
           />
           <Image
             src="./headerparsalogo.png"
-            width="100px"
-            height="41px"
+            width={{ base: "56px", md: "100px" }}
+            height={{ base: "23px", md: "41px" }}
             onClick={(e) => router.push("/")}
             cursor={"pointer"}
           />
           <Menu>
-            <MenuButton px={4} py={2} marginRight="20px" transition="all 0.2s">
+            <MenuButton px={4} py={2} marginRight={{ base: "5px", md: "20px" }} transition="all 0.2s">
               <HStack color="white">
                 <Text fontSize="20px">
                   {locale == "en"
@@ -312,7 +317,7 @@ const Header = ({
           {!isUserLogin ? (
             <HStack
               height={"60px"}
-              width={"173px"}
+              width={"fit-content"}
               cursor="pointer"
               onClick={() => router.push("/login")}
               role="group" // 👈 important: allows child hover detection
@@ -334,20 +339,20 @@ const Header = ({
               <Text
                 fontFamily="iransans"
                 fontWeight="500"
-                fontSize="20px"
+                fontSize={{ base: "10px", md: "20px" }}
                 color="white"
               >
                 {t("log_sub")}
               </Text>
 
-              <Image src="/adduserheader.png" height="29px" width="28px" />
+              <Image src="/adduserheader.png" height={{ base: "15px", md: "29px" }} width={{ base: "15px", md: "28px" }} />
             </HStack>
           ) : (
             <Avatar fontSize={"46px"} />
           )}
           <Menu isOpen={isOpen} onOpen={() => setIsOpen(true)} onClose={() => setIsOpen(false)}>
             <MenuButton as={Button}>
-              <Image src="/menuheader.png" height="29px" width="28px" mr="20px" />
+              <Image src="/menuheader.png" height={{ base: "17px", md: "29px" }} width={{ base: "17px", md: "28px" }} mr={{ base: "5px", md: "20px" }} />
             </MenuButton>
 
             <AnimatePresence>
@@ -452,7 +457,7 @@ const Header = ({
         >
        <Text
   fontFamily="morabba"
-  fontSize={{ base: "35px", md: "50px" }}
+  fontSize={{ base: "22px", md: "50px" }}
   color="white"
   textAlign="center"
   fontWeight="700"
@@ -475,12 +480,14 @@ const Header = ({
 </Text>
 
           <VStack
-            mb={{ base: "15px" }}
-            alignItems={"end"}
+            mb={{ base: "80px" , md:"15px" }}
+            alignItems={"center"}
             position="relative"
-            borderRadius="20px"
-            p={"12px"}
+            borderRadius="8px"
+            p={{ base: "5px", md: "12px" }}
             bgColor={"#FFFFFF"}
+            height={{ base: "90px", md: "163px" }}
+            width={{base: "380px", md: "874px"}}
             boxShadow={`
             0px 3px 6px 0px #0000000D,
             0px 11px 11px 0px #0000000A,
@@ -511,28 +518,22 @@ const Header = ({
               },
             }}
           >
-            <InputGroup
-              height="89px"
-              width={{ base: "381px", md: "874px" }}
-              borderRadius="20px"
-            // my="20px"
-            >
+           
 
               <Textarea
-                borderRadius="20px"
+                borderRadius="8px"
                 ref={inputRef}
-                fontSize={"20px"}
+                fontSize={{ base: "14px", md: "20px" }}
                 fontWeight={"500"}
-                width={{ base: "381px", md: "100%" }}
+                width={{ base: "370px", md: "850px" }}
                 bgColor="#EBEDF8"
                 backdropFilter="blur(9px)"
-                
-                height="89px"
-                textIndent="20px"
+                minHeight={{ base: "57px", md: "89px" }}
+                height={{ base: "57px", md: "89px" }}
+                textIndent="5px"
                 placeholder={isRecording ? t("listening") : t("search_among")}
                 color="black"
                 border="none" // removes the border completely
-                pl={isRecording ? "50px" : "12px"}
                 _placeholder={{ color: "#000000" }}
                 {...register("search")}
                 onKeyDown={(e) => {
@@ -541,8 +542,7 @@ const Header = ({
                   }
                 }}
               />
-            </InputGroup>
-            <HStack w={"100%"} justifyContent={"space-between"}>
+            <HStack w={"100%"} justifyContent={"space-between"} alignItems={'center'} mt={{base:'0px' , md:'5px'}}>
               <Flex align="center" gap="2">
 
                 <>
@@ -550,12 +550,14 @@ const Header = ({
                     loadingRecording ? (
                       <Spinner color="white" />
                     ) : (
-                      <IoMic
-                        fontSize={"25px"}
-                        color="#3646B3"
-                        style={{ cursor: "pointer", marginRight: "10px" }}
-                        onClick={handleMicClick}
-                      />
+                      <Icon
+                      as={IoMic}
+                      fontSize={{ base: "10px", md: "25px" }}
+                      color="#3646B3"
+                      cursor="pointer"
+                      mr="10px"
+                      onClick={handleMicClick}
+                    />
                     )
                   ) : (
                     <HStack gap={0}>
@@ -629,7 +631,7 @@ const Header = ({
 
                 {/* } */}
               </Flex>
-              <HStack>
+              <HStack height={'100%'} alignItems={'center'}>
                 {searchActive && (
                   <Box
                     height={"40px"}
@@ -698,11 +700,12 @@ const Header = ({
                 )}
                 {!searchActive && (
                   <Button
-                    w={"109px"}
-                    height={"40px"}
+                    w={{ base: "47px", md: "109px" }}
+                    height={{ base: "17px", md: "40px" }}
                     color={"#3646B3"}
-                    borderRadius="10px"
-                    rightIcon={<IoSearch fontSize={"25px"} />}
+                    borderRadius="4px"
+                    rightIcon={<IoSearch fontSize={{ base: "10px", md: "25px" }} />}
+                    fontSize={{ base: "6px", md: "14px" }}
                     onClick={(e) => setSearchActive(true)}
                     variant={"outline"}
                   >
@@ -720,20 +723,26 @@ const Header = ({
                 }} hasArrow>
                   <Button
                     bgColor={"#081438"}
-                    w={"179px"}
-                    height={"40px"}
+                    w={{ base: "80px", md: "179px" }}
+                    height={{ base: "17px", md: "40px" }}
+                    fontSize={{ base: "6px", md: "14px" }}
+                    fontWeight={'700'}
                     color={"white"}
-                    borderRadius="10px"
-                    leftIcon={
+                    borderRadius="4px"
+                    leftIcon={currentSize !="base" ?
                       <svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M6.5 0L7.09264 2.68791C7.49455 4.5087 8.81335 5.92895 10.5041 6.36177L13 7L10.5041 7.63823C8.81335 8.07105 7.49455 9.4913 7.09264 11.3121L6.5 14L5.90736 11.3121C5.50545 9.4913 4.18665 8.07105 2.49591 7.63823L0 7L2.49591 6.36177C4.18665 5.92895 5.50545 4.5087 5.90736 2.68791L6.5 0Z" fill="#29CCCC"/>
+</svg>:<svg width="6" height="7" viewBox="0 0 6 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M2.89814 0.694336L3.15614 1.86452C3.33111 2.6572 3.90526 3.2755 4.64132 3.46393L5.72791 3.74179L4.64132 4.01964C3.90526 4.20807 3.33111 4.82638 3.15614 5.61906L2.89814 6.78924L2.64013 5.61906C2.46516 4.82638 1.89102 4.20807 1.15496 4.01964L0.0683594 3.74179L1.15496 3.46393C1.89102 3.2755 2.46516 2.6572 2.64013 1.86452L2.89814 0.694336Z" fill="#29CCCC"/>
 </svg>
-
-                    }
-                    rightIcon={
+}
+                    rightIcon={currentSize !="base" ?
                       <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M0.720694 7.78459L16.2645 0.12078C17.0776 -0.28007 18 0.365831 18 1.33614V5.32419C18 6.16725 17.4516 6.89296 16.6905 7.05663L11.0017 8.28076C10.2766 8.43656 10.2766 9.56335 11.0017 9.71937L16.6905 10.9435C17.4516 11.1072 18 11.8327 18 12.676L18 16.6638C18 17.6341 17.0776 18.2802 16.2645 17.8791L0.720694 10.2155C-0.240232 9.74163 -0.240232 8.25828 0.720694 7.78459Z" fill="white"/>
+</svg> :<svg width="9" height="9" viewBox="0 0 9 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M0.950104 4.21324L7.71712 0.8768C8.07107 0.70229 8.47266 0.983484 8.47266 1.40591V3.14211C8.47266 3.50913 8.2339 3.82507 7.90256 3.89633L5.42594 4.42925C5.11027 4.49708 5.11027 4.98763 5.42594 5.05555L7.90256 5.58848C8.2339 5.65973 8.47266 5.97557 8.47266 6.3427V8.0788C8.47266 8.50122 8.07107 8.78251 7.71712 8.60791L0.950104 5.27156C0.531765 5.06524 0.531765 4.41947 0.950104 4.21324" fill="white"/>
 </svg>
+
                     }
                     onClick={(e) => handleAiResponse()}
                   >
@@ -745,8 +754,8 @@ const Header = ({
           </VStack>
 
           <Box
-            w="545px"
-            h="127px"
+            w={{ base: "242px", md: "545px" }}
+            h={{ base: "101px", md: "127px" }}
             borderRadius="13px"
             position="relative"
             bg="#2A378C4D"
@@ -771,13 +780,13 @@ const Header = ({
             }}
           >
 
-            <Text color={"#76FFFF"} wordBreak="break-word" align={"justify"} mb={'5px'}>
+            <Text color={"#76FFFF"} wordBreak="break-word" align={"justify"} mb={'5px'}fontSize={{ base: "6px", md: "10px" }}>
               {hadith?.Masoum?.MasoumTitle}:
             </Text>
-            <Text color={"#76FFFF"} wordBreak="break-word" align={"justify"} mb={'15px'} fontWeight={'700'} fontSize={'14px'}>
+            <Text color={"#76FFFF"} wordBreak="break-word" align={"justify"} mb={'15px'} fontWeight={'700'} fontSize={{ base: "9px", md: "14px" }}>
               {hadith?.Texts?.[0]?.HadithSimpleText}
             </Text>
-            <Text color={"#76FFFF"} wordBreak="break-word" align={"justify"} fontSize={'12px'} fontWeight={'400'}>
+            <Text color={"#76FFFF"} wordBreak="break-word" align={"justify"} fontSize={'12px'} fontWeight={'400'}fontSize={{ base: "7px", md: "12px" }}>
               {hadith?.Texts?.[1]?.HadithSimpleText}
             </Text>
           </Box>
@@ -792,10 +801,10 @@ const Header = ({
                 <VStack
                   position="relative"
                   bgColor="#2A378C4D"
-                  borderRadius="13px"
+                  borderRadius="6px"
                   spacing={0}
-                  w="132px"
-                  h="65px"
+                  w={{ base: "58px", md: "132px" }}
+                  h={{ base: "34px", md: "65px" }}
                   textAlign="center"
                   display={item?.size != breakpoint ? "flex" : "none"}
                   justifyContent="space-between"
@@ -806,7 +815,7 @@ const Header = ({
                     content: '""',
                     position: "absolute",
                     inset: 0,
-                    borderRadius: "13px",
+                    borderRadius: "6px",
                     padding: "0.7px", // stroke thickness
                     background:
                       "linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 36.54%, rgba(255, 255, 255, 0) 72.12%, rgba(255, 255, 255, 0.33) 100%)",
@@ -837,7 +846,7 @@ const Header = ({
                             color="white"
                             fontWeight="500"
                             ref={countUpRef}
-                            fontSize={{ base: "20px", md: "20px" }}
+                            fontSize={{ base: "9px", md: "20px" }}
                           >
                             {item?.number}
                           </Text>
@@ -847,8 +856,8 @@ const Header = ({
                   </CountUp>
                   <Text
                     color="white"
-                    fontWeight="300"
-                    fontSize={{ base: "14px", md: "14px" }}
+                    fontWeight="200"
+                    fontSize={{ base: "6px", md: "14px" }}
                   >
                     {t(item?.t_title)}
                   </Text>
