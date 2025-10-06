@@ -482,7 +482,7 @@ const Index = ({ children, filters, setFilters }) => {
               )}
             </VStack>
 
-            <VStack display={{ base: "flex", md: "none" }} width={'100%'}>
+            <VStack display={{ base: "flex", md: "none" }} width={'100%'} >
               {dataQuestionSearch?.data?.data?.result?.map((item, index) => (
                 <QuestionMCard key={index} data={item} t={t} />
               ))}

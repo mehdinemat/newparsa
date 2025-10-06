@@ -3,9 +3,11 @@ import {
   Box,
   Button,
   chakra,
+  Flex,
   Grid,
   GridItem,
   HStack,
+  Icon,
   IconButton,
   Image,
   Input,
@@ -233,16 +235,16 @@ const MainLayout = ({
             <HStack>
               <Image
                 src="/headerparsalogo2.png"
-                width={"29px"}
-                height={"42px"}
+                width={{ base: "16px", md: "29px" }}
+            height={{ base: "23px", md: "42px" }}
                 ml={"5px"}
                 onClick={(e) => router.push("/")}
                 cursor={"pointer"}
               />
               <Image
                 src="/headerlogo2.png"
-                width={"100px"}
-                height={"41px"}
+                width={{ base: "56px", md: "100px" }}
+                height={{ base: "23px", md: "41px" }}
                 onClick={(e) => router.push("/")}
                 cursor={"pointer"}
               />
@@ -250,9 +252,10 @@ const MainLayout = ({
             <HStack>
               <Box height="60px" display="flex" alignItems="center" ml={"0px"}>
                 {!showInput ? (
-                  <CiSearch
+                  <Icon
+                  as={CiSearch}
                     color={"#3646B3"}
-                    fontSize={"30px"}
+                    fontSize={{ base: "20px", md: "29px" }}
                     style={{ marginLeft: "20px", cursor: "pointer" }}
                     onClick={() => setShowInput(true)}
                   />
@@ -275,10 +278,11 @@ const MainLayout = ({
                       _focus={{ borderColor: "blue.400" }}
                     />
                     <InputRightElement height="60px" ml={"16px"}>
-                      <CiSearch
+                      <Icon
+                      as={CiSearch}
                         cursor="pointer"
                         onClick={handleClickSearch}
-                        fontSize="30px"
+                        fontSize={{ base: "20px", md: "30px" }}
                         color="#3646B3"
                       />
                     </InputRightElement>
@@ -315,8 +319,7 @@ const MainLayout = ({
 
                   <Image
                     src="/headerpersonlogo.png"
-                    height="29px"
-                    width="28px"
+                    height={{ base: "15px", md: "29px" }} width={{ base: "15px", md: "28px" }}
                   />
                 </HStack>
               ) : (
@@ -325,8 +328,7 @@ const MainLayout = ({
 
               <Menu isOpen={isOpen2} onOpen={() => setIsOpen2(true)} onClose={() => setIsOpen2(false)}>
                 <MenuButton as={Button}>
-                  <Image src="/headermenu.png" height={"52px"}
-                    width={"48px"} mr="20px" />
+                  <Image src="/headermenu.png" height={{ base: "17px", md: "29px" }} width={{ base: "17px", md: "28px" }} mr={{ base: "5px", md: "20px" }} />
                 </MenuButton>
 
                 <AnimatePresence>
@@ -462,19 +464,21 @@ const MainLayout = ({
                   height={"100%"}
                   w={"100%"}
                 >
-                  <Image src="/question.png" width={"51px"} height={"72px"} />
+                 <Flex flexDir={{base:'row' , md:'column'}} gap={'10px'} alignItems={'center'}>
+                 <Image src="/question.png" width={"51px"} height={"72px"} />
                   <Image
                     src="/parsaheader.png"
                     width={"118px"}
                     height={"48px"}
                   />
+                 </Flex>
                   <Text
                     w={"326px"}
                     fontSize={"16px"}
-                    textAlign={"start"}
-                    align={"justify"}
+                    textAlign={"justify"}
                     color={"#333333"}
                     letterSpacing={"-3%"}
+                    width={{base:'100%' , md:'fit-content'}}
                   >
                     {t("footer_parsa_info")}
                   </Text>
@@ -543,10 +547,11 @@ const MainLayout = ({
                       {/* add more items */}
                     </UnorderedList>
                   </VStack>
-                  <HStack
+                  <Flex flexDir={{base:'column' , md:'row'}}
                     alignItems={"start"}
                     justifyContent={"start"}
                     w={"100%"}
+                    mb={{base:'10px', md:'none'}}
                   >
                     <Text
                       color={"#3646B3"}
@@ -554,6 +559,7 @@ const MainLayout = ({
                       fontWeight={"bold"}
                       fontFamily={"morabba"}
                       width={"fit-content"}
+                      mb={{base:'10px', md:'none'}}
                     >
                       {t("social_media")}
                     </Text>
@@ -593,7 +599,7 @@ const MainLayout = ({
                       `}
                       />
                     </HStack>
-                  </HStack>
+                  </Flex>
                 </VStack>
 
                 <VStack

@@ -264,7 +264,7 @@ export default function Home({ children }) {
               </VStack>
             ) : <ResultSearch filters={filters} setFilters={setFilters} />}
 
-            <VStack display={{ base: "flex", md: "none" }}>
+            <VStack display={{ base: "flex", md: "none" }} mt={'50px'}>
               {questions?.map((item, index) => (
                 <QuestionMCard key={index} data={item} t={t} />
               ))}
