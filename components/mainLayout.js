@@ -28,6 +28,7 @@ import {
   Text,
   UnorderedList,
   useDisclosure,
+  useOutsideClick,
   VStack,
 } from "@chakra-ui/react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -202,6 +203,11 @@ const MainLayout = ({
     router.push("/dashboard/profile");
   };
 
+  useOutsideClick({
+    ref: inputRef,
+    handler: () => setShowInput(false),
+  });
+
   return (
     <VStack
       minHeight="100vh"
@@ -260,7 +266,7 @@ const MainLayout = ({
                     onClick={() => setShowInput(true)}
                   />
                 ) : (
-                  <InputGroup width="490px" height="60px">
+                  <InputGroup width="490px" height="60px" ref={inputRef}>
                     <Input
                       border="1px"
                       borderColor="#3646B366"

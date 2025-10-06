@@ -36,7 +36,7 @@ const TextSlider = ({ height, borderRadius, width = "auto" }) => {
       alignItems={"center"}
       justifyContent={'center'}
       height={'60px'}
-
+      overflow={'hidden'}
     >
       <Box w="100%" alignItems={"center"} justifyContent={"center"} mx="auto">
         <Slider {...sliderSettings}>

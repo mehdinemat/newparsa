@@ -4,6 +4,7 @@
 import {
   Box,
   HStack,
+  Heading,
   IconButton,
   Input,
   Text,
@@ -20,6 +21,8 @@ import useSWRMutation from "swr/mutation";
 import { StringParam, useQueryParams, withDefault } from "use-query-params";
 import { baseUrl } from "./lib/api";
 import LoadingDots from "./loadingDots";
+import ReactMarkdown from "react-markdown";
+import remarkBreaks from "remark-breaks";
 
 const chats = [
   {
@@ -101,6 +104,8 @@ export default function ChatBot() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [botStream, setBotStream] = useState("");
+
+  const [conditionStream , setConditionStream] = useState("")
 
   const [chatSession, setChatSession] = useState('')
   const [isStreaming, setIsStreaming] = useState(false);
@@ -213,7 +218,13 @@ export default function ChatBot() {
             break;
           }
 
+          if(!parsed?.chunk){
+            console.log(parsed?.state , 'this si state')
+            setConditionStream(parsed?.state)
+          }
+
           if (parsed.chunk) {
+            setConditionStream('')
             setIsStreaming(false)
             botMessage += parsed.chunk;
             console.log(parsed)
@@ -334,15 +345,36 @@ export default function ChatBot() {
                   border={'.3px'}
                   bgColor={chat.role === 2 ? '#3646B3' : '#FFFFFF'}
                   px={'18px'}
-                  py={'8px'}
+                  py={'5px'}
                   borderRadius={'20px'}
                   borderBottomRightRadius={chat.role === 2 ? '0px' : '20px'}
                   w={'auto'}
-                  maxW={'220px'}
+                  maxW={'80%'}
                   mb={'15px'}
                   boxShadow="0px 1px 5.6px 0px #0000001A"
                   justifyContent={'start'}
                 >
+                  {
+                    chat.role != 2 
+                    ? 
+                    <Box
+                    padding={"5px"}
+                    borderRadius={"30px"}
+  
+                  >
+                    <ReactMarkdown
+                      remarkPlugins={[remarkBreaks]}
+                      components={{
+                        h1: (props) => <Heading as="h1" size="xl" my={2} {...props} />,
+                        h2: (props) => <Heading as="h2" size="lg" my={2} {...props} />,
+                        h3: (props) => <Heading as="h3" size="md" my={2} {...props} />,
+                        p: (props) => <Text fontSize={"20px"} fontWeight={"400"} my={1} {...props} />,
+                      }}
+                    >
+                      {chat.content}
+                    </ReactMarkdown>
+                  </Box>
+                    :
                   <Text
                     fontSize={chat.role === 2 ? '13px' : '14px'}
                     fontWeight={'400'}
@@ -351,10 +383,12 @@ export default function ChatBot() {
                   >
                     {chat.content}
                   </Text>
+                  }
+                  
 
                   {isStreaming && chat.role !== 2 && isLast && (
 
-                    <LoadingDots size="sm" color="blue.500" />
+                    <LoadingDots size="sm" color="blue.500" conditionStream={conditionStream}/>
                   )}
                 </Box>
               );

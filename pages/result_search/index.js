@@ -427,7 +427,7 @@ const Index = ({ children, filters, setFilters }) => {
 
 
                 :
-                <Box as={HStack} justifyContent={'space-between'} w={'100%'} bgColor={'#3646B31A'} overflow={'hidden'} height={'60px'} borderRadius={'10px'}>
+                <Box   flex="1"   as={HStack} justifyContent={'space-between'} w={'calc( 100% - 40px )'} bgColor={'#3646B31A'} overflow={'hidden'} height={'60px'} borderRadius={'10px'}>
                   <TextSlider />
                   <IoMdClose color="#3646B3" fontSize={'24px'} width={'fit-content'} cursor={'pointer'} style={{ width: '24px', marginLeft: '14px' }} onClick={e => setFilter(false)} />
                 </Box>

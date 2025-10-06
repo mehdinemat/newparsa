@@ -1,7 +1,7 @@
 import { Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
-const LoadingDots = () => {
+const LoadingDots = ({conditionStream}) => {
   const [dots, setDots] = useState("");
 
   useEffect(() => {
@@ -14,7 +14,7 @@ const LoadingDots = () => {
 
   return (
     <Text fontSize="14px" fontWeight="400" color="blue.500">
-      درحال پردازش{dots}
+      {conditionStream}
     </Text>
   );
 };
