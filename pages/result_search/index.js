@@ -29,6 +29,7 @@ import ReactMarkdown from "react-markdown";
 import remarkBreaks from "remark-breaks";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
+import LoadingDots from "@/components/loadingDots";
 
 
 export const fetcherWithTiming = async (url) => {
@@ -72,6 +73,9 @@ const Index = ({ children, filters, setFilters }) => {
   const [botStream, setBotStream] = useState("");
   const [aiMessage, setAiMessage] = useState("");
   const [filter, setFilter] = useState(false)
+  const [conditionStream , setConditionStream] = useState("")
+  const [isStreaming, setIsStreaming] = useState(false);
+
 
   useEffect(() => {
     setIsUserLogin(!!localStorage.getItem("token"));
@@ -94,6 +98,7 @@ const Index = ({ children, filters, setFilters }) => {
     {
       onSuccess: async (data) => {
         setChatSession(data?.data?.data?.id);
+        setIsStreaming(true)
         const userId = Date.now();
         let botMessage = "";
         setBotStream("");
@@ -111,6 +116,7 @@ const Index = ({ children, filters, setFilters }) => {
         )
 
         if (!res.body) {
+          setIsStreaming(false)
           console.error("No streaming body in response");
           return;
         }
@@ -146,7 +152,13 @@ const Index = ({ children, filters, setFilters }) => {
                 break;
               }
 
+              if(!parsed?.chunk){
+                setConditionStream(parsed?.state)
+              }
+
               if (parsed.chunk) {
+                setConditionStream('')
+                setIsStreaming(false)
                 botMessage += parsed.chunk;
                 console.log(parsed);
                 // update assistant message in history
@@ -172,6 +184,7 @@ const Index = ({ children, filters, setFilters }) => {
 
   const publicChat = async () => {
     let botMessage = "";
+    setIsStreaming(true)
     setBotStream("");
     console.log('jellll')
     const res = await fetch(
@@ -187,6 +200,7 @@ const Index = ({ children, filters, setFilters }) => {
     );
 
     if (!res.body) {
+      setIsStreaming(false)
       console.error("No streaming body in response");
       return;
     }
@@ -222,7 +236,14 @@ const Index = ({ children, filters, setFilters }) => {
             break;
           }
 
+          if(!parsed?.chunk){
+            setConditionStream(parsed?.state)
+          }
+
+
           if (parsed.chunk) {
+            setConditionStream('')
+            setIsStreaming(false)
             botMessage += parsed.chunk;
             console.log(parsed);
             // update assistant message in history
@@ -345,6 +366,10 @@ const Index = ({ children, filters, setFilters }) => {
                   >
                     {aiMessage}
                   </ReactMarkdown>
+                  {conditionStream &&  (
+
+<LoadingDots size="sm" color="blue.500" conditionStream={conditionStream}/>
+)}
                 </Box>
                 {(!showMore && aiMessage?.length > 200) && (
                   <VStack w={"100%"} justifyContent={"center"}>

@@ -219,7 +219,6 @@ export default function ChatBot() {
           }
 
           if(!parsed?.chunk){
-            console.log(parsed?.state , 'this si state')
             setConditionStream(parsed?.state)
           }
 
