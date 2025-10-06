@@ -27,7 +27,7 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import useSWR from "swr";
 import useSWRInfinite from "swr/infinite";
-import { StringParam, useQueryParams, withDefault } from "use-query-params";
+import { ArrayParam, StringParam, useQueryParams, withDefault } from "use-query-params";
 import ResultSearch from './result_search';
 
 
@@ -45,7 +45,7 @@ export default function Home({ children }) {
     type: withDefault(StringParam, ""),
     order_by: withDefault(StringParam, ""),
     model: withDefault(StringParam, "e5"),
-    source: withDefault(StringParam, ""),
+    source: withDefault(ArrayParam, []),
     category_id: withDefault(StringParam, "28"),
   });
 
@@ -97,7 +97,7 @@ export default function Home({ children }) {
 
   const { data: dataHadith, error: errorHadith } = useSWR("user/general/hadis");
   const { data: dataSource, error: errorSource } = useSWR(
-    "user/source?size=10"
+    "user/source"
   );
   const { data: dataReferences, error: errorReferences } =
     useSWR("user/public-figure");
@@ -262,7 +262,7 @@ export default function Home({ children }) {
                   </HStack>
                 </Stack>
               </VStack>
-            ) : <ResultSearch filters={filters} setFilters={setFilters} />}
+            ) : <ResultSearch filters={filters} setFilters={setFilters} source={dataSource?.data}/>}
 
             <VStack display={{ base: "flex", md: "none" }} mt={'50px'}>
               {questions?.map((item, index) => (

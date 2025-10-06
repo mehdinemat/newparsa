@@ -52,7 +52,7 @@ const postRequest = (url, { arg }) => {
 
 const tags = ['جامعه اسلامی', 'قرآن', 'جمهوری اسلامی', 'احادیث معتبر', 'روایات', 'جامعه اسلامی',]
 
-const Index = ({ children, filters, setFilters }) => {
+const Index = ({ children, filters, setFilters , source }) => {
   const { t } = useTranslation();
 
   const router = useRouter();
@@ -81,16 +81,26 @@ const Index = ({ children, filters, setFilters }) => {
     setIsUserLogin(!!localStorage.getItem("token"));
   }, []);
 
-  const {
-    data: dataQuestionSearch,
-    error: errorQuestionSearch,
-    isLoading: isLoadingQuestionSearch,
-  } = useSWR(
-    `user/question/search?page=${(page - 1) * 10}&search_type=${filters?.search_type
-    }&content=${filters?.search}&lang=${locale}${filters?.order_by && `&order_by=${filters?.order_by}`
-    }&model_name=${filters?.model}&source_name=${filters?.source}`,
-    fetcherWithTiming
-  );
+  const sourceParams =
+  filters?.source?.length > 0
+    ? filters.source.map(src => `&source_list=${encodeURIComponent(src)}`).join("")
+    : "";
+
+const {
+  data: dataQuestionSearch,
+  error: errorQuestionSearch,
+  isLoading: isLoadingQuestionSearch,
+} = useSWR(
+  `user/question/search?page=${(page - 1) * 10}` +
+    `&search_type=${filters?.search_type || ""}` +
+    `&content=${filters?.search || ""}` +
+    `&lang=${locale}` +
+    `${filters?.order_by ? `&order_by=${filters.order_by}` : ""}` +
+    `&model_name=${filters?.model || ""}` +
+    `${sourceParams}`,
+  fetcherWithTiming
+);
+
 
   const { trigger: triggerSession } = useSWRMutation(
     `user/chat/session`,
@@ -371,7 +381,7 @@ const Index = ({ children, filters, setFilters }) => {
 <LoadingDots size="sm" color="blue.500" conditionStream={conditionStream}/>
 )}
                 </Box>
-                {(!showMore && aiMessage?.length > 200) && (
+                {/* {(!showMore && aiMessage?.length > 200) && (
                   <VStack w={"100%"} justifyContent={"center"}>
                     <Text
                       fontSize={"14px"}
@@ -382,7 +392,7 @@ const Index = ({ children, filters, setFilters }) => {
                       مشاهده کامل
                     </Text>
                   </VStack>
-                )}
+                )} */}
               </VStack>
             )}
 
@@ -453,7 +463,7 @@ const Index = ({ children, filters, setFilters }) => {
 
                 :
                 <Box   flex="1"   as={HStack} justifyContent={'space-between'} w={'calc( 100% - 40px )'} bgColor={'#3646B31A'} overflow={'hidden'} height={'60px'} borderRadius={'10px'}>
-                  <TextSlider />
+                  <TextSlider source={source} setFilters={setFilters} filters={filters}/>
                   <IoMdClose color="#3646B3" fontSize={'24px'} width={'fit-content'} cursor={'pointer'} style={{ width: '24px', marginLeft: '14px' }} onClick={e => setFilter(false)} />
                 </Box>
               }

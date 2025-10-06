@@ -150,9 +150,7 @@ const MainLayout = ({
   };
 
   const handleClickSearch = () => {
-    router.push(
-      `/result_search?search=${watchSearch("search")}&search_type=search`
-    );
+    setFilters({ search_type: 'search', search: watchSearch("search"), type: undefined })
   };
 
   useEffect(() => {
@@ -334,7 +332,7 @@ const MainLayout = ({
 
               <Menu isOpen={isOpen2} onOpen={() => setIsOpen2(true)} onClose={() => setIsOpen2(false)}>
                 <MenuButton as={Button}>
-                  <Image src="/headermenu.png" height={{ base: "17px", md: "29px" }} width={{ base: "17px", md: "28px" }} mr={{ base: "5px", md: "20px" }} />
+                  <Image src="/headermenu.png" height={{ base: "17px", md: "49px" }} width={{ base: "17px", md: "45px" }} mr={{ base: "5px", md: "20px" }} />
                 </MenuButton>
 
                 <AnimatePresence>
@@ -637,7 +635,7 @@ const MainLayout = ({
                     <IconButton
                       icon={<IoLocation color="#29CCCC" fontSize={"20px"} />}
                     />
-                    <Text fontSize={"18px"}>0253 222 33 44</Text>
+                    <Text fontSize={"18px"} dir="ltr">0253 222 33 44</Text>
                   </HStack>
                   <HStack>
                     <IconButton

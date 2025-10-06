@@ -143,7 +143,7 @@ export default function Home({ children }) {
   };
 
   return (
-    <MainLayout>
+    <MainLayout menuDefault={true}> 
       <Head>
         <title>{`${t("parsa")} | ${t("tag")} : ${slug}`}</title>
         <link rel="icon" href="/question.png" />
@@ -159,12 +159,13 @@ export default function Home({ children }) {
         handleVoiceSearch={handleVoiceSearch}
       /> */}
       <Box
+      scrollSnapAlign="start"
         w="100%"
         alignItems={"center"}
         justifyContent={"center"}
         maxW="container.xl"
         mx="auto"
-        marginTop={{ base: "60px", md: "100px" }}
+        marginTop={{ base: "60px", md: "140px" }}
         p={"20px"}
       >
         <Stack pb={"20px"} mr={"10px"}>
@@ -280,9 +281,9 @@ export default function Home({ children }) {
                 <Text fontWeight={"bold"} fontSize={"16px"}>
                   {t("hadith_of_the_day")}
                 </Text>
-                <Text mt={"10px"} whiteSpace="pre-wrap">
+                {/* <Text mt={"10px"} whiteSpace="pre-wrap">
                   {dataHadith?.data}
-                </Text>
+                </Text> */}
               </Box>
               <Box
                 w={"100%"}
