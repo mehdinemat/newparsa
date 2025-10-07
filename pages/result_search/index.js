@@ -4,11 +4,12 @@ import {
   Heading,
   HStack,
   IconButton,
+  Link,
   Spinner,
   Stack,
   Tabs,
   Text,
-  VStack
+  VStack,
 } from "@chakra-ui/react";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
@@ -30,7 +31,8 @@ import remarkBreaks from "remark-breaks";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 import LoadingDots from "@/components/loadingDots";
-
+import { motion } from "framer-motion";
+ 
 
 export const fetcherWithTiming = async (url) => {
   const startTime = performance.now();
@@ -50,9 +52,16 @@ const postRequest = (url, { arg }) => {
   return axios.post(baseUrl + url, arg);
 };
 
-const tags = ['جامعه اسلامی', 'قرآن', 'جمهوری اسلامی', 'احادیث معتبر', 'روایات', 'جامعه اسلامی',]
+const tags = [
+  "جامعه اسلامی",
+  "قرآن",
+  "جمهوری اسلامی",
+  "احادیث معتبر",
+  "روایات",
+  "جامعه اسلامی",
+];
 
-const Index = ({ children, filters, setFilters , source }) => {
+const Index = ({ children, filters, setFilters, source }) => {
   const { t } = useTranslation();
 
   const router = useRouter();
@@ -63,7 +72,6 @@ const Index = ({ children, filters, setFilters , source }) => {
 
   const [isUserLogin, setIsUserLogin] = useState("");
 
-
   const scrollRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
@@ -72,35 +80,35 @@ const Index = ({ children, filters, setFilters , source }) => {
   const [chatSession, setChatSession] = useState("");
   const [botStream, setBotStream] = useState("");
   const [aiMessage, setAiMessage] = useState("");
-  const [filter, setFilter] = useState(false)
-  const [conditionStream , setConditionStream] = useState("")
+  const [filter, setFilter] = useState(false);
+  const [conditionStream, setConditionStream] = useState("");
   const [isStreaming, setIsStreaming] = useState(false);
-
 
   useEffect(() => {
     setIsUserLogin(!!localStorage.getItem("token"));
   }, []);
 
   const sourceParams =
-  filters?.source?.length > 0
-    ? filters.source.map(src => `&source_list=${encodeURIComponent(src)}`).join("")
-    : "";
+    filters?.source?.length > 0
+      ? filters.source
+          .map((src) => `&source_list=${encodeURIComponent(src)}`)
+          .join("")
+      : "";
 
-const {
-  data: dataQuestionSearch,
-  error: errorQuestionSearch,
-  isLoading: isLoadingQuestionSearch,
-} = useSWR(
-  `user/question/search?page=${(page - 1) * 10}` +
-    `&search_type=${filters?.search_type || ""}` +
-    `&content=${filters?.search || ""}` +
-    `&lang=${locale}` +
-    `${filters?.order_by ? `&order_by=${filters.order_by}` : ""}` +
-    `&model_name=${filters?.model || ""}` +
-    `${sourceParams}`,
-  fetcherWithTiming
-);
-
+  const {
+    data: dataQuestionSearch,
+    error: errorQuestionSearch,
+    isLoading: isLoadingQuestionSearch,
+  } = useSWR(
+    `user/question/search?page=${(page - 1) * 10}` +
+      `&search_type=${filters?.search_type || ""}` +
+      `&content=${filters?.search || ""}` +
+      `&lang=${locale}` +
+      `${filters?.order_by ? `&order_by=${filters.order_by}` : ""}` +
+      `&model_name=${filters?.model || ""}` +
+      `${sourceParams}`,
+    fetcherWithTiming
+  );
 
   const { trigger: triggerSession } = useSWRMutation(
     `user/chat/session`,
@@ -108,10 +116,11 @@ const {
     {
       onSuccess: async (data) => {
         setChatSession(data?.data?.data?.id);
-        setIsStreaming(true)
+        setIsStreaming(true);
         const userId = Date.now();
         let botMessage = "";
         setBotStream("");
+        setAiMessage("")
 
         const res = await fetch(
           `https://parsa.api.t.etratnet.ir/user/chat/${data?.data?.data?.id}`,
@@ -123,10 +132,10 @@ const {
             },
             body: JSON.stringify({ content: filters?.search }),
           }
-        )
+        );
 
         if (!res.body) {
-          setIsStreaming(false)
+          setIsStreaming(false);
           console.error("No streaming body in response");
           return;
         }
@@ -162,17 +171,17 @@ const {
                 break;
               }
 
-              if(!parsed?.chunk){
-                setConditionStream(parsed?.state)
+              if (!parsed?.chunk) {
+                setConditionStream(parsed?.state);
               }
 
               if (parsed.chunk) {
-                setConditionStream('')
-                setIsStreaming(false)
+                setConditionStream("");
+                setIsStreaming(false);
                 botMessage += parsed.chunk;
                 console.log(parsed);
                 // update assistant message in history
-                console.log(botMessage)
+                console.log(botMessage);
                 setAiMessage(botMessage);
               }
 
@@ -194,9 +203,9 @@ const {
 
   const publicChat = async () => {
     let botMessage = "";
-    setIsStreaming(true)
+    setIsStreaming(true);
     setBotStream("");
-    console.log('jellll')
+    setAiMessage("")
     const res = await fetch(
       `https://parsa.api.t.etratnet.ir/user/chat/anonymous`,
       {
@@ -205,12 +214,14 @@ const {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify({ "messages": [{ content: filters?.search, role: 'user' }] }),
+        body: JSON.stringify({
+          messages: [{ content: filters?.search, role: "user" }],
+        }),
       }
     );
 
     if (!res.body) {
-      setIsStreaming(false)
+      setIsStreaming(false);
       console.error("No streaming body in response");
       return;
     }
@@ -246,14 +257,13 @@ const {
             break;
           }
 
-          if(!parsed?.chunk){
-            setConditionStream(parsed?.state)
+          if (!parsed?.chunk) {
+            setConditionStream(parsed?.state);
           }
 
-
           if (parsed.chunk) {
-            setConditionStream('')
-            setIsStreaming(false)
+            setConditionStream("");
+            setIsStreaming(false);
             botMessage += parsed.chunk;
             console.log(parsed);
             // update assistant message in history
@@ -272,7 +282,7 @@ const {
 
     // clear botStream state if you don’t need it
     setBotStream("");
-  }
+  };
 
   useEffect(() => {
     setPage(1);
@@ -280,19 +290,17 @@ const {
 
   useEffect(() => {
     if (filters?.type == "ai") {
-      setAiMessage("")
+      setAiMessage("");
       if (isUserLogin) {
         triggerSession();
-      }
-      else {
-        publicChat()
+      } else {
+        publicChat();
       }
     }
   }, [filters?.search]);
 
   return (
     <Tabs w={"100%"} scrollSnapAlign="start">
-
       <Head>
         <title>
           {t("parsa")} :{" "}
@@ -323,12 +331,11 @@ const {
           w={"100%"}
         >
           <Box
-
             p={{ base: 0, md: "6" }}
             order={{ base: 1, md: 2 }}
             as={VStack}
-            width={'100%'}
-            alignItems={'start'}
+            width={"100%"}
+            alignItems={"start"}
             colSpan={{ md: 4 }}
             w="100%"
             overflowWrap="break-word"
@@ -343,43 +350,82 @@ const {
                   {filters?.search}
                 </Text>
                 <HStack w={"100%"} alignItems={"center"}>
-                  <svg
+                  <motion.svg
                     width="32"
                     height="32"
                     viewBox="0 0 32 32"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
+                    animate={
+                      isStreaming
+                        ? { opacity: [1, 0.1, 1] } // fade in/out loop
+                        : { opacity: 1 } // static when not streaming
+                    }
+                    transition={
+                      isStreaming
+                        ? {
+                            duration: 1, // one full fade cycle = 1s
+                            repeat: Infinity,
+                            ease: "easeInOut",
+                          }
+                        : { duration: 0 }
+                    }
                   >
                     <path
                       d="M15.7422 0L17.1554 6.14379C18.1138 10.3056 21.2586 13.5519 25.2904 14.5412L31.2422 16L25.2904 17.4588C21.2586 18.4481 18.1138 21.6944 17.1554 25.8562L15.7422 32L14.329 25.8562C13.3706 21.6944 10.2257 18.4481 6.19398 17.4588L0.242188 16L6.19398 14.5412C10.2257 13.5519 13.3706 10.3056 14.329 6.14379L15.7422 0Z"
                       fill="#3646B3"
                     />
-                  </svg>
+                  </motion.svg>
+
                   <Text fontSize={"30px"} color={"#3646B3"}>
                     نتایج جستجو هوشمند
                   </Text>
                 </HStack>
-                <Box
-                  bgColor={"#F7F7F7"}
-                  padding={"17px"}
-                  borderRadius={"30px"}
-
-                >
+                <Box bgColor={"#F7F7F7"} padding={"17px"} borderRadius={"30px"}>
                   <ReactMarkdown
                     remarkPlugins={[remarkBreaks]}
                     components={{
-                      h1: (props) => <Heading as="h1" size="xl" my={2} {...props} />,
-                      h2: (props) => <Heading as="h2" size="lg" my={2} {...props} />,
-                      h3: (props) => <Heading as="h3" size="md" my={2} {...props} />,
-                      p: (props) => <Text fontSize={"20px"} fontWeight={"400"} my={1} {...props} />,
+                      h1: (props) => (
+                        <Heading as="h2" size="lg" my={2} {...props} />
+                      ),
+                      h2: (props) => (
+                        <Heading as="h3" size="md" my={2} {...props} />
+                      ),
+                      h3: (props) => (
+                        <Heading as="h4" size="sm" my={2} {...props} />
+                      ),
+                      p: (props) => (
+                        <Text
+                          fontSize="20px"
+                          fontWeight="400"
+                          my={1}
+                          {...props}
+                        />
+                      ),
+                      a: ({ href, children }) => (
+                        <Link
+                          href={href}
+                          color="blue.500"
+                          isExternal
+                          _hover={{
+                            textDecoration: "underline",
+                            color: "blue.600",
+                          }}
+                        >
+                          {children}
+                        </Link>
+                      ),
                     }}
                   >
                     {aiMessage}
                   </ReactMarkdown>
-                  {conditionStream &&  (
-
-<LoadingDots size="sm" color="blue.500" conditionStream={conditionStream}/>
-)}
+                  {conditionStream && (
+                    <LoadingDots
+                      size="sm"
+                      color="blue.500"
+                      conditionStream={conditionStream}
+                    />
+                  )}
                 </Box>
                 {/* {(!showMore && aiMessage?.length > 200) && (
                   <VStack w={"100%"} justifyContent={"center"}>
@@ -396,77 +442,104 @@ const {
               </VStack>
             )}
 
-            <HStack w={'100%'} justifyContent={'space-between'} height={'100%'} width={'100%'}>
-              <HStack mb={"10px"} ml={'20px'}>
+            <HStack
+              w={"100%"}
+              justifyContent={"space-between"}
+              height={"100%"}
+              width={"100%"}
+            >
+              <HStack mb={"10px"} ml={"20px"}>
                 <IoSearch color={"#3646B3"} fontSize={"22px"} />
-                <Text fontSize={"30px"} color={"#3646B3"} whiteSpace={'nowrap'}>
+                <Text fontSize={"30px"} color={"#3646B3"} whiteSpace={"nowrap"}>
                   نتایج جستجو بین سوالات
                 </Text>
-                <Text color={"#C2C2C2"} fontSize={"16px"} whiteSpace={'nowrap'}>
+                <Text color={"#C2C2C2"} fontSize={"16px"} whiteSpace={"nowrap"}>
                   {dataQuestionSearch?.data?.data?.total_count} سوال
                 </Text>
               </HStack>
-              {!filter ? <Box
-                position="relative"
-                cursor="pointer"
-                borderRadius="15px"
-                overflow="hidden"
-                role="group"
-                onClick={() => setFilter(true)}
-              >
-                {/* Background */}
+              {!filter ? (
                 <Box
-                  position="absolute"
-                  top={0}
-                  left={0}
-                  width="0" // default: no background
-                  height="100%"
-                  bgColor="#3646B31A"
-                  transition="width 0.4s ease" // collapse smoothly on leave
-                  _groupHover={{
-                    width: "100%", // appear instantly on hover
-                    transition: "none", // no animation on hover enter
-                  }}
-                  zIndex={0}
-                />
-
-                {/* Content */}
-                <HStack
                   position="relative"
-                  alignItems="center"
-                  justifyContent="center"
-                  height="60px"
-                  px={4}
-                  spacing={2}
-                  zIndex={1}
+                  cursor="pointer"
+                  borderRadius="15px"
+                  overflow="hidden"
+                  role="group"
+                  onClick={() => setFilter(true)}
                 >
-                  <Text
-                    fontFamily="iransans"
-                    fontWeight="500"
-                    fontSize="20px"
-                    color="#3646B3"
-                    opacity={0} // hidden initially
-                    transition="opacity 0.4s ease" // smooth fade on leave
+                  {/* Background */}
+                  <Box
+                    position="absolute"
+                    top={0}
+                    left={0}
+                    width="0" // default: no background
+                    height="100%"
+                    bgColor="#3646B31A"
+                    transition="width 0.4s ease" // collapse smoothly on leave
                     _groupHover={{
-                      opacity: 1, // appear instantly
+                      width: "100%", // appear instantly on hover
                       transition: "none", // no animation on hover enter
                     }}
-                    pointerEvents="none"
+                    zIndex={0}
+                  />
+
+                  {/* Content */}
+                  <HStack
+                    position="relative"
+                    alignItems="center"
+                    justifyContent="center"
+                    height="60px"
+                    px={4}
+                    spacing={2}
+                    zIndex={1}
                   >
-                    فیلترها
-                  </Text>
+                    <Text
+                      fontFamily="iransans"
+                      fontWeight="500"
+                      fontSize="20px"
+                      color="#3646B3"
+                      opacity={0} // hidden initially
+                      transition="opacity 0.4s ease" // smooth fade on leave
+                      _groupHover={{
+                        opacity: 1, // appear instantly
+                        transition: "none", // no animation on hover enter
+                      }}
+                      pointerEvents="none"
+                    >
+                      فیلترها
+                    </Text>
 
-                  <IconButton icon={<IoOptionsOutline color="#3646B3" />} fontSize="31px" />
-                </HStack>
-              </Box>
-
-
-                :
-                <Box   flex="1"   as={HStack} justifyContent={'space-between'} w={'calc( 100% - 40px )'} bgColor={'#3646B31A'} overflow={'hidden'} height={'60px'} borderRadius={'10px'}>
-                  <TextSlider source={source} setFilters={setFilters} filters={filters}/>
-                  <IoMdClose color="#3646B3" fontSize={'24px'} width={'fit-content'} cursor={'pointer'} style={{ width: '24px', marginLeft: '14px' }} onClick={e => setFilter(false)} />
+                    <IconButton
+                      icon={<IoOptionsOutline color="#3646B3" />}
+                      fontSize="31px"
+                    />
+                  </HStack>
                 </Box>
-              }
+              ) : (
+                <Box
+                  flex="1"
+                  as={HStack}
+                  justifyContent={"space-between"}
+                  w={"calc( 100% - 40px )"}
+                  bgColor={"#3646B31A"}
+                  overflow={"hidden"}
+                  height={"60px"}
+                  borderRadius={"10px"}
+                >
+                  <TextSlider
+                    source={source}
+                    setFilters={setFilters}
+                    filters={filters}
+                  />
+                  <IoMdClose
+                    color="#3646B3"
+                    fontSize={"24px"}
+                    width={"fit-content"}
+                    cursor={"pointer"}
+                    style={{ width: "24px", marginLeft: "14px" }}
+                    onClick={(e) => setFilter(false)}
+                  />
+                </Box>
+              )}
             </HStack>
 
             <VStack
@@ -475,8 +548,7 @@ const {
               padding={"14px"}
               borderRadius={"15px"}
             >
-              <HStack w={"100%"} justifyContent={"space-between"}>
-              </HStack>
+              <HStack w={"100%"} justifyContent={"space-between"}></HStack>
               {isLoadingQuestionSearch ? (
                 <HStack
                   w={"100%"}
@@ -517,13 +589,12 @@ const {
               )}
             </VStack>
 
-            <VStack display={{ base: "flex", md: "none" }} width={'100%'} >
+            <VStack display={{ base: "flex", md: "none" }} width={"100%"}>
               {dataQuestionSearch?.data?.data?.result?.map((item, index) => (
                 <QuestionMCard key={index} data={item} t={t} />
               ))}
             </VStack>
           </Box>
-
         </Grid>
       </Box>
     </Tabs>
