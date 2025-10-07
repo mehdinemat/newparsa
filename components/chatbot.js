@@ -364,8 +364,8 @@ export default function ChatBot() {
                     <ReactMarkdown
                       remarkPlugins={[remarkBreaks]}
                       components={{
-                        h1: (props) => <Heading as="h1" size="md" my={2} {...props} />,
-                        h2: (props) => <Heading as="h2" size="md" my={2} {...props} />,
+                        h1: (props) => <Heading as="h1" size="xl" my={2} {...props} />,
+                        h2: (props) => <Heading as="h2" size="lg" my={2} {...props} />,
                         h3: (props) => <Heading as="h3" size="md" my={2} {...props} />,
                         p: (props) => <Text fontSize={"20px"} fontWeight={"400"} my={1} {...props} />,
                       }}
