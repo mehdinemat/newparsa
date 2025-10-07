@@ -71,7 +71,7 @@ const QuestionCard = ({ data, t, type = "question", bgColor }) => {
           <Wrap spacing="8px" w={"100%"}>
             {data?.tags?.map((item, index) => (
               <Badge
-                onClick={(e) => handleClickTags(item)}
+                // onClick={(e) => handleClickTags(item)}
                 _hover={{ bgColor: "#29cccc38", color: "#1a7c7c" }}
                 transition={".3s"}
                 key={index}

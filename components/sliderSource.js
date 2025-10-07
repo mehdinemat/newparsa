@@ -27,7 +27,8 @@ const SliderSource = ({ items, height, borderRadius, width = "auto", title }) =>
   };
 
   const handlePublicFiqure = (item) => {
-    router.push(`/questions/public_fiqure/${item?.id}/${item?.title}`);
+    window.open(`http://www.${item?.link}` , '_blank')
+    // router.push(`/questions/public_fiqure/${item?.id}/${item?.title}`);
   };
 
   const router = useRouter();

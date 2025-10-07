@@ -14,7 +14,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 
-const SliderCom = ({ items, height, borderRadius, width = "auto", title }) => {
+const SliderCom = ({ items, height, borderRadius, width = "auto", title , link }) => {
   const slidesToShow = useBreakpointValue({ base: 1, md: 2, lg: 4 }); // responsive value
 
   const sliderSettings = {
@@ -28,7 +28,8 @@ const SliderCom = ({ items, height, borderRadius, width = "auto", title }) => {
   };
 
   const handlePublicFiqure = (item) => {
-    router.push(`/questions/public_fiqure/${item?.id}/${item?.title}`);
+    window.open(item?.link , '_blank')
+    // router.push(`/questions/public_fiqure/${item?.id}/${item?.title}`);
   };
 
   const router = useRouter();
