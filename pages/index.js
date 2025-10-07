@@ -242,7 +242,7 @@ export default function Home({ children }) {
                     alignItems={"center"}
                     mt={"45px"}
                   >
-                    {isValidating && <Text>Loading...</Text>}
+                    {isValidating && <Text>درحال بارگذاری...</Text>}
                     <HStack>
                       <Button
                         height={"32px"}
