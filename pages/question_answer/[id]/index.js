@@ -18,7 +18,7 @@ import {
   Stack,
   Text,
   useBreakpointValue,
-  VStack
+  VStack,
 } from "@chakra-ui/react";
 import axios from "axios";
 import moment from "moment-jalaali";
@@ -27,18 +27,22 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { IoIosArrowBack, IoIosArrowForward, IoMdCheckmarkCircleOutline } from "react-icons/io";
 import {
-  IoArrowDown,
-  IoArrowUp,
-  IoBookmarkOutline
-} from "react-icons/io5";
+  IoIosArrowBack,
+  IoIosArrowForward,
+  IoMdCheckmarkCircleOutline,
+} from "react-icons/io";
+import { IoArrowDown, IoArrowUp, IoBookmarkOutline } from "react-icons/io5";
 import { TbBookmark } from "react-icons/tb";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 
-const answer =
-  ['لورم ایپسوم متن ساختگی با تولید سادگی از صنعت چاپ، و  متن از صنعت چاپ، و با استفاده از طراحان گرافیــک اســت، لورم ایپسوم ساختگی با تولید سادگی از', 'لورم ایپسوم متن ساختگی با تولید سادگی از صنعت چاپ، و  متن  تولید سادگی از صنعت چاپ، و با استفاده از طراحان گرافیــک اســت، لورم ایپسوم ساختگی با تولید سادگی از', 'لورم ایپسوم متن ساختگی با تولید سادگی از صنعت چاپ، و با استفاده از  گرافیــک اســت، لورم ایپسوم ساختگی با تولید سادگی از لورم ایپسوم متن ساختگی با تولید سادگی از صنعت چاپ، و با استفاده از طراحان گرافیــک اســت، لورم ایپسوم ساختگی با تولید سادگی از', 'لورم ایپسوم متن ساختگی با تولید سادگی از صنعت چاپ، و  متن ساختگی با تولید سادگی از صنعت چاپ، و  متن ساختگی با تولید سادگی از صنعت چاپ، و با استفاده از طراحان گرافیــک اســت، لورم ایپسوم ساختگی با تولید سادگی از']
+const answer = [
+  "لورم ایپسوم متن ساختگی با تولید سادگی از صنعت چاپ، و  متن از صنعت چاپ، و با استفاده از طراحان گرافیــک اســت، لورم ایپسوم ساختگی با تولید سادگی از",
+  "لورم ایپسوم متن ساختگی با تولید سادگی از صنعت چاپ، و  متن  تولید سادگی از صنعت چاپ، و با استفاده از طراحان گرافیــک اســت، لورم ایپسوم ساختگی با تولید سادگی از",
+  "لورم ایپسوم متن ساختگی با تولید سادگی از صنعت چاپ، و با استفاده از  گرافیــک اســت، لورم ایپسوم ساختگی با تولید سادگی از لورم ایپسوم متن ساختگی با تولید سادگی از صنعت چاپ، و با استفاده از طراحان گرافیــک اســت، لورم ایپسوم ساختگی با تولید سادگی از",
+  "لورم ایپسوم متن ساختگی با تولید سادگی از صنعت چاپ، و  متن ساختگی با تولید سادگی از صنعت چاپ، و  متن ساختگی با تولید سادگی از صنعت چاپ، و با استفاده از طراحان گرافیــک اســت، لورم ایپسوم ساختگی با تولید سادگی از",
+];
 
 const postRequest = (url, { arg: { id, ...data } }) => {
   return axios.post(baseUrl + url + `?question_id=${id}`, data, {
@@ -53,8 +57,8 @@ const postActionRequest = (
 ) => {
   return axios.post(
     baseUrl +
-    url +
-    `?table_type=${table_type}&table_id=${table_id}&type_param=${type_param}`,
+      url +
+      `?table_type=${table_type}&table_id=${table_id}&type_param=${type_param}`,
     data,
     {
       headers: {
@@ -64,21 +68,12 @@ const postActionRequest = (
   );
 };
 
-const patchRequest = (
-  url,
-  { arg: { action_id, ...data } }
-) => {
-  return axios.patch(
-    baseUrl +
-    url +
-    `?action_id=${action_id}`,
-    data,
-    {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    }
-  );
+const patchRequest = (url, { arg: { action_id, ...data } }) => {
+  return axios.patch(baseUrl + url + `?action_id=${action_id}`, data, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
 };
 
 const Index = () => {
@@ -87,9 +82,12 @@ const Index = () => {
   const [isInputOpen, setIsInputOpen] = useState(false);
   const [comment, setComment] = useState("");
 
-  const [showMore, setShowMore] = useState(false)
+  const [showMore, setShowMore] = useState(false);
+  const [like, setLike] = useState(false);
 
-  const [contentTest, setContentTest] = useState('لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز شامل حروفچینی ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرن گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی،')
+  const [contentTest, setContentTest] = useState(
+    "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز شامل حروفچینی ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرن گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی،"
+  );
 
   const { dataMe, isLoadingMe } = useUser();
 
@@ -131,21 +129,28 @@ const Index = () => {
     mutate: mutateQuestion,
   } = useSWR(query?.id && `user/question?id=${query?.id}`);
 
-  const { data: dataQuestionAnswer, isLoading: isLoadingQuestionAnswer, mutate: muatteAnswer } =
-    useSWR(query?.id && `user/question/answer?question_id=${query?.id}`);
+  const {
+    data: dataQuestionAnswer,
+    isLoading: isLoadingQuestionAnswer,
+    mutate: muatteAnswer,
+  } = useSWR(query?.id && `user/question/answer?question_id=${query?.id}`);
 
   const { data: dataQuestionComment, isLoading: isLoadingComment } = useSWR(
     query?.id &&
-    `user/action?table_id=${query?.id}&table_type=question&type_param=comment`
+      `user/action?table_id=${query?.id}&table_type=question&type_param=comment`
   );
-  const { data: dataQuestionLike, isLoading: isLoadingLike, mutate: mutateLike } = useSWR(
+  const {
+    data: dataQuestionLike,
+    isLoading: isLoadingLike,
+    mutate: mutateLike,
+  } = useSWR(
     query?.id &&
-    `user/action?table_id=${query?.id}&table_type=question&type_param=like`
+      `user/action?table_id=${query?.id}&table_type=question&type_param=like`
   );
 
   const { data: dataAnswerLike, mutate: mutateAnswerLike } = useSWR(
     dataQuestionAnswer?.data &&
-    `user/action?table_id=${dataQuestionAnswer?.data?.[0]?.id}&table_type=answer&type_param=like`
+      `user/action?table_id=${dataQuestionAnswer?.data?.[0]?.id}&table_type=answer&type_param=like`
   );
 
   // const { data: dataQuestionSave, isLoading: isLoadingSave } = useSWR(
@@ -155,7 +160,7 @@ const Index = () => {
 
   const { data: dataQuestionSimilar, isLoading: isLoadingSimilar } = useSWR(
     dataQuestion?.data &&
-    `user/question/similar-questions?question_elastic_id=${dataQuestion?.data?.result?.[0]?.elastic_id}`
+      `user/question/similar-questions?question_elastic_id=${dataQuestion?.data?.result?.[0]?.elastic_id}`
   );
 
   const {
@@ -172,8 +177,8 @@ const Index = () => {
     useSWRMutation(`user/action`, patchRequest, {
       onSuccess: () => {
         mutateQuestion();
-        muatteAnswer()
-        mutateLike()
+        muatteAnswer();
+        mutateLike();
       },
     });
   const {
@@ -183,8 +188,8 @@ const Index = () => {
   } = useSWRMutation(`user/action`, postActionRequest, {
     onSuccess: () => {
       mutateQuestion();
-      muatteAnswer()
-      mutateLike()
+      muatteAnswer();
+      mutateLike();
       resetComment();
     },
   });
@@ -194,7 +199,6 @@ const Index = () => {
       `/result_search?search=${watchSearch("search")}&search_type=search`
     );
   };
-
 
   const handleAddAnswer = (e) => {
     triggerAnswer({ ...e, id: query?.id, lang: "fa" });
@@ -209,7 +213,7 @@ const Index = () => {
   };
   const handleUpdateAction = (type, action, action_id) => {
     triggerUpdateLike({
-      action_id
+      action_id,
     });
   };
 
@@ -226,7 +230,8 @@ const Index = () => {
 
   const handleClickSource = (source) => {
     router.replace(
-      `/questions?source=${dataSource?.data?.find((it) => it?.fa_source_name == source)?.id
+      `/questions?source=${
+        dataSource?.data?.find((it) => it?.fa_source_name == source)?.id
       }`
     );
   };
@@ -258,13 +263,19 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    console.log(dataMe?.data?.[0]?.username)
-  }, [dataMe])
+    console.log(dataMe?.data?.[0]?.username);
+  }, [dataMe]);
 
-
+  const handleLikeQuestion = () => {
+    setLike(!like);
+  };
 
   return (
-    <MainLayout menuDefault={true} register={registerSearch} watchSearch={watchSearch}>
+    <MainLayout
+      menuDefault={true}
+      register={registerSearch}
+      watchSearch={watchSearch}
+    >
       <Head>
         <title>
           {dataQuestion?.data?.result?.[0]?.title ||
@@ -283,8 +294,6 @@ const Index = () => {
         scrollSnapAlign="start"
       >
         <HStack w={"100%"} alignItems={"start"} gap={"20px"}>
-
-
           <VStack w={"100%"}>
             {/* <Grid
               templateColumns={{ base: "repeat(2, 1fr)", md: "repeat(3, 1fr)" }}
@@ -351,7 +360,7 @@ const Index = () => {
               templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(3, 1fr)" }}
               gap={{ base: "10px", md: "20px" }}
               w={"100%"}
-              mt={'80px'}
+              mt={"80px"}
             >
               <GridItem
                 as={Stack}
@@ -392,10 +401,8 @@ const Index = () => {
                 {isLoadingQuestion ? (
                   <Spinner />
                 ) : (
-
-
                   <VStack w={"100%"} alignItems={"start"}>
-                    <HStack alignItems={'start'} w={'100%'}>
+                    <HStack alignItems={"start"} w={"100%"}>
                       {/* {slidesToShow != 1 && (
                         <VStack>
                           <IconButton
@@ -436,19 +443,25 @@ const Index = () => {
 
                         </VStack>
                       )} */}
-                      <HStack alignItems={'baseline'}
-                        bgColor={'#3646B31A'}
-                        padding={'8px'}
-                        borderRadius={'10px'} w={'100%'} >
+                      <HStack
+                        alignItems={"baseline"}
+                        bgColor={"#3646B31A"}
+                        padding={"8px"}
+                        borderRadius={"10px"}
+                        w={"100%"}
+                      >
+                        <IoIosArrowForward
+                          cursor={"pointer"}
+                          style={{ marginRight: "10px" }}
+                          onClick={(e) => router.back()}
+                        />
 
-                        <IoIosArrowForward cursor={'pointer'} style={{ marginRight: '10px' }} onClick={e => router.back()} />
-
-                        <VStack w={'100%'} alignItems={'start'} mr={'10px'}>
+                        <VStack w={"100%"} alignItems={"start"} mr={"10px"}>
                           <Text
                             lineHeight={"taller"}
                             textAlign={"justify"}
-                            fontSize={'21px'}
-                            fontWeight={'700'}
+                            fontSize={"21px"}
+                            fontWeight={"700"}
                           >
                             {dataQuestion?.data?.result?.[0]?.content}
                           </Text>
@@ -484,54 +497,66 @@ const Index = () => {
                             </HStack>
 
                           </HStack> */}
-
                         </VStack>
-                        <Text whiteSpace={'nowrap'} fontWeight={'400'} color={'#999999'} fontSize={'16px'}>{dataQuestionAnswer?.data && dataQuestionAnswer?.data?.length} پاسخ</Text>
+                        <Text
+                          whiteSpace={"nowrap"}
+                          fontWeight={"400"}
+                          color={"#999999"}
+                          fontSize={"16px"}
+                        >
+                          {dataQuestionAnswer?.data &&
+                            dataQuestionAnswer?.data?.length}{" "}
+                          پاسخ
+                        </Text>
 
                         <IconButton
-                          minWidth={'none'}
+                          minWidth={"none"}
                           icon={
                             dataQuestion?.data?.result?.[0]?.is_user_saved ? (
-                              <TbBookmark color="orange" fontSize={'20px'} strokeWidth={2} onClick={(e) => {
-                                if (dataQuestion?.data?.result?.[0]?.is_user_saved) {
-                                  // handleUpdateAction("question", "save_message", dataQuestionLike?.data?.result?.find((user) => (user?.user__username == dataMe?.data?.[0]?.username))?.id)
-                                } else {
-                                  handleAddAction("question", "save_message")
-                                }
-                              }
-                              } />
+                              <TbBookmark
+                                color="orange"
+                                fontSize={"20px"}
+                                strokeWidth={2}
+                                onClick={(e) => {
+                                  if (
+                                    dataQuestion?.data?.result?.[0]
+                                      ?.is_user_saved
+                                  ) {
+                                    // handleUpdateAction("question", "save_message", dataQuestionLike?.data?.result?.find((user) => (user?.user__username == dataMe?.data?.[0]?.username))?.id)
+                                  } else {
+                                    handleAddAction("question", "save_message");
+                                  }
+                                }}
+                              />
                             ) : (
                               <TbBookmark
-                                fontSize={'20px'}
+                                fontSize={"20px"}
                                 strokeWidth={2}
                                 color="black"
                                 onClick={(e) => {
-                                  if (dataQuestion?.data?.result?.[0]?.is_user_saved) {
+                                  if (
+                                    dataQuestion?.data?.result?.[0]
+                                      ?.is_user_saved
+                                  ) {
                                     // handleUpdateAction("question", "save_message", dataQuestionLike?.data?.result?.find((user) => (user?.user__username == dataMe?.data?.[0]?.username))?.id)
                                   } else {
-                                    handleAddAction("question", "save_message")
+                                    handleAddAction("question", "save_message");
                                   }
-                                }
-                                }
+                                }}
                               />
                             )
                           }
                           size={"lg"}
                         />
-
                       </HStack>
                     </HStack>
-
-
 
                     <Stack
                       direction={{ base: "column", md: "row" }}
                       w={"100%"}
                       justifyContent={"space-between"}
-                      mt={'10px'}
-                    >
-
-                    </Stack>
+                      mt={"10px"}
+                    ></Stack>
                     <Box
                       w={{ base: "fit-content", md: "100%" }}
                       padding={{ base: "none", md: "0px" }}
@@ -550,10 +575,9 @@ const Index = () => {
                           {t(dataQuestionAnswer?.data?.length == 1 ? "answer_one" : "answers")}
                         </Text>
                       </HStack> */}
-                      {
-                        dataQuestionAnswer?.data?.map((answer) => (
-                          <HStack alignItems={"start"} gap={"10px"}>
-                            {/* <VStack>
+                      {dataQuestionAnswer?.data?.map((answer) => (
+                        <HStack alignItems={"start"} gap={"10px"}>
+                          {/* <VStack>
                               <IconButton
                                 icon={
                                   <IoArrowUp
@@ -616,69 +640,116 @@ const Index = () => {
                                 size={"lg"}
                               />
                             </VStack> */}
-                            <VStack w={"100%"} alignItems={"start"} px={'2px'} pt={'25px'}>
-                              <HStack w={'100%'} justifyContent={'space-between'}>
-                                <HStack>
-                                  <Avatar w={'28px'} h={'28px'} />
-                                  <Text fontSize={'16px'} color={'#999999'}>{answer?.source}</Text>
-                                </HStack>
-                                <Text fontSize={"16px"} color={"#999999"} fontWeight={'100'}>
-                                  {moment(
-                                    answer?.created_at
-                                  ).format("jYYYY/jMM/jDD")}
+                          <VStack
+                            w={"100%"}
+                            alignItems={"start"}
+                            px={"2px"}
+                            pt={"25px"}
+                          >
+                            <HStack w={"100%"} justifyContent={"space-between"}>
+                              <HStack>
+                                <Avatar w={"28px"} h={"28px"} />
+                                <Text fontSize={"16px"} color={"#999999"}>
+                                  {answer?.source}
                                 </Text>
                               </HStack>
-                              <Collapse startingHeight={80} in={showMore}>
-                                <Text
-                                  lineHeight="190%"
-                                  w="fit-content"
-                                  textAlign="justify"
-                                  fontSize="17px"
-                                  fontWeight="400"
-                                  whiteSpace="pre-wrap"
-                                  mt="20px"
-                                  color="#333333"
-                                >
-                                  {answer?.content}
-                                </Text>
-                              </Collapse>
-                              <HStack
-                                w={"100%"}
-                                justifyContent={{
-                                  base: "start",
-                                  md: "space-between",
-                                }}
-                                mt={"10px"}
+                              <Text
+                                fontSize={"16px"}
+                                color={"#999999"}
+                                fontWeight={"100"}
                               >
-                                {showMore && <HStack order={{ base: 1 }} w={'100%'} justifyContent={'space-between'}>
+                                {moment(answer?.created_at).format(
+                                  "jYYYY/jMM/jDD"
+                                )}
+                              </Text>
+                            </HStack>
+                            <Collapse startingHeight={80} in={showMore}>
+                              <Text
+                                lineHeight="190%"
+                                w="fit-content"
+                                textAlign="justify"
+                                fontSize="17px"
+                                fontWeight="400"
+                                whiteSpace="pre-wrap"
+                                mt="20px"
+                                color="#333333"
+                              >
+                                {answer?.content}
+                              </Text>
+                            </Collapse>
+                            <HStack
+                              w={"100%"}
+                              justifyContent={{
+                                base: "start",
+                                md: "space-between",
+                              }}
+                              mt={"10px"}
+                            >
+                              {showMore && (
+                                <HStack
+                                  order={{ base: 1 }}
+                                  w={"100%"}
+                                  justifyContent={"space-between"}
+                                >
                                   <HStack
                                     w={{ base: "100%" }}
                                     justifyContent={{ base: "start" }}
                                   >
-                                    {dataQuestion?.data?.result?.[0]?.tags?.map((tag) => (
-                                      <Badge
-                                        bgColor={"#29CCCC1A"}
-                                        color={"#16A6A6"}
-                                        padding={"5px"}
-                                        borderRadius={"5px"}
-                                        w={{ base: "min-content" }}
-                                        textAlign={"center"}
-                                      >
-                                        {tag?.name}
-                                      </Badge>
-                                    ))}
+                                    {dataQuestion?.data?.result?.[0]?.tags?.map(
+                                      (tag) => (
+                                        <Badge
+                                          bgColor={"#29CCCC1A"}
+                                          color={"#16A6A6"}
+                                          padding={"5px"}
+                                          borderRadius={"5px"}
+                                          w={{ base: "min-content" }}
+                                          textAlign={"center"}
+                                        >
+                                          {tag?.name}
+                                        </Badge>
+                                      )
+                                    )}
                                   </HStack>
-                                  <Button bgColor={'white'} color={'#CCCCCC'} fontWeight={'500'} fontSize={'16px'} borderRadius={'18px'} leftIcon={<IoMdCheckmarkCircleOutline fontSize={'25px'} />}>پسند</Button>
-                                </HStack>}
-                              </HStack>
-                              {(!showMore && answer?.content?.length > 200) && <Stack flexDir={'row'} color={'#3646B3'} alignItems={'center'} cursor={'pointer'} onClick={e => setShowMore(true)} mt={'13px'}>
-                                <Text fontWeight={'500'} fontSize={'14px'} lineHeight={'176%'}>مشاهده کامل</Text>
+                                  <Button
+                                    bgColor={"white"}
+                                    color={like? "#CCCCCC":'green.300'}
+                                    fontWeight={"500"}
+                                    fontSize={"16px"}
+                                    borderRadius={"18px"}
+                                    leftIcon={
+                                      <IoMdCheckmarkCircleOutline
+                                        fontSize={"25px"}
+                                      />
+                                    }
+                                    onClick={(e) => handleLikeQuestion()}
+                                  >
+                                    پسند
+                                  </Button>
+                                </HStack>
+                              )}
+                            </HStack>
+                            {!showMore && answer?.content?.length > 200 && (
+                              <Stack
+                                flexDir={"row"}
+                                color={"#3646B3"}
+                                alignItems={"center"}
+                                cursor={"pointer"}
+                                onClick={(e) => setShowMore(true)}
+                                mt={"13px"}
+                              >
+                                <Text
+                                  fontWeight={"500"}
+                                  fontSize={"14px"}
+                                  lineHeight={"176%"}
+                                >
+                                  مشاهده کامل
+                                </Text>
                                 <IoIosArrowBack />
-                              </Stack>}
-                            </VStack>
-                          </HStack>
-                        ))
-                      }
+                              </Stack>
+                            )}
+                          </VStack>
+                        </HStack>
+                      ))}
 
                       <Divider mt={"20px"} borderColor={"gray.200"} />
                     </Box>
@@ -718,12 +789,44 @@ const Index = () => {
                         </HStack>
                       </Box>
                     ) : (
-                      <VStack w={'100%'} alignItems={'start'} mt={'40px'} px={'20px'}>
-                        <Text fontSize={'22px'} fontWeight={'600'}>شما میتوانید به این سوال پاسخ دهید</Text>
-                        <HStack w={'100%'} as="form"
-                          onSubmit={handleSubmitAnswer(handleAddAnswer)}>
-                          <Input w={'100%'} borderRadius={'10px'} height={'61px'} placeholder="نوشتن متن..." border={'1px'} borderColor={'#A3A3A3'} bgColor={'#FBFBFB'}  {...registerAnswer("content")} />
-                          <Button isLoading={isMutatingQuestionAnswer} bgColor={'#F9C96D'} borderRadius={'10px'} color={'black'} width={'220px'} height={'61px'} fontWeight={'700'} fontSize={'18px'} type="submit"> {t("submit_answer")}</Button>
+                      <VStack
+                        w={"100%"}
+                        alignItems={"start"}
+                        mt={"40px"}
+                        px={"20px"}
+                      >
+                        <Text fontSize={"22px"} fontWeight={"600"}>
+                          شما میتوانید به این سوال پاسخ دهید
+                        </Text>
+                        <HStack
+                          w={"100%"}
+                          as="form"
+                          onSubmit={handleSubmitAnswer(handleAddAnswer)}
+                        >
+                          <Input
+                            w={"100%"}
+                            borderRadius={"10px"}
+                            height={"61px"}
+                            placeholder="نوشتن متن..."
+                            border={"1px"}
+                            borderColor={"#A3A3A3"}
+                            bgColor={"#FBFBFB"}
+                            {...registerAnswer("content")}
+                          />
+                          <Button
+                            isLoading={isMutatingQuestionAnswer}
+                            bgColor={"#F9C96D"}
+                            borderRadius={"10px"}
+                            color={"black"}
+                            width={"220px"}
+                            height={"61px"}
+                            fontWeight={"700"}
+                            fontSize={"18px"}
+                            type="submit"
+                          >
+                            {" "}
+                            {t("submit_answer")}
+                          </Button>
                         </HStack>
                         {/* <QuestionAnswerCard handleSubmitAnswer={handleSubmitAnswer} handleAddAnswer={handleAddAnswer} isMutatingQuestionAnswer={isMutatingQuestionAnswer} registerAnswer={registerAnswer} t={t} /> */}
                       </VStack>
@@ -743,13 +846,24 @@ const Index = () => {
                       //       {t("show_all")}
                       //     </Text>
                       //   </HStack>
-                      //  
+                      //
                       // </VStack>
                     )}
-                    <Grid templateColumns='repeat(5, 1fr)' mt={'90px'} gap={'25px'}>
-                      <GridItem colSpan={'3'} height={'456px'}>
-                        <HStack w={'100%'} justifyContent={'space-between'} >
-                          <Text fontSize={'33px'} fontWeight={'800'} color={'#333333'} fontFamily={'morabba'}>دیدگاه ها</Text>
+                    <Grid
+                      templateColumns="repeat(5, 1fr)"
+                      mt={"90px"}
+                      gap={"25px"}
+                    >
+                      <GridItem colSpan={"3"} height={"456px"}>
+                        <HStack w={"100%"} justifyContent={"space-between"}>
+                          <Text
+                            fontSize={"33px"}
+                            fontWeight={"800"}
+                            color={"#333333"}
+                            fontFamily={"morabba"}
+                          >
+                            دیدگاه ها
+                          </Text>
                           <Text
                             fontWeight={"700"}
                             fontSize={"12px"}
@@ -771,7 +885,14 @@ const Index = () => {
                             id="answers-header"
                           >
                             <HStack>
-                              <Text fontSize="33px" fontWeight="800" color="#333333" fontFamily="morabba">پرسش‌های مرتبط</Text>
+                              <Text
+                                fontSize="33px"
+                                fontWeight="800"
+                                color="#333333"
+                                fontFamily="morabba"
+                              >
+                                پرسش‌های مرتبط
+                              </Text>
                             </HStack>
                             <Text
                               fontWeight="700"
@@ -801,7 +922,6 @@ const Index = () => {
                             <VStack
                               w="100%"
                               gap="10px"
-
                               flex="1"
                               minH="0" // important for scroll inside flex container
                               pb="10px"
@@ -810,16 +930,20 @@ const Index = () => {
                                 ?.slice(5, 10)
                                 ?.map((item, idx) => (
                                   <HStack
-                                    cursor={'pointer'}
-                                    onClick={(e) => handleSimilarClick(item?.id)}
+                                    cursor={"pointer"}
+                                    onClick={(e) =>
+                                      handleSimilarClick(item?.id)
+                                    }
                                     key={idx}
                                     bgColor="white"
                                     padding="10px"
                                     borderRadius="10px"
                                     w="100%"
                                   >
-                                    <HStack w="100%" alignItems="start" >
-                                      <Text fontSize="14px" fontWeight={'400'}>{item?.content}</Text>
+                                    <HStack w="100%" alignItems="start">
+                                      <Text fontSize="14px" fontWeight={"400"}>
+                                        {item?.content}
+                                      </Text>
                                     </HStack>
                                     {/* <Divider orientation="vertical" />
                                     <VStack w="100%" justifyContent="end" flex={1} alignItems={'start'} fontSize={'12px'} fontWeight={'400'}>
@@ -829,14 +953,10 @@ const Index = () => {
                                   </HStack>
                                 ))}
                             </VStack>
-
                           </Box>
                         </VStack>
                       </GridItem>
-
-
                     </Grid>
-
                   </VStack>
                 )}
               </GridItem>
