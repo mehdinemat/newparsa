@@ -7,6 +7,7 @@ import {
   Heading,
   IconButton,
   Input,
+  Link,
   Text,
   VStack
 } from "@chakra-ui/react";
