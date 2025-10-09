@@ -9,7 +9,6 @@ import {
   HStack,
   Icon,
   Image,
-  InputGroup,
   Menu,
   MenuButton,
   MenuItem,
@@ -455,19 +454,19 @@ const Header = ({
           height={"100%"}
           mt={"-50px"}
         >
-       <Text
-  fontFamily="morabba"
-  fontSize={{ base: "22px", md: "50px" }}
-  color="white"
-  textAlign="center"
-  fontWeight="700"
-  mb={{ base: "20px" }}
-  sx={{
-    "@media (min-width: 120em)": {
-      marginBottom: "40px",
-    },
-  }}
-  textShadow={`
+          <Text
+            fontFamily="morabba"
+            fontSize={{ base: "22px", md: "50px" }}
+            color="white"
+            textAlign="center"
+            fontWeight="700"
+            mb={{ base: "20px" }}
+            sx={{
+              "@media (min-width: 120em)": {
+                marginBottom: "40px",
+              },
+            }}
+            textShadow={`
     0px -5px 13.4px #FFFFFF9E,
     0px 5px 11px #0000007D,
     0px 20px 20px #0000006E,
@@ -475,19 +474,19 @@ const Header = ({
     0px 81px 32px #00000012,
     0px 126px 35px #00000003
   `}
->
-  {t("home_parsa_header_title")}
-</Text>
+          >
+            {t("home_parsa_header_title")}
+          </Text>
 
           <VStack
-            mb={{ base: "80px" , md:"15px" }}
+            mb={{ base: "80px", md: "15px" }}
             alignItems={"center"}
             position="relative"
             borderRadius="8px"
             p={{ base: "5px", md: "12px" }}
             bgColor={"#FFFFFF"}
             height={{ base: "90px", md: "163px" }}
-            width={{base: "380px", md: "874px"}}
+            width={{ base: "380px", md: "874px" }}
             boxShadow={`
             0px 3px 6px 0px #0000000D,
             0px 11px 11px 0px #0000000A,
@@ -518,46 +517,46 @@ const Header = ({
               },
             }}
           >
-           
 
-              <Textarea
-                borderRadius="8px"
-                ref={inputRef}
-                fontSize={{ base: "14px", md: "20px" }}
-                fontWeight={"500"}
-                width={{ base: "370px", md: "850px" }}
-                bgColor="#EBEDF8"
-                backdropFilter="blur(9px)"
-                minHeight={{ base: "57px", md: "89px" }}
-                height={{ base: "57px", md: "89px" }}
-                textIndent="5px"
-                placeholder={isRecording ? t("listening") : t("search_among")}
-                color="black"
-                border="none" // removes the border completely
-                _placeholder={{ color: "#000000" }}
-                {...register("search")}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    handleClickSearch();
-                  }
-                }}
-              />
-            <HStack w={"100%"} justifyContent={"space-between"} alignItems={'center'} mt={{base:'0px' , md:'5px'}}>
+
+            <Textarea
+              borderRadius="8px"
+              ref={inputRef}
+              fontSize={{ base: "14px", md: "20px" }}
+              fontWeight={"500"}
+              width={{ base: "370px", md: "850px" }}
+              bgColor="#EBEDF8"
+              backdropFilter="blur(9px)"
+              minHeight={{ base: "57px", md: "89px" }}
+              height={{ base: "57px", md: "89px" }}
+              textIndent="5px"
+              placeholder={isRecording ? t("listening") : t("search_among")}
+              color="black"
+              border="none" // removes the border completely
+              _placeholder={{ color: "#000000" }}
+              {...register("search")}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleClickSearch();
+                }
+              }}
+            />
+            <HStack w={"100%"} justifyContent={"space-between"} alignItems={'center'} mt={{ base: '0px', md: '5px' }}>
               <Flex align="center" gap="2">
 
                 <>
                   {!isRecording ? (
-                    loadingRecording ? (
-                      <Spinner color="white" />
+                    isMutating ? (
+                      <Spinner color="black" />
                     ) : (
                       <Icon
-                      as={IoMic}
-                      fontSize={{ base: "10px", md: "25px" }}
-                      color="#3646B3"
-                      cursor="pointer"
-                      mr="10px"
-                      onClick={handleMicClick}
-                    />
+                        as={IoMic}
+                        fontSize={{ base: "10px", md: "25px" }}
+                        color="#3646B3"
+                        cursor="pointer"
+                        mr="10px"
+                        onClick={handleMicClick}
+                      />
                     )
                   ) : (
                     <HStack gap={0}>
@@ -729,19 +728,19 @@ const Header = ({
                     fontWeight={'700'}
                     color={"white"}
                     borderRadius="4px"
-                    leftIcon={currentSize !="base" ?
+                    leftIcon={currentSize != "base" ?
                       <svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M6.5 0L7.09264 2.68791C7.49455 4.5087 8.81335 5.92895 10.5041 6.36177L13 7L10.5041 7.63823C8.81335 8.07105 7.49455 9.4913 7.09264 11.3121L6.5 14L5.90736 11.3121C5.50545 9.4913 4.18665 8.07105 2.49591 7.63823L0 7L2.49591 6.36177C4.18665 5.92895 5.50545 4.5087 5.90736 2.68791L6.5 0Z" fill="#29CCCC"/>
-</svg>:<svg width="6" height="7" viewBox="0 0 6 7" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M2.89814 0.694336L3.15614 1.86452C3.33111 2.6572 3.90526 3.2755 4.64132 3.46393L5.72791 3.74179L4.64132 4.01964C3.90526 4.20807 3.33111 4.82638 3.15614 5.61906L2.89814 6.78924L2.64013 5.61906C2.46516 4.82638 1.89102 4.20807 1.15496 4.01964L0.0683594 3.74179L1.15496 3.46393C1.89102 3.2755 2.46516 2.6572 2.64013 1.86452L2.89814 0.694336Z" fill="#29CCCC"/>
-</svg>
-}
-                    rightIcon={currentSize !="base" ?
+                        <path d="M6.5 0L7.09264 2.68791C7.49455 4.5087 8.81335 5.92895 10.5041 6.36177L13 7L10.5041 7.63823C8.81335 8.07105 7.49455 9.4913 7.09264 11.3121L6.5 14L5.90736 11.3121C5.50545 9.4913 4.18665 8.07105 2.49591 7.63823L0 7L2.49591 6.36177C4.18665 5.92895 5.50545 4.5087 5.90736 2.68791L6.5 0Z" fill="#29CCCC" />
+                      </svg> : <svg width="6" height="7" viewBox="0 0 6 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M2.89814 0.694336L3.15614 1.86452C3.33111 2.6572 3.90526 3.2755 4.64132 3.46393L5.72791 3.74179L4.64132 4.01964C3.90526 4.20807 3.33111 4.82638 3.15614 5.61906L2.89814 6.78924L2.64013 5.61906C2.46516 4.82638 1.89102 4.20807 1.15496 4.01964L0.0683594 3.74179L1.15496 3.46393C1.89102 3.2755 2.46516 2.6572 2.64013 1.86452L2.89814 0.694336Z" fill="#29CCCC" />
+                      </svg>
+                    }
+                    rightIcon={currentSize != "base" ?
                       <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M0.720694 7.78459L16.2645 0.12078C17.0776 -0.28007 18 0.365831 18 1.33614V5.32419C18 6.16725 17.4516 6.89296 16.6905 7.05663L11.0017 8.28076C10.2766 8.43656 10.2766 9.56335 11.0017 9.71937L16.6905 10.9435C17.4516 11.1072 18 11.8327 18 12.676L18 16.6638C18 17.6341 17.0776 18.2802 16.2645 17.8791L0.720694 10.2155C-0.240232 9.74163 -0.240232 8.25828 0.720694 7.78459Z" fill="white"/>
-</svg> :<svg width="9" height="9" viewBox="0 0 9 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M0.950104 4.21324L7.71712 0.8768C8.07107 0.70229 8.47266 0.983484 8.47266 1.40591V3.14211C8.47266 3.50913 8.2339 3.82507 7.90256 3.89633L5.42594 4.42925C5.11027 4.49708 5.11027 4.98763 5.42594 5.05555L7.90256 5.58848C8.2339 5.65973 8.47266 5.97557 8.47266 6.3427V8.0788C8.47266 8.50122 8.07107 8.78251 7.71712 8.60791L0.950104 5.27156C0.531765 5.06524 0.531765 4.41947 0.950104 4.21324" fill="white"/>
-</svg>
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M0.720694 7.78459L16.2645 0.12078C17.0776 -0.28007 18 0.365831 18 1.33614V5.32419C18 6.16725 17.4516 6.89296 16.6905 7.05663L11.0017 8.28076C10.2766 8.43656 10.2766 9.56335 11.0017 9.71937L16.6905 10.9435C17.4516 11.1072 18 11.8327 18 12.676L18 16.6638C18 17.6341 17.0776 18.2802 16.2645 17.8791L0.720694 10.2155C-0.240232 9.74163 -0.240232 8.25828 0.720694 7.78459Z" fill="white" />
+                      </svg> : <svg width="9" height="9" viewBox="0 0 9 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M0.950104 4.21324L7.71712 0.8768C8.07107 0.70229 8.47266 0.983484 8.47266 1.40591V3.14211C8.47266 3.50913 8.2339 3.82507 7.90256 3.89633L5.42594 4.42925C5.11027 4.49708 5.11027 4.98763 5.42594 5.05555L7.90256 5.58848C8.2339 5.65973 8.47266 5.97557 8.47266 6.3427V8.0788C8.47266 8.50122 8.07107 8.78251 7.71712 8.60791L0.950104 5.27156C0.531765 5.06524 0.531765 4.41947 0.950104 4.21324" fill="white" />
+                      </svg>
 
                     }
                     onClick={(e) => handleAiResponse()}
@@ -780,13 +779,13 @@ const Header = ({
             }}
           >
 
-            <Text color={"#76FFFF"} wordBreak="break-word" align={"justify"} mb={'5px'}fontSize={{ base: "6px", md: "10px" }}>
+            <Text color={"#76FFFF"} wordBreak="break-word" align={"justify"} mb={'5px'} fontSize={{ base: "6px", md: "10px" }}>
               {hadith?.Masoum?.MasoumTitle}:
             </Text>
             <Text color={"#76FFFF"} wordBreak="break-word" align={"justify"} mb={'15px'} fontWeight={'700'} fontSize={{ base: "9px", md: "14px" }}>
               {hadith?.Texts?.[0]?.HadithSimpleText}
             </Text>
-            <Text color={"#76FFFF"} wordBreak="break-word" align={"justify"} fontSize={'12px'} fontWeight={'400'}fontSize={{ base: "7px", md: "12px" }}>
+            <Text color={"#76FFFF"} wordBreak="break-word" align={"justify"} fontSize={'12px'} fontWeight={'400'} fontSize={{ base: "7px", md: "12px" }}>
               {hadith?.Texts?.[1]?.HadithSimpleText}
             </Text>
           </Box>
