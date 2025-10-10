@@ -685,7 +685,7 @@ const Index = () => {
                               }}
                               mt={"10px"}
                             >
-                              {showMore && (
+                              {(showMore || answer?.content?.length < 200) && (
                                 <HStack
                                   order={{ base: 1 }}
                                   w={"100%"}
@@ -713,7 +713,7 @@ const Index = () => {
                                   </HStack>
                                   <Button
                                     bgColor={"white"}
-                                    color={like ? "#CCCCCC" : "green.300"}
+                                    color={!like ? "#CCCCCC" : "green.300"}
                                     fontWeight={"500"}
                                     fontSize={"16px"}
                                     borderRadius={"18px"}
@@ -756,12 +756,12 @@ const Index = () => {
                     </Box>
                     {!isUserLogin ? (
                       <Box
-                        w={{ base: "fit-content", md: "100%" }}
+                        w={{ base: "100%", md: "100%" }}
                         padding={"20px"}
                         bgColor={"#3646B3"}
                         borderRadius={"15px"}
                         my={{ base: "0px", md: "0px" }}
-                        mr={{ base: "-40px", md: "0px" }}
+                        mr={{ base: "0px", md: "0px" }}
                       >
                         <HStack>
                           <VStack w={"100%"} alignItems={"start"}>
@@ -855,6 +855,7 @@ const Index = () => {
                       }}
                       mt={"90px"}
                       gap={"25px"}
+                      w={"100%"}
                     >
                       <GridItem
                         colSpan={"3"}
@@ -882,7 +883,7 @@ const Index = () => {
                         <CommentCard t={t} />
                       </GridItem>
                       <GridItem
-                        colSpan={2}
+                        colSpan={{ base: 3, md: 2 }}
                         height={{ base: "auto", md: "456px" }}
                       >
                         <VStack w="100%" h="100%" spacing="0" align="stretch">
