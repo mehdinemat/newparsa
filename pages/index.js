@@ -79,9 +79,8 @@ export default function Home({ children }) {
     console.log(previousPageData);
     if (previousPageData && !previousPageData?.data?.result.length) return null;
 
-    return `user/question?lang=${locale}&page=${pageIndex + 1}${
-      categoryId ? `&categories__id=${categoryId}` : ""
-    }`;
+    return `user/question?lang=${locale}&page=${pageIndex + 1}${categoryId ? `&categories__id=${categoryId}` : ""
+      }`;
   };
 
   const { data, size, setSize, error, isLoading, isValidating } =
@@ -148,7 +147,8 @@ export default function Home({ children }) {
   };
 
   const handleVoiceSearch = (text) => {
-    router.push(`/result_search?search=${text}&search_type=semantic_search`);
+    setValueSearch("search", text)
+    // router.push(`/result_search?search=${text}&search_type=semantic_search`);
   };
 
   useEffect(() => {
@@ -306,7 +306,7 @@ export default function Home({ children }) {
                   title: val?.full_name,
                   image: val?.image_url,
                   id: val?.id,
-                  link:val?.website,
+                  link: val?.website,
                   buttoh: "اطلاعات بیشتر",
                 }))}
                 height={"fit-content"}

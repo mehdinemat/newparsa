@@ -33,6 +33,7 @@ const postRequest = (url, { arg }) => {
 const Index = () => {
   const [phone, setPhone] = useState("");
   const [fullNumber, setFullNumber] = useState("");
+  const [phoneError, setPhoneError] = useState(false)
 
   const { t } = useTranslation();
 
@@ -84,6 +85,14 @@ const Index = () => {
     }
   );
   const handleRegisterUser = (e) => {
+
+    const clean = fullNumber.replace(/\D/g, ''); // remove non-digits
+
+    if (clean[2] === '0') {
+      setPhoneError(true)
+      return;
+    }
+
     trigger({ ...e, phone_number: fullNumber });
   };
 
@@ -138,6 +147,16 @@ const Index = () => {
 
             <VStack bgColor={'gray.100'} padding={'12px'} borderRadius={'18px'}>
               <PhoneInput setFullNumber={setFullNumber} fullNumber={fullNumber} />
+              {phoneError && <p
+                style={{
+                  fontSize: "10px",
+                  color: "#e4002b",
+                  width: "100%",
+                  textAlign: "start",
+                }}
+              >
+                فرمت شماره تلفن با صفر اشتباست (فرمت نمونه 9111111111)
+              </p>}
               {/* <Input
               height={"46px"}
               placeholder={t("first_name")}
@@ -330,8 +349,8 @@ const Index = () => {
             transform="translate(-50%, -50%)"
           />
         </Box>
-      </HStack>
-    </Box>
+      </HStack >
+    </Box >
   );
 };
 

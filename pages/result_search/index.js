@@ -17,10 +17,12 @@ import "slick-carousel/slick/slick.css";
 
 import QuestionMCard from "@/components/home/mobile/questionMCard";
 import { baseUrl } from "@/components/lib/api";
+import LoadingDots from "@/components/loadingDots";
 import Pagination from "@/components/pagination";
 import QuestionCard from "@/components/questionCars";
 import TextSlider from "@/components/textSlider";
 import axios from "axios";
+import { motion } from "framer-motion";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
@@ -31,8 +33,6 @@ import ReactMarkdown from "react-markdown";
 import remarkBreaks from "remark-breaks";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
-import LoadingDots from "@/components/loadingDots";
-import { motion } from "framer-motion";
 
 export const fetcherWithTiming = async (url) => {
   const startTime = performance.now();
@@ -93,8 +93,8 @@ const Index = ({ children, filters, setFilters, source }) => {
   const sourceParams =
     filters?.source?.length > 0
       ? filters.source
-          .map((src) => `&source_list=${encodeURIComponent(src)}`)
-          .join("")
+        .map((src) => `&source_list=${encodeURIComponent(src)}`)
+        .join("")
       : "";
 
   const {
@@ -103,12 +103,12 @@ const Index = ({ children, filters, setFilters, source }) => {
     isLoading: isLoadingQuestionSearch,
   } = useSWR(
     `user/question/search?page=${(page - 1) * 10}` +
-      `&search_type=${filters?.search_type || ""}` +
-      `&content=${filters?.search || ""}` +
-      `&lang=${locale}` +
-      `${filters?.order_by ? `&order_by=${filters.order_by}` : ""}` +
-      `&model_name=${filters?.model || ""}` +
-      `${sourceParams}`,
+    `&search_type=${filters?.search_type || ""}` +
+    `&content=${filters?.search || ""}` +
+    `&lang=${locale}` +
+    `${filters?.order_by ? `&order_by=${filters.order_by}` : ""}` +
+    `&model_name=${filters?.model || ""}` +
+    `${sourceParams}`,
     fetcherWithTiming
   );
 
