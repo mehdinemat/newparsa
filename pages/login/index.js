@@ -235,10 +235,10 @@ const Index = () => {
           display={{ base: "none", md: "flex" }}
         >
           {/* Base / background image */}
-          <Image src="/loginlogo1.png" objectFit="cover" w="100%" h="100%" />
+          <Image src="/loginlogo1.jpg" objectFit="cover" w="100%" h="100%" />
 
           {/* Overlay / centered image */}
-          <Image
+          {/* <Image
             src="/loginquestion.png"
             alt="Centered Image"
             position="absolute"
@@ -247,7 +247,7 @@ const Index = () => {
             width={"262px"}
             height={"369px"}
             transform="translate(-50%, -50%)"
-          />
+          /> */}
         </Box>
       </HStack>
     </Box>

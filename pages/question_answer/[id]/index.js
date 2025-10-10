@@ -9,6 +9,7 @@ import {
   Button,
   Collapse,
   Divider,
+  Flex,
   Grid,
   GridItem,
   HStack,
@@ -369,7 +370,7 @@ const Index = () => {
                 colSpan={"3"}
                 w={"100%"}
               >
-                {slidesToShow == 1 && (
+                {/* {slidesToShow == 1 && (
                   <VStack gap={0}>
                     <IconButton
                       icon={<IoArrowUp color="gray" />}
@@ -396,7 +397,7 @@ const Index = () => {
                       }
                     />
                   </VStack>
-                )}
+                )} */}
 
                 {isLoadingQuestion ? (
                   <Spinner />
@@ -444,7 +445,7 @@ const Index = () => {
                         </VStack>
                       )} */}
                       <HStack
-                        alignItems={"baseline"}
+                        alignItems={"start"}
                         bgColor={"#3646B31A"}
                         padding={"8px"}
                         borderRadius={"10px"}
@@ -452,7 +453,7 @@ const Index = () => {
                       >
                         <IoIosArrowForward
                           cursor={"pointer"}
-                          style={{ marginRight: "10px" }}
+                          style={{ marginRight: "10px", marginTop: "10px" }}
                           onClick={(e) => router.back()}
                         />
 
@@ -460,7 +461,7 @@ const Index = () => {
                           <Text
                             lineHeight={"taller"}
                             textAlign={"justify"}
-                            fontSize={"21px"}
+                            fontSize={{ base: "16px", md: "21px" }}
                             fontWeight={"700"}
                           >
                             {dataQuestion?.data?.result?.[0]?.content}
@@ -503,6 +504,7 @@ const Index = () => {
                           fontWeight={"400"}
                           color={"#999999"}
                           fontSize={"16px"}
+                          display={{ base: "none", md: "block" }}
                         >
                           {dataQuestionAnswer?.data &&
                             dataQuestionAnswer?.data?.length}{" "}
@@ -550,21 +552,14 @@ const Index = () => {
                         />
                       </HStack>
                     </HStack>
-
-                    <Stack
-                      direction={{ base: "column", md: "row" }}
-                      w={"100%"}
-                      justifyContent={"space-between"}
-                      mt={"10px"}
-                    ></Stack>
                     <Box
-                      w={{ base: "fit-content", md: "100%" }}
+                      w={{ base: "100%", md: "100%" }}
                       padding={{ base: "none", md: "0px" }}
-                      px={{ base: "none", md: "20px" }}
+                      px={{ base: "5px", md: "20px" }}
                       bgColor={"#F7F7F7"}
                       borderRadius={"10px"}
                       mb={"10px"}
-                      mr={{ base: "-40px", md: "0px" }}
+                      mr={{ base: "0px", md: "0px" }}
                     >
                       {/* <HStack
                         w={"100%"}
@@ -576,7 +571,7 @@ const Index = () => {
                         </Text>
                       </HStack> */}
                       {dataQuestionAnswer?.data?.map((answer) => (
-                        <HStack alignItems={"start"} gap={"10px"}>
+                        <HStack alignItems={"start"} gap={"10px"} w={"100%"}>
                           {/* <VStack>
                               <IconButton
                                 icon={
@@ -646,7 +641,11 @@ const Index = () => {
                             px={"2px"}
                             pt={"25px"}
                           >
-                            <HStack w={"100%"} justifyContent={"space-between"}>
+                            <Flex
+                              flexDir={{ base: "column", md: "row" }}
+                              w={"100%"}
+                              justifyContent={"space-between"}
+                            >
                               <HStack>
                                 <Avatar w={"28px"} h={"28px"} />
                                 <Text fontSize={"16px"} color={"#999999"}>
@@ -654,6 +653,7 @@ const Index = () => {
                                 </Text>
                               </HStack>
                               <Text
+                                mt={{ base: "15px", md: "0px" }}
                                 fontSize={"16px"}
                                 color={"#999999"}
                                 fontWeight={"100"}
@@ -662,13 +662,13 @@ const Index = () => {
                                   "jYYYY/jMM/jDD"
                                 )}
                               </Text>
-                            </HStack>
+                            </Flex>
                             <Collapse startingHeight={80} in={showMore}>
                               <Text
                                 lineHeight="190%"
                                 w="fit-content"
                                 textAlign="justify"
-                                fontSize="17px"
+                                fontSize={{ base: "14px", md: "17px" }}
                                 fontWeight="400"
                                 whiteSpace="pre-wrap"
                                 mt="20px"
@@ -712,7 +712,7 @@ const Index = () => {
                                   </HStack>
                                   <Button
                                     bgColor={"white"}
-                                    color={like? "#CCCCCC":'green.300'}
+                                    color={like ? "#CCCCCC" : "green.300"}
                                     fontWeight={"500"}
                                     fontSize={"16px"}
                                     borderRadius={"18px"}
@@ -789,13 +789,11 @@ const Index = () => {
                         </HStack>
                       </Box>
                     ) : (
-                      <VStack
-                        w={"100%"}
-                        alignItems={"start"}
-                        mt={"40px"}
-                        px={"20px"}
-                      >
-                        <Text fontSize={"22px"} fontWeight={"600"}>
+                      <VStack w={"100%"} alignItems={"start"} mt={"40px"}>
+                        <Text
+                          fontSize={{ base: "16px", md: "22px" }}
+                          fontWeight={"600"}
+                        >
                           شما میتوانید به این سوال پاسخ دهید
                         </Text>
                         <HStack
@@ -805,8 +803,8 @@ const Index = () => {
                         >
                           <Input
                             w={"100%"}
-                            borderRadius={"10px"}
-                            height={"61px"}
+                            borderRadius={"5px"}
+                            height={{ base: "35px", md: "61px" }}
                             placeholder="نوشتن متن..."
                             border={"1px"}
                             borderColor={"#A3A3A3"}
@@ -816,12 +814,12 @@ const Index = () => {
                           <Button
                             isLoading={isMutatingQuestionAnswer}
                             bgColor={"#F9C96D"}
-                            borderRadius={"10px"}
+                            borderRadius={"5px"}
                             color={"black"}
-                            width={"220px"}
-                            height={"61px"}
+                            width={{ base: "72px", md: "220px" }}
+                            height={{ base: "32px", md: "61px" }}
                             fontWeight={"700"}
-                            fontSize={"18px"}
+                            fontSize={{ base: "10px", md: "18px" }}
                             type="submit"
                           >
                             {" "}
@@ -850,14 +848,20 @@ const Index = () => {
                       // </VStack>
                     )}
                     <Grid
-                      templateColumns="repeat(5, 1fr)"
+                      templateColumns={{
+                        base: "repeat(1, 1fr)",
+                        md: "repeat(5, 1fr)",
+                      }}
                       mt={"90px"}
                       gap={"25px"}
                     >
-                      <GridItem colSpan={"3"} height={"456px"}>
+                      <GridItem
+                        colSpan={"3"}
+                        height={{ base: "auto", md: "456px" }}
+                      >
                         <HStack w={"100%"} justifyContent={"space-between"}>
                           <Text
-                            fontSize={"33px"}
+                            fontSize={{ base: "20px", md: "33px" }}
                             fontWeight={"800"}
                             color={"#333333"}
                             fontFamily={"morabba"}
@@ -876,7 +880,10 @@ const Index = () => {
                         </HStack>
                         <CommentCard t={t} />
                       </GridItem>
-                      <GridItem colSpan={2} height="456px">
+                      <GridItem
+                        colSpan={2}
+                        height={{ base: "auto", md: "456px" }}
+                      >
                         <VStack w="100%" h="100%" spacing="0" align="stretch">
                           {/* Header */}
                           <HStack
@@ -886,7 +893,7 @@ const Index = () => {
                           >
                             <HStack>
                               <Text
-                                fontSize="33px"
+                                fontSize={{base:'20px' ,md:"33px"}}
                                 fontWeight="800"
                                 color="#333333"
                                 fontFamily="morabba"
@@ -941,7 +948,7 @@ const Index = () => {
                                     w="100%"
                                   >
                                     <HStack w="100%" alignItems="start">
-                                      <Text fontSize="14px" fontWeight={"400"}>
+                                      <Text fontSize={{base:'10px' , md:"14px"}} fontWeight={"400"}>
                                         {item?.content}
                                       </Text>
                                     </HStack>
