@@ -692,8 +692,9 @@ const Index = () => {
                                   justifyContent={"space-between"}
                                 >
                                   <HStack
-                                    w={{ base: "100%" }}
+                                    w={{ base: "140px", md: "100%" }}
                                     justifyContent={{ base: "start" }}
+                                    flexWrap="wrap"
                                   >
                                     {dataQuestion?.data?.result?.[0]?.tags?.map(
                                       (tag) => (
@@ -893,7 +894,7 @@ const Index = () => {
                           >
                             <HStack>
                               <Text
-                                fontSize={{base:'20px' ,md:"33px"}}
+                                fontSize={{ base: "20px", md: "33px" }}
                                 fontWeight="800"
                                 color="#333333"
                                 fontFamily="morabba"
@@ -948,7 +949,10 @@ const Index = () => {
                                     w="100%"
                                   >
                                     <HStack w="100%" alignItems="start">
-                                      <Text fontSize={{base:'10px' , md:"14px"}} fontWeight={"400"}>
+                                      <Text
+                                        fontSize={{ base: "10px", md: "14px" }}
+                                        fontWeight={"400"}
+                                      >
                                         {item?.content}
                                       </Text>
                                     </HStack>

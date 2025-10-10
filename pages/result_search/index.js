@@ -1,5 +1,6 @@
 import {
   Box,
+  Flex,
   Grid,
   Heading,
   HStack,
@@ -93,8 +94,8 @@ const Index = ({ children, filters, setFilters, source }) => {
   const sourceParams =
     filters?.source?.length > 0
       ? filters.source
-        .map((src) => `&source_list=${encodeURIComponent(src)}`)
-        .join("")
+          .map((src) => `&source_list=${encodeURIComponent(src)}`)
+          .join("")
       : "";
 
   const {
@@ -103,12 +104,12 @@ const Index = ({ children, filters, setFilters, source }) => {
     isLoading: isLoadingQuestionSearch,
   } = useSWR(
     `user/question/search?page=${(page - 1) * 10}` +
-    `&search_type=${filters?.search_type || ""}` +
-    `&content=${filters?.search || ""}` +
-    `&lang=${locale}` +
-    `${filters?.order_by ? `&order_by=${filters.order_by}` : ""}` +
-    `&model_name=${filters?.model || ""}` +
-    `${sourceParams}`,
+      `&search_type=${filters?.search_type || ""}` +
+      `&content=${filters?.search || ""}` +
+      `&lang=${locale}` +
+      `${filters?.order_by ? `&order_by=${filters.order_by}` : ""}` +
+      `&model_name=${filters?.model || ""}` +
+      `${sourceParams}`,
     fetcherWithTiming
   );
 
@@ -342,13 +343,13 @@ const Index = ({ children, filters, setFilters, source }) => {
             w="100%"
             overflowWrap="break-word"
             wordBreak="break-word"
-            maxW={{base:"calc( 100vw - 100px )" , md:'100vw'}}
+            maxW={{ base: "calc( 100vw - 100px )", md: "100vw" }}
             whiteSpace="normal"
             pr={{ base: 0, md: "21px" }}
           >
             {filters?.type == "ai" && (
               <VStack mb={"80px"} alignItems={"start"}>
-                <Text fontSize={{base:'11px' , md:"16px"}} color={"#C2C2C2"}>
+                <Text fontSize={{ base: "11px", md: "16px" }} color={"#C2C2C2"}>
                   {filters?.search}
                 </Text>
                 <HStack w={"100%"} alignItems={"center"}>
@@ -481,18 +482,28 @@ const Index = ({ children, filters, setFilters, source }) => {
               </VStack>
             )}
 
-            <HStack
+            <Flex
+              flexDir={{ base: "column", md: "row" }}
               w={"100%"}
               justifyContent={"space-between"}
+              alignItems={"start"}
               height={"100%"}
               width={"100%"}
             >
               <HStack mb={"10px"} ml={"20px"}>
                 <IoSearch color={"#3646B3"} fontSize={"22px"} />
-                <Text fontSize={{base:'20px' , md:"30px"}} color={"#3646B3"} whiteSpace={"nowrap"}>
+                <Text
+                  fontSize={{ base: "20px", md: "30px" }}
+                  color={"#3646B3"}
+                  whiteSpace={"nowrap"}
+                >
                   نتایج جستجو بین سوالات
                 </Text>
-                <Text color={"#C2C2C2"} fontSize={{base:'11px' , md:"16px"}} whiteSpace={"nowrap"}>
+                <Text
+                  color={"#C2C2C2"}
+                  fontSize={{ base: "11px", md: "16px" }}
+                  whiteSpace={"nowrap"}
+                >
                   {dataQuestionSearch?.data?.data?.total_count} سوال
                 </Text>
               </HStack>
@@ -531,21 +542,23 @@ const Index = ({ children, filters, setFilters, source }) => {
                     spacing={2}
                     zIndex={1}
                   >
-                    <Text
-                      fontFamily="iransans"
-                      fontWeight="500"
-                      fontSize="20px"
-                      color="#3646B3"
-                      opacity={0} // hidden initially
-                      transition="opacity 0.4s ease" // smooth fade on leave
-                      _groupHover={{
-                        opacity: 1, // appear instantly
-                        transition: "none", // no animation on hover enter
-                      }}
-                      pointerEvents="none"
-                    >
-                      فیلترها
-                    </Text>
+                    {size != "base" && (
+                      <Text
+                        fontFamily="iransans"
+                        fontWeight="500"
+                        fontSize="20px"
+                        color="#3646B3"
+                        opacity={0} // hidden initially
+                        transition="opacity 0.4s ease" // smooth fade on leave
+                        _groupHover={{
+                          opacity: 1, // appear instantly
+                          transition: "none", // no animation on hover enter
+                        }}
+                        pointerEvents="none"
+                      >
+                        فیلترها
+                      </Text>
+                    )}
 
                     <IconButton
                       icon={<IoOptionsOutline color="#3646B3" />}
@@ -569,17 +582,19 @@ const Index = ({ children, filters, setFilters, source }) => {
                     setFilters={setFilters}
                     filters={filters}
                   />
-                  <IoMdClose
-                    color="#3646B3"
-                    fontSize={"24px"}
-                    width={"fit-content"}
-                    cursor={"pointer"}
-                    style={{ width: "24px", marginLeft: "14px" }}
-                    onClick={(e) => setFilter(false)}
-                  />
+                  <Box>
+                    <IoMdClose
+                      color="#3646B3"
+                      fontSize={"24px"}
+                      width={"fit-content"}
+                      cursor={"pointer"}
+                      style={{ width: "24px", marginLeft: "14px" }}
+                      onClick={(e) => setFilter(false)}
+                    />
+                  </Box>
                 </Box>
               )}
-            </HStack>
+            </Flex>
 
             <VStack
               w={"100%"}

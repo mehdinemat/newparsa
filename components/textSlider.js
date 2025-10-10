@@ -21,7 +21,7 @@ const TextSlider = ({ height, borderRadius, width = "auto" , source , setFilters
     dots: false,
     infinite: true,
     speed: 500,
-    slidesToShow: slidesToShow == 1 ? 4 : 4, // or 1 or 2
+    slidesToShow: slidesToShow == 1 ? 3 : 4, // or 1 or 2
     slidesToScroll: 2,
     rtl: false, // for RTL support
     arrows: false

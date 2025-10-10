@@ -327,7 +327,7 @@ const MainLayout = ({
                   />
                 </HStack>
               ) : (
-                <Avatar fontSize={"46px"} />
+                <Avatar fontSize={"46px"} src="/avatar.png"/>
               )}
 
               <Menu isOpen={isOpen2} onOpen={() => setIsOpen2(true)} onClose={() => setIsOpen2(false)}>
