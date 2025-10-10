@@ -9,6 +9,7 @@ import {
   Stack,
   Tabs,
   Text,
+  useBreakpointValue,
   VStack,
 } from "@chakra-ui/react";
 import "slick-carousel/slick/slick-theme.css";
@@ -32,7 +33,6 @@ import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 import LoadingDots from "@/components/loadingDots";
 import { motion } from "framer-motion";
- 
 
 export const fetcherWithTiming = async (url) => {
   const startTime = performance.now();
@@ -63,6 +63,8 @@ const tags = [
 
 const Index = ({ children, filters, setFilters, source }) => {
   const { t } = useTranslation();
+
+  const size = useBreakpointValue({ base: "base", md: "md", xl: "xl" });
 
   const router = useRouter();
 
@@ -120,7 +122,7 @@ const Index = ({ children, filters, setFilters, source }) => {
         const userId = Date.now();
         let botMessage = "";
         setBotStream("");
-        setAiMessage("")
+        setAiMessage("");
 
         const res = await fetch(
           `https://parsa.api.t.etratnet.ir/user/chat/${data?.data?.data?.id}`,
@@ -205,7 +207,7 @@ const Index = ({ children, filters, setFilters, source }) => {
     let botMessage = "";
     setIsStreaming(true);
     setBotStream("");
-    setAiMessage("")
+    setAiMessage("");
     const res = await fetch(
       `https://parsa.api.t.etratnet.ir/user/chat/anonymous`,
       {
@@ -340,48 +342,85 @@ const Index = ({ children, filters, setFilters, source }) => {
             w="100%"
             overflowWrap="break-word"
             wordBreak="break-word"
-            maxW="100vw"
+            maxW={{base:"calc( 100vw - 100px )" , md:'100vw'}}
             whiteSpace="normal"
             pr={{ base: 0, md: "21px" }}
           >
             {filters?.type == "ai" && (
               <VStack mb={"80px"} alignItems={"start"}>
-                <Text fontSize={"16px"} color={"#C2C2C2"}>
+                <Text fontSize={{base:'11px' , md:"16px"}} color={"#C2C2C2"}>
                   {filters?.search}
                 </Text>
                 <HStack w={"100%"} alignItems={"center"}>
-                  <motion.svg
-                    width="32"
-                    height="32"
-                    viewBox="0 0 32 32"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    animate={
-                      isStreaming
-                        ? { opacity: [1, 0.1, 1] } // fade in/out loop
-                        : { opacity: 1 } // static when not streaming
-                    }
-                    transition={
-                      isStreaming
-                        ? {
-                            duration: 1, // one full fade cycle = 1s
-                            repeat: Infinity,
-                            ease: "easeInOut",
-                          }
-                        : { duration: 0 }
-                    }
-                  >
-                    <path
-                      d="M15.7422 0L17.1554 6.14379C18.1138 10.3056 21.2586 13.5519 25.2904 14.5412L31.2422 16L25.2904 17.4588C21.2586 18.4481 18.1138 21.6944 17.1554 25.8562L15.7422 32L14.329 25.8562C13.3706 21.6944 10.2257 18.4481 6.19398 17.4588L0.242188 16L6.19398 14.5412C10.2257 13.5519 13.3706 10.3056 14.329 6.14379L15.7422 0Z"
-                      fill="#3646B3"
-                    />
-                  </motion.svg>
+                  {size == "base" ? (
+                    <motion.svg
+                      width="21"
+                      height="22"
+                      viewBox="0 0 32 32"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      animate={
+                        isStreaming
+                          ? { opacity: [1, 0.1, 1] } // fade in/out loop
+                          : { opacity: 1 } // static when not streaming
+                      }
+                      transition={
+                        isStreaming
+                          ? {
+                              duration: 1, // one full fade cycle = 1s
+                              repeat: Infinity,
+                              ease: "easeInOut",
+                            }
+                          : { duration: 0 }
+                      }
+                    >
+                      <path
+                        d="M15.7422 0L17.1554 6.14379C18.1138 10.3056 21.2586 13.5519 25.2904 14.5412L31.2422 16L25.2904 17.4588C21.2586 18.4481 18.1138 21.6944 17.1554 25.8562L15.7422 32L14.329 25.8562C13.3706 21.6944 10.2257 18.4481 6.19398 17.4588L0.242188 16L6.19398 14.5412C10.2257 13.5519 13.3706 10.3056 14.329 6.14379L15.7422 0Z"
+                        fill="#3646B3"
+                      />
+                    </motion.svg>
+                  ) : (
+                    <motion.svg
+                      width="32"
+                      height="32"
+                      viewBox="0 0 32 32"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      animate={
+                        isStreaming
+                          ? { opacity: [1, 0.1, 1] } // fade in/out loop
+                          : { opacity: 1 } // static when not streaming
+                      }
+                      transition={
+                        isStreaming
+                          ? {
+                              duration: 1, // one full fade cycle = 1s
+                              repeat: Infinity,
+                              ease: "easeInOut",
+                            }
+                          : { duration: 0 }
+                      }
+                    >
+                      <path
+                        d="M15.7422 0L17.1554 6.14379C18.1138 10.3056 21.2586 13.5519 25.2904 14.5412L31.2422 16L25.2904 17.4588C21.2586 18.4481 18.1138 21.6944 17.1554 25.8562L15.7422 32L14.329 25.8562C13.3706 21.6944 10.2257 18.4481 6.19398 17.4588L0.242188 16L6.19398 14.5412C10.2257 13.5519 13.3706 10.3056 14.329 6.14379L15.7422 0Z"
+                        fill="#3646B3"
+                      />
+                    </motion.svg>
+                  )}
 
-                  <Text fontSize={"30px"} color={"#3646B3"}>
+                  <Text
+                    fontSize={{ base: "20px", md: "30px" }}
+                    color={"#3646B3"}
+                  >
                     نتایج جستجو هوشمند
                   </Text>
                 </HStack>
-                <Box bgColor={"#F7F7F7"} padding={"17px"} borderRadius={"30px"}>
+                <Box
+                  bgColor={"#F7F7F7"}
+                  padding={"17px"}
+                  borderRadius={"30px"}
+                  w={"100%"}
+                >
                   <ReactMarkdown
                     remarkPlugins={[remarkBreaks]}
                     components={{
@@ -450,10 +489,10 @@ const Index = ({ children, filters, setFilters, source }) => {
             >
               <HStack mb={"10px"} ml={"20px"}>
                 <IoSearch color={"#3646B3"} fontSize={"22px"} />
-                <Text fontSize={"30px"} color={"#3646B3"} whiteSpace={"nowrap"}>
+                <Text fontSize={{base:'20px' , md:"30px"}} color={"#3646B3"} whiteSpace={"nowrap"}>
                   نتایج جستجو بین سوالات
                 </Text>
-                <Text color={"#C2C2C2"} fontSize={"16px"} whiteSpace={"nowrap"}>
+                <Text color={"#C2C2C2"} fontSize={{base:'11px' , md:"16px"}} whiteSpace={"nowrap"}>
                   {dataQuestionSearch?.data?.data?.total_count} سوال
                 </Text>
               </HStack>

@@ -20,7 +20,7 @@ const SliderSource = ({ items, height, borderRadius, width = "auto", title }) =>
     dots: false,
     infinite: true,
     speed: 500,
-    slidesToShow: slidesToShow == 1 ? 2 : 5, // or 1 or 2
+    slidesToShow: slidesToShow == 1 ? 1 : 5, // or 1 or 2
     slidesToScroll: 1,
     rtl: false, // for RTL support
 
