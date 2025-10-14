@@ -1,11 +1,16 @@
 import {
   Box,
+  Button,
   Grid,
   Heading,
   HStack,
   IconButton,
   Spinner,
   Stack,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
   Tabs,
   Text,
   VStack
@@ -23,7 +28,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { IoMdClose } from "react-icons/io";
+import { IoIosList, IoMdClose } from "react-icons/io";
 import { IoOptionsOutline, IoSearch } from "react-icons/io5";
 import ReactMarkdown from "react-markdown";
 import remarkBreaks from "remark-breaks";
@@ -342,10 +347,13 @@ const {
                 <Text fontSize={"16px"} color={"#C2C2C2"}>
                   {filters?.search}
                 </Text>
-                <HStack w={"100%"} alignItems={"center"}>
+                <Tabs colorScheme="blue">
+  <TabList>
+    <Tab>
+         <HStack w={"100%"} alignItems={"center"}>
                   <svg
-                    width="32"
-                    height="32"
+                    width="21"
+                    height="22"
                     viewBox="0 0 32 32"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -355,11 +363,23 @@ const {
                       fill="#3646B3"
                     />
                   </svg>
-                  <Text fontSize={"30px"} color={"#3646B3"}>
+                  <Text fontSize={"22px"} color={"#3646B3"}>
                     نتایج جستجو هوشمند
                   </Text>
                 </HStack>
-                <Box
+                </Tab>
+                <Tab>
+                <HStack w={"100%"} alignItems={"center"}>
+                  <IoIosList fontSize={'20px'} color="#3646B3"/>
+                  <Text fontSize={"22px"} color={"#3646B3"}>نتایج بین سوالات پارسا</Text>
+                  </HStack>
+                </Tab>
+                
+  </TabList>
+
+  <TabPanels>
+    <TabPanel>
+    <Box
                   bgColor={"#F7F7F7"}
                   padding={"17px"}
                   borderRadius={"30px"}
@@ -376,11 +396,18 @@ const {
                   >
                     {aiMessage}
                   </ReactMarkdown>
+                  <Button bgColor={'#DFE3FF'} color={'#3646B3'} borderRadius={'18px'} fontSize={'14px'} width={'180px'} fontWeight={'500'}>بررسی عمیق‌تر</Button>
+                  <Button>کپی</Button>
                   {conditionStream &&  (
 
 <LoadingDots size="sm" color="blue.500" conditionStream={conditionStream}/>
 )}
                 </Box>
+    </TabPanel>
+  </TabPanels>
+</Tabs>
+          
+                
                 {/* {(!showMore && aiMessage?.length > 200) && (
                   <VStack w={"100%"} justifyContent={"center"}>
                     <Text
