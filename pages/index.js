@@ -9,7 +9,7 @@ import {
   Spinner,
   Stack,
   useBreakpointValue,
-  VStack
+  VStack,
 } from "@chakra-ui/react";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
@@ -27,14 +27,17 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import useSWR from "swr";
 import useSWRInfinite from "swr/infinite";
-import { ArrayParam, StringParam, useQueryParams, withDefault } from "use-query-params";
-import ResultSearch from './result_search';
-
+import {
+  ArrayParam,
+  StringParam,
+  useQueryParams,
+  withDefault,
+} from "use-query-params";
+import ResultSearch from "./result_search";
 
 export default function Home({ children }) {
   const [hoveredIndex, setHoveredIndex] = useState({ selected: "", val: "" });
   const [isUserLogin, setIsUserLogin] = useState("");
-
 
   const [showMore, setShowMore] = useState(false);
 
@@ -73,35 +76,24 @@ export default function Home({ children }) {
 
   const getKey = (pageIndex, previousPageData) => {
     // stop if no more data
-    console.log(previousPageData)
+    console.log(previousPageData);
     if (previousPageData && !previousPageData?.data?.result.length) return null;
 
     return `user/question?lang=${locale}&page=${pageIndex + 1}${categoryId ? `&categories__id=${categoryId}` : ""
       }`;
   };
 
-  const {
-    data,
-    size,
-    setSize,
-    error,
-    isLoading,
-    isValidating
-  } = useSWRInfinite(getKey);
+  const { data, size, setSize, error, isLoading, isValidating } =
+    useSWRInfinite(getKey);
 
-  const questions = data
-    ? data?.flatMap((page) => page?.data?.result)
-    : [];
+  const questions = data ? data?.flatMap((page) => page?.data?.result) : [];
 
   const { data: dataGeneral, error: errorGeneral } = useSWR("user/general");
 
   const { data: dataHadith, error: errorHadith } = useSWR("user/general/hadis");
-  const { data: dataSource, error: errorSource } = useSWR(
-    "user/source"
-  );
+  const { data: dataSource, error: errorSource } = useSWR("user/source");
   const { data: dataReferences, error: errorReferences } =
     useSWR("user/public-figure");
-
 
   // Helper function to update treeData immutably
   const updateTreeData = (list, key, children) =>
@@ -123,27 +115,40 @@ export default function Home({ children }) {
       if (el) {
         el.scrollIntoView({ behavior: "smooth" });
       }
-    }, [500])
-  }
+    }, [500]);
+  };
 
   const handleClickSearch = () => {
-    setFilters({ search_type: 'search', search: watchSearch("search"), type: undefined })
-    moveToQuestionBox()
+    setFilters({
+      search_type: "search",
+      search: watchSearch("search"),
+      type: undefined,
+    });
+    moveToQuestionBox();
     // router.push(
     //   `/result_search?search=${watchSearch("search")}&search_type=search`
     // );
   };
   const handleClickSemanticSearch = () => {
-    setFilters({ search_type: 'semantic_search', search: watchSearch("search"), type: undefined })
-    moveToQuestionBox()
+    setFilters({
+      search_type: "semantic_search",
+      search: watchSearch("search"),
+      type: undefined,
+    });
+    moveToQuestionBox();
   };
   const handleClickAiSearch = () => {
-    setFilters({ search_type: 'semantic_search', search: watchSearch("search"), type: 'ai' })
-    moveToQuestionBox()
+    setFilters({
+      search_type: "semantic_search",
+      search: watchSearch("search"),
+      type: "ai",
+    });
+    moveToQuestionBox();
   };
 
   const handleVoiceSearch = (text) => {
-    router.push(`/result_search?search=${text}&search_type=semantic_search`);
+    setValueSearch("search", text)
+    // router.push(`/result_search?search=${text}&search_type=semantic_search`);
   };
 
   useEffect(() => {
@@ -161,7 +166,11 @@ export default function Home({ children }) {
   }, [setHoveredIndex]);
 
   return (
-    <MainLayout questionsRef={questionsRef} register={registerSearch} watchSearch={watchSearch}>
+    <MainLayout
+      questionsRef={questionsRef}
+      register={registerSearch}
+      watchSearch={watchSearch}
+    >
       <Head>
         <title>
           {t("parsa")} | {t("main_page")}
@@ -213,64 +222,75 @@ export default function Home({ children }) {
             pr={{ base: 0, md: "21px" }}
             area={{ base: "main", md: "auto" }}
           >
-
-
-            {!filters?.search ? isValidating ? (
-              <HStack
-                w={"100%"}
-                alignItems={"center"}
-                justifyContent={"center"}
-              >
-                <Spinner />
-              </HStack>
-            ) : (
-              <VStack display={{ base: "none", md: "flex" }} mt={'70px'}>
-                {questions?.map((item, index) => (
-                  <QuestionCard key={index} data={item} t={t} />
-                ))}
-                <Stack
+            {!filters?.search ? (
+              isValidating ? (
+                <HStack
                   w={"100%"}
-                  justifyContent={"center"}
                   alignItems={"center"}
-                  mt={"45px"}
+                  justifyContent={"center"}
                 >
-                  {isValidating && <Text>Loading...</Text>}
-                  <HStack>
-                    <Button
-                      height={"32px"}
-                      width={"178px"}
-                      bgColor={"#3646B3"}
-                      borderRadius={"15px"}
-                      fontSize={"16px"}
-                      onClick={() => setSize(size + 1)}
-                    >
-                      مشاهده بیشتر
-                    </Button>
-                    <Button
-                      height={"32px"}
-                      width={"178px"}
-                      bgColor={"#3646B31A"}
-                      color={"#3646B3"}
-                      variant={"outline"}
-                      borderRadius={"15px"}
-                      fontSize={"16px"}
-                      onClick={e => router.push('/new_question')}
-                      isDisabled={isValidating}
-                    >
-                      سوال خود را بپرسید
-                    </Button>
-                  </HStack>
-                </Stack>
-              </VStack>
-            ) : <ResultSearch filters={filters} setFilters={setFilters} source={dataSource?.data}/>}
+                  <Spinner />
+                </HStack>
+              ) : (
+                <VStack display={{ base: "none", md: "flex" }} mt={"70px"}>
+                  {questions?.map((item, index) => (
+                    <QuestionCard key={index} data={item} t={t} />
+                  ))}
+                  <Stack
+                    w={"100%"}
+                    justifyContent={"center"}
+                    alignItems={"center"}
+                    mt={"45px"}
+                  >
+                    {isValidating && <Text>درحال بارگذاری...</Text>}
+                    <HStack>
+                      <Button
+                        height={"32px"}
+                        width={"178px"}
+                        bgColor={"#3646B3"}
+                        borderRadius={"15px"}
+                        fontSize={"16px"}
+                        onClick={() => setSize(size + 1)}
+                      >
+                        مشاهده بیشتر
+                      </Button>
+                      <Button
+                        height={"32px"}
+                        width={"178px"}
+                        bgColor={"#3646B31A"}
+                        color={"#3646B3"}
+                        variant={"outline"}
+                        borderRadius={"15px"}
+                        fontSize={"16px"}
+                        onClick={(e) => router.push("/new_question")}
+                        isDisabled={isValidating}
+                      >
+                        سوال خود را بپرسید
+                      </Button>
+                    </HStack>
+                  </Stack>
+                </VStack>
+              )
+            ) : (
+              <ResultSearch
+                filters={filters}
+                setFilters={setFilters}
+                source={dataSource?.data}
+                register={registerSearch}
+                handleClickAiSearch={handleClickAiSearch}
+              />
+            )}
 
-            <VStack display={{ base: "flex", md: "none" }} mt={'50px'}>
+            <VStack display={{ base: "flex", md: "none" }} mt={"50px"}>
               {questions?.map((item, index) => (
                 <QuestionMCard key={index} data={item} t={t} />
               ))}
 
-              <Stack w={"100%"} justifyContent={"center"} alignItems={"center"}>
-              </Stack>
+              <Stack
+                w={"100%"}
+                justifyContent={"center"}
+                alignItems={"center"}
+              ></Stack>
             </VStack>
           </GridItem>
 
@@ -288,6 +308,7 @@ export default function Home({ children }) {
                   title: val?.full_name,
                   image: val?.image_url,
                   id: val?.id,
+                  link: val?.website,
                   buttoh: "اطلاعات بیشتر",
                 }))}
                 height={"fit-content"}
@@ -305,6 +326,7 @@ export default function Home({ children }) {
                       image: val?.logo_link,
                       id: val?.id,
                       count: val?.question_count,
+                      link: val?.source_link,
                       buttoh: "اطلاعات بیشتر",
                     }))}
                     height={"133px"}

@@ -39,7 +39,7 @@ function MyApp({ Component, pageProps }) {
 
   if (!isLanguageSet) {
     // Prevent rendering until the language is set properly
-    return <div>Loading...</div>;
+    return <div>درحال بارگذاری...</div>;
   }
 
   return (

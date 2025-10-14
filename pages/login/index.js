@@ -38,7 +38,7 @@ const Index = () => {
   const router = useRouter();
 
   const [fullNumber, setFullNumber] = useState("");
-
+  const [phoneError, setPhoneError] = useState(false)
 
   const { register, setValue, getValues, handleSubmit } = useForm();
 
@@ -69,6 +69,12 @@ const Index = () => {
     }
   );
   const handleLogin = (e) => {
+    const clean = fullNumber.replace(/\D/g, ''); // remove non-digits
+
+    if (clean[2] === '0') {
+      setPhoneError(true)
+      return;
+    }
     trigger({ ...e, username: fullNumber });
   };
 
@@ -137,6 +143,16 @@ const Index = () => {
               {t("log_in_to_your_account")}
             </Text>
             <PhoneInput setFullNumber={setFullNumber} fullNumber={fullNumber} />
+            {phoneError && <p
+              style={{
+                fontSize: "10px",
+                color: "#e4002b",
+                width: "100%",
+                textAlign: "start",
+              }}
+            >
+              فرمت شماره تلفن با صفر اشتباست (فرمت نمونه 9111111111)
+            </p>}
             {/* <Input
               border={'1px'}
               borderColor={'#B7B7B7'}
@@ -219,10 +235,10 @@ const Index = () => {
           display={{ base: "none", md: "flex" }}
         >
           {/* Base / background image */}
-          <Image src="/loginlogo1.png" objectFit="cover" w="100%" h="100%" />
+          <Image src="/loginlogo1.jpg" objectFit="cover" w="100%" h="100%" />
 
           {/* Overlay / centered image */}
-          <Image
+          {/* <Image
             src="/loginquestion.png"
             alt="Centered Image"
             position="absolute"
@@ -231,7 +247,7 @@ const Index = () => {
             width={"262px"}
             height={"369px"}
             transform="translate(-50%, -50%)"
-          />
+          /> */}
         </Box>
       </HStack>
     </Box>
