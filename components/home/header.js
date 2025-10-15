@@ -284,12 +284,23 @@ const Header = ({
             onClick={(e) => router.push("/")}
             cursor={"pointer"}
           />
-          <Menu>
+
+          <Menu marginRight={{ base: "5px", md: "20px" }}>
             <MenuButton
               px={4}
               py={2}
-              marginRight={{ base: "5px", md: "20px" }}
               transition="all 0.2s"
+              _hover={{
+                backdropFilter: "blur(12.8px)",
+                boxShadow: `
+      0px 3px 7px 0px #0000000D,
+      0px 12px 12px 0px #0000000A,
+      0px 28px 17px 0px #00000008,
+      0px 50px 20px 0px #00000003,
+      0px 77px 22px 0px #00000000
+    `,
+              }}
+              borderRadius={"15px"}
             >
               <HStack color="white">
                 <Text fontSize="20px">
@@ -363,7 +374,17 @@ const Header = ({
             onClose={() => setIsOpen(false)}
             placement="bottom-end"
           >
-            <MenuButton as={Button}>
+            <MenuButton as={Button} _hover={{
+              backdropFilter: "blur(12.8px)",
+              boxShadow: `
+      0px 3px 7px 0px #0000000D,
+      0px 12px 12px 0px #0000000A,
+      0px 28px 17px 0px #00000008,
+      0px 50px 20px 0px #00000003,
+      0px 77px 22px 0px #00000000
+    `,
+            }}
+              borderRadius={"10px"}>
               <AnimatePresence mode="wait" initial={false}>
                 <MotionBox1
                   key={isOpen ? "close" : "menu"}

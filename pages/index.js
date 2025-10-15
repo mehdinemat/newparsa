@@ -18,7 +18,6 @@ import QuestionMCard from "@/components/home/mobile/questionMCard";
 import QuestionCard from "@/components/questionCars";
 import { useRouter } from "next/router";
 
-import ChatBot from "@/components/chatbot";
 import SliderCom from "@/components/slider";
 import SliderSource from "@/components/sliderSource";
 import Head from "next/head";
@@ -38,6 +37,8 @@ import ResultSearch from "./result_search";
 export default function Home({ children }) {
   const [hoveredIndex, setHoveredIndex] = useState({ selected: "", val: "" });
   const [isUserLogin, setIsUserLogin] = useState("");
+
+  const [chatType, setChatType] = useState(1)
 
   const [showMore, setShowMore] = useState(false);
 
@@ -137,10 +138,11 @@ export default function Home({ children }) {
     });
     moveToQuestionBox();
   };
-  const handleClickAiSearch = () => {
+  const handleClickAiSearch = (type = 1, search = '') => {
+    setChatType(type)
     setFilters({
       search_type: "semantic_search",
-      search: watchSearch("search"),
+      search: search || watchSearch("search"),
       type: "ai",
     });
     moveToQuestionBox();
@@ -200,7 +202,7 @@ export default function Home({ children }) {
         className="questions"
         ref={questionsRef}
       >
-        {isUserLogin && <ChatBot />}
+        {/* {isUserLogin && <ChatBot />} */}
         <Grid
           templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(4, 1fr)" }}
           templateAreas={{
@@ -278,6 +280,10 @@ export default function Home({ children }) {
                 source={dataSource?.data}
                 register={registerSearch}
                 handleClickAiSearch={handleClickAiSearch}
+                handleClickSearch={handleClickSearch}
+                handleClickSemanticSearch={handleClickSemanticSearch}
+                isUserLogin={isUserLogin}
+                chatType={chatType}
               />
             )}
 
