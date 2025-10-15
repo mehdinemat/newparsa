@@ -8,6 +8,7 @@ import {
   Flex,
   HStack,
   Icon,
+  IconButton,
   Image,
   Menu,
   MenuButton,
@@ -29,6 +30,7 @@ import React, { useEffect, useRef, useState } from "react";
 import CountUp from "react-countup";
 import { IoIosArrowDown } from "react-icons/io";
 import { IoMic, IoSearch } from "react-icons/io5";
+import { TfiClose } from "react-icons/tfi";
 import Recorder from "recorder-js";
 import useSWRMutation from "swr/mutation";
 import { baseUrl } from "../lib/api";
@@ -67,6 +69,8 @@ const dataTranslate = {
 const MotionMenuList = chakra(motion(MenuList));
 
 const MotionBox = motion(Box);
+const MotionBox1 = motion.div;
+
 
 const sendAudio = async (url, { arg }) => {
   const formData = new FormData();
@@ -292,8 +296,8 @@ const Header = ({
                   {locale == "en"
                     ? t("header_english")
                     : locale == "fa"
-                    ? t("header_persian")
-                    : locale == "ar" && t("header_arabic")}
+                      ? t("header_persian")
+                      : locale == "ar" && t("header_arabic")}
                 </Text>
                 <IoIosArrowDown width="12px" fontSize="12px" />
               </HStack>
@@ -351,20 +355,36 @@ const Header = ({
               />
             </HStack>
           ) : (
-            <Avatar fontSize={"46px"} src="/avatar.png"/>
+            <Avatar fontSize={"46px"} src="/avatar.png" />
           )}
           <Menu
             isOpen={isOpen}
             onOpen={() => setIsOpen(true)}
             onClose={() => setIsOpen(false)}
+            placement="bottom-end"
           >
             <MenuButton as={Button}>
-              <Image
+              <AnimatePresence mode="wait" initial={false}>
+                <MotionBox1
+                  key={isOpen ? "close" : "menu"}
+                  initial={{ rotate: 0, opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: 0.25 }}
+                >
+                  {isOpen ? <IconButton icon={<TfiClose size={'20px'} />} bgColor={'#3646B31A'} /> : <Image
+                    src="/menuheader.png"
+                    height={{ base: "17px", md: "29px" }}
+                    width={{ base: "17px", md: "28px" }}
+                  />}
+                </MotionBox1>
+              </AnimatePresence>
+              {/* <Image
                 src="/menuheader.png"
                 height={{ base: "17px", md: "29px" }}
                 width={{ base: "17px", md: "28px" }}
                 mr={{ base: "5px", md: "20px" }}
-              />
+              /> */}
             </MenuButton>
 
             <AnimatePresence>
@@ -398,7 +418,7 @@ const Header = ({
                     h="35px"
                     onClick={() => handleProfileLink()}
                   >
-                    {isUserLogin ? "پروفایل" : "ورود؟ثبت‌نام"}
+                    {isUserLogin ? "پروفایل" : "ورود/ثبت‌نام"}
                   </MenuItem>
                   <MenuItem
                     _hover={{ bgColor: "#3646B333" }}
@@ -498,18 +518,19 @@ const Header = ({
             gap={0}
             alignItems={"center"}
             position="relative"
-            borderRadius="8px"
+            borderRadius="20px"
             p={{ base: "5px", md: "12px" }}
             bgColor={"#FFFFFF"}
             height={{ base: "95px", md: "163px" }}
             width={{ base: "380px", md: "874px" }}
             boxShadow={`
-            0px 3px 6px 0px #0000000D,
-            0px 11px 11px 0px #0000000A,
-            0px 25px 15px 0px #00000008,
-            0px 44px 18px 0px #00000003,
-            0px 69px 19px 0px #00000000
-          `}
+        0px 18px 40px 0px #00000040,
+        0px 73px 73px 0px #00000036,
+        0px 164px 99px 0px #00000021,
+        0px 292px 117px 0px #0000000A,
+        0px 457px 128px 0px #00000000
+      `}
+
             sx={{
               "@media (min-width: 120em)": {
                 marginBottom: "80px",
@@ -534,7 +555,7 @@ const Header = ({
             }}
           >
             <Textarea
-              borderRadius="8px"
+              borderRadius="10px"
               ref={inputRef}
               fontSize={{ base: "14px", md: "20px" }}
               fontWeight={"500"}
@@ -663,9 +684,10 @@ const Header = ({
                     padding={"5px"}
                   >
                     <Button
-                      leftIcon={<IoSearch fontSize={{base:'1px' , md:"20px"}} color="#3646B3" />}
+                      leftIcon={<IoSearch fontSize={{ base: '1px', md: "20px" }} size={'22px'} color="#3646B3" />}
                       bgColor={"#3646B333"}
                       color={"#081438"}
+                      borderRadius={'6px'}
                       onClick={(e) => handleClickSearch()}
                       fontSize={{ base: "6px", md: "14px" }}
                       height={{ base: "13px", md: "30px" }}
@@ -676,11 +698,12 @@ const Header = ({
                     <Button
                       height={{ base: "13px", md: "30px" }}
                       fontSize={{ base: "6px", md: "14px" }}
+                      borderRadius={'6px'}
                       onClick={(e) => handleClickSemanticSearch()}
                       leftIcon={
                         <svg
-                          width={currentSize ? '7':"17"}
-                          height={currentSize ? '8':"18"}
+                          width={currentSize == 'base' ? '7' : "17"}
+                          height={currentSize == 'base' ? '8' : "18"}
                           viewBox="0 0 17 18"
                           fill="none"
                           xmlns="http://www.w3.org/2000/svg"
@@ -732,9 +755,9 @@ const Header = ({
                       w={{ base: "47px", md: "109px" }}
                       height={{ base: "17px", md: "40px" }}
                       color={"#3646B3"}
-                      borderRadius="4px"
+                      borderRadius="10px"
                       rightIcon={
-                        <IoSearch fontSize={{ base: "10px", md: "25px" }} />
+                        <IoSearch fontSize={{ base: "10px", md: "25px" }} size={'25px'} />
                       }
                       fontSize={{ base: "6px", md: "14px" }}
                       onClick={(e) => setSearchActive(true)}
@@ -766,7 +789,7 @@ const Header = ({
                     fontSize={{ base: "6px", md: "14px" }}
                     fontWeight={"700"}
                     color={"white"}
-                    borderRadius="4px"
+                    borderRadius="10px"
                     leftIcon={
                       currentSize != "base" ? (
                         <svg
@@ -870,6 +893,7 @@ const Header = ({
               align={"justify"}
               mb={"5px"}
               fontSize={{ base: "6px", md: "10px" }}
+              fontFamily={'doran'}
             >
               {hadith?.Masoum?.MasoumTitle}:
             </Text>
@@ -880,6 +904,7 @@ const Header = ({
               mb={"15px"}
               fontWeight={"700"}
               fontSize={{ base: "9px", md: "14px" }}
+              fontFamily={'doran'}
             >
               {hadith?.Texts?.[0]?.HadithSimpleText}
             </Text>
@@ -889,6 +914,7 @@ const Header = ({
               align={"justify"}
               fontWeight={"400"}
               fontSize={{ base: "7px", md: "12px" }}
+              fontFamily={'doran'}
             >
               {hadith?.Texts?.[1]?.HadithSimpleText}
             </Text>

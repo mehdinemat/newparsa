@@ -101,6 +101,21 @@ export const Fonts = ({ lang }) => (
         font-display: swap;
       }
 
+           @font-face {
+        font-family: 'doran';
+        src: url('/fonts/doran/Doran-Bold.otf') format('opentype');
+        font-weight: 700;
+        font-style: normal;
+        font-display: swap;
+      }
+           @font-face {
+        font-family: 'doran';
+        src: url('/fonts/doran/Doran-Regular.otf') format('opentype');
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+      }
+
 
 
       html {

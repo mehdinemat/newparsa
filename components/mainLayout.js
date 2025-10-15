@@ -40,6 +40,7 @@ import { CiSearch } from "react-icons/ci";
 import { FaTelegram } from "react-icons/fa";
 import { IoLogoInstagram, IoLogoTwitter } from "react-icons/io";
 import { IoCall, IoLocation } from "react-icons/io5";
+import { TfiClose } from "react-icons/tfi";
 import { StringParam, useQueryParams, withDefault } from "use-query-params";
 
 const menuList = [
@@ -95,6 +96,7 @@ const menuList = [
 // ];
 
 const MotionMenuList = chakra(motion(MenuList));
+const MotionBox1 = motion.div;
 
 
 const MainLayout = ({
@@ -240,7 +242,7 @@ const MainLayout = ({
               <Image
                 src="/headerparsalogo2.png"
                 width={{ base: "16px", md: "29px" }}
-            height={{ base: "23px", md: "42px" }}
+                height={{ base: "23px", md: "42px" }}
                 ml={"5px"}
                 onClick={(e) => router.push("/")}
                 cursor={"pointer"}
@@ -257,7 +259,7 @@ const MainLayout = ({
               <Box height="60px" display="flex" alignItems="center" ml={"0px"}>
                 {!showInput ? (
                   <Icon
-                  as={CiSearch}
+                    as={CiSearch}
                     color={"#3646B3"}
                     fontSize={{ base: "20px", md: "29px" }}
                     style={{ marginLeft: "20px", cursor: "pointer" }}
@@ -283,7 +285,7 @@ const MainLayout = ({
                     />
                     <InputRightElement height="60px" ml={"16px"}>
                       <Icon
-                      as={CiSearch}
+                        as={CiSearch}
                         cursor="pointer"
                         onClick={handleClickSearch}
                         fontSize={{ base: "20px", md: "30px" }}
@@ -327,12 +329,23 @@ const MainLayout = ({
                   />
                 </HStack>
               ) : (
-                <Avatar fontSize={"46px"} src="/avatar.png"/>
+                <Avatar fontSize={"46px"} src="/avatar.png" />
               )}
 
-              <Menu isOpen={isOpen2} onOpen={() => setIsOpen2(true)} onClose={() => setIsOpen2(false)}>
+              <Menu isOpen={isOpen2} onOpen={() => setIsOpen2(true)} onClose={() => setIsOpen2(false)} placement="bottom-end">
                 <MenuButton as={Button}>
-                  <Image src="/headermenu.png" height={{ base: "17px", md: "49px" }} width={{ base: "17px", md: "45px" }} mr={{ base: "5px", md: "20px" }} />
+                  <AnimatePresence mode="wait" initial={false}>
+                    <MotionBox1
+                      key={isOpen2 ? "close" : "menu"}
+                      initial={{ rotate: 0, opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.8 }}
+                      transition={{ duration: 0.25 }}
+                    >
+                      {isOpen2 ? <IconButton icon={<TfiClose size={'20px'} />} color={'#3646B3'} /> : <Image src="/headermenu.png" height={{ base: "17px", md: "49px" }} width={{ base: "17px", md: "45px" }} mr={{ base: "5px", md: "20px" }} />}
+                    </MotionBox1>
+                  </AnimatePresence>
+
                 </MenuButton>
 
                 <AnimatePresence>
@@ -366,7 +379,7 @@ const MainLayout = ({
                         h="35px"
                         onClick={() => handleProfileLink()}
                       >
-                        {isUserLogin ? 'پروفایل' : 'ورود؟ثبت‌نام'}
+                        {isUserLogin ? 'پروفایل' : 'ورود/ثبت‌نام'}
                       </MenuItem>
                       <MenuItem
                         _hover={{ bgColor: "#3646B333" }}
@@ -468,21 +481,21 @@ const MainLayout = ({
                   height={"100%"}
                   w={"100%"}
                 >
-                 <Flex flexDir={{base:'row' , md:'column'}} gap={'10px'} alignItems={'center'}>
-                 <Image src="/question.png" width={"51px"} height={"72px"} />
-                  <Image
-                    src="/parsaheader.png"
-                    width={"118px"}
-                    height={"48px"}
-                  />
-                 </Flex>
+                  <Flex flexDir={{ base: 'row', md: 'column' }} gap={'10px'} alignItems={'center'}>
+                    <Image src="/question.png" width={"51px"} height={"72px"} />
+                    <Image
+                      src="/parsaheader.png"
+                      width={"118px"}
+                      height={"48px"}
+                    />
+                  </Flex>
                   <Text
                     w={"326px"}
                     fontSize={"16px"}
                     textAlign={"justify"}
                     color={"#333333"}
                     letterSpacing={"-3%"}
-                    width={{base:'100%' , md:'fit-content'}}
+                    width={{ base: '100%', md: 'fit-content' }}
                   >
                     {t("footer_parsa_info")}
                   </Text>
@@ -551,11 +564,11 @@ const MainLayout = ({
                       {/* add more items */}
                     </UnorderedList>
                   </VStack>
-                  <Flex flexDir={{base:'column' , md:'row'}}
+                  <Flex flexDir={{ base: 'column', md: 'row' }}
                     alignItems={"start"}
                     justifyContent={"start"}
                     w={"100%"}
-                    mb={{base:'10px', md:'none'}}
+                    mb={{ base: '10px', md: 'none' }}
                   >
                     <Text
                       color={"#3646B3"}
@@ -563,7 +576,7 @@ const MainLayout = ({
                       fontWeight={"bold"}
                       fontFamily={"morabba"}
                       width={"fit-content"}
-                      mb={{base:'10px', md:'none'}}
+                      mb={{ base: '10px', md: 'none' }}
                     >
                       {t("social_media")}
                     </Text>
